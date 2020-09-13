@@ -1,10 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
-
-export interface Location {
-  type: 'Point',
-  coordinates: [number, number];
-}
+import { Location } from '../location.inteface';
 
 @Schema()
 export class User extends Document {
@@ -20,7 +16,11 @@ export class User extends Document {
   @Prop({ required: true })
   full_name: string;
 
-  @Prop({ required: true })
+  @Prop({
+    type: String,
+    enum: ['MALE', 'FEMALE'],
+    required: true
+  })
   gender: 'MALE' | 'FEMALE';
 
   @Prop()
@@ -47,13 +47,18 @@ export class User extends Document {
   )
   location: Location;
 
-  @Prop()
+  @Prop({
+    type: String,
+    enum: ['ADMIN', 'ADMIN'],
+    required: true,
+    default: 'USER',
+  })
   role: 'ADMIN' | 'USER';
 
   @Prop({ default: false })
   is_completed: boolean;
 
-  @Prop({ default: false })
+  @Prop({ default: true })
   is_active: boolean;
 }
 

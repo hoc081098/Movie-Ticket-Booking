@@ -4,6 +4,8 @@ import { FirebaseAuthenticationService } from '@aginix/nestjs-firebase-admin/dis
 import * as admin from 'firebase-admin';
 import { User } from '../users/user.schema';
 import { UsersService } from '../users/users.service';
+import { UserPayload } from './get-user.decorator';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -29,16 +31,24 @@ export class AuthGuard implements CanActivate {
       this.logger.error(`Error when finding user: ${e}`);
       throw new UnauthorizedException();
     }
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
 
-    (request as any).user = {
+    const merged = {
       ...decodedIdToken,
-      ...user,
+      ...(user ?? {}),
     };
+    const payload = new UserPayload(merged.email, merged.uid);
 
-    return true;
+    try {
+      const errors = await validate(payload);
+
+      if (errors === null || errors === undefined || errors.length === 0) {
+        (request as any).user = payload;
+        return true;
+      }
+    } catch (e) {
+      this.logger.error(`Error when validating payload: ${e}`);
+      throw new UnauthorizedException();
+    }
   }
 
   /**
@@ -65,9 +75,9 @@ export class AuthGuard implements CanActivate {
       this.logger.error(`Error when verifying token: ${e}`);
       throw new UnauthorizedException('Error when verifying token');
     }
-    if (!decodedIdToken || !decodedIdToken.uid) {
+    if (!(decodedIdToken?.uid)) {
       this.logger.error('Error: missing decodedIdToken or decodedIdToken.uid');
-      throw new UnauthorizedException('Cannot decode token');
+      throw new UnauthorizedException('Error invalid decoded token');
     }
 
     return decodedIdToken;
