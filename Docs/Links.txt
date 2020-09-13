@@ -13,3 +13,4 @@ https://stackoverflow.com/questions/13051414/theater-database-schema
 
 https://github.com/lambui09/HealthCare.me
 https://github.com/ngquangan/didauday.me/blob/master/api-web/models/Review.js
+https://github.com/lujakob/nestjs-realworld-example-app/blob/master/src/user/auth.middleware.ts
