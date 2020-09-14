@@ -24,6 +24,8 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     const decodedIdToken = await this.decodeToken(request);
 
+    this.logger.debug(`Token: ${JSON.stringify(decodedIdToken)}`);
+
     let user: User;
     try {
       user = await this.usersService.findByUid(decodedIdToken.uid);
@@ -36,13 +38,15 @@ export class AuthGuard implements CanActivate {
       ...decodedIdToken,
       ...(user ?? {}),
     };
-    const payload = new UserPayload(merged.email, merged.uid);
+    const payload = new UserPayload(merged as { uid: string, email: string });
 
     try {
       const errors = await validate(payload);
+      this.logger.debug(`Errors: ${JSON.stringify(errors)}`);
 
       if (errors === null || errors === undefined || errors.length === 0) {
         (request as any).user = payload;
+        this.logger.debug(`Payload: ${JSON.stringify(payload)}`);
         return true;
       }
     } catch (e) {

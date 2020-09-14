@@ -10,9 +10,9 @@ export class UserPayload {
   @IsEmail()
   email: string;
 
-  constructor(uid: string, email: string) {
-    this.uid = uid;
-    this.email = email;
+  constructor(payload: { uid: string, email: string }) {
+    this.uid = payload.uid;
+    this.email = payload.email;
   }
 }
 
