@@ -1,39 +1,38 @@
+import 'package:datn/data/local/user_local_source_impl.dart';
+import 'package:datn/data/remote/auth_client.dart';
+import 'package:datn/data/repository/user_repository_impl.dart';
+import 'package:datn/domain/repository/user_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_provider/flutter_provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'app.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final themeData = ThemeData(
-      primaryColor: const Color(0xff7a69ef),
-      primaryColorDark: const Color(0xff5353cf),
-      accentColor: const Color(0xff02a3f7),
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-    );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
-    return MaterialApp(
-      title: 'Movie ticket',
-      theme: themeData,
-      home: MyHomePage(),
-    );
-  }
-}
+  final auth = FirebaseAuth.instance;
+  final preferences = RxSharedPreferences.getInstance();
+  final userLocalSource = UserLocalSourceImpl(preferences);
+  final client = http.Client();
+  final authClient = AuthClient(client, userLocalSource, auth);
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+  final userRepository = UserRepositoryImpl(
+    auth,
+    userLocalSource,
+    authClient,
+  );
 
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Title'),
-      ),
-    );
-  }
+  runApp(
+    Providers(
+      providers: [
+        Provider<UserRepository>(value: userRepository),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
