@@ -20,8 +20,9 @@ void main() async {
   final userLocalSource = UserLocalSourceImpl(preferences);
   final client = http.Client();
 
-  final normalClient = NormalClient(client);
-  final authClient = AuthClient(client, userLocalSource, auth);
+  const httpTimeout = Duration(seconds: 10);
+  final normalClient = NormalClient(client, httpTimeout);
+  final authClient = AuthClient(client, userLocalSource, auth, httpTimeout);
 
   final userRepository = UserRepositoryImpl(
     auth,

@@ -27,19 +27,29 @@ abstract class AppClient extends BaseClient {
 
 class NormalClient extends AppClient {
   final Client _client;
+  final Duration _timeout;
 
-  NormalClient(this._client);
+  NormalClient(this._client, this._timeout);
 
   @override
-  Future<StreamedResponse> send(BaseRequest request) => _client.send(request);
+  Future<StreamedResponse> send(BaseRequest request) {
+    print('--> ${request}');
+    return _client.send(request).timeout(_timeout).then(_logResponse);
+  }
+
+  static StreamedResponse _logResponse(response) {
+    print('<-- ${response.statusCode} ${response.request}');
+    return response;
+  }
 }
 
 class AuthClient extends AppClient {
   final Client _client;
   final UserLocalSource _userLocalSource;
   final FirebaseAuth _auth;
+  final Duration _timeout;
 
-  AuthClient(this._client, this._userLocalSource, this._auth);
+  AuthClient(this._client, this._userLocalSource, this._auth, this._timeout);
 
   @override
   Future<StreamedResponse> send(BaseRequest request) async {
@@ -50,7 +60,7 @@ class AuthClient extends AppClient {
     }
 
     print('--> ${request}');
-    return _client.send(request).then(_handleResponse);
+    return _client.send(request).timeout(_timeout).then(_handleResponse);
   }
 
   Future<StreamedResponse> _handleResponse(StreamedResponse response) async {

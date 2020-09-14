@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:datn/data/local/user_local.dart';
@@ -10,7 +11,6 @@ import 'package:datn/domain/model/exception.dart';
 import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/utils/type_defs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tuple/tuple.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final FirebaseAuth _auth;
@@ -21,53 +21,73 @@ class UserRepositoryImpl implements UserRepository {
 
   final Function1<UserResponse, UserLocal> userResponseToUserLocal;
 
+  Future<AuthState> _checkAuthFuture;
+
   UserRepositoryImpl(
     this._auth,
     this._userLocalSource,
     this._authClient,
     this._normalClient,
     this.userResponseToUserLocal,
-  );
+  ) {
+    _checkAuthFuture = _checkAuthInternal();
+  }
 
-  @override
-  Future<Tuple2<bool, NotCompletedLoginException>> checkAuth() async {
-    final currentUser = _auth.currentUser;
+  Future<AuthState> _isUserLocalCompletedLogin([UserLocal local]) async {
+    local ??= await _userLocalSource.user$.first;
 
-    if (currentUser == null) {
+    return local == null
+        ? AuthState.notLoggedIn
+        : local.isCompleted ? AuthState.loggedIn : AuthState.notCompletedLogin;
+  }
+
+  Future<AuthState> _checkAuthInternal() async {
+    if (_auth.currentUser == null) {
       await logout();
-      print('[Check auth] not logged in');
-      return Tuple2(false, null);
+      print('[Check auth][1] not logged in');
+      return AuthState.notLoggedIn;
     }
 
-    final token = await _auth.currentUser.getIdToken();
-    await _userLocalSource.saveToken(token);
+    if (await _userLocalSource.token$.first == null) {
+      await _userLocalSource.saveToken(await _auth.currentUser.getIdToken());
+    }
 
     try {
       final json = await _authClient.getBody(buildUrl('users/me'));
-      final userResponse = UserResponse.fromJson(json);
-
-      final userLocal = userResponseToUserLocal(userResponse);
+      final userLocal = userResponseToUserLocal(UserResponse.fromJson(json));
       await _userLocalSource.saveUser(userLocal);
 
-      if (!userResponse.isCompleted) {
-        return Tuple2(false, const NotCompletedLoginException());
-      }
+      return _isUserLocalCompletedLogin(userLocal);
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
-        print('[Check auth] 404 not completed login error: $e');
-        return Tuple2(false, const NotCompletedLoginException());
+        print('[Check auth][2] 404 not completed login error: $e');
+        return AuthState.notCompletedLogin;
       }
+
       if (e.statusCode == HttpStatus.unauthorized ||
           e.statusCode == HttpStatus.forbidden) {
         await logout();
-        print('[Check auth] 401 or 403');
-        return Tuple2(false, null);
+        print('[Check auth][2] 401 or 403');
+        return AuthState.notLoggedIn;
       }
+
+      print('[Check auth][2] error response $e');
+      return _isUserLocalCompletedLogin();
     } catch (e) {
-      print('[Check auth] other error: $e');
+      print('[Check auth][3] other error: $e');
+      return _isUserLocalCompletedLogin();
+    }
+  }
+
+  @override
+  Future<AuthState> checkAuth() {
+    if (_checkAuthFuture != null) {
+      final future = _checkAuthFuture;
+      _checkAuthFuture = null;
+      return future;
     }
 
-    return Tuple2(true, null);
+    return _checkAuthInternal();
   }
 
   @override
