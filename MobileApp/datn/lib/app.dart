@@ -1,8 +1,13 @@
+import 'package:datn/domain/model/exception.dart';
 import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/ui/login/login_bloc.dart';
+import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
+import 'package:datn/ui/register/register_page.dart';
+import 'package:datn/ui/reset_password/reset_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:tuple/tuple.dart';
 
 import 'ui/home/home_page.dart';
 import 'ui/login/login_page.dart';
@@ -21,6 +26,9 @@ class MyApp extends StatelessWidget {
           },
         );
       },
+      RegisterPage.routeName: (context) => RegisterPage(),
+      LoginUpdateProfilePage.routeName: (context) => LoginUpdateProfilePage(),
+      ResetPasswordPage.routeName: (context) => ResetPasswordPage(),
     };
 
     final themeData = ThemeData(
@@ -36,6 +44,7 @@ class MyApp extends StatelessWidget {
         title: 'Movie ticket',
         theme: themeData,
         home: SplashPage(),
+        routes: routes,
       ),
     );
   }
@@ -47,7 +56,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  Future<bool> checkAuthFuture;
+  Future<Tuple2<bool, NotCompletedLoginException>> checkAuthFuture;
 
   @override
   void didChangeDependencies() {
@@ -59,7 +68,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     final routes = Provider.of<Map<String, WidgetBuilder>>(context);
 
-    return FutureBuilder<bool>(
+    return FutureBuilder<Tuple2<bool, NotCompletedLoginException>>(
       future: checkAuthFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -73,8 +82,13 @@ class _SplashPageState extends State<SplashPage> {
           );
         }
 
-        return snapshot.data
-            ? routes[HomePage.routeName](context)
+        final data = snapshot.data;
+        if (data.item1) {
+          return routes[HomePage.routeName](context);
+        }
+
+        return data.item2 != null
+            ? routes[LoginUpdateProfilePage.routeName](context)
             : routes[LoginPage.routeName](context);
       },
     );

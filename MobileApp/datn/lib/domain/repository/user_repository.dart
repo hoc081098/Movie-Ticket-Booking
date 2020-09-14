@@ -1,5 +1,8 @@
+import 'package:datn/domain/model/exception.dart';
+import 'package:tuple/tuple.dart';
+
 abstract class UserRepository {
-  Future<bool> checkAuth();
+  Future<Tuple2<bool, NotCompletedLoginException>> checkAuth();
 
   Future<void> logout();
 

@@ -1,4 +1,8 @@
+import 'package:datn/domain/model/exception.dart';
 import 'package:datn/ui/home/home_page.dart';
+import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
+import 'package:datn/ui/register/register_page.dart';
+import 'package:datn/ui/reset_password/reset_password_page.dart';
 import 'package:datn/ui/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -180,6 +184,13 @@ class _LoginPageState extends State<LoginPage>
     }
     if (message is LoginErrorMessage) {
       scaffoldKey.showSnackBar(message.message);
+
+      if (message.error is NotCompletedLoginException) {
+        await Navigator.pushReplacementNamed(
+          context,
+          LoginUpdateProfilePage.routeName,
+        );
+      }
     }
     if (message is InvalidInformationMessage) {
       scaffoldKey.showSnackBar('Invalid information');
@@ -329,33 +340,5 @@ class _LoginPageState extends State<LoginPage>
         ),
       ),
     );
-  }
-}
-
-class RegisterPage extends StatefulWidget {
-  static const routeName = '/register';
-
-  @override
-  _RegisterPageState createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
-class ResetPasswordPage extends StatefulWidget {
-  static const routeName = '/reset_password';
-
-  @override
-  _ResetPasswordPageState createState() => _ResetPasswordPageState();
-}
-
-class _ResetPasswordPageState extends State<ResetPasswordPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

@@ -1,11 +1,40 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:datn/data/local/user_local_source.dart';
+import 'package:datn/data/remote/reponse/error_response.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
 
-class AuthClient extends BaseClient {
+abstract class AppClient extends BaseClient {
+  /// Sends an HTTP GET request with the given headers to the given URL, which can be a Uri or a String.
+  /// Returns the resulting Json object.
+  /// Throws [ErrorResponse]
+  Future<dynamic> getBody(dynamic url, {Map<String, String> headers}) async {
+    final response = await this.get(url, headers: headers);
+    final statusCode = response.statusCode;
+    final json = jsonDecode(response.body);
+
+    if (HttpStatus.ok <= statusCode &&
+        statusCode <= HttpStatus.multipleChoices) {
+      return json;
+    }
+
+    throw ErrorResponse.fromJson(json);
+  }
+}
+
+class NormalClient extends AppClient {
+  final Client _client;
+
+  NormalClient(this._client);
+
+  @override
+  Future<StreamedResponse> send(BaseRequest request) => _client.send(request);
+}
+
+class AuthClient extends AppClient {
   final Client _client;
   final UserLocalSource _userLocalSource;
   final FirebaseAuth _auth;
@@ -17,7 +46,7 @@ class AuthClient extends BaseClient {
     final token = await _userLocalSource.token$.first;
 
     if (token != null) {
-      request.headers['Authorization'] = 'Bearer $token';
+      request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
     }
 
     print('--> ${request}');

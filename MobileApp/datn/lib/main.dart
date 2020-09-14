@@ -19,12 +19,16 @@ void main() async {
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
   final client = http.Client();
+
+  final normalClient = NormalClient(client);
   final authClient = AuthClient(client, userLocalSource, auth);
 
   final userRepository = UserRepositoryImpl(
     auth,
     userLocalSource,
     authClient,
+    normalClient,
+    userResponseToUserLocal,
   );
 
   runApp(

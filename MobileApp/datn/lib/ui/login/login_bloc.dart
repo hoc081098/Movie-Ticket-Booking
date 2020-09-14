@@ -1,6 +1,7 @@
 // ignore_for_file: close_sinks
 
 import 'package:datn/domain/repository/user_repository.dart';
+import 'package:datn/utils/error.dart';
 import 'package:datn/utils/streams.dart';
 import 'package:datn/utils/type_defs.dart';
 import 'package:datn/utils/validators.dart';
@@ -84,8 +85,12 @@ class LoginBloc extends DisposeCallbackBaseBloc {
                 .doOnData((_) => isLoadingController.add(false))
                 .doOnError((e, s) => isLoadingController.add(false))
                 .map<LoginMessage>((_) => const LoginSuccessMessage())
-                .onErrorReturnWith((error) =>
-                    LoginErrorMessage('Login error: ${error}', error)),
+                .onErrorReturnWith(
+                  (error) => LoginErrorMessage(
+                    'Login error: ${getErrorMessage(error)}',
+                    error,
+                  ),
+                ),
           ),
       submit$
           .where((isValid) => !isValid)

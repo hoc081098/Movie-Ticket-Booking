@@ -20,9 +20,10 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
-# flutter packages pub run build_runner build
+# flutter packages pub run build_runner build --delete-conflicting-outputs
 
 dependencies:
+  tuple: ^1.0.3
   rxdart: ^0.24.1
   flutter_bloc_pattern: ^1.2.0
   flutter_disposebag: ^1.0.0
