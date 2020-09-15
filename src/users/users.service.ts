@@ -4,6 +4,7 @@ import { User } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { UpdateUserDto } from './update-user.dto';
 import { UserPayload } from '../auth/get-user.decorator';
+import { Location } from '../location.inteface';
 
 @Injectable()
 export class UsersService {
@@ -16,24 +17,29 @@ export class UsersService {
   }
 
   update(user: UserPayload, updateUserDto: UpdateUserDto): Promise<User> {
-    const update: Partial<Pick<User, keyof User>> = {
+    const update: Omit<UpdateUserDto, 'location'>
+        & UserPayload
+        & { is_completed: boolean, location?: Location | number[] } = {
       ...updateUserDto,
       ...user,
       'is_completed': true,
-      'location': updateUserDto.location
-          ? {
-            type: 'Point',
-            coordinates: [
-              updateUserDto.location[0],
-              updateUserDto.location[1]
-            ],
-          }
-          : undefined,
     };
+
+    const numbers: number[] = updateUserDto.location;
+    if (numbers) {
+      update.location = {
+        type: 'Point',
+        coordinates: [
+          numbers[0],
+          numbers[1]
+        ],
+      };
+    }
+
     return this.userModel
         .findOneAndUpdate(
             { uid: user.uid },
-            update,
+            update as Partial<Pick<User, keyof User>>,
             { upsert: true, new: true }
         )
         .exec();

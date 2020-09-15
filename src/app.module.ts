@@ -17,6 +17,7 @@ import * as admin from 'firebase-admin';
           inject: [ConfigService],
           useFactory: (configService: ConfigService) => ({
             uri: configService.get(ConfigKey.MONGODB_URL),
+            useFindAndModify: false,
           })
         },
     ),

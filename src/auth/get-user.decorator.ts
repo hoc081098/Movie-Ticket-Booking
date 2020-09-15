@@ -1,4 +1,4 @@
-import { createParamDecorator } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class UserPayload {
@@ -17,6 +17,9 @@ export class UserPayload {
 }
 
 export const GetUser = createParamDecorator(
-    (data: string, req: any) => data ? req.user?.[data] : req.user
+    (data: unknown, ctx: ExecutionContext) => {
+      const req: { user?: UserPayload | null } = ctx.switchToHttp().getRequest();
+      return data && typeof data === 'string' ? req.user?.[data] : req.user;
+    }
 );
 
