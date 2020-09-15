@@ -21,14 +21,38 @@ class _$LocationResponseSerializer
   @override
   Iterable<Object> serialize(Serializers serializers, LocationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    return <Object>[];
+    final result = <Object>[
+      'coordinates',
+      serializers.serialize(object.coordinates,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(double)])),
+    ];
+
+    return result;
   }
 
   @override
   LocationResponse deserialize(
       Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new LocationResponseBuilder().build();
+    final result = new LocationResponseBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'coordinates':
+          result.coordinates.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(double)]))
+              as BuiltList<Object>);
+          break;
+      }
+    }
+
+    return result.build();
   }
 }
 
@@ -157,11 +181,18 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
 }
 
 class _$LocationResponse extends LocationResponse {
+  @override
+  final BuiltList<double> coordinates;
+
   factory _$LocationResponse(
           [void Function(LocationResponseBuilder) updates]) =>
       (new LocationResponseBuilder()..update(updates)).build();
 
-  _$LocationResponse._() : super._();
+  _$LocationResponse._({this.coordinates}) : super._() {
+    if (coordinates == null) {
+      throw new BuiltValueNullFieldError('LocationResponse', 'coordinates');
+    }
+  }
 
   @override
   LocationResponse rebuild(void Function(LocationResponseBuilder) updates) =>
@@ -174,17 +205,19 @@ class _$LocationResponse extends LocationResponse {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is LocationResponse;
+    return other is LocationResponse && coordinates == other.coordinates;
   }
 
   @override
   int get hashCode {
-    return 985212988;
+    return $jf($jc(0, coordinates.hashCode));
   }
 
   @override
   String toString() {
-    return newBuiltValueToStringHelper('LocationResponse').toString();
+    return (newBuiltValueToStringHelper('LocationResponse')
+          ..add('coordinates', coordinates))
+        .toString();
   }
 }
 
@@ -192,7 +225,21 @@ class LocationResponseBuilder
     implements Builder<LocationResponse, LocationResponseBuilder> {
   _$LocationResponse _$v;
 
+  ListBuilder<double> _coordinates;
+  ListBuilder<double> get coordinates =>
+      _$this._coordinates ??= new ListBuilder<double>();
+  set coordinates(ListBuilder<double> coordinates) =>
+      _$this._coordinates = coordinates;
+
   LocationResponseBuilder();
+
+  LocationResponseBuilder get _$this {
+    if (_$v != null) {
+      _coordinates = _$v.coordinates?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
 
   @override
   void replace(LocationResponse other) {
@@ -209,7 +256,21 @@ class LocationResponseBuilder
 
   @override
   _$LocationResponse build() {
-    final _$result = _$v ?? new _$LocationResponse._();
+    _$LocationResponse _$result;
+    try {
+      _$result =
+          _$v ?? new _$LocationResponse._(coordinates: coordinates.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'coordinates';
+        coordinates.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'LocationResponse', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

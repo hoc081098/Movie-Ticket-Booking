@@ -9,7 +9,7 @@ part 'user_response.g.dart';
 abstract class LocationResponse
     implements Built<LocationResponse, LocationResponseBuilder> {
   @BuiltValueField(wireName: 'coordinates')
-  BuiltList<double> coordinates;
+  BuiltList<double> get coordinates;
 
   double get longitude => coordinates[0];
 

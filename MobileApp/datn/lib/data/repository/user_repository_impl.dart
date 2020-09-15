@@ -48,9 +48,7 @@ class UserRepositoryImpl implements UserRepository {
       return AuthState.notLoggedIn;
     }
 
-    if (await _userLocalSource.token$.first == null) {
-      await _userLocalSource.saveToken(await _auth.currentUser.getIdToken());
-    }
+    await _userLocalSource.saveToken(await _auth.currentUser.getIdToken(true));
 
     try {
       final json = await _authClient.getBody(buildUrl('users/me'));
@@ -149,9 +147,11 @@ Function1<UserResponse, UserLocal> userResponseToUserLocal = (response) {
     ..avatar = response.avatar
     ..address = response.address
     ..birthday = response.birthday
-    ..location = (LocationLocalBuilder()
-      ..latitude = response.location.latitude
-      ..longitude = response.location.longitude)
+    ..location = (response.location != null
+        ? (LocationLocalBuilder()
+          ..latitude = response.location.latitude
+          ..longitude = response.location.longitude)
+        : null)
     ..isCompleted = response.isCompleted
     ..isActive = response.isActive);
 };
