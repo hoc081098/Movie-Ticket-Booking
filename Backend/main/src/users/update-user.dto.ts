@@ -16,7 +16,7 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   @IsPhoneNumber(null)
-  phone_number: string | undefined | null;
+  phone_number?: string;
 
   @IsNotEmpty()
   @IsString()
@@ -30,21 +30,21 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  avatar: string;
+  avatar?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  address: string;
+  address?: string;
 
   @IsOptional()
   @IsDateString()
-  birthday: Date;
+  birthday?: Date;
 
   @IsOptional()
   @IsArray()
   @IsNumber({}, { each: true })
   @ArrayMinSize(2)
   @ArrayMaxSize(2)
-  location: number[];
+  location?: number[];
 }

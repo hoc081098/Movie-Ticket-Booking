@@ -2,7 +2,9 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ConfigKey, ConfigService } from './config/config.service';
 import { AuthGuard } from './auth/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('/')
 @Controller()
 export class AppController {
   constructor(

@@ -11,7 +11,7 @@ export class User extends Document {
   email: string;
 
   @Prop()
-  phone_number: string;
+  phone_number?: string;
 
   @Prop({ required: true })
   full_name: string;
@@ -25,13 +25,13 @@ export class User extends Document {
   gender: 'MALE' | 'FEMALE';
 
   @Prop()
-  avatar: string;
+  avatar?: string;
 
   @Prop()
-  address: string;
+  address?: string;
 
   @Prop()
-  birthday: Date;
+  birthday?: Date;
 
   @Prop(
       {
@@ -46,7 +46,7 @@ export class User extends Document {
         }
       }
   )
-  location: Location;
+  location?: Location;
 
   @Prop({
     type: String,
