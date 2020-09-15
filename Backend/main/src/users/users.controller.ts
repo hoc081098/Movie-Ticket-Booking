@@ -35,11 +35,12 @@ export class UsersController {
   }
 
   @Put('me')
+  @UseGuards(AuthGuard)
   update(
       @GetUser() user: UserPayload,
       @Body() updateUserDto: UpdateUserDto
   ): Promise<User> {
-    this.logger.debug(`Update my profile: ${user}`);
+    this.logger.debug(`Update my profile: ${JSON.stringify(user)}, ${JSON.stringify(updateUserDto)}`);
 
     return this.usersService.update(user, updateUserDto);
   }

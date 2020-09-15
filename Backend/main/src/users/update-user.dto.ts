@@ -20,7 +20,7 @@ export class UpdateUserDto {
 
   @IsNotEmpty()
   @IsString()
-  @Matches(/^[\p{L} .'-]+$/gu)
+  @Matches(/^[\p{L} .'-]+$/u)
   full_name: string;
 
   @IsString()

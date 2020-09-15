@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Location } from '../location.inteface';
 
 @Schema()
@@ -34,7 +34,7 @@ export class User extends Document {
   birthday: Date;
 
   @Prop(
-      raw({
+      {
         type: {
           type: String,
           enum: ['Point'],
@@ -44,7 +44,7 @@ export class User extends Document {
           type: [Number],
           required: true,
         }
-      })
+      }
   )
   location: Location;
 
