@@ -1,6 +1,5 @@
 import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/ui/login/login_bloc.dart';
-import 'package:datn/ui/login_update_profile/login_update_profile_bloc.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
 import 'package:datn/ui/register/register_page.dart';
 import 'package:datn/ui/reset_password/reset_password_page.dart';
@@ -26,15 +25,7 @@ class MyApp extends StatelessWidget {
         );
       },
       RegisterPage.routeName: (context) => RegisterPage(),
-      LoginUpdateProfilePage.routeName: (context) {
-        return BlocProvider<LoginUpdateProfilePageBloc>(
-          child: LoginUpdateProfilePage(),
-          initBloc: () {
-            final userRepository = Provider.of<UserRepository>(context);
-            return LoginUpdateProfilePageBloc(userRepository);
-          },
-        );
-      },
+      LoginUpdateProfilePage.routeName: (context) => LoginUpdateProfilePage(),
       ResetPasswordPage.routeName: (context) => ResetPasswordPage(),
     };
 

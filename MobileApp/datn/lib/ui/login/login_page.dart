@@ -113,8 +113,8 @@ class _LoginPageState extends State<LoginPage>
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: <Color>[
-                    const Color(0xffB881F9).withOpacity(0.5),
-                    const Color(0xff545AE9).withOpacity(0.5),
+                    const Color(0xffB881F9).withOpacity(0.58),
+                    const Color(0xff545AE9).withOpacity(0.58),
                   ],
                   begin: AlignmentDirectional.topEnd,
                   end: AlignmentDirectional.bottomStart,
