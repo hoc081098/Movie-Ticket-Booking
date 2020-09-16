@@ -2,6 +2,7 @@ import 'package:datn/data/local/user_local_source_impl.dart';
 import 'package:datn/data/remote/auth_client.dart';
 import 'package:datn/data/repository/user_repository_impl.dart';
 import 'package:datn/domain/repository/user_repository.dart';
+import 'package:datn/env_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,9 @@ import 'app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  final envManager = EnvManager();
+  await envManager.config();
 
   final auth = FirebaseAuth.instance;
   final preferences = RxSharedPreferences.getInstance();

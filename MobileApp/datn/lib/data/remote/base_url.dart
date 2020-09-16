@@ -1,8 +1,8 @@
-const baseUrl = '192.168.1.37:3000';
+import 'package:datn/env_manager.dart';
 
 Uri buildUrl(String unencodedPath, [Map<String, String> queryParameters]) =>
     Uri.http(
-      baseUrl,
+      EnvManager().get(EnvKey.BASE_URL),
       unencodedPath,
       queryParameters,
     );

@@ -1,9 +1,13 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:datn/domain/model/location.dart';
 import 'package:datn/domain/model/user.dart';
+import 'package:datn/env_manager.dart';
 import 'package:datn/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:intl/intl.dart' as intl;
 import 'package:rxdart/rxdart.dart';
 
@@ -23,6 +27,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
   Animation<double> buttonSqueezeAnimation;
   TextStyle textFieldStyle;
 
+  final addressTextController = TextEditingController();
   final phoneNumberFocusNode = FocusNode();
   final addressFocusNode = FocusNode();
 
@@ -31,6 +36,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
   String address;
   DateTime birthday;
   var gender$ = BehaviorSubject.seeded(Gender.MALE);
+  Location location;
 
   final fullNameRegex = RegExp(r"^[\p{L} .'-]+$", unicode: true);
   final phoneNumberRegex = RegExp(
@@ -222,31 +228,48 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
   }
 
   Widget buildAddressTextField() {
-    return TextFormField(
-      autocorrect: true,
-      decoration: InputDecoration(
-        prefixIcon: Padding(
-          padding: const EdgeInsetsDirectional.only(end: 8.0),
-          child: Icon(
-            Icons.label,
-            color: Colors.white,
+    return Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+            controller: addressTextController,
+            autocorrect: true,
+            decoration: InputDecoration(
+              prefixIcon: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 8.0),
+                child: Icon(
+                  Icons.label,
+                  color: Colors.white,
+                ),
+              ),
+              labelText: 'Address',
+              labelStyle: TextStyle(color: Colors.white),
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+            keyboardType: TextInputType.phone,
+            maxLines: 1,
+            style: textFieldStyle,
+            onChanged: (v) => address = v,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(),
+            focusNode: addressFocusNode,
+            validator: (v) => v.isEmpty ? 'Empty address' : null,
           ),
         ),
-        labelText: 'Address',
-        labelStyle: TextStyle(color: Colors.white),
-        fillColor: Colors.white,
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-      ),
-      keyboardType: TextInputType.phone,
-      maxLines: 1,
-      style: textFieldStyle,
-      onChanged: (v) => address = v,
-      textInputAction: TextInputAction.next,
-      onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(),
-      focusNode: addressFocusNode,
-      validator: (v) => v.isEmpty ? 'Empty address' : null,
+        Material(
+          color: Colors.transparent,
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: IconButton(
+              icon: Icon(Icons.location_on, color: Colors.white),
+              onPressed: searchLocation,
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -343,6 +366,42 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
     if (!isValid) {
       scaffoldKey.showSnackBar('Invalid information');
       return;
+    }
+  }
+
+  void searchLocation() async {
+    try {
+      final apiKey = EnvManager().get(EnvKey.PLACES_API_KEY);
+
+      final prediction = await PlacesAutocomplete.show(
+        context: context,
+        apiKey: apiKey,
+        mode: Mode.overlay,
+        language: 'vi',
+        components: [
+          Component(
+            Component.country,
+            'VN',
+          ),
+        ],
+      );
+
+      if (prediction == null) {
+        return;
+      }
+
+      final details = (await GoogleMapsPlaces(apiKey: apiKey)
+              .getDetailsByPlaceId(prediction.placeId))
+          .result;
+
+      address = details.formattedAddress;
+      location = Location((b) => b
+        ..latitude = details.geometry.location.lat
+        ..longitude = details.geometry.location.lng);
+
+      addressTextController.text = address;
+    } catch (e, s) {
+      print('searchLocation $e $s');
     }
   }
 
