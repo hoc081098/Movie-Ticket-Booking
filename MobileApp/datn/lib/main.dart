@@ -5,6 +5,7 @@ import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/env_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +21,8 @@ void main() async {
   await envManager.config();
 
   final auth = FirebaseAuth.instance;
+  final storage = FirebaseStorage.instance;
+
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
   final client = http.Client();
@@ -34,6 +37,7 @@ void main() async {
     authClient,
     normalClient,
     userResponseToUserLocal,
+    storage,
   );
 
   runApp(

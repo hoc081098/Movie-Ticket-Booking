@@ -11,8 +11,20 @@ abstract class AppClient extends BaseClient {
   /// Sends an HTTP GET request with the given headers to the given URL, which can be a Uri or a String.
   /// Returns the resulting Json object.
   /// Throws [ErrorResponse]
-  Future<dynamic> getBody(dynamic url, {Map<String, String> headers}) async {
-    final response = await this.get(url, headers: headers);
+  Future<dynamic> getBody(dynamic url, {Map<String, String> headers}) =>
+      this.get(url, headers: headers).then(_parseResult);
+
+  Future<dynamic> postBody(
+    dynamic url, {
+    Map<String, String> headers,
+    dynamic body,
+    Encoding encoding,
+  }) =>
+      this
+          .post(url, headers: headers, body: body, encoding: encoding)
+          .then(_parseResult);
+
+  static dynamic _parseResult(Response response) {
     final statusCode = response.statusCode;
     final json = jsonDecode(response.body);
 
@@ -21,7 +33,17 @@ abstract class AppClient extends BaseClient {
       return json;
     }
 
-    throw ErrorResponse.fromJson(json);
+    dynamic errorResponse;
+    try {
+      errorResponse = ErrorResponse.fromJson(json);
+    } catch (e) {
+      try {
+        errorResponse = null;
+      } catch (_) {
+        throw e;
+      }
+    }
+    throw errorResponse;
   }
 }
 

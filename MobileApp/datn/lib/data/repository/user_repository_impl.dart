@@ -8,11 +8,15 @@ import 'package:datn/data/remote/base_url.dart';
 import 'package:datn/data/remote/reponse/error_response.dart';
 import 'package:datn/data/remote/reponse/user_response.dart';
 import 'package:datn/domain/model/exception.dart';
+import 'package:datn/domain/model/location.dart';
+import 'package:datn/domain/model/user.dart';
 import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/utils/type_defs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class UserRepositoryImpl implements UserRepository {
+  final FirebaseStorage _storage;
   final FirebaseAuth _auth;
   final UserLocalSource _userLocalSource;
 
@@ -29,6 +33,7 @@ class UserRepositoryImpl implements UserRepository {
     this._authClient,
     this._normalClient,
     this.userResponseToUserLocal,
+    this._storage,
   ) {
     _checkAuthFuture = _checkAuthInternal();
   }
@@ -74,6 +79,15 @@ class UserRepositoryImpl implements UserRepository {
     } catch (e) {
       print('[Check auth][3] other error: $e');
       return _isUserLocalCompletedLogin();
+    }
+  }
+
+  Future _saveUserResponseToLocal(UserResponse userResponse) async {
+    final userLocal = userResponseToUserLocal(userResponse);
+    await _userLocalSource.saveUser(userLocal);
+
+    if (!userResponse.isCompleted) {
+      throw const NotCompletedLoginException();
     }
   }
 
@@ -128,12 +142,65 @@ class UserRepositoryImpl implements UserRepository {
       rethrow;
     }
 
-    final userLocal = userResponseToUserLocal(userResponse);
-    await _userLocalSource.saveUser(userLocal);
+    await _saveUserResponseToLocal(userResponse);
+  }
 
-    if (!userResponse.isCompleted) {
-      throw const NotCompletedLoginException();
+  @override
+  Future<void> loginUpdateProfile(
+      {String fullName,
+      String phoneNumber,
+      String address,
+      Gender gender,
+      Location location,
+      DateTime birthday,
+      File avatarFile}) async {
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) {
+      throw const NotLoggedInException();
     }
+
+    final updateBody = <String, dynamic>{
+      'full_name': fullName,
+      'phone_number': phoneNumber,
+      'address': address,
+    };
+
+    if (avatarFile != null) {
+      final task = _storage
+          .ref()
+          .child('avatar_images')
+          .child(currentUser.uid)
+          .putFile(avatarFile);
+
+      await task.onComplete;
+
+      if (task.isSuccessful) {
+        updateBody['avatar'] = await task.lastSnapshot.ref.getDownloadURL();
+      }
+    }
+
+    if (birthday != null) {
+      updateBody['birthday'] = birthday.toIso8601String();
+    }
+    if (location != null) {
+      updateBody['location'] = {
+        'type': 'Point',
+        'coordinates': [
+          location.longitude,
+          location.latitude,
+        ]
+      };
+    }
+    updateBody['gender'] = gender.toString().split('.')[1];
+
+    final userResponse = UserResponse.fromJson(
+      await _authClient.postBody(
+        buildUrl('users/me'),
+        body: updateBody,
+      ),
+    );
+
+    await _saveUserResponseToLocal(userResponse);
   }
 }
 

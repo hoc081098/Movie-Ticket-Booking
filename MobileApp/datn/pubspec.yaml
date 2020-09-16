@@ -23,6 +23,9 @@ environment:
 # flutter packages pub run build_runner build --delete-conflicting-outputs
 
 dependencies:
+  image_picker: ^0.6.7+7
+  cached_network_image: ^2.3.2+1
+  firebase_storage: ^4.0.0
   flutter_dotenv: ^2.1.0
   flutter_google_places: 0.2.6
   datetime_picker_formfield: ^1.0.0
@@ -69,6 +72,7 @@ flutter:
     - .env
     - assets/images/login_bg.png
     - assets/images/login_update_profile.png
+    - assets/images/icons8_person_96.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

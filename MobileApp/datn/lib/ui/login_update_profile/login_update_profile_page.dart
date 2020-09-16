@@ -1,13 +1,20 @@
+import 'dart:io';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:datn/domain/model/location.dart';
 import 'package:datn/domain/model/user.dart';
+import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/env_manager.dart';
+import 'package:datn/ui/home/home_page.dart';
+import 'package:datn/utils/error.dart';
 import 'package:datn/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_maps_webservice/places.dart' hide Location;
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:rxdart/rxdart.dart';
 
@@ -37,6 +44,8 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
   DateTime birthday;
   var gender$ = BehaviorSubject.seeded(Gender.MALE);
   Location location;
+  var avatarFile$ = BehaviorSubject<File>.seeded(null);
+  var isLoading = false;
 
   final fullNameRegex = RegExp(r"^[\p{L} .'-]+$", unicode: true);
   final phoneNumberRegex = RegExp(
@@ -72,7 +81,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
     textFieldStyle ??= Theme.of(context)
         .textTheme
         .subtitle1
-        .copyWith(fontSize: 16.0, color: Colors.white);
+        .copyWith(fontSize: 15.0, color: Colors.white);
   }
 
   @override
@@ -112,13 +121,19 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
                 gradient: LinearGradient(
                   colors: <Color>[
                     const Color(0xffB881F9).withOpacity(0.58),
-                    const Color(0xff545AE9).withOpacity(0.7),
+                    const Color(0xff545AE9).withOpacity(0.75),
+                    Colors.black.withOpacity(0.5),
                   ],
-                  stops: [0, 0.4],
+                  stops: [0, 0.68, 1],
                   begin: AlignmentDirectional.topEnd,
                   end: AlignmentDirectional.bottomStart,
                 ),
               ),
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.1),
             ),
           ),
           Positioned.fill(
@@ -130,6 +145,10 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: buildAvatar(),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: buildFullNameTextField(),
@@ -162,6 +181,54 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildAvatar() {
+    const imageSize = 80.0;
+
+    return InkWell(
+      onTap: pickImage,
+      child: Container(
+        width: imageSize,
+        height: imageSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Theme.of(context).backgroundColor,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 16,
+              offset: Offset(2, 2),
+              color: Colors.grey.shade600,
+              spreadRadius: 2,
+            )
+          ],
+        ),
+        child: ClipOval(
+          child: RxStreamBuilder<File>(
+              stream: avatarFile$,
+              builder: (context, snapshot) {
+                final avatarFile = snapshot.data;
+
+                if (avatarFile == null) {
+                  return Center(
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: imageSize * 0.7,
+                    ),
+                  );
+                }
+
+                return Image.file(
+                  avatarFile,
+                  width: imageSize,
+                  height: imageSize,
+                  fit: BoxFit.cover,
+                );
+              }),
+        ),
       ),
     );
   }
@@ -249,18 +316,28 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
                 borderSide: BorderSide(color: Colors.white),
               ),
             ),
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.streetAddress,
             maxLines: 1,
             style: textFieldStyle,
             onChanged: (v) => address = v,
-            textInputAction: TextInputAction.next,
+            textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(),
             focusNode: addressFocusNode,
             validator: (v) => v.isEmpty ? 'Empty address' : null,
           ),
         ),
+        const SizedBox(width: 8),
         Material(
           color: Colors.transparent,
+          elevation: 2,
+          type: MaterialType.transparency,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.white,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(4),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: IconButton(
@@ -290,6 +367,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
           ),
         ),
         splashColor: Theme.of(context).accentColor,
+        elevation: 12,
       ),
       builder: (context, child) {
         final value = buttonSqueezeAnimation.value;
@@ -353,12 +431,19 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
     );
   }
 
-  void onSubmit() {
+  void onSubmit() async {
+    if (isLoading) {
+      return;
+    }
+
     print('>>> Submit');
     print('fullName=$fullName');
     print('phoneNumber=$phoneNumber');
     print('address=$address');
     print('birthday=$birthday');
+    print('gender=${gender$.value}');
+    print('location=$location');
+    print('avatar=${avatarFile$.value}');
     print('<<< Submit');
 
     final isValid = formKey.currentState?.validate() == true;
@@ -366,6 +451,35 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
     if (!isValid) {
       scaffoldKey.showSnackBar('Invalid information');
       return;
+    }
+
+    try {
+      isLoading = true;
+      loginButtonController
+        ..reset()
+        ..forward();
+
+      await Provider.of<UserRepository>(context).loginUpdateProfile(
+        fullName: fullName,
+        phoneNumber: phoneNumber,
+        address: address,
+        gender: gender$.value,
+        location: location,
+        birthday: birthday,
+        avatarFile: avatarFile$.value,
+      );
+      scaffoldKey.showSnackBar('Update profile successfully');
+      await Navigator.pushNamedAndRemoveUntil(
+        context,
+        HomePage.routeName,
+        (route) => route.isFirst,
+      );
+    } catch (e, s) {
+      print('loginUpdateProfile $e $s');
+      scaffoldKey.showSnackBar('Update profile failed: ${getErrorMessage(e)}');
+    } finally {
+      isLoading = false;
+      loginButtonController.reverse();
     }
   }
 
@@ -406,41 +520,68 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
   }
 
   Widget buildGender() {
-    return RxStreamBuilder<Gender>(
-      stream: gender$,
-      builder: (context, snapshot) {
-        final gender = snapshot.data;
+    return Theme(
+      data: Theme.of(context).copyWith(
+        unselectedWidgetColor: Colors.white.withOpacity(0.4),
+      ),
+      child: RxStreamBuilder<Gender>(
+        stream: gender$,
+        builder: (context, snapshot) {
+          final gender = snapshot.data;
 
-        return Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const SizedBox(width: 16),
-            Expanded(
-              child: RadioListTile<Gender>(
-                value: Gender.MALE,
-                title: Text(
-                  'Male',
-                  style: textFieldStyle,
+          return Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const SizedBox(width: 16),
+              Expanded(
+                child: InkWell(
+                  onTap: () => gender$.add(Gender.MALE),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Radio<Gender>(
+                        value: Gender.MALE,
+                        groupValue: gender,
+                        onChanged: gender$.add,
+                      ),
+                      Text('Male', style: textFieldStyle),
+                    ],
+                  ),
                 ),
-                groupValue: gender,
-                onChanged: gender$.add,
               ),
-            ),
-            Expanded(
-              child: RadioListTile<Gender>(
-                value: Gender.FEMALE,
-                title: Text(
-                  'Female',
-                  style: textFieldStyle,
+              Expanded(
+                child: InkWell(
+                  onTap: () => gender$.add(Gender.FEMALE),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Radio<Gender>(
+                        value: Gender.FEMALE,
+                        groupValue: gender,
+                        onChanged: gender$.add,
+                      ),
+                      Text('Female', style: textFieldStyle),
+                    ],
+                  ),
                 ),
-                groupValue: gender,
-                onChanged: gender$.add,
               ),
-            ),
-            const SizedBox(width: 16),
-          ],
-        );
-      },
+              const SizedBox(width: 16),
+            ],
+          );
+        },
+      ),
     );
+  }
+
+  void pickImage() async {
+    final path = (await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 720,
+      maxHeight: 720,
+    ))
+        .path;
+    avatarFile$.add(File(path));
   }
 }
