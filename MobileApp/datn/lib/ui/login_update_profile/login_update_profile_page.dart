@@ -5,7 +5,6 @@ import 'package:datn/domain/model/location.dart';
 import 'package:datn/domain/model/user.dart';
 import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/env_manager.dart';
-import 'package:datn/ui/home/home_page.dart';
 import 'package:datn/utils/error.dart';
 import 'package:datn/utils/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +16,8 @@ import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:rxdart/rxdart.dart';
+
+import '../main_page.dart';
 
 class LoginUpdateProfilePage extends StatefulWidget {
   static const routeName = '/login_profile_update';
@@ -471,7 +472,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
       scaffoldKey.showSnackBar('Update profile successfully');
       await Navigator.pushNamedAndRemoveUntil(
         context,
-        HomePage.routeName,
+        MainPage.routeName,
         (route) => route.isFirst,
       );
     } catch (e, s) {

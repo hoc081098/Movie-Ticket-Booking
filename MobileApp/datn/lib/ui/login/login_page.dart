@@ -1,5 +1,4 @@
 import 'package:datn/domain/model/exception.dart';
-import 'package:datn/ui/home/home_page.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
 import 'package:datn/ui/register/register_page.dart';
 import 'package:datn/ui/reset_password/reset_password_page.dart';
@@ -10,6 +9,7 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 
 import '../../utils/delay.dart';
 import '../../utils/snackbar.dart';
+import '../main_page.dart';
 import 'login_bloc.dart';
 import 'login_state.dart';
 
@@ -180,7 +180,7 @@ class _LoginPageState extends State<LoginPage>
     if (message is LoginSuccessMessage) {
       scaffoldKey.showSnackBar('Login successfully');
       await delay(1000);
-      await Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+      await Navigator.of(context).pushReplacementNamed(MainPage.routeName);
     }
     if (message is LoginErrorMessage) {
       scaffoldKey.showSnackBar(message.message);

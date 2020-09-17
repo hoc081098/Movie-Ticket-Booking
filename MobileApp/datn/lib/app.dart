@@ -3,12 +3,13 @@ import 'package:datn/ui/login/login_bloc.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
 import 'package:datn/ui/register/register_page.dart';
 import 'package:datn/ui/reset_password/reset_password_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
-import 'ui/home/home_page.dart';
 import 'ui/login/login_page.dart';
+import 'ui/main_page.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -22,16 +23,22 @@ class _MyAppState extends State<MyApp> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    cacheImage ??= precacheImage(
-      AssetImage('assets/images/splash_bg.png'),
-      context,
-    );
+    cacheImage ??= Future.wait([
+      precacheImage(
+        AssetImage('assets/images/splash_bg.png'),
+        context,
+      ),
+      precacheImage(
+        AssetImage('assets/images/enjoy.png'),
+        context,
+      ),
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
     final routes = <String, WidgetBuilder>{
-      HomePage.routeName: (context) => HomePage(),
+      MainPage.routeName: (context) => MainPage(),
       LoginPage.routeName: (context) {
         return BlocProvider<LoginBloc>(
           child: LoginPage(),
@@ -51,6 +58,7 @@ class _MyAppState extends State<MyApp> {
       primaryColorDark: const Color(0xff5353cf),
       accentColor: const Color(0xff02a3f7),
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      fontFamily: 'Montserrat',
     );
 
     return Provider<Map<String, WidgetBuilder>>(
@@ -60,6 +68,7 @@ class _MyAppState extends State<MyApp> {
         theme: themeData,
         home: SplashPage(),
         routes: routes,
+        debugShowCheckedModeBanner: false,
         // initialRoute: LoginUpdateProfilePage.routeName,
       ),
     );
@@ -97,50 +106,77 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     final routes = Provider.of<Map<String, WidgetBuilder>>(context);
+    final textStyle = Theme.of(context).textTheme.headline6.copyWith(
+          fontSize: 18,
+          color: Colors.white,
+        );
 
     return FutureBuilder<AuthState>(
       future: checkAuthFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return routes[HomePage.routeName](context);
+          return routes[MainPage.routeName](context);
         }
 
         if (!snapshot.hasData) {
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: Container(
-                  constraints: BoxConstraints.expand(),
-                  child: Image.asset(
-                    'assets/images/splash_bg.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                child: Container(
-                  constraints: BoxConstraints.expand(),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        const Color(0xffB881F9).withOpacity(0.58),
-                        const Color(0xff545AE9).withOpacity(0.75),
-                        Colors.black.withOpacity(0.5),
-                      ],
-                      stops: [0, 0.68, 1],
-                      begin: AlignmentDirectional.topEnd,
-                      end: AlignmentDirectional.bottomStart,
+          return Material(
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Container(
+                    height: 100,
+                    constraints: BoxConstraints.expand(),
+                    child: Image.asset(
+                      'assets/images/splash_bg.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              ),
-            ],
+                Positioned.fill(
+                  child: Container(
+                    constraints: BoxConstraints.expand(),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          const Color(0xffB881F9).withOpacity(0.6),
+                          const Color(0xff545AE9).withOpacity(0.8),
+                        ],
+                        stops: [0, 0.45],
+                        begin: AlignmentDirectional.topEnd,
+                        end: AlignmentDirectional.bottomStart,
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional(0, -0.4),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset('assets/images/enjoy.png'),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Book your movie ticket anytime,',
+                        style: textStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'anywhere with enjoy',
+                        style: textStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
         }
 
         switch (snapshot.data) {
           case AuthState.loggedIn:
-            return routes[HomePage.routeName](context);
+            return routes[MainPage.routeName](context);
           case AuthState.notLoggedIn:
             return routes[LoginPage.routeName](context);
           case AuthState.notCompletedLogin:
