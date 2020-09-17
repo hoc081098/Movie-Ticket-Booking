@@ -12,9 +12,11 @@ import 'package:datn/domain/model/exception.dart';
 import 'package:datn/domain/model/location.dart';
 import 'package:datn/domain/model/user.dart';
 import 'package:datn/domain/repository/user_repository.dart';
+import 'package:datn/utils/optional.dart';
 import 'package:datn/utils/type_defs.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:rxdart/rxdart.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final FirebaseStorage _storage;
@@ -24,20 +26,42 @@ class UserRepositoryImpl implements UserRepository {
   final AuthClient _authClient;
   final NormalClient _normalClient;
 
-  final Function1<UserResponse, UserLocal> userResponseToUserLocal;
+  final Function1<UserResponse, UserLocal> _userResponseToUserLocal;
 
   Future<AuthState> _checkAuthFuture;
+  final ValueConnectableStream<Optional<User>> _user$;
 
   UserRepositoryImpl(
     this._auth,
     this._userLocalSource,
     this._authClient,
     this._normalClient,
-    this.userResponseToUserLocal,
+    this._userResponseToUserLocal,
     this._storage,
-  ) {
+    Function1<UserLocal, User> userLocalToUserDomain,
+  ) : _user$ = valueConnectableStream(
+          _auth,
+          _userLocalSource,
+          userLocalToUserDomain,
+        ) {
     _checkAuthFuture = _checkAuthInternal();
   }
+
+  static ValueConnectableStream<Optional<User>> valueConnectableStream(
+    FirebaseAuth _auth,
+    UserLocalSource _userLocalSource,
+    Function1<UserLocal, User> userLocalToUserDomain,
+  ) =>
+      Rx.combineLatest3<dynamic, UserLocal, String, Optional<User>>(
+              _auth.userChanges(),
+              _userLocalSource.user$,
+              _userLocalSource.token$,
+              (user, UserLocal local, String token) =>
+                  user == null || local == null || token == null
+                      ? Optional.none()
+                      : Optional.some(userLocalToUserDomain(local)))
+          .publishValueSeeded(null)
+            ..connect();
 
   Future<AuthState> _isUserLocalCompletedLogin([UserLocal local]) async {
     local ??= await _userLocalSource.user$.first;
@@ -58,7 +82,7 @@ class UserRepositoryImpl implements UserRepository {
 
     try {
       final json = await _authClient.getBody(buildUrl('users/me'));
-      final userLocal = userResponseToUserLocal(UserResponse.fromJson(json));
+      final userLocal = _userResponseToUserLocal(UserResponse.fromJson(json));
       await _userLocalSource.saveUser(userLocal);
 
       return _isUserLocalCompletedLogin(userLocal);
@@ -84,7 +108,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   Future _saveUserResponseToLocal(UserResponse userResponse) async {
-    final userLocal = userResponseToUserLocal(userResponse);
+    final userLocal = _userResponseToUserLocal(userResponse);
     await _userLocalSource.saveUser(userLocal);
 
     if (!userResponse.isCompleted) {
@@ -193,34 +217,16 @@ class UserRepositoryImpl implements UserRepository {
     updateBody['gender'] = gender.toString().split('.')[1];
 
     final userResponse = UserResponse.fromJson(
-      await _authClient.putBody(
-        buildUrl('users/me'),
-        body: jsonEncode(updateBody),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-        }
-      ),
+      await _authClient.putBody(buildUrl('users/me'),
+          body: jsonEncode(updateBody),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          }),
     );
 
     await _saveUserResponseToLocal(userResponse);
   }
-}
 
-Function1<UserResponse, UserLocal> userResponseToUserLocal = (response) {
-  return UserLocal((b) => b
-    ..uid = response.uid
-    ..email = response.email
-    ..phoneNumber = response.phoneNumber
-    ..fullName = response.fullName
-    ..gender = response.gender
-    ..avatar = response.avatar
-    ..address = response.address
-    ..birthday = response.birthday
-    ..location = (response.location != null
-        ? (LocationLocalBuilder()
-          ..latitude = response.location.latitude
-          ..longitude = response.location.longitude)
-        : null)
-    ..isCompleted = response.isCompleted
-    ..isActive = response.isActive);
-};
+  @override
+  ValueStream<Optional<User>> get user$ => _user$;
+}

@@ -69,7 +69,6 @@ class _MyAppState extends State<MyApp> {
         home: SplashPage(),
         routes: routes,
         debugShowCheckedModeBanner: false,
-        initialRoute: LoginUpdateProfilePage.routeName,
       ),
     );
   }

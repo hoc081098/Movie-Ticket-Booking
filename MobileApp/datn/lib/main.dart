@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 import 'app.dart';
+import 'data/mappers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,7 @@ void main() async {
     normalClient,
     userResponseToUserLocal,
     storage,
+    userLocalToUserDomain,
   );
 
   runApp(
