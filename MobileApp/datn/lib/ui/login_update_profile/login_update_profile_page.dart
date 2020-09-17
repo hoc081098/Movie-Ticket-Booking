@@ -170,7 +170,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
                         padding: const EdgeInsets.all(6.0),
                         child: buildGender(),
                       ),
-                      const SizedBox(height: 16.0),
+                      const SizedBox(height: 12.0),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: buildSubmitButton(),
