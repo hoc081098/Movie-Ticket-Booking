@@ -19,6 +19,30 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Future<void> cacheImage;
 
+  final routes = <String, WidgetBuilder>{
+    MainPage.routeName: (context) => MainPage(),
+    LoginPage.routeName: (context) {
+      return BlocProvider<LoginBloc>(
+        child: LoginPage(),
+        initBloc: () {
+          final userRepository = Provider.of<UserRepository>(context);
+          return LoginBloc(userRepository);
+        },
+      );
+    },
+    RegisterPage.routeName: (context) => RegisterPage(),
+    LoginUpdateProfilePage.routeName: (context) => LoginUpdateProfilePage(),
+    ResetPasswordPage.routeName: (context) => ResetPasswordPage(),
+  };
+
+  final themeData = ThemeData(
+    primaryColor: const Color(0xff7a69ef),
+    primaryColorDark: const Color(0xff5353cf),
+    accentColor: const Color(0xff02a3f7),
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    fontFamily: 'Montserrat',
+  );
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -37,30 +61,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final routes = <String, WidgetBuilder>{
-      MainPage.routeName: (context) => MainPage(),
-      LoginPage.routeName: (context) {
-        return BlocProvider<LoginBloc>(
-          child: LoginPage(),
-          initBloc: () {
-            final userRepository = Provider.of<UserRepository>(context);
-            return LoginBloc(userRepository);
-          },
-        );
-      },
-      RegisterPage.routeName: (context) => RegisterPage(),
-      LoginUpdateProfilePage.routeName: (context) => LoginUpdateProfilePage(),
-      ResetPasswordPage.routeName: (context) => ResetPasswordPage(),
-    };
-
-    final themeData = ThemeData(
-      primaryColor: const Color(0xff7a69ef),
-      primaryColorDark: const Color(0xff5353cf),
-      accentColor: const Color(0xff02a3f7),
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-      fontFamily: 'Montserrat',
-    );
-
     return Provider<Map<String, WidgetBuilder>>(
       value: routes,
       child: MaterialApp(
@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
         home: SplashPage(),
         routes: routes,
         debugShowCheckedModeBanner: false,
-        // initialRoute: LoginUpdateProfilePage.routeName,
+        initialRoute: LoginUpdateProfilePage.routeName,
       ),
     );
   }

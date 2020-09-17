@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:datn/data/local/user_local.dart';
@@ -175,7 +176,8 @@ class UserRepositoryImpl implements UserRepository {
       await task.onComplete;
 
       if (task.isSuccessful) {
-        updateBody['avatar'] = await task.lastSnapshot.ref.getDownloadURL();
+        updateBody['avatar'] =
+            (await task.lastSnapshot.ref.getDownloadURL()).toString();
       }
     }
 
@@ -183,20 +185,20 @@ class UserRepositoryImpl implements UserRepository {
       updateBody['birthday'] = birthday.toIso8601String();
     }
     if (location != null) {
-      updateBody['location'] = {
-        'type': 'Point',
-        'coordinates': [
-          location.longitude,
-          location.latitude,
-        ]
-      };
+      updateBody['location'] = [
+        location.longitude,
+        location.latitude,
+      ];
     }
     updateBody['gender'] = gender.toString().split('.')[1];
 
     final userResponse = UserResponse.fromJson(
       await _authClient.putBody(
         buildUrl('users/me'),
-        body: updateBody,
+        body: jsonEncode(updateBody),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        }
       ),
     );
 
