@@ -15,7 +15,7 @@ import {
 export class UpdateUserDto {
   @IsOptional()
   @IsString()
-  @IsPhoneNumber(null)
+  @IsPhoneNumber('VN')
   phone_number?: string;
 
   @IsNotEmpty()
