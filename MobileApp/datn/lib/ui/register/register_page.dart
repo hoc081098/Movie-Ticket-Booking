@@ -7,7 +7,6 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 
 import '../../utils/delay.dart';
 import '../../utils/snackbar.dart';
-import '../main_page.dart';
 
 class RegisterPage extends StatefulWidget {
   static const routeName = '/register';
@@ -161,9 +160,10 @@ class _RegisterPageState extends State<RegisterPage>
 
   void handleMessage(message) async {
     if (message is RegisterSuccessMessage) {
-      scaffoldKey.showSnackBar('Register successfully');
+      scaffoldKey.showSnackBar(
+          'Register successfully. Please check your email inbox to verify this account.');
       await delay(1000);
-      await Navigator.of(context).pushReplacementNamed(MainPage.routeName);
+      await Navigator.of(context).pop(message.email);
     }
     if (message is RegisterErrorMessage) {
       scaffoldKey.showSnackBar(message.message);

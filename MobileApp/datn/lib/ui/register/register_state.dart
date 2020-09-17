@@ -11,7 +11,9 @@ class Credential {
 abstract class RegisterMessage {}
 
 class RegisterSuccessMessage implements RegisterMessage {
-  const RegisterSuccessMessage();
+  final String email;
+
+  const RegisterSuccessMessage(this.email);
 }
 
 class RegisterErrorMessage implements RegisterMessage {

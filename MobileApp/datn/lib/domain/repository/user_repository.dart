@@ -39,4 +39,6 @@ abstract class UserRepository {
     String email,
     String password,
   );
+
+  Future<void> resetPassword(String email);
 }

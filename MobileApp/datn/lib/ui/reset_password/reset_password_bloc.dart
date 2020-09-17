@@ -1,7 +1,7 @@
 // ignore_for_file: close_sinks
 
 import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/ui/register/register_state.dart';
+import 'package:datn/ui/reset_password/reset_password_state.dart';
 import 'package:datn/utils/error.dart';
 import 'package:datn/utils/streams.dart';
 import 'package:datn/utils/type_defs.dart';
@@ -11,40 +11,34 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RegisterBloc extends DisposeCallbackBaseBloc {
+class ResetPasswordBloc extends DisposeCallbackBaseBloc {
   /// Input functions
   final Function1<String, void> emailChanged;
-  final Function1<String, void> passwordChanged;
   final Function0<void> submit;
 
   /// Streams
   final Stream<String> emailError$;
-  final Stream<String> passwordError$;
-  final Stream<RegisterMessage> message$;
+  final Stream<Message> message$;
   final Stream<bool> isLoading$;
 
-  RegisterBloc._({
+  ResetPasswordBloc._({
     @required Function0<void> dispose,
     @required this.emailChanged,
-    @required this.passwordChanged,
     @required this.submit,
     @required this.emailError$,
-    @required this.passwordError$,
     @required this.message$,
     @required this.isLoading$,
   }) : super(dispose);
 
-  factory RegisterBloc(final UserRepository userRepository) {
+  factory ResetPasswordBloc(final UserRepository userRepository) {
     assert(userRepository != null);
 
     /// Controllers
     final emailController = PublishSubject<String>();
-    final passwordController = PublishSubject<String>();
     final submitController = PublishSubject<void>();
     final isLoadingController = BehaviorSubject<bool>.seeded(false);
     final controllers = [
       emailController,
-      passwordController,
       submitController,
       isLoadingController,
     ];
@@ -52,43 +46,30 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
     ///
     /// Streams
     ///
-    final isValidSubmit$ = Rx.combineLatest3(
-      emailController.stream.map(Validator.isValidEmail),
-      passwordController.stream.map(Validator.isValidPassword),
-      isLoadingController.stream,
-      (isValidEmail, isValidPassword, isLoading) =>
-          isValidEmail && isValidPassword && !isLoading,
-    ).shareValueSeeded(false);
-
-    final credential$ = Rx.combineLatest2(
-      emailController.stream,
-      passwordController.stream,
-      (email, password) => Credential(email: email, password: password),
-    );
 
     final submit$ = submitController.stream
-        .withLatestFrom(isValidSubmit$, (_, bool isValid) => isValid)
+        .withLatestFrom(
+          emailController.stream.map(Validator.isValidEmail).startWith(false),
+          (_, bool isValid) => isValid,
+        )
         .share();
 
     final message$ = Rx.merge([
       submit$
           .where((isValid) => isValid)
-          .withLatestFrom(credential$, (_, Credential c) => c)
+          .withLatestFrom(emailController, (_, String email) => email)
           .exhaustMap(
-            (credential) => Rx.defer(() async* {
-              await userRepository.register(
-                credential.email,
-                credential.password,
-              );
-              yield credential.email;
+            (email) => Rx.defer(() async* {
+              await userRepository.resetPassword(email);
+              yield email;
             })
                 .doOnListen(() => isLoadingController.add(true))
                 .doOnData((_) => isLoadingController.add(false))
                 .doOnError((e, s) => isLoadingController.add(false))
-                .map<RegisterMessage>((email) => RegisterSuccessMessage(email))
+                .map<Message>((email) => SuccessMessage(email))
                 .onErrorReturnWith(
-                  (error) => RegisterErrorMessage(
-                    'Register error: ${getErrorMessage(error)}',
+                  (error) => ErrorMessage(
+                    'Reset password error: ${getErrorMessage(error)}',
                     error,
                   ),
                 ),
@@ -106,29 +87,19 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
         .distinct()
         .share();
 
-    final passwordError$ = passwordController.stream
-        .map((password) {
-          if (Validator.isValidPassword(password)) return null;
-          return 'Password must be at least 6 characters';
-        })
-        .distinct()
-        .share();
-
     final subscriptions = <String, Stream>{
       'emailError': emailError$,
-      'passwordError': passwordError$,
-      'isValidSubmit': isValidSubmit$,
+      'isValidSubmit':
+          emailController.stream.map(Validator.isValidEmail).startWith(false),
       'message': message$,
       'isLoading': isLoadingController,
     }.debug();
 
-    return RegisterBloc._(
+    return ResetPasswordBloc._(
       dispose: DisposeBag([...controllers, ...subscriptions]).dispose,
       emailChanged: trim.pipe(emailController.add),
-      passwordChanged: passwordController.add,
       submit: () => submitController.add(null),
       emailError$: emailError$,
-      passwordError$: passwordError$,
       message$: message$,
       isLoading$: isLoadingController,
     );

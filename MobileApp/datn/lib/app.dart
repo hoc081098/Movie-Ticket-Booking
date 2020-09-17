@@ -3,6 +3,7 @@ import 'package:datn/ui/login/login_bloc.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
 import 'package:datn/ui/register/register_bloc.dart';
 import 'package:datn/ui/register/register_page.dart';
+import 'package:datn/ui/reset_password/reset_password_bloc.dart';
 import 'package:datn/ui/reset_password/reset_password_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,14 @@ class _MyAppState extends State<MyApp> {
       );
     },
     LoginUpdateProfilePage.routeName: (context) => LoginUpdateProfilePage(),
-    ResetPasswordPage.routeName: (context) => ResetPasswordPage(),
+    ResetPasswordPage.routeName: (context) {
+      final userRepository = Provider.of<UserRepository>(context);
+
+      return BlocProvider<ResetPasswordBloc>(
+        child: ResetPasswordPage(),
+        initBloc: () => ResetPasswordBloc(userRepository),
+      );
+    },
   };
 
   final themeData = ThemeData(

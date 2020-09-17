@@ -262,4 +262,8 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   ValueStream<Optional<User>> get user$ => _user$;
+
+  @override
+  Future<void> resetPassword(String email) =>
+      _auth.sendPasswordResetEmail(email: email);
 }
