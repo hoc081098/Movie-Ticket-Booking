@@ -123,52 +123,42 @@ class _LoginPageState extends State<LoginPage>
             ),
           ),
           Positioned.fill(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top,
-                  ),
-                  color: Colors.transparent,
-                  width: double.infinity,
-                  height: kToolbarHeight,
-                ),
-                Expanded(
-                  child: Center(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: emailTextField(loginBloc),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: passwordTextField(loginBloc),
-                          ),
-                          const SizedBox(height: 32.0),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: loginButton(loginBloc),
-                          ),
-                          const SizedBox(height: 32.0),
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: needAnAccount(loginBloc),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: forgotPassword(loginBloc),
-                          ),
-                        ],
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Image.asset('assets/images/enjoy.png'),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Login to your Account',
+                      style: Theme.of(context).textTheme.headline6.copyWith(
+                        fontSize: 18,
+                        color: Colors.white,
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                )
-              ],
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: emailTextField(loginBloc),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: passwordTextField(loginBloc),
+                    ),
+                    const SizedBox(height: 32.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: loginButton(loginBloc),
+                    ),
+                    const SizedBox(height: 8),
+                    needAnAccount(loginBloc),
+                    forgotPassword(loginBloc),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

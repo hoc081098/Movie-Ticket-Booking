@@ -15,7 +15,12 @@ String getErrorMessage(dynamic error) {
   if (error is NotCompletedLoginException) {
     return 'Required updating your profile';
   }
-  if (error is NotLoggedInException) {}
+  if (error is NotLoggedInException) {
+    return 'Not logged in';
+  }
+  if (error is NotVerifiedEmail) {
+    return 'Your account email has not been verify. Please verify to continue!';
+  }
 
   // server error
   if (error is SingleMessageErrorResponse) {

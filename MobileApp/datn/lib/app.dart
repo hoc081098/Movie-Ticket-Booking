@@ -1,6 +1,7 @@
 import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/ui/login/login_bloc.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
+import 'package:datn/ui/register/register_bloc.dart';
 import 'package:datn/ui/register/register_page.dart';
 import 'package:datn/ui/reset_password/reset_password_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,15 +23,21 @@ class _MyAppState extends State<MyApp> {
   final routes = <String, WidgetBuilder>{
     MainPage.routeName: (context) => MainPage(),
     LoginPage.routeName: (context) {
+      final userRepository = Provider.of<UserRepository>(context);
+
       return BlocProvider<LoginBloc>(
         child: LoginPage(),
-        initBloc: () {
-          final userRepository = Provider.of<UserRepository>(context);
-          return LoginBloc(userRepository);
-        },
+        initBloc: () => LoginBloc(userRepository),
       );
     },
-    RegisterPage.routeName: (context) => RegisterPage(),
+    RegisterPage.routeName: (context) {
+      final userRepository = Provider.of<UserRepository>(context);
+
+      return BlocProvider<RegisterBloc>(
+        child: RegisterPage(),
+        initBloc: () => RegisterBloc(userRepository),
+      );
+    },
     LoginUpdateProfilePage.routeName: (context) => LoginUpdateProfilePage(),
     ResetPasswordPage.routeName: (context) => ResetPasswordPage(),
   };

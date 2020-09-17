@@ -16,6 +16,7 @@ import 'package:datn/utils/optional.dart';
 import 'package:datn/utils/type_defs.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -150,7 +151,16 @@ class UserRepositoryImpl implements UserRepository {
       email: email,
       password: password,
     );
-    final token = await _auth.currentUser.getIdToken();
+
+    final currentUser = _auth.currentUser;
+
+    await currentUser.reload();
+    if (!currentUser.emailVerified) {
+      unawaited(currentUser.sendEmailVerification());
+      throw const NotVerifiedEmail();
+    }
+
+    final token = await currentUser.getIdToken();
     await _userLocalSource.saveToken(token);
 
     UserResponse userResponse;
@@ -225,6 +235,29 @@ class UserRepositoryImpl implements UserRepository {
     );
 
     await _saveUserResponseToLocal(userResponse);
+  }
+
+  /// Tries to create a new user account with the given email address and
+  /// password.
+  ///
+  /// A [FirebaseAuthException] maybe thrown with the following error code:
+  /// - **email-already-in-use**:
+  ///  - Thrown if there already exists an account with the given email address.
+  /// - **invalid-email**:
+  ///  - Thrown if the email address is not valid.
+  /// - **operation-not-allowed**:
+  ///  - Thrown if email/password accounts are not enabled. Enable
+  ///    email/password accounts in the Firebase Console, under the Auth tab.
+  /// - **weak-password**:
+  ///  - Thrown if the password is not strong enough.
+  @override
+  Future<void> register(String email, String password) async {
+    await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    await _auth.currentUser.sendEmailVerification();
+    await _auth.signOut();
   }
 
   @override

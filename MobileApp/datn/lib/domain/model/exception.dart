@@ -5,3 +5,7 @@ class NotCompletedLoginException implements Exception {
 class NotLoggedInException implements Exception {
   const NotLoggedInException();
 }
+
+class NotVerifiedEmail implements Exception {
+  const NotVerifiedEmail();
+}

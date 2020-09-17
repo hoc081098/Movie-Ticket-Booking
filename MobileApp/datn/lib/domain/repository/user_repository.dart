@@ -34,4 +34,9 @@ abstract class UserRepository {
     DateTime birthday,
     File avatarFile,
   });
+
+  Future<void> register(
+    String email,
+    String password,
+  );
 }
