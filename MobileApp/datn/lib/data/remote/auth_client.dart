@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:datn/data/local/user_local_source.dart';
-import 'package:datn/data/remote/reponse/error_response.dart';
+import 'package:datn/data/remote/response/error_response.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
 
@@ -24,6 +24,16 @@ abstract class AppClient extends BaseClient {
           .post(url, headers: headers, body: body, encoding: encoding)
           .then(_parseResult);
 
+  Future<dynamic> putBody(
+    dynamic url, {
+    Map<String, String> headers,
+    dynamic body,
+    Encoding encoding,
+  }) =>
+      this
+          .put(url, headers: headers, body: body, encoding: encoding)
+          .then(_parseResult);
+
   static dynamic _parseResult(Response response) {
     final statusCode = response.statusCode;
     final json = jsonDecode(response.body);
@@ -33,16 +43,26 @@ abstract class AppClient extends BaseClient {
       return json;
     }
 
-    dynamic errorResponse;
+    final request = response.request;
+
+    ErrorResponse errorResponse;
     try {
-      errorResponse = ErrorResponse.fromJson(json);
-    } catch (e) {
+      errorResponse = SingleMessageErrorResponse.fromJson(json);
+    } catch (e1, s1) {
+      print(
+          '<-- ${request} Parse SingleMessageErrorResponse error: ${e1} ${s1}');
+
       try {
-        errorResponse = null;
-      } catch (_) {
-        throw e;
+        errorResponse = MultipleMessagesErrorResponse.fromJson(json);
+      } catch (e2, s2) {
+        print(
+            '<-- ${request} Parse MultipleMessagesErrorResponse error: ${e2} ${s2}');
+        throw ParseErrorResponseException([e1, e2]);
       }
     }
+
+    assert(errorResponse != null);
+    print('<-- ${request} errorResponse=$errorResponse');
     throw errorResponse;
   }
 }

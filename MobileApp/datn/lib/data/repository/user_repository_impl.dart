@@ -5,8 +5,8 @@ import 'package:datn/data/local/user_local.dart';
 import 'package:datn/data/local/user_local_source.dart';
 import 'package:datn/data/remote/auth_client.dart';
 import 'package:datn/data/remote/base_url.dart';
-import 'package:datn/data/remote/reponse/error_response.dart';
-import 'package:datn/data/remote/reponse/user_response.dart';
+import 'package:datn/data/remote/response/error_response.dart';
+import 'package:datn/data/remote/response/user_response.dart';
 import 'package:datn/domain/model/exception.dart';
 import 'package:datn/domain/model/location.dart';
 import 'package:datn/domain/model/user.dart';
@@ -194,7 +194,7 @@ class UserRepositoryImpl implements UserRepository {
     updateBody['gender'] = gender.toString().split('.')[1];
 
     final userResponse = UserResponse.fromJson(
-      await _authClient.postBody(
+      await _authClient.putBody(
         buildUrl('users/me'),
         body: updateBody,
       ),

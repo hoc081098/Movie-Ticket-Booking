@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:datn/data/remote/reponse/error_response.dart';
+import 'package:datn/data/remote/response/error_response.dart';
 import 'package:datn/domain/model/exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -18,8 +18,11 @@ String getErrorMessage(dynamic error) {
   if (error is NotLoggedInException) {}
 
   // server error
-  if (error is ErrorResponse) {
+  if (error is SingleMessageErrorResponse) {
     return error.message;
+  }
+  if (error is MultipleMessagesErrorResponse) {
+    return error.messages.join('\n');
   }
 
   // network error

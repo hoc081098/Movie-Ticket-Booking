@@ -10,7 +10,24 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'ui/home/home_page.dart';
 import 'ui/login/login_page.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<void> cacheImage;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    cacheImage ??= precacheImage(
+      AssetImage('assets/images/splash_bg.png'),
+      context,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final routes = <String, WidgetBuilder>{
@@ -43,7 +60,7 @@ class MyApp extends StatelessWidget {
         theme: themeData,
         home: SplashPage(),
         routes: routes,
-        initialRoute: LoginUpdateProfilePage.routeName,
+        // initialRoute: LoginUpdateProfilePage.routeName,
       ),
     );
   }
@@ -55,12 +72,26 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  static const minSplashDuration = Duration(seconds: 3);
   Future<AuthState> checkAuthFuture;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    checkAuthFuture ??= Provider.of<UserRepository>(context).checkAuth();
+
+    checkAuthFuture ??= () async {
+      final stopwatch = Stopwatch()..start();
+      final authState = Provider.of<UserRepository>(context).checkAuth();
+      stopwatch.stop();
+
+      final extraDelay = minSplashDuration - stopwatch.elapsed;
+      print('>> extraDelay=$extraDelay');
+      if (extraDelay > Duration.zero) {
+        await Future.delayed(extraDelay);
+      }
+
+      return authState;
+    }();
   }
 
   @override
@@ -75,25 +106,35 @@ class _SplashPageState extends State<SplashPage> {
         }
 
         if (!snapshot.hasData) {
-          return Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: <Color>[
-                  const Color(0xffB881F9).withOpacity(0.5),
-                  const Color(0xff545AE9).withOpacity(0.5),
-                ],
-                begin: AlignmentDirectional.topEnd,
-                end: AlignmentDirectional.bottomStart,
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: Container(
+                  constraints: BoxConstraints.expand(),
+                  child: Image.asset(
+                    'assets/images/splash_bg.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            ),
-            width: double.infinity,
-            height: double.infinity,
-            child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation(Colors.white),
+              Positioned.fill(
+                child: Container(
+                  constraints: BoxConstraints.expand(),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        const Color(0xffB881F9).withOpacity(0.58),
+                        const Color(0xff545AE9).withOpacity(0.75),
+                        Colors.black.withOpacity(0.5),
+                      ],
+                      stops: [0, 0.68, 1],
+                      begin: AlignmentDirectional.topEnd,
+                      end: AlignmentDirectional.bottomStart,
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           );
         }
 

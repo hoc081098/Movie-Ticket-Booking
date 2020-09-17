@@ -3,8 +3,8 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:datn/data/local/user_local.dart';
-import 'package:datn/data/remote/reponse/error_response.dart';
-import 'package:datn/data/remote/reponse/user_response.dart';
+import 'package:datn/data/remote/response/error_response.dart';
+import 'package:datn/data/remote/response/user_response.dart';
 
 part 'serializers.g.dart';
 
@@ -13,7 +13,8 @@ part 'serializers.g.dart';
   LocationLocal,
   UserResponse,
   LocationResponse,
-  ErrorResponse,
+  SingleMessageErrorResponse,
+  MultipleMessagesErrorResponse,
 ])
 final Serializers _serializers = _$_serializers;
 
