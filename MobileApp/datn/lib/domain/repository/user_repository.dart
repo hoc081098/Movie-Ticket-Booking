@@ -43,4 +43,6 @@ abstract class UserRepository {
   Future<void> resetPassword(String email);
 
   Future<void> googleSignIn();
+
+  Future<void> facebookSignIn();
 }

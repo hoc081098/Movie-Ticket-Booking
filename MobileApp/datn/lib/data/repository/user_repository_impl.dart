@@ -17,6 +17,7 @@ import 'package:datn/utils/type_defs.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
@@ -31,6 +32,7 @@ class UserRepositoryImpl implements UserRepository {
 
   final Function1<UserResponse, UserLocal> _userResponseToUserLocal;
   final GoogleSignIn _googleSignIn;
+  final FacebookLogin _facebookLogin;
 
   final ValueConnectableStream<Optional<User>> _user$;
 
@@ -43,6 +45,7 @@ class UserRepositoryImpl implements UserRepository {
     this._storage,
     Function1<UserLocal, User> userLocalToUserDomain,
     this._googleSignIn,
+    this._facebookLogin,
   ) : _user$ = valueConnectableStream(
           _auth,
           _userLocalSource,
@@ -118,13 +121,18 @@ class UserRepositoryImpl implements UserRepository {
     }
   }
 
-  Future _checkCompletedLoginAfterFirebaseLogin() async {
+  Future _checkCompletedLoginAfterFirebaseLogin([
+    bool checkVerifyEmail = false,
+  ]) async {
     final currentUser = _auth.currentUser;
 
-    await currentUser.reload();
-    if (!currentUser.emailVerified) {
-      unawaited(currentUser.sendEmailVerification());
-      throw const NotVerifiedEmail();
+    if (checkVerifyEmail) {
+      await currentUser.reload();
+
+      if (!currentUser.emailVerified) {
+        unawaited(currentUser.sendEmailVerification());
+        throw const NotVerifiedEmail();
+      }
     }
 
     final token = await currentUser.getIdToken();
@@ -149,13 +157,24 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> logout() async {
-    try {
-      await _googleSignIn.disconnect();
-    } catch (e) {
-      print('_googleSignIn.disconnect $e');
-    }
+    // google
+    unawaited(() async {
+      try {
+        await _googleSignIn.disconnect();
+        print('_googleSignIn.disconnect');
+      } catch (e) {
+        print('_googleSignIn.disconnect error: $e');
+      }
+    }());
     await _googleSignIn.signOut();
+
+    // facebook
+    await _facebookLogin.logOut();
+
+    // firebase
     await _auth.signOut();
+
+    // local
     await _userLocalSource.saveToken(null);
     await _userLocalSource.saveUser(null);
   }
@@ -177,7 +196,7 @@ class UserRepositoryImpl implements UserRepository {
       password: password,
     );
 
-    await _checkCompletedLoginAfterFirebaseLogin();
+    await _checkCompletedLoginAfterFirebaseLogin(true);
   }
 
   @override
@@ -287,5 +306,42 @@ class UserRepositoryImpl implements UserRepository {
     );
 
     await _checkCompletedLoginAfterFirebaseLogin();
+  }
+
+  @override
+  Future<void> facebookSignIn() async {
+    final result = await _facebookLogin.logIn(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final token = result?.accessToken?.token;
+
+        if (token == null) {
+          throw PlatformException(
+            code: 'error',
+            message: result.errorMessage,
+            details: null,
+          );
+        }
+
+        await _auth.signInWithCredential(
+          FacebookAuthProvider.credential(token),
+        );
+        await _checkCompletedLoginAfterFirebaseLogin();
+
+        return;
+      case FacebookLoginStatus.cancelledByUser:
+        throw PlatformException(
+          code: 'cancelledByUser',
+          message: 'Facebook sign in canceled',
+          details: null,
+        );
+      case FacebookLoginStatus.error:
+        throw PlatformException(
+          code: 'error',
+          message: result.errorMessage,
+          details: null,
+        );
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:datn/domain/model/exception.dart';
 import 'package:datn/domain/repository/user_repository.dart';
+import 'package:datn/ui/login/facebook_login_bloc.dart';
 import 'package:datn/ui/login/google_sign_in_bloc.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
 import 'package:datn/ui/register/register_page.dart';
@@ -36,6 +37,7 @@ class _LoginPageState extends State<LoginPage>
   TextEditingController emailController;
 
   GoogleSignInBloc googleSignInBloc;
+  FacebookLoginBloc facebookLoginBloc;
 
   @override
   void initState() {
@@ -67,13 +69,17 @@ class _LoginPageState extends State<LoginPage>
     super.didChangeDependencies();
 
     disposeBag ??= () {
+      final userRepository = Provider.of<UserRepository>(context);
+
       final loginBloc = BlocProvider.of<LoginBloc>(context);
-      googleSignInBloc = GoogleSignInBloc(Provider.of<UserRepository>(context));
+      googleSignInBloc = GoogleSignInBloc(userRepository);
+      facebookLoginBloc = FacebookLoginBloc(userRepository);
 
       return DisposeBag([
         Rx.merge([
           loginBloc.message$,
           googleSignInBloc.message$,
+          facebookLoginBloc.message$,
         ]).listen(handleMessage),
         loginBloc.isLoading$.listen((isLoading) {
           if (isLoading) {
@@ -91,8 +97,11 @@ class _LoginPageState extends State<LoginPage>
   @override
   void dispose() {
     loginButtonController.dispose();
+
     disposeBag.dispose();
     googleSignInBloc.dispose();
+    facebookLoginBloc.dispose();
+
     print('$this disposed');
     super.dispose();
   }
@@ -180,34 +189,36 @@ class _LoginPageState extends State<LoginPage>
                               elevation: 4,
                               onPressed: googleSignInBloc.submitLogin,
                               child: RxStreamBuilder<bool>(
-                                  stream: googleSignInBloc.isLoading$,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.data) {
-                                      return CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor: AlwaysStoppedAnimation(
-                                            Colors.white),
-                                      );
-                                    }
-
-                                    return Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        FaIcon(
-                                          FontAwesomeIcons.google,
-                                          color: Colors.white,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          'Google',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .button
-                                              .copyWith(color: Colors.white),
-                                        ),
-                                      ],
+                                stream: googleSignInBloc.isLoading$,
+                                builder: (context, snapshot) {
+                                  if (snapshot.data) {
+                                    return CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation(
+                                        Colors.white,
+                                      ),
                                     );
-                                  }),
+                                  }
+
+                                  return Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.google,
+                                        color: Colors.white,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'Google',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .button
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -220,23 +231,37 @@ class _LoginPageState extends State<LoginPage>
                               ),
                               padding: const EdgeInsets.all(8),
                               elevation: 4,
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.facebookSquare,
-                                    color: Colors.white,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'Facebook',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .button
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ],
+                              onPressed: facebookLoginBloc.submitLogin,
+                              child: RxStreamBuilder<bool>(
+                                stream: facebookLoginBloc.isLoading$,
+                                builder: (context, snapshot) {
+                                  if (snapshot.data) {
+                                    return CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation(
+                                        Colors.white,
+                                      ),
+                                    );
+                                  }
+
+                                  return Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.facebookSquare,
+                                        color: Colors.white,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'Facebook',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .button
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                             ),
                           ),

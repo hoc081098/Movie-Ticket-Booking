@@ -407,11 +407,7 @@ class LoggedIn extends StatelessWidget {
 
 class NotLoggedIn extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Not logged in'),
-    );
-  }
+  Widget build(BuildContext context) => Container();
 }
 
 class _CustomClipper extends CustomClipper<Path> {

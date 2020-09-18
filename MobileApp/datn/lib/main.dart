@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -26,12 +27,13 @@ void main() async {
   await envManager.config();
 
   //
-  // Firebase, Google
+  // Firebase, Google, Facebook
   //
   await Firebase.initializeApp();
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
   final googleSignIn = GoogleSignIn();
+  final facebookLogin = FacebookLogin();
 
   //
   // Local and remote
@@ -64,6 +66,7 @@ void main() async {
     storage,
     userLocalToUserDomain,
     googleSignIn,
+    facebookLogin,
   );
   _onSignOut = userRepository.logout;
 
