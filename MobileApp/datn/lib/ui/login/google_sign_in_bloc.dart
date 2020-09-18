@@ -39,17 +39,22 @@ class GoogleSignInBloc extends DisposeCallbackBaseBloc {
         .exhaustMap((_) => performLogin(userRepository, isLoadingController))
         .publish();
 
+    final disposeBag = DisposeBag([
+      message$
+          .listen((value) => print('>>>>>>>>>>>>> GoogleSignInBloc $value >>')),
+      message$.connect(),
+      submitLoginController,
+      isLoadingController,
+    ]);
+
     return GoogleSignInBloc._(
       isLoading$: isLoadingController.stream,
       message$: message$,
       submitLogin: () => submitLoginController.add(null),
-      dispose: DisposeBag([
-        message$.listen(
-            (value) => print('>>>>>>>>>>>>> GoogleSignInBloc $value >>')),
-        message$.connect(),
-        submitLoginController,
-        isLoadingController,
-      ]).dispose,
+      dispose: () async{
+        await disposeBag.dispose();
+        print('$GoogleSignInBloc disposed');
+      },
     );
   }
 

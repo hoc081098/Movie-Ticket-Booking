@@ -473,7 +473,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
       await Navigator.pushNamedAndRemoveUntil(
         context,
         MainPage.routeName,
-        (route) => route.isFirst,
+        (route) => false,
       );
     } catch (e, s) {
       print('loginUpdateProfile $e $s');

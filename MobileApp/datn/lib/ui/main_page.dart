@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         .where((userOptional) => userOptional != null && userOptional is None)
         .listen((event) => Navigator.of(context).pushNamedAndRemoveUntil(
               LoginPage.routeName,
-              (route) => route.isFirst,
+              (route) => false,
             ))
         .disposedBy(bag);
   }

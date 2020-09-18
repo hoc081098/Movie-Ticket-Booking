@@ -1,4 +1,5 @@
 import 'package:datn/domain/model/exception.dart';
+import 'package:datn/domain/repository/user_repository.dart';
 import 'package:datn/ui/login/google_sign_in_bloc.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
 import 'package:datn/ui/register/register_page.dart';
@@ -7,11 +8,10 @@ import 'package:datn/ui/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
+import 'package:flutter_provider/flutter_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../utils/delay.dart';
 import '../../utils/snackbar.dart';
 import '../main_page.dart';
 import 'login_bloc.dart';
@@ -34,6 +34,8 @@ class _LoginPageState extends State<LoginPage>
 
   FocusNode passwordFocusNode;
   TextEditingController emailController;
+
+  GoogleSignInBloc googleSignInBloc;
 
   @override
   void initState() {
@@ -66,7 +68,7 @@ class _LoginPageState extends State<LoginPage>
 
     disposeBag ??= () {
       final loginBloc = BlocProvider.of<LoginBloc>(context);
-      final googleSignInBloc = BlocProvider.of<GoogleSignInBloc>(context);
+      googleSignInBloc = GoogleSignInBloc(Provider.of<UserRepository>(context));
 
       return DisposeBag([
         Rx.merge([
@@ -90,13 +92,14 @@ class _LoginPageState extends State<LoginPage>
   void dispose() {
     loginButtonController.dispose();
     disposeBag.dispose();
+    googleSignInBloc.dispose();
+    print('$this disposed');
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final loginBloc = BlocProvider.of<LoginBloc>(context);
-    final googleBloc = BlocProvider.of<GoogleSignInBloc>(context);
 
     return Scaffold(
       key: scaffoldKey,
@@ -175,9 +178,9 @@ class _LoginPageState extends State<LoginPage>
                               ),
                               padding: const EdgeInsets.all(8),
                               elevation: 4,
-                              onPressed: googleBloc.submitLogin,
+                              onPressed: googleSignInBloc.submitLogin,
                               child: RxStreamBuilder<bool>(
-                                  stream: googleBloc.isLoading$,
+                                  stream: googleSignInBloc.isLoading$,
                                   builder: (context, snapshot) {
                                     if (snapshot.data) {
                                       return CircularProgressIndicator(
@@ -252,30 +255,30 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  void handleMessage(LoginMessage message) async {
-    print('>>>>>>>>>>>>> SignIn $message >>');
+  void handleMessage(LoginMessage message) {
+    final navigator = Navigator.of(context);
+    print('>>>>>>>>>>>>> SignIn $message >> $navigator');
 
     if (message is LoginSuccessMessage) {
       scaffoldKey.showSnackBar('Login successfully');
-      await delay(500);
-      unawaited(
-        Navigator.of(context).pushReplacementNamed(MainPage.routeName),
+
+      navigator.pushNamedAndRemoveUntil(
+        MainPage.routeName,
+        (route) => false,
       );
+      print('>>>>>>>>>>>>> SignIn to home >>');
       return;
     }
 
     if (message is LoginErrorMessage) {
       scaffoldKey.showSnackBar(message.message);
-      await delay(500);
 
       if (message.error is NotCompletedLoginException) {
-        unawaited(
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            LoginUpdateProfilePage.routeName,
-            (route) => route.isFirst,
-          ),
+        navigator.pushNamedAndRemoveUntil(
+          LoginUpdateProfilePage.routeName,
+          (route) => false,
         );
+        print('>>>>>>>>>>>>> SignIn to update >>');
       }
 
       return;
