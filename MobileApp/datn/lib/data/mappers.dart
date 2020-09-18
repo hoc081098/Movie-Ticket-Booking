@@ -5,22 +5,27 @@ import 'package:datn/domain/model/user.dart';
 import 'package:datn/utils/type_defs.dart';
 
 Function1<UserResponse, UserLocal> userResponseToUserLocal = (response) {
-  return UserLocal((b) => b
-    ..uid = response.uid
-    ..email = response.email
-    ..phoneNumber = response.phoneNumber
-    ..fullName = response.fullName
-    ..gender = response.gender
-    ..avatar = response.avatar
-    ..address = response.address
-    ..birthday = response.birthday
-    ..location = (response.location != null
+  return UserLocal((b) {
+    final locationLocalBuilder = response.location?.latitude != null &&
+            response.location?.longitude != null
         ? (LocationLocalBuilder()
           ..latitude = response.location.latitude
           ..longitude = response.location.longitude)
-        : null)
-    ..isCompleted = response.isCompleted
-    ..isActive = response.isActive);
+        : null;
+
+    return b
+      ..uid = response.uid
+      ..email = response.email
+      ..phoneNumber = response.phoneNumber
+      ..fullName = response.fullName
+      ..gender = response.gender
+      ..avatar = response.avatar
+      ..address = response.address
+      ..birthday = response.birthday
+      ..location = locationLocalBuilder
+      ..isCompleted = response.isCompleted
+      ..isActive = response.isActive;
+  });
 };
 
 Function1<String, Gender> stringToGender = (s) {

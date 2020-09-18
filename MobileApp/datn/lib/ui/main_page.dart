@@ -18,8 +18,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> with DisposeBagMixin {
-  static const routeName = '/main';
-
   static final homeRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) => HomePage(),
   };

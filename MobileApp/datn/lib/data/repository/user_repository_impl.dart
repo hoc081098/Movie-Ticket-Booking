@@ -16,6 +16,8 @@ import 'package:datn/utils/optional.dart';
 import 'package:datn/utils/type_defs.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -28,8 +30,8 @@ class UserRepositoryImpl implements UserRepository {
   final NormalClient _normalClient;
 
   final Function1<UserResponse, UserLocal> _userResponseToUserLocal;
+  final GoogleSignIn _googleSignIn;
 
-  Future<AuthState> _checkAuthFuture;
   final ValueConnectableStream<Optional<User>> _user$;
 
   UserRepositoryImpl(
@@ -40,13 +42,12 @@ class UserRepositoryImpl implements UserRepository {
     this._userResponseToUserLocal,
     this._storage,
     Function1<UserLocal, User> userLocalToUserDomain,
+    this._googleSignIn,
   ) : _user$ = valueConnectableStream(
           _auth,
           _userLocalSource,
           userLocalToUserDomain,
-        ) {
-    _checkAuthFuture = _checkAuthInternal();
-  }
+        );
 
   static ValueConnectableStream<Optional<User>> valueConnectableStream(
     FirebaseAuth _auth,
@@ -117,19 +118,43 @@ class UserRepositoryImpl implements UserRepository {
     }
   }
 
-  @override
-  Future<AuthState> checkAuth() {
-    if (_checkAuthFuture != null) {
-      final future = _checkAuthFuture;
-      _checkAuthFuture = null;
-      return future;
+  Future _checkCompletedLoginAfterFirebaseLogin() async {
+    final currentUser = _auth.currentUser;
+
+    await currentUser.reload();
+    if (!currentUser.emailVerified) {
+      unawaited(currentUser.sendEmailVerification());
+      throw const NotVerifiedEmail();
     }
 
-    return _checkAuthInternal();
+    final token = await currentUser.getIdToken();
+    await _userLocalSource.saveToken(token);
+
+    UserResponse userResponse;
+    try {
+      final json = await _authClient.getBody(buildUrl('users/me'));
+      userResponse = UserResponse.fromJson(json);
+    } on ErrorResponse catch (e) {
+      if (e.statusCode == HttpStatus.notFound) {
+        throw const NotCompletedLoginException();
+      }
+      rethrow;
+    }
+
+    await _saveUserResponseToLocal(userResponse);
   }
 
   @override
+  Future<AuthState> checkAuth() => _checkAuthInternal();
+
+  @override
   Future<void> logout() async {
+    try {
+      await _googleSignIn.disconnect();
+    } catch (e) {
+      print('_googleSignIn.disconnect $e');
+    }
+    await _googleSignIn.signOut();
     await _auth.signOut();
     await _userLocalSource.saveToken(null);
     await _userLocalSource.saveUser(null);
@@ -152,32 +177,7 @@ class UserRepositoryImpl implements UserRepository {
       password: password,
     );
 
-    final currentUser = _auth.currentUser;
-
-    await currentUser.reload();
-    if (!currentUser.emailVerified) {
-      unawaited(currentUser.sendEmailVerification());
-      throw const NotVerifiedEmail();
-    }
-
-    final token = await currentUser.getIdToken();
-    await _userLocalSource.saveToken(token);
-
-    UserResponse userResponse;
-    try {
-      final json = await _normalClient.getBody(
-        buildUrl('users/me'),
-        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
-      );
-      userResponse = UserResponse.fromJson(json);
-    } on ErrorResponse catch (e) {
-      if (e.statusCode == HttpStatus.notFound) {
-        throw const NotCompletedLoginException();
-      }
-      rethrow;
-    }
-
-    await _saveUserResponseToLocal(userResponse);
+    await _checkCompletedLoginAfterFirebaseLogin();
   }
 
   @override
@@ -257,7 +257,7 @@ class UserRepositoryImpl implements UserRepository {
       password: password,
     );
     await _auth.currentUser.sendEmailVerification();
-    await _auth.signOut();
+    await logout();
   }
 
   @override
@@ -266,4 +266,26 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<void> resetPassword(String email) =>
       _auth.sendPasswordResetEmail(email: email);
+
+  @override
+  Future<void> googleSignIn() async {
+    final googleAccount = await _googleSignIn.signIn();
+    if (googleAccount == null) {
+      throw PlatformException(
+        code: GoogleSignIn.kSignInCanceledError,
+        message: 'Google sign in canceled',
+        details: null,
+      );
+    }
+
+    final authentication = await googleAccount.authentication;
+    await _auth.signInWithCredential(
+      GoogleAuthProvider.credential(
+        idToken: authentication.idToken,
+        accessToken: authentication.accessToken,
+      ),
+    );
+
+    await _checkCompletedLoginAfterFirebaseLogin();
+  }
 }

@@ -78,7 +78,6 @@ class LoggedIn extends StatelessWidget {
     return Stack(
       children: [
         buildGradient(height),
-        buildAvatar(height, imageSize, context),
         buildEditButton(paddingTop, context),
         buildLogoutButton(paddingTop, context),
         buildListInfos(
@@ -87,7 +86,8 @@ class LoggedIn extends StatelessWidget {
           detailHeaderStyle,
           detailInfoStyle,
           accentColor,
-        )
+        ),
+        buildAvatar(height, imageSize, context),
       ],
     );
   }

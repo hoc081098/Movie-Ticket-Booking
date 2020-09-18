@@ -1,4 +1,5 @@
 import 'package:datn/domain/repository/user_repository.dart';
+import 'package:datn/ui/login/google_sign_in_bloc.dart';
 import 'package:datn/ui/login/login_bloc.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
 import 'package:datn/ui/register/register_bloc.dart';
@@ -26,9 +27,12 @@ class _MyAppState extends State<MyApp> {
     LoginPage.routeName: (context) {
       final userRepository = Provider.of<UserRepository>(context);
 
-      return BlocProvider<LoginBloc>(
-        child: LoginPage(),
-        initBloc: () => LoginBloc(userRepository),
+      return BlocProvider<GoogleSignInBloc>(
+        initBloc: () => GoogleSignInBloc(userRepository),
+        child: BlocProvider<LoginBloc>(
+          child: LoginPage(),
+          initBloc: () => LoginBloc(userRepository),
+        ),
       );
     },
     RegisterPage.routeName: (context) {

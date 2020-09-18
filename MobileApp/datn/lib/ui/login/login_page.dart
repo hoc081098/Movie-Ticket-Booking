@@ -1,4 +1,5 @@
 import 'package:datn/domain/model/exception.dart';
+import 'package:datn/ui/login/google_sign_in_bloc.dart';
 import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
 import 'package:datn/ui/register/register_page.dart';
 import 'package:datn/ui/reset_password/reset_password_page.dart';
@@ -6,6 +7,9 @@ import 'package:datn/ui/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pedantic/pedantic.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../utils/delay.dart';
 import '../../utils/snackbar.dart';
@@ -62,8 +66,13 @@ class _LoginPageState extends State<LoginPage>
 
     disposeBag ??= () {
       final loginBloc = BlocProvider.of<LoginBloc>(context);
+      final googleSignInBloc = BlocProvider.of<GoogleSignInBloc>(context);
+
       return DisposeBag([
-        loginBloc.message$.listen(handleMessage),
+        Rx.merge([
+          loginBloc.message$,
+          googleSignInBloc.message$,
+        ]).listen(handleMessage),
         loginBloc.isLoading$.listen((isLoading) {
           if (isLoading) {
             loginButtonController
@@ -87,6 +96,7 @@ class _LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     final loginBloc = BlocProvider.of<LoginBloc>(context);
+    final googleBloc = BlocProvider.of<GoogleSignInBloc>(context);
 
     return Scaffold(
       key: scaffoldKey,
@@ -134,12 +144,12 @@ class _LoginPageState extends State<LoginPage>
                     Text(
                       'Login to your Account',
                       style: Theme.of(context).textTheme.headline6.copyWith(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: emailTextField(loginBloc),
@@ -148,12 +158,88 @@ class _LoginPageState extends State<LoginPage>
                       padding: const EdgeInsets.all(8.0),
                       child: passwordTextField(loginBloc),
                     ),
-                    const SizedBox(height: 32.0),
+                    const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: loginButton(loginBloc),
                     ),
                     const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: RaisedButton(
+                              color: Color(0xFFde5246),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              elevation: 4,
+                              onPressed: googleBloc.submitLogin,
+                              child: RxStreamBuilder<bool>(
+                                  stream: googleBloc.isLoading$,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data) {
+                                      return CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Colors.white),
+                                      );
+                                    }
+
+                                    return Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.google,
+                                          color: Colors.white,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'Google',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: RaisedButton(
+                              color: Color(0xFF1178f2),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              elevation: 4,
+                              onPressed: () {},
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  FaIcon(
+                                    FontAwesomeIcons.facebookSquare,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Facebook',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .button
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     needAnAccount(loginBloc),
                     forgotPassword(loginBloc),
                   ],
@@ -166,22 +252,35 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  void handleMessage(message) async {
+  void handleMessage(LoginMessage message) async {
+    print('>>>>>>>>>>>>> SignIn $message >>');
+
     if (message is LoginSuccessMessage) {
       scaffoldKey.showSnackBar('Login successfully');
-      await delay(1000);
-      await Navigator.of(context).pushReplacementNamed(MainPage.routeName);
+      await delay(500);
+      unawaited(
+        Navigator.of(context).pushReplacementNamed(MainPage.routeName),
+      );
+      return;
     }
+
     if (message is LoginErrorMessage) {
       scaffoldKey.showSnackBar(message.message);
+      await delay(500);
 
       if (message.error is NotCompletedLoginException) {
-        await Navigator.pushReplacementNamed(
-          context,
-          LoginUpdateProfilePage.routeName,
+        unawaited(
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            LoginUpdateProfilePage.routeName,
+            (route) => route.isFirst,
+          ),
         );
       }
+
+      return;
     }
+
     if (message is InvalidInformationMessage) {
       scaffoldKey.showSnackBar('Invalid information');
     }

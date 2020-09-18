@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:datn/data/local/user_local_source.dart';
 import 'package:datn/data/remote/response/error_response.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:datn/utils/type_defs.dart';
 import 'package:http/http.dart';
 
 abstract class AppClient extends BaseClient {
@@ -87,15 +86,21 @@ class NormalClient extends AppClient {
 
 class AuthClient extends AppClient {
   final Client _client;
-  final UserLocalSource _userLocalSource;
-  final FirebaseAuth _auth;
   final Duration _timeout;
 
-  AuthClient(this._client, this._userLocalSource, this._auth, this._timeout);
+  final Function0<Future<void>> _onSignOut;
+  final Function0<Future<String>> _getToken;
+
+  AuthClient(
+    this._client,
+    this._timeout,
+    this._onSignOut,
+    this._getToken,
+  );
 
   @override
   Future<StreamedResponse> send(BaseRequest request) async {
-    final token = await _userLocalSource.token$.first;
+    final token = await _getToken();
 
     if (token != null) {
       request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
@@ -110,9 +115,7 @@ class AuthClient extends AppClient {
 
     if (response.statusCode == HttpStatus.unauthorized ||
         response.statusCode == HttpStatus.forbidden) {
-      await _auth.signOut();
-      await _userLocalSource.saveToken(null);
-      await _userLocalSource.saveUser(null);
+      await _onSignOut();
       print('Response code is 401 or 403. Removed token. Logout');
     }
 

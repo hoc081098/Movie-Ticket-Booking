@@ -11,9 +11,9 @@ abstract class LocationResponse
   @BuiltValueField(wireName: 'coordinates')
   BuiltList<double> get coordinates;
 
-  double get longitude => coordinates[0];
+  double get longitude => coordinates.isEmpty ? null : coordinates[0];
 
-  double get latitude => coordinates[1];
+  double get latitude => coordinates.isEmpty ? null : coordinates[1];
 
   LocationResponse._();
 

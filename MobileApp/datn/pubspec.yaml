@@ -23,8 +23,9 @@ environment:
 # flutter packages pub run build_runner build --delete-conflicting-outputs
 
 dependencies:
+  google_sign_in: ^4.5.3
   font_awesome_flutter: ^8.8.1
-  image_picker: ^0.6.7+7
+  image_picker: ^0.6.7+8
   cached_network_image: ^2.3.2+1
   firebase_storage: ^4.0.0
   flutter_dotenv: ^2.1.0
