@@ -4,6 +4,7 @@ import * as fs from 'fs';
 
 export const enum ConfigKey {
   MONGODB_URL = 'MONGODB_URL',
+  MOVIE_DB_API_KEY = 'MOVIE_DB_API_KEY',
 }
 
 export class ConfigService {
@@ -17,6 +18,10 @@ export class ConfigService {
   }
 
   get(key: ConfigKey): string {
-    return this.envConfig[key];
+    const value = this.envConfig[key];
+    if (value === undefined) {
+      throw Error(`Missing key ${key} in .env file`);
+    }
+    return value;
   }
 }
