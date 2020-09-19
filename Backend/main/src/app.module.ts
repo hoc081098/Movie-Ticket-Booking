@@ -7,6 +7,9 @@ import { ConfigKey, ConfigService } from './config/config.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { FirebaseAdminModule } from '@aginix/nestjs-firebase-admin/dist';
+import { MoviesModule } from './movies/movies.module';
+import { CategoriesModule } from './categories/categories.module';
+import { PeopleModule } from './people/people.module';
 import * as admin from 'firebase-admin';
 
 @Module({
@@ -29,6 +32,9 @@ import * as admin from 'firebase-admin';
     ConfigModule,
     AuthModule,
     UsersModule,
+    MoviesModule,
+    CategoriesModule,
+    PeopleModule,
   ],
   controllers: [AppController],
   providers: [
