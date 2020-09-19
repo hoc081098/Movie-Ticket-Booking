@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:datn/utils/error.dart';
-import 'package:datn/utils/type_defs.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
+import '../../utils/error.dart';
+import '../../utils/type_defs.dart';
 import 'login_state.dart';
 
 /// BLoC handling facebook sign in

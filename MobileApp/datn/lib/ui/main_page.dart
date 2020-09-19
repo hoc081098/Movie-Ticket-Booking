@@ -1,14 +1,15 @@
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/ui/home/home_page.dart';
-import 'package:datn/ui/login/login_page.dart';
-import 'package:datn/ui/profile/edit_profile/edit_profile_page.dart';
-import 'package:datn/ui/profile/profile_page.dart';
-import 'package:datn/utils/optional.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
+import '../domain/model/user.dart';
+import '../domain/repository/user_repository.dart';
+import '../utils/optional.dart';
 import 'app_scaffold.dart';
+import 'home/home_page.dart';
+import 'login/login_page.dart';
+import 'login_update_profile/login_update_profile_page.dart';
+import 'profile/profile_page.dart';
 
 class MainPage extends StatefulWidget {
   static const routeName = '/main';
@@ -24,7 +25,11 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) => ProfilePage(),
-    EditProfilePage.routeName: (context, settings) => EditProfilePage(),
+    UpdateProfilePage.routeName: (context, settings) {
+      final args = settings.arguments;
+      assert(args != null && args is User);
+      return UpdateProfilePage(user: args);
+    },
   };
 
   dynamic listenToken;

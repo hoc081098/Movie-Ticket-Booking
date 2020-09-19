@@ -1,9 +1,3 @@
-import 'package:datn/data/local/user_local_source_impl.dart';
-import 'package:datn/data/remote/auth_client.dart';
-import 'package:datn/data/repository/user_repository_impl.dart';
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/env_manager.dart';
-import 'package:datn/utils/type_defs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,7 +9,13 @@ import 'package:http/http.dart' as http;
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 import 'app.dart';
+import 'data/local/user_local_source_impl.dart';
 import 'data/mappers.dart';
+import 'data/remote/auth_client.dart';
+import 'data/repository/user_repository_impl.dart';
+import 'domain/repository/user_repository.dart';
+import 'env_manager.dart';
+import 'utils/type_defs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

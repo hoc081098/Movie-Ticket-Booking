@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:datn/domain/model/location.dart';
-import 'package:datn/domain/model/user.dart';
-import 'package:datn/utils/optional.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/streams.dart';
+
+import '../../utils/optional.dart';
+import '../model/location.dart';
+import '../model/user.dart';
 
 enum AuthState {
   loggedIn,

@@ -1,12 +1,7 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:datn/domain/model/location.dart';
-import 'package:datn/domain/model/user.dart';
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/env_manager.dart';
-import 'package:datn/utils/error.dart';
-import 'package:datn/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -17,16 +12,26 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:rxdart/rxdart.dart';
 
+import '../../domain/model/location.dart';
+import '../../domain/model/user.dart';
+import '../../domain/repository/user_repository.dart';
+import '../../env_manager.dart';
+import '../../utils/error.dart';
+import '../../utils/snackbar.dart';
 import '../main_page.dart';
 
-class LoginUpdateProfilePage extends StatefulWidget {
-  static const routeName = '/login_profile_update';
+class UpdateProfilePage extends StatefulWidget {
+  static const routeName = '/profile_update';
+
+  final User user;
+
+  const UpdateProfilePage({Key key, this.user}) : super(key: key);
 
   @override
-  _LoginUpdateProfilePageState createState() => _LoginUpdateProfilePageState();
+  _UpdateProfilePageState createState() => _UpdateProfilePageState();
 }
 
-class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
+class _UpdateProfilePageState extends State<UpdateProfilePage>
     with SingleTickerProviderStateMixin, DisposeBagMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
@@ -35,7 +40,6 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
   Animation<double> buttonSqueezeAnimation;
   TextStyle textFieldStyle;
 
-  final addressTextController = TextEditingController();
   final phoneNumberFocusNode = FocusNode();
   final addressFocusNode = FocusNode();
 
@@ -46,6 +50,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
   var gender$ = BehaviorSubject.seeded(Gender.MALE);
   Location location;
   var avatarFile$ = BehaviorSubject<File>.seeded(null);
+  String avatar;
   var isLoading = false;
 
   final fullNameRegex = RegExp(r"^[\p{L} .'-]+$", unicode: true);
@@ -53,6 +58,10 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
     r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$',
     caseSensitive: false,
   );
+
+  final fullNameTextController = TextEditingController();
+  final phoneNumberTextController = TextEditingController();
+  final addressTextController = TextEditingController();
 
   @override
   void initState() {
@@ -74,6 +83,23 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
         ),
       ),
     );
+
+    final user = widget.user;
+    if (user != null) {
+      fullName = user.fullName;
+      fullNameTextController.text = fullName;
+
+      phoneNumber = user.phoneNumber;
+      phoneNumberTextController.text = phoneNumber;
+
+      address = user.address;
+      addressTextController.text = address;
+
+      birthday = user.birthday;
+      gender$.add(user.gender);
+      location = user.location;
+      avatar = user.avatar;
+    }
   }
 
   @override
@@ -208,27 +234,63 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
         ),
         child: ClipOval(
           child: RxStreamBuilder<File>(
-              stream: avatarFile$,
-              builder: (context, snapshot) {
-                final avatarFile = snapshot.data;
+            stream: avatarFile$,
+            builder: (context, snapshot) {
+              final avatarFile = snapshot.data;
 
-                if (avatarFile == null) {
-                  return Center(
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: imageSize * 0.7,
-                    ),
-                  );
-                }
-
+              if (avatarFile != null) {
                 return Image.file(
                   avatarFile,
                   width: imageSize,
                   height: imageSize,
                   fit: BoxFit.cover,
                 );
-              }),
+              }
+
+              if (avatar != null) {
+                return CachedNetworkImage(
+                  imageUrl: avatar,
+                  fit: BoxFit.cover,
+                  width: imageSize,
+                  height: imageSize,
+                  progressIndicatorBuilder: (
+                    BuildContext context,
+                    String url,
+                    progress,
+                  ) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: progress.progress,
+                        strokeWidth: 2.0,
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      ),
+                    );
+                  },
+                  errorWidget: (
+                    BuildContext context,
+                    String url,
+                    dynamic error,
+                  ) {
+                    return Center(
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: imageSize * 0.7,
+                      ),
+                    );
+                  },
+                );
+              }
+
+              return Center(
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: imageSize * 0.7,
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -261,6 +323,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
       onFieldSubmitted: (_) =>
           FocusScope.of(context).requestFocus(phoneNumberFocusNode),
       validator: (v) => fullNameRegex.hasMatch(v) ? null : 'Invalid full name',
+      controller: fullNameTextController,
     );
   }
 
@@ -292,6 +355,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
       focusNode: phoneNumberFocusNode,
       validator: (v) =>
           phoneNumberRegex.hasMatch(v) ? null : 'Invalid phone number',
+      controller: phoneNumberTextController,
     );
   }
 
@@ -396,6 +460,7 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
     return DateTimeField(
       format: intl.DateFormat.yMMMd(),
       readOnly: true,
+      initialValue: birthday,
       onShowPicker: (context, currentValue) {
         return showDatePicker(
           context: context,
@@ -470,11 +535,15 @@ class _LoginUpdateProfilePageState extends State<LoginUpdateProfilePage>
         avatarFile: avatarFile$.value,
       );
       scaffoldKey.showSnackBar('Update profile successfully');
-      await Navigator.pushNamedAndRemoveUntil(
-        context,
-        MainPage.routeName,
-        (route) => false,
-      );
+      if (widget.user == null) {
+        await Navigator.pushNamedAndRemoveUntil(
+          context,
+          MainPage.routeName,
+          (route) => false,
+        );
+      } else {
+        await Navigator.pop(context);
+      }
     } catch (e, s) {
       print('loginUpdateProfile $e $s');
       scaffoldKey.showSnackBar('Update profile failed: ${getErrorMessage(e)}');

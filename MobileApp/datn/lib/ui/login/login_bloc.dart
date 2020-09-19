@@ -1,15 +1,15 @@
 // ignore_for_file: close_sinks
 
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/utils/error.dart';
-import 'package:datn/utils/streams.dart';
-import 'package:datn/utils/type_defs.dart';
-import 'package:datn/utils/validators.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../domain/repository/user_repository.dart';
+import '../../utils/error.dart';
+import '../../utils/streams.dart';
+import '../../utils/type_defs.dart';
+import '../../utils/validators.dart';
 import 'login_state.dart';
 
 /// BLoC that handles validating form and login

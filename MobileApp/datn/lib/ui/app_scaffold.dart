@@ -16,7 +16,8 @@ class AppScaffold extends StatefulWidget {
   _AppScaffoldState createState() => _AppScaffoldState();
 
   static NavigatorState of(BuildContext context, {int newTabIndex}) {
-    final appScaffoldState = context.findAncestorStateOfType<_AppScaffoldState>();
+    final appScaffoldState =
+        context.findAncestorStateOfType<_AppScaffoldState>();
     final currentIndex = appScaffoldState.index;
     final navigatorKeys = appScaffoldState.navigatorKeys;
 

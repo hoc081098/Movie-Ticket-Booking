@@ -30,7 +30,8 @@ abstract class Failure<T>
 }
 
 extension FlatMapResultExtension<T> on Stream<Result<T>> {
-  Stream<Result<R>> flatMapResult<R>(Stream<Result<R>> Function(T result) mapper) {
+  Stream<Result<R>> flatMapResult<R>(
+      Stream<Result<R>> Function(T result) mapper) {
     ArgumentError.checkNotNull(mapper, 'mapper');
     return flatMap((result) {
       if (result is Failure<T>) {

@@ -1,10 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/domain/model/user.dart';
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/ui/app_scaffold.dart';
-import 'package:datn/utils/error.dart';
-import 'package:datn/utils/optional.dart';
-import 'package:datn/utils/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -13,7 +7,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/src/streams/value_stream.dart';
 
-import 'edit_profile/edit_profile_page.dart';
+import '../../domain/model/user.dart';
+import '../../domain/repository/user_repository.dart';
+import '../../utils/error.dart';
+import '../../utils/optional.dart';
+import '../../utils/snackbar.dart';
+import '../app_scaffold.dart';
+import '../login_update_profile/login_update_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -233,8 +233,10 @@ class LoggedIn extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () =>
-                AppScaffold.of(context).pushNamed(EditProfilePage.routeName),
+            onTap: () => AppScaffold.of(context).pushNamed(
+              UpdateProfilePage.routeName,
+              arguments: user,
+            ),
             customBorder: CircleBorder(),
             splashColor: Colors.white30,
             child: Padding(

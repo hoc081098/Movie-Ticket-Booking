@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:datn/data/remote/response/error_response.dart';
-import 'package:datn/utils/type_defs.dart';
 import 'package:http/http.dart';
+
+import '../../utils/type_defs.dart';
+import 'response/error_response.dart';
 
 abstract class AppClient extends BaseClient {
   /// Sends an HTTP GET request with the given headers to the given URL, which can be a Uri or a String.

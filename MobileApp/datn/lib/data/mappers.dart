@@ -1,8 +1,8 @@
-import 'package:datn/data/local/user_local.dart';
-import 'package:datn/data/remote/response/user_response.dart';
-import 'package:datn/domain/model/location.dart';
-import 'package:datn/domain/model/user.dart';
-import 'package:datn/utils/type_defs.dart';
+import '../domain/model/location.dart';
+import '../domain/model/user.dart';
+import '../utils/type_defs.dart';
+import 'local/user_local.dart';
+import 'remote/response/user_response.dart';
 
 Function1<UserResponse, UserLocal> userResponseToUserLocal = (response) {
   return UserLocal((b) {

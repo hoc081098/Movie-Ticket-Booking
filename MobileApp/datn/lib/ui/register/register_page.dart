@@ -1,12 +1,12 @@
-import 'package:datn/ui/register/register_bloc.dart';
-import 'package:datn/ui/register/register_state.dart';
-import 'package:datn/ui/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 
 import '../../utils/delay.dart';
 import '../../utils/snackbar.dart';
+import '../widgets/password_text_field.dart';
+import 'register_bloc.dart';
+import 'register_state.dart';
 
 class RegisterPage extends StatefulWidget {
   static const routeName = '/register';

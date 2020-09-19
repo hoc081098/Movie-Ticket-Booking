@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/ui/login/login_state.dart';
-import 'package:datn/utils/error.dart';
-import 'package:datn/utils/type_defs.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../domain/repository/user_repository.dart';
+import '../../utils/error.dart';
+import '../../utils/type_defs.dart';
+import 'login_state.dart';
 
 /// BLoC handling google sign in
 class GoogleSignInBloc extends DisposeCallbackBaseBloc {
@@ -51,7 +52,7 @@ class GoogleSignInBloc extends DisposeCallbackBaseBloc {
       isLoading$: isLoadingController.stream,
       message$: message$,
       submitLogin: () => submitLoginController.add(null),
-      dispose: () async{
+      dispose: () async {
         await disposeBag.dispose();
         print('$GoogleSignInBloc disposed');
       },

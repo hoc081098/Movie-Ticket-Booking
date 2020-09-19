@@ -1,11 +1,3 @@
-import 'package:datn/domain/model/exception.dart';
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/ui/login/facebook_login_bloc.dart';
-import 'package:datn/ui/login/google_sign_in_bloc.dart';
-import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
-import 'package:datn/ui/register/register_page.dart';
-import 'package:datn/ui/reset_password/reset_password_page.dart';
-import 'package:datn/ui/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -13,8 +5,16 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../domain/model/exception.dart';
+import '../../domain/repository/user_repository.dart';
 import '../../utils/snackbar.dart';
+import '../login_update_profile/login_update_profile_page.dart';
 import '../main_page.dart';
+import '../register/register_page.dart';
+import '../reset_password/reset_password_page.dart';
+import '../widgets/password_text_field.dart';
+import 'facebook_login_bloc.dart';
+import 'google_sign_in_bloc.dart';
 import 'login_bloc.dart';
 import 'login_state.dart';
 
@@ -300,7 +300,7 @@ class _LoginPageState extends State<LoginPage>
 
       if (message.error is NotCompletedLoginException) {
         navigator.pushNamedAndRemoveUntil(
-          LoginUpdateProfilePage.routeName,
+          UpdateProfilePage.routeName,
           (route) => false,
         );
         print('>>>>>>>>>>>>> SignIn to update >>');

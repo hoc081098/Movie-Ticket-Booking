@@ -1,17 +1,17 @@
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/ui/login/login_bloc.dart';
-import 'package:datn/ui/login_update_profile/login_update_profile_page.dart';
-import 'package:datn/ui/register/register_bloc.dart';
-import 'package:datn/ui/register/register_page.dart';
-import 'package:datn/ui/reset_password/reset_password_bloc.dart';
-import 'package:datn/ui/reset_password/reset_password_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
+import 'domain/repository/user_repository.dart';
+import 'ui/login/login_bloc.dart';
 import 'ui/login/login_page.dart';
+import 'ui/login_update_profile/login_update_profile_page.dart';
 import 'ui/main_page.dart';
+import 'ui/register/register_bloc.dart';
+import 'ui/register/register_page.dart';
+import 'ui/reset_password/reset_password_bloc.dart';
+import 'ui/reset_password/reset_password_page.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
         initBloc: () => RegisterBloc(userRepository),
       );
     },
-    LoginUpdateProfilePage.routeName: (context) => LoginUpdateProfilePage(),
+    UpdateProfilePage.routeName: (context) => UpdateProfilePage(),
     ResetPasswordPage.routeName: (context) {
       final userRepository = Provider.of<UserRepository>(context);
 
@@ -194,7 +194,7 @@ class _SplashPageState extends State<SplashPage> {
           case AuthState.notLoggedIn:
             return routes[LoginPage.routeName](context);
           case AuthState.notCompletedLogin:
-            return routes[LoginUpdateProfilePage.routeName](context);
+            return routes[UpdateProfilePage.routeName](context);
         }
 
         throw '???';

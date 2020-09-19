@@ -2,18 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:datn/data/local/user_local.dart';
-import 'package:datn/data/local/user_local_source.dart';
-import 'package:datn/data/remote/auth_client.dart';
-import 'package:datn/data/remote/base_url.dart';
-import 'package:datn/data/remote/response/error_response.dart';
-import 'package:datn/data/remote/response/user_response.dart';
-import 'package:datn/domain/model/exception.dart';
-import 'package:datn/domain/model/location.dart';
-import 'package:datn/domain/model/user.dart';
-import 'package:datn/domain/repository/user_repository.dart';
-import 'package:datn/utils/optional.dart';
-import 'package:datn/utils/type_defs.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +9,19 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../domain/model/exception.dart';
+import '../../domain/model/location.dart';
+import '../../domain/model/user.dart';
+import '../../domain/repository/user_repository.dart';
+import '../../utils/optional.dart';
+import '../../utils/type_defs.dart';
+import '../local/user_local.dart';
+import '../local/user_local_source.dart';
+import '../remote/auth_client.dart';
+import '../remote/base_url.dart';
+import '../remote/response/error_response.dart';
+import '../remote/response/user_response.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final FirebaseStorage _storage;
