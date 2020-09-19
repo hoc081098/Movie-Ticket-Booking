@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +12,7 @@ import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../domain/model/location.dart';
 import '../../domain/model/user.dart';
@@ -35,6 +37,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     with SingleTickerProviderStateMixin, DisposeBagMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
+  final birthDayDateFormat = intl.DateFormat.yMMMd();
 
   AnimationController loginButtonController;
   Animation<double> buttonSqueezeAnimation;
@@ -47,10 +50,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   String phoneNumber;
   String address;
   DateTime birthday;
-  var gender$ = BehaviorSubject.seeded(Gender.MALE);
+  final gender$ = BehaviorSubject.seeded(Gender.MALE);
   Location location;
-  var avatarFile$ = BehaviorSubject<File>.seeded(null);
-  String avatar;
+  final avatarFile$ = BehaviorSubject<File>.seeded(null);
+  final avatar$ = BehaviorSubject<String>.seeded(null);
   var isLoading = false;
 
   final fullNameRegex = RegExp(r"^[\p{L} .'-]+$", unicode: true);
@@ -62,6 +65,11 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   final fullNameTextController = TextEditingController();
   final phoneNumberTextController = TextEditingController();
   final addressTextController = TextEditingController();
+  final birthdayTextController = TextEditingController();
+
+  dynamic checkAuthToken;
+  ValueStream<Tuple2<File, String>> avatarTuple$;
+  final isFetching$ = BehaviorSubject.seeded(false);
 
   @override
   void initState() {
@@ -86,29 +94,77 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
 
     final user = widget.user;
     if (user != null) {
-      fullName = user.fullName;
-      fullNameTextController.text = fullName;
-
-      phoneNumber = user.phoneNumber;
-      phoneNumberTextController.text = phoneNumber;
-
-      address = user.address;
-      addressTextController.text = address;
-
-      birthday = user.birthday;
-      gender$.add(user.gender);
-      location = user.location;
-      avatar = user.avatar;
+      isFetching$.add(true);
+      populateUser(user);
     }
+
+    avatarTuple$ = Rx.combineLatest2(
+      avatarFile$,
+      avatar$,
+      (File a, String b) => Tuple2(a, b),
+    ).shareValueSeeded(Tuple2(avatarFile$.value, avatar$.value))
+      ..listen(null).disposedBy(bag);
+
+    bag.addAll(<StreamController>[
+      isFetching$,
+      avatarFile$,
+      avatar$,
+      gender$,
+    ]);
+  }
+
+  void populateUser(User user) {
+    print('>>> populateUser $user');
+
+    fullName = user.fullName;
+    fullNameTextController.text = fullName;
+
+    phoneNumber = user.phoneNumber;
+    phoneNumberTextController.text = phoneNumber;
+
+    address = user.address;
+    addressTextController.text = address;
+
+    birthday = user.birthday;
+    birthdayTextController.text = DateTimeField.tryFormat(
+      birthday,
+      birthDayDateFormat,
+    );
+
+    gender$.add(user.gender);
+
+    location = user.location;
+
+    avatar$.add(user.avatar);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     textFieldStyle ??= Theme.of(context)
         .textTheme
         .subtitle1
         .copyWith(fontSize: 15.0, color: Colors.white);
+
+    if (widget.user != null) {
+      checkAuthToken ??= () async* {
+        final repository = Provider.of<UserRepository>(context);
+
+        await repository.checkAuth();
+        await Future.delayed(const Duration(milliseconds: 500));
+
+        yield (await repository.user$.first).fold(() => null, (r) => r);
+      }()
+          .where((user) => user != null)
+          .doOnData((_) => isFetching$.add(false))
+          .doOnError((_, __) => isFetching$.add(false))
+          .listen(
+            populateUser,
+            onError: (e, s) => print('Fetch user error $e $s'),
+          )
+          .disposedBy(bag);
+    }
   }
 
   @override
@@ -165,45 +221,56 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           ),
           Positioned.fill(
             child: Center(
-              child: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: buildAvatar(),
+              child: RxStreamBuilder<bool>(
+                stream: isFetching$,
+                builder: (context, snapshot) {
+                  if (snapshot.data) {
+                    return CircularProgressIndicator(
+                      strokeWidth: 2,
+                    );
+                  }
+
+                  return SingleChildScrollView(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: buildAvatar(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: buildFullNameTextField(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: buildPhoneNumber(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: buildAddressTextField(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: buildBirthDayTextField(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: buildGender(),
+                          ),
+                          const SizedBox(height: 12.0),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: buildSubmitButton(),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: buildFullNameTextField(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: buildPhoneNumber(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: buildAddressTextField(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: buildBirthDayTextField(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: buildGender(),
-                      ),
-                      const SizedBox(height: 12.0),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: buildSubmitButton(),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -233,10 +300,12 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           ],
         ),
         child: ClipOval(
-          child: RxStreamBuilder<File>(
-            stream: avatarFile$,
+          child: RxStreamBuilder<Tuple2<File, String>>(
+            stream: avatarTuple$,
             builder: (context, snapshot) {
-              final avatarFile = snapshot.data;
+              final data = snapshot.data;
+              final avatarFile = data.item1;
+              final avatar = data.item2;
 
               if (avatarFile != null) {
                 return Image.file(
@@ -458,9 +527,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
 
   Widget buildBirthDayTextField() {
     return DateTimeField(
-      format: intl.DateFormat.yMMMd(),
+      format: birthDayDateFormat,
       readOnly: true,
-      initialValue: birthday,
+      controller: birthdayTextController,
       onShowPicker: (context, currentValue) {
         return showDatePicker(
           context: context,
