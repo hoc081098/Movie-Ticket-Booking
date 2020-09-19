@@ -11,6 +11,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
@@ -225,8 +226,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                 stream: isFetching$,
                 builder: (context, snapshot) {
                   if (snapshot.data) {
-                    return CircularProgressIndicator(
-                      strokeWidth: 2,
+                    return SizedBox(
+                      width: 64,
+                      height: 64,
+                      child: LoadingIndicator(
+                        color: Colors.white,
+                        indicatorType: Indicator.ballScaleMultiple,
+                      ),
                     );
                   }
 
