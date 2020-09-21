@@ -19,7 +19,8 @@ export class MoviesController {
     return this.moviesService.all();
   }
 
+  @Get('now-playing')
   getNowShowingMovies() {
-    return this.moviesService.getNowShowingMovies();
+    return this.moviesService.getNowShowingMovies([108.206230, 16.047079]);
   }
 }

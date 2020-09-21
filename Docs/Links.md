@@ -21,6 +21,10 @@ https://stackoverflow.com/questions/46019149/many-to-many-with-mongoose
 https://github.com/Crizstian/cinema-microservice
 https://github.com/DBproj-moviebooking/DBproj-moviebooking-backend
 
+https://stackoverflow.com/questions/40789057/mongodb-join-multiple-collections
+https://stackoverflow.com/questions/49572565/how-to-use-geonear-with-lookup-in-mongodb-aggregation
+https://stackoverflow.com/questions/37086387/multiple-join-conditions-using-the-lookup-operator
+
 ///
 ///
 ///

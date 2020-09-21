@@ -4,6 +4,7 @@ import * as admin from 'firebase-admin';
 import * as serviceAccount from '../serviceAccountKey.json';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as mongoose from 'mongoose';
 
 async function bootstrap() {
   const port = 3000;
@@ -13,6 +14,7 @@ async function bootstrap() {
     credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
     databaseURL: 'https://datn-ca929.firebaseio.com',
   });
+  mongoose.set('debug', true);
 
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
