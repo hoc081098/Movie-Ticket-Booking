@@ -28,6 +28,7 @@
     "@nestjs/swagger": "^4.6.0",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
+    "dayjs": "^1.8.36",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.5",
     "reflect-metadata": "^0.1.13",

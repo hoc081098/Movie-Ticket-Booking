@@ -11,10 +11,23 @@ https://github.com/nguyenhoang4875/movies-world-be/blob/master/src/main/java/com
 https://stackoverflow.com/questions/5579465/theater-seat-storage-in-db
 https://stackoverflow.com/questions/13051414/theater-database-schema
 
-
 https://github.com/lambui09/HealthCare.me
 https://github.com/ngquangan/didauday.me/blob/master/api-web/models/Review.js
 https://github.com/lujakob/nestjs-realworld-example-app/blob/master/src/user/auth.middleware.ts
 
 https://github.com/KhoaSuperman/findseat
 https://stackoverflow.com/questions/46019149/many-to-many-with-mongoose
+
+https://github.com/Crizstian/cinema-microservice
+https://github.com/DBproj-moviebooking/DBproj-moviebooking-backend
+
+///
+///
+///
+
+Duy Hoang Foxcode, [Sep 16, 2020 at 09:12:45]:
+ký tốt nghiệp hoặc cần hỗ trợ tốt nghiệp
+
+thì em xử dụng email cá nhân
+
+mail vào admin@foxcode.org nhé

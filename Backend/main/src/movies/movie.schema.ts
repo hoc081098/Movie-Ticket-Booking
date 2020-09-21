@@ -53,6 +53,14 @@ export class Movie extends Document {
   @Prop({ required: true })
   original_language: string;
 
+  @Prop({
+    type: String,
+    enum: ['P', 'C13', 'C16', 'C18'],
+    default: 'P',
+    required: true,
+  })
+  age_type: 'P' | 'C13' | 'C16' | 'C18';
+
   @Prop({ default: true })
   is_active: boolean;
 }

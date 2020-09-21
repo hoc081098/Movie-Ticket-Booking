@@ -16,4 +16,8 @@ export class MoviesService {
         .populate('directors')
         .exec();
   }
+
+  getNowShowingMovies() {
+
+  }
 }
