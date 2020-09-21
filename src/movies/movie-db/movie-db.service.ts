@@ -155,6 +155,7 @@ export class MovieDbService {
     const directors = await this.getPeople(c.crew.filter(c => c.job === 'Director'));
 
     const movieDoc: Omit<CreateDocumentDefinition<Movie>, '_id'> = {
+      age_type: 'P',
       title: v.title,
       trailer_video_url: null,
       poster_url: v.poster_path ? `https://image.tmdb.org/t/p/w342${v.poster_path}` : null,
@@ -164,7 +165,7 @@ export class MovieDbService {
       directors: directors.map(d => d._id),
       actors: actors.map(d => d._id),
       is_active: true,
-      original_language: v.original_language,
+      original_language: v.original_language
     };
     const saved = await this.movieModel.create(movieDoc);
 

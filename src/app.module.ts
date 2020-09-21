@@ -10,6 +10,8 @@ import { FirebaseAdminModule } from '@aginix/nestjs-firebase-admin/dist';
 import { MoviesModule } from './movies/movies.module';
 import { CategoriesModule } from './categories/categories.module';
 import { PeopleModule } from './people/people.module';
+import { ShowTimesModule } from './show-times/show-times.module';
+import { TheatresModule } from './theatres/theatres.module';
 import * as admin from 'firebase-admin';
 
 @Module({
@@ -35,6 +37,8 @@ import * as admin from 'firebase-admin';
     MoviesModule,
     CategoriesModule,
     PeopleModule,
+    ShowTimesModule,
+    TheatresModule,
   ],
   controllers: [AppController],
   providers: [

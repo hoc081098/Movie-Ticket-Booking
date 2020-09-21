@@ -18,4 +18,8 @@ export class MoviesController {
   all() {
     return this.moviesService.all();
   }
+
+  getNowShowingMovies() {
+    return this.moviesService.getNowShowingMovies();
+  }
 }
