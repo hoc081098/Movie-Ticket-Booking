@@ -43,80 +43,91 @@ export class ShowTimesService {
       const [endH, endM] = endHString.split(':').map(x => +x);
 
       const hours: number[] = Array.from({ length: endH - startH + 1 }, (_, i) => i + startH);
-      this.logger.debug(`Hours for ${theatre.name} are ${JSON.stringify(hours)}`);
+      this.logger.debug(`Hours for ${theatre.name} are ${JSON.stringify(hours)} -- ${startH}:${startM} -> ${endH}:${endM}`);
 
       for (const room of theatre.rooms) {
-        for (let dDate = -10; dDate <= 20; dDate++) {
-          const day = current.add(dDate, 'day');
-          const thStartTime = day.set('hour', startH)
-              .set('minute', startM)
-              .set('second', 0)
-              .set('millisecond', 0);
-          const thEndTime = day.set('hour', endH)
-              .set('minute', endM)
-              .set('second', 0)
-              .set('millisecond', 0);
+        for (let dDate = -1; dDate <= 2; dDate++) {
+          const day = current.startOf('day').add(dDate, 'day');
+
+          const thStartTime = day.set('hour', startH).set('minute', startM);
+          const thEndTime = day.set('hour', endH).set('minute', endM);
 
           const movie = await this.randomMovie();
 
           for (const hour of hours) {
-            const startTime = day
-                .set('hour', hour)
-                .set('minute', 0)
-                .set('second', 0)
-                .set('millisecond', 0);
-            const endTime = startTime.add(movie.duration, 'minute');
-
-            const showTimes = await this.showTimeModel
-                .find({
-                  theatre: theatre._id,
-                  room,
-                  is_active: true,
-                })
-                .sort({ start_time: 'asc' });
-
-            if (showTimes.length == 1) {
-              if (startTime.isBefore(showTimes[0].end_time) && endTime.isAfter(showTimes[0].start_time)
-                  || startTime.isBefore(thStartTime) || endTime.isAfter(thEndTime)) {
-                continue;
-              }
-            }
-
-            if (showTimes.length >= 2) {
-              const array = await from(showTimes)
-                  .pipe(
-                      pairwise(),
-                      filter(([prev, next]) =>
-                          (startTime as any).isBetween(prev.end_time, next.start_time)
-                          && (endTime as any).isBetween(prev.end_time, next.start_time)
-                          && (startTime as any).isBetween(thStartTime, thEndTime)
-                          && (endTime as any).isBetween(thStartTime, thEndTime)
-                      ),
-                      take(1),
-                  )
-                  .toPromise();
-
-              if (array === undefined) {
-                continue;
-              }
-
-              this.logger.debug(`>>> Array ${array}`);
-            }
-
-            const showTime = await this.showTimeModel.create({
-              movie: movie._id,
-              theatre: theatre._id,
-              room,
-              is_active: true,
-              end_time: endTime.toDate(),
-              start_time: startTime.toDate(),
-            });
-
-            this.logger.debug(`Saved show time: ${JSON.stringify(showTime)}`);
+            await this.checkAndSave(day, hour, movie, theatre, room, thStartTime, thEndTime);
           }
         }
       }
     }
+  }
+
+  private async checkAndSave(
+      day: dayjs.Dayjs,
+      hour: number,
+      movie: Movie,
+      theatre: Theatre,
+      room: string,
+      thStartTime: dayjs.Dayjs,
+      thEndTime: dayjs.Dayjs
+  ) {
+    const startTime = day
+        .set('hour', hour)
+        .set('minute', 0)
+        .set('second', 0)
+        .set('millisecond', 0);
+    const endTime = startTime.add(movie.duration, 'minute');
+
+    this.logger.debug(`Start saving show time: ${theatre.name} -- ${room} <> ${thStartTime.toDate()}-${thEndTime.toDate()} <> ${startTime}-${endTime}`);
+
+    const showTimes = await this.showTimeModel
+        .find({
+          theatre: theatre._id,
+          room,
+          is_active: true,
+          start_time: { $gte: thStartTime.toDate() },
+          end_time: { $lte: thEndTime.toDate() },
+        })
+        .sort({ start_time: 'asc' });
+
+    if (showTimes.length == 1) {
+      if (startTime.isBefore(showTimes[0].end_time) && endTime.isAfter(showTimes[0].start_time)
+          || startTime.isBefore(thStartTime) || endTime.isAfter(thEndTime)) {
+        return;
+      }
+    }
+
+    if (showTimes.length >= 2) {
+      const array = await from(showTimes)
+          .pipe(
+              pairwise(),
+              filter(([prev, next]) =>
+                  (startTime as any).isBetween(prev.end_time, next.start_time)
+                  && (endTime as any).isBetween(prev.end_time, next.start_time)
+                  && (startTime as any).isBetween(thStartTime, thEndTime)
+                  && (endTime as any).isBetween(thStartTime, thEndTime)
+              ),
+              take(1),
+          )
+          .toPromise();
+
+      if (array === undefined) {
+        return;
+      }
+
+      this.logger.debug(`>>> Array ${array}`);
+    }
+
+    const showTime = await this.showTimeModel.create({
+      movie: movie._id,
+      theatre: theatre._id,
+      room,
+      is_active: true,
+      end_time: endTime.toDate(),
+      start_time: startTime.toDate(),
+    });
+
+    this.logger.debug(`Saved show time: ${JSON.stringify(showTime)}`);
   }
 
   private async randomMovie() {

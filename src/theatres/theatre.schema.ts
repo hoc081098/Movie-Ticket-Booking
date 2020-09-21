@@ -54,3 +54,4 @@ export class Theatre extends Document {
 }
 
 export const TheatreSchema = SchemaFactory.createForClass(Theatre);
+TheatreSchema.index({ location: '2dsphere' });

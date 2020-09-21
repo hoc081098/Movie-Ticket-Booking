@@ -8,6 +8,8 @@ import { MovieDbService } from './movie-db/movie-db.service';
 import { ConfigModule } from '../config/config.module';
 import { Category, CategorySchema } from '../categories/category.schema';
 import { Person, PersonSchema } from '../people/person.schema';
+import { ShowTime, ShowTimeSchema } from '../show-times/show-time.schema';
+import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
 
 @Module({
   imports: [
@@ -27,6 +29,14 @@ import { Person, PersonSchema } from '../people/person.schema';
       {
         name: Person.name,
         schema: PersonSchema,
+      },
+      {
+        name: ShowTime.name,
+        schema: ShowTimeSchema,
+      },
+      {
+        name: Theatre.name,
+        schema: TheatreSchema,
       }
     ]),
     HttpModule,
