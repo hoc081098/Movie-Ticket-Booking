@@ -5,7 +5,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
   toJSON: {
     virtuals: true,
   },
-  collection: 'categories'
+  collection: 'categories',
+  timestamps: true,
 })
 export class Category extends Document {
   @Prop({ required: true })
@@ -15,7 +16,7 @@ export class Category extends Document {
 export const CategorySchema = SchemaFactory.createForClass(Category);
 
 CategorySchema.virtual('movies', {
-  ref: 'movie_category',
+  ref: 'MovieCategory',
   localField: '_id',
   foreignField: 'category_id',
 });

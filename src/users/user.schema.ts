@@ -2,7 +2,9 @@ import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Location } from '../location.inteface';
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class User extends Document {
   @Prop({ required: true })
   uid: string;

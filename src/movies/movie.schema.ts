@@ -4,7 +4,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 @Schema({
   toJSON: {
     virtuals: true
-  }
+  },
+  timestamps: true,
 })
 export class Movie extends Document {
   @Prop({ required: true })
@@ -13,11 +14,11 @@ export class Movie extends Document {
   @Prop()
   trailer_video_url?: string;
 
-  @Prop({ required: true })
-  poster_url: string;
+  @Prop()
+  poster_url?: string;
 
-  @Prop({ required: true })
-  overview: string;
+  @Prop()
+  overview?: string;
 
   @Prop({ required: true })
   released_date: Date;
@@ -28,29 +29,29 @@ export class Movie extends Document {
   @Prop({
     type: [
       {
-        type: MongooseSchema.Types.ObjectId,
-        ref: 'people',
+        type: [MongooseSchema.Types.ObjectId],
+        ref: 'Person',
         required: true,
       }
     ],
     required: true,
   })
-  directors: MongooseSchema.Types.ObjectId[];
+  directors: any[];
 
   @Prop({
     type: [
       {
-        type: MongooseSchema.Types.ObjectId,
-        ref: 'people',
+        type: [MongooseSchema.Types.ObjectId],
+        ref: 'Person',
         required: true,
       }
     ],
     required: true,
   })
-  actors: MongooseSchema.Types.ObjectId[];
+  actors: any[];
 
   @Prop({ required: true })
-  nation: string;
+  original_language: string;
 
   @Prop({ default: true })
   is_active: boolean;
@@ -59,7 +60,7 @@ export class Movie extends Document {
 export const MovieSchema = SchemaFactory.createForClass(Movie);
 
 MovieSchema.virtual('categories', {
-  ref: 'movie_category',
+  ref: 'MovieCategory',
   localField: '_id',
   foreignField: 'movie_id',
 });
