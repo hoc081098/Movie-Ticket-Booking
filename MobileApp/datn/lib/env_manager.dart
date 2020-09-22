@@ -28,5 +28,5 @@ class EnvManager {
 
   EnvManager._();
 
-  factory EnvManager() => _instance ?? EnvManager._();
+  factory EnvManager() => _instance ??= EnvManager._();
 }
