@@ -5,6 +5,7 @@ import 'package:datn/data/remote/response/movie_response.dart';
 import 'package:datn/data/serializers.dart';
 import 'package:datn/domain/model/location.dart';
 import 'package:datn/utils/type_defs.dart';
+import 'package:datn/utils/utils.dart';
 
 import '../../domain/model/movie.dart';
 import '../../domain/repository/movie_repository.dart';
