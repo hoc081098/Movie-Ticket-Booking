@@ -75,15 +75,19 @@ export class MoviesService {
       },
       { $unwind: '$movie' },
       {
-        $replaceRoot: {
-          newRoot: {
-            $mergeObjects: [
-              { distance: '$distance' },
-              '$movie',
-            ]
-          }
+        $group: {
+          _id: '$movie._id',
+          data: { $first: '$movie' },
         }
       },
+      {
+        $unwind: '$data'
+      },
+      {
+        $replaceRoot: {
+          newRoot: '$data'
+        }
+      }
     ]).exec();
   }
 }
