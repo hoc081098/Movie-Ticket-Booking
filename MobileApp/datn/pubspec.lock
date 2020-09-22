@@ -204,6 +204,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  distinct_value_connectable_stream:
+    dependency: transitive
+    description:
+      name: distinct_value_connectable_stream
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   fake_async:
     dependency: transitive
     description:
@@ -442,7 +449,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.7+8"
+    version: "0.6.7+10"
   image_picker_platform_interface:
     dependency: transitive
     description:
@@ -742,6 +749,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety"
+  stream_loader:
+    dependency: "direct main"
+    description:
+      name: stream_loader
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   stream_transform:
     dependency: transitive
     description:

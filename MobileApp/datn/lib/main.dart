@@ -23,8 +23,7 @@ void main() async {
   //
   // Env
   //
-  final envManager = EnvManager();
-  await envManager.config();
+  await EnvManager.shared.config();
 
   //
   // Firebase, Google, Facebook

@@ -24,9 +24,7 @@ class EnvManager {
   //
   //
 
-  static EnvManager _instance;
+  static EnvManager shared = EnvManager._();
 
   EnvManager._();
-
-  factory EnvManager() => _instance ??= EnvManager._();
 }

@@ -630,7 +630,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
 
   void searchLocation() async {
     try {
-      final apiKey = EnvManager().get(EnvKey.PLACES_API_KEY);
+      final apiKey = EnvManager.shared.get(EnvKey.PLACES_API_KEY);
 
       final prediction = await PlacesAutocomplete.show(
         context: context,
