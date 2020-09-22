@@ -24,6 +24,9 @@ https://github.com/DBproj-moviebooking/DBproj-moviebooking-backend
 https://stackoverflow.com/questions/40789057/mongodb-join-multiple-collections
 https://stackoverflow.com/questions/49572565/how-to-use-geonear-with-lookup-in-mongodb-aggregation
 https://stackoverflow.com/questions/37086387/multiple-join-conditions-using-the-lookup-operator
+https://stackoverflow.com/questions/50525825/unwind-and-group-for-the-nested-array-objects-in-mongodb
+https://stackoverflow.com/questions/54303631/how-can-i-add-a-replaceroot-to-my-aggregate-group-function
+https://stackoverflow.com/questions/48483833/how-to-remove-duplicates-from-mongodb-and-keeping-unique-data-using-aggregate-fu
 
 ///
 ///

@@ -10,6 +10,8 @@ import { Category, CategorySchema } from '../categories/category.schema';
 import { Person, PersonSchema } from '../people/person.schema';
 import { ShowTime, ShowTimeSchema } from '../show-times/show-time.schema';
 import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
+import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
     ]),
     HttpModule,
     ConfigModule,
+    AuthModule,
+    UsersModule,
   ],
   providers: [MoviesService, MovieDbService],
   controllers: [MoviesController]
