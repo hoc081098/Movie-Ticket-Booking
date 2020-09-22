@@ -130,7 +130,7 @@ export class MoviesService {
       },
       {
         $match: {
-          show_times: {
+          'show_times.0': {
             $exists: false
           }
         }
