@@ -1,13 +1,4 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  DefaultValuePipe,
-  Get,
-  ParseIntPipe,
-  Post,
-  Query
-} from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { MovieDbService } from './movie-db/movie-db.service';
 import { MoviesService } from './movies.service';
 import { Movie } from './movie.schema';
@@ -33,14 +24,18 @@ export class MoviesController {
 
   @Get('now-playing')
   async getNowShowingMovies(
-      @Query('lat') lat: number,
-      @Query('lng') lng: number,
       @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
       @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
+      @Query('lat') lat?: number,
+      @Query('lng') lng?: number,
   ): Promise<Movie[]> {
-    if (!lat || !lng) {
-      throw new BadRequestException('Required lat and lng');
+    lat = parseFloat(lat as any);
+    lng = parseFloat(lng as any);
+
+    if (isNaN(lat) || isNaN(lng)) {
+      return this.moviesService.getNowShowingMovies(null, page, perPage);
     }
+
     return this.moviesService.getNowShowingMovies([lng, lat], page, perPage);
   }
 
