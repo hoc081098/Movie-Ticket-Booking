@@ -14,7 +14,7 @@ async function bootstrap() {
     credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
     databaseURL: 'https://datn-ca929.firebaseio.com',
   });
-  mongoose.set('debug', true);
+  mongoose.set('debug', false);
 
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
