@@ -25,7 +25,7 @@ export class MoviesService {
         .exec();
   }
 
-  getNowShowingMovies(center: [number, number], page: number, perPage: number): Promise<Movie[]> {
+  getNowShowingMovies(center: [number, number] | null, page: number, perPage: number): Promise<Movie[]> {
     const currentDay = new Date();
 
     const start = dayjs(currentDay).startOf('day').toDate();
@@ -36,19 +36,26 @@ export class MoviesService {
     this.logger.debug(`getNowShowingMovies: ${currentDay} -- ${start} -- ${end} -- ${center}`);
 
     return this.theatreModel.aggregate([
-      {
-        $geoNear: {
-          near: {
-            type: 'Point',
-            coordinates: center,
-          },
-          distanceField: 'distance',
-          includeLocs: 'location',
-          maxDistance: constants.maxDistanceInMeters,
-          spherical: true,
-        },
-      },
-      { $match: { is_active: true } },
+      ...(
+          center != null
+              ?
+              [
+                {
+                  $geoNear: {
+                    near: {
+                      type: 'Point',
+                      coordinates: center,
+                    },
+                    distanceField: 'distance',
+                    includeLocs: 'location',
+                    maxDistance: constants.maxDistanceInMeters,
+                    spherical: true,
+                  },
+                },
+                { $match: { is_active: true } }
+              ]
+              : []
+      ),
       {
         $lookup: {
           from: 'show_times',
