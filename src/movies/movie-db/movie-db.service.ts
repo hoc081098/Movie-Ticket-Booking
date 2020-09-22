@@ -9,6 +9,7 @@ import { MovieCategory } from '../movie-category.schema';
 import { Person } from '../../people/person.schema';
 import { fromArray } from 'rxjs/internal/observable/fromArray';
 import { InjectModel } from '@nestjs/mongoose';
+import dayjs = require('dayjs');
 
 @Injectable()
 export class MovieDbService {
@@ -16,6 +17,11 @@ export class MovieDbService {
 
   private readonly catDocByName = new Map<string, Category>();
   private readonly personByFullName = new Map<string, Person>();
+
+  private readonly days = Array
+      .from({ length: 7 * 5 }, (_, i) => i)
+      .map(i => dayjs(new Date()).add(i - 7, 'day').toDate());
+  private dayCount = 0;
 
   constructor(
       private readonly httpService: HttpService,
@@ -43,7 +49,7 @@ export class MovieDbService {
             ),
             ignoreElements(),
             tap({ complete: () => this.logger.debug('Saved done') })
-        )
+        );
   }
 
   private get apiKey() {
@@ -51,7 +57,7 @@ export class MovieDbService {
   }
 
   private search(query: string, page: number, year: number): Observable<SearchMovieResponseResult> {
-    const url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&language=en-US&query=${query}&page=${page}&include_adult=false&year=${year}`
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&language=en-US&query=${query}&page=${page}&include_adult=false&year=${year}`;
     return this.httpService
         .get(url)
         .pipe(map(response => response.data as SearchMovieResponseResult));
@@ -68,7 +74,7 @@ export class MovieDbService {
     const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${this.apiKey}`;
     return this.httpService
         .get(url)
-        .pipe(map(response => response.data as MovieCreditsResponseResult))
+        .pipe(map(response => response.data as MovieCreditsResponseResult));
   }
 
   //
@@ -151,6 +157,8 @@ export class MovieDbService {
   private async saveMovieDetail(v: MovieDetailResponseResult, c: MovieCreditsResponseResult) {
     this.logger.debug('Start save movie detail');
 
+    this.dayCount = (this.dayCount + 1) % this.days.length;
+
     const actors = await this.getPeople(c.cast.slice(0, 10));
     const directors = await this.getPeople(c.crew.filter(c => c.job === 'Director'));
 
@@ -160,7 +168,7 @@ export class MovieDbService {
       trailer_video_url: null,
       poster_url: v.poster_path ? `https://image.tmdb.org/t/p/w342${v.poster_path}` : null,
       overview: v.overview,
-      released_date: new Date(v.release_date),
+      released_date: this.days[this.dayCount],
       duration: v.runtime,
       directors: directors.map(d => d._id),
       actors: actors.map(d => d._id),
