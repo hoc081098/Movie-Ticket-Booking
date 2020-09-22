@@ -75,6 +75,11 @@ export class MoviesService {
       },
       { $unwind: '$movie' },
       {
+        $match: {
+          'movie.released_date': { $lte: start },
+        },
+      },
+      {
         $group: {
           _id: '$movie._id',
           data: { $first: '$movie' },
