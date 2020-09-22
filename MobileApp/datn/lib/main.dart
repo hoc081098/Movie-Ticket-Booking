@@ -12,7 +12,9 @@ import 'app.dart';
 import 'data/local/user_local_source_impl.dart';
 import 'data/mappers.dart';
 import 'data/remote/auth_client.dart';
+import 'data/repository/movie_repository_impl.dart';
 import 'data/repository/user_repository_impl.dart';
+import 'domain/repository/movie_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
 import 'utils/type_defs.dart';
@@ -69,10 +71,16 @@ void main() async {
   );
   _onSignOut = userRepository.logout;
 
+  final movieRepository = MovieRepositoryImpl(
+    authClient,
+    movieResponseToMovie,
+  );
+
   runApp(
     Providers(
       providers: [
         Provider<UserRepository>(value: userRepository),
+        Provider<MovieRepository>(value: movieRepository),
       ],
       child: MyApp(),
     ),

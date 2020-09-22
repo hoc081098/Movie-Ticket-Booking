@@ -9,10 +9,17 @@ part of 'serializers.dart';
 Serializers _$_serializers = (new Serializers().toBuilder()
       ..add(LocationLocal.serializer)
       ..add(LocationResponse.serializer)
+      ..add(MovieResponse.serializer)
       ..add(MultipleMessagesErrorResponse.serializer)
       ..add(SingleMessageErrorResponse.serializer)
       ..add(UserLocal.serializer)
       ..add(UserResponse.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

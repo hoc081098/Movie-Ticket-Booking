@@ -1,7 +1,10 @@
+import 'package:datn/domain/model/movie.dart';
+
 import '../domain/model/location.dart';
 import '../domain/model/user.dart';
 import '../utils/type_defs.dart';
 import 'local/user_local.dart';
+import 'remote/response/movie_response.dart';
 import 'remote/response/user_response.dart';
 
 Function1<UserResponse, UserLocal> userResponseToUserLocal = (response) {
@@ -55,4 +58,31 @@ Function1<UserLocal, User> userLocalToUserDomain = (local) {
         : null
     ..isCompleted = local.isCompleted
     ..isActive = local.isActive);
+};
+
+Function1<MovieResponse, Movie> movieResponseToMovie = (res) {
+  return Movie(
+    (b) => b
+      ..id = res.id
+      ..isActive = res.is_active
+      ..actors = (b.actors..replace(res.actors))
+      ..directors = (b.directors..replace(res.directors))
+      ..title = res.title
+      ..trailerVideoUrl = res.trailer_video_url
+      ..posterUrl = res.poster_url
+      ..overview = res.overview
+      ..releasedDate = res.released_date
+      ..duration = res.duration
+      ..originalLanguage = res.original_language
+      ..createdAt = res.createdAt
+      ..updatedAt = res.updatedAt
+      ..ageType = stringToAgeType(res.age_type),
+  );
+};
+
+Function1<String, AgeType> stringToAgeType = (s) {
+  return AgeType.values.firstWhere(
+    (v) => v.toString().split('.')[1] == s,
+    orElse: () => throw Exception("Cannot convert string '$s' to AgeType"),
+  );
 };
