@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { ShowTime } from '../show-times/show-time.schema';
 import * as dayjs from 'dayjs';
 import { Theatre } from '../theatres/theatre.schema';
+import { constants, getSkipLimit } from '../utils';
 
 @Injectable()
 export class MoviesService {
@@ -24,12 +25,13 @@ export class MoviesService {
         .exec();
   }
 
-  getNowShowingMovies(center: [number, number]) {
+  getNowShowingMovies(center: [number, number], page: number, perPage: number): Promise<Movie[]> {
     const currentDay = new Date();
 
     const start = dayjs(currentDay).startOf('day').toDate();
     const end = dayjs(currentDay).endOf('day').add(7, 'day').toDate();
-    const maxDistanceInMeters = 30_000;
+
+    const skipLimit = getSkipLimit(page, perPage);
 
     this.logger.debug(`getNowShowingMovies: ${currentDay} -- ${start} -- ${end} -- ${center}`);
 
@@ -42,7 +44,7 @@ export class MoviesService {
           },
           distanceField: 'distance',
           includeLocs: 'location',
-          maxDistance: maxDistanceInMeters,
+          maxDistance: constants.maxDistanceInMeters,
           spherical: true,
         },
       },
@@ -89,10 +91,56 @@ export class MoviesService {
         $unwind: '$data'
       },
       {
+        $skip: skipLimit.skip,
+      },
+      {
+        $limit: skipLimit.limit
+      },
+      {
         $replaceRoot: {
           newRoot: '$data'
         }
       }
+    ]).exec();
+  }
+
+  getComingSoonMovies(page: number, perPage: number): Promise<Movie[]> {
+    const currentDay = new Date();
+    const startOfTomorrow = dayjs(currentDay).startOf('day').add(1, 'day').toDate();
+
+    const skipLimit = getSkipLimit(page, perPage);
+
+    this.logger.debug(`getComingSoonMovies: ${currentDay} -- ${startOfTomorrow}`);
+
+    return this.movieModel.aggregate([
+      {
+        $match: {
+          released_date: {
+            $gte: startOfTomorrow,
+          }
+        },
+      },
+      {
+        $lookup: {
+          from: 'show_times',
+          localField: '_id',
+          foreignField: 'movie',
+          as: 'show_times',
+        },
+      },
+      {
+        $match: {
+          show_times: {
+            $exists: false
+          }
+        }
+      },
+      {
+        $skip: skipLimit.skip,
+      },
+      {
+        $limit: skipLimit.limit
+      },
     ]).exec();
   }
 }

@@ -1,0 +1,4701 @@
+[{
+  "_id": {
+    "$oid": "5f68c1c4211801312805c2e7"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee8e5f57c315cac41e0"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-11T04:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:48.371Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:48.371Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c4211801312805c2e8"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee8e5f57c315cac41e0"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-11T07:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:48.404Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:48.404Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c5211801312805c2e9"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac40ea"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-11T02:37:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:49.730Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:49.730Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c5211801312805c2ea"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac40ea"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-11T03:37:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:49.734Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:49.734Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c6211801312805c2eb"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac418a"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-11T02:01:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:50.793Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:50.793Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c6211801312805c2ec"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac418a"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-11T03:01:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:50.799Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:50.799Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c7211801312805c2ed"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac405f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:51.685Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:51.685Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c7211801312805c2ee"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac405f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:51.688Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:51.688Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c8211801312805c2ef"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed8e5f57c315cac40bb"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-11T02:22:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:52.395Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:52.395Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c8211801312805c2f0"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed8e5f57c315cac40bb"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-11T03:22:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:52.398Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:52.398Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c9211801312805c2f1"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac425b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:53.056Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:53.056Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c9211801312805c2f2"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac425b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:53.061Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:53.061Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c9211801312805c2f3"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4267"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-11T03:35:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:53.706Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:53.706Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1c9211801312805c2f4"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4267"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-11T05:35:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:53.712Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:53.712Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1ca211801312805c2f5"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac411e"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:54.314Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:54.314Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1ca211801312805c2f6"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac411e"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:54.317Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:54.317Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1ca211801312805c2f7"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec7e5f57c315cac40ad"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-11T02:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:54.885Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:54.885Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1ca211801312805c2f8"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec7e5f57c315cac40ad"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-11T03:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:54.889Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:54.889Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cb211801312805c2f9"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac4093"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-11T02:20:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:55.488Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:55.488Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cb211801312805c2fa"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac4093"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-11T03:20:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:55.493Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:55.493Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cc211801312805c2fb"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee9e5f57c315cac4230"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-11T03:30:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:56.048Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:56.048Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cc211801312805c2fc"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee9e5f57c315cac4230"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-11T05:30:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:56.052Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:56.052Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cc211801312805c2fd"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac4188"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-11T04:18:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:56.654Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:56.654Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cc211801312805c2fe"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac4188"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-11T07:18:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:56.662Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:56.662Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cd211801312805c2ff"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f5ae5f57c315cac42a3"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-11T03:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:57.230Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:57.230Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cd211801312805c300"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f5ae5f57c315cac42a3"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-11T06:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:57.234Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:57.234Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cd211801312805c301"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee1e5f57c315cac416b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-11T02:54:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:57.930Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:57.930Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cd211801312805c302"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee1e5f57c315cac416b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-11T04:54:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:57.935Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:57.935Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1ce211801312805c303"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4066"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-11T01:30:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:58.623Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:58.623Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1ce211801312805c304"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4066"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-11T02:30:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:58.628Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:58.628Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cf211801312805c305"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac425b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-11T01:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:59.381Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:59.381Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68c1cf211801312805c306"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac425b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-11T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T15:07:59.384Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T15:07:59.384Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d280"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac418c"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.076Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.076Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d281"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac418c"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.095Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.095Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d282"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac418c"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.177Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.177Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d283"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac418c"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.186Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.186Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d284"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee1e5f57c315cac417d"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-22T04:27:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.254Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.254Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d285"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee1e5f57c315cac417d"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-22T07:27:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.272Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.272Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d286"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac41a6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-23T02:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.330Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.330Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d287"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac41a6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-23T03:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.340Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.340Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d288"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4291"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-20T04:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.418Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.418Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d289"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4291"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-20T07:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.439Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.439Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d28a"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee9e5f57c315cac421c"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-21T03:46:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.501Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.501Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d28b"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee9e5f57c315cac421c"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-21T05:46:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.515Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.515Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d28c"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-22T02:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.584Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.584Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d28d"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-22T03:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.593Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.593Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d28e"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac40fb"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-23T04:31:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.659Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.659Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d28f"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac40fb"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-23T07:31:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.675Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.675Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d290"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41bc"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-20T03:33:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.740Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.740Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d291"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41bc"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-20T05:33:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.755Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.755Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d292"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac403a"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.825Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.825Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d293"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac403a"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-21T04:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.835Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.835Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d294"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-22T02:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.909Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.909Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d1742ce9343c06d295"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-22T03:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:17.920Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:17.920Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d296"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac40e6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.101Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.101Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d297"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac40e6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-23T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.144Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.144Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d298"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eebe5f57c315cac4284"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-20T03:40:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.221Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.221Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d299"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eebe5f57c315cac4284"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-20T05:40:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.234Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.234Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d29a"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41ae"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-21T02:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.295Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.295Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d29b"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41ae"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-21T03:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.304Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.304Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d29c"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac410e"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-22T02:01:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.373Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.373Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d29d"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac410e"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-22T03:01:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.384Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.384Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d29e"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec7e5f57c315cac40ab"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-23T03:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.453Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.453Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d29f"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec7e5f57c315cac40ab"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-23T05:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.468Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.468Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a0"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac4093"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-20T02:20:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.533Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.533Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a1"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac4093"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-20T03:20:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.543Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.543Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a2"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee9e5f57c315cac4247"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-21T04:13:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.612Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.612Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a3"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee9e5f57c315cac4247"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-21T07:13:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.626Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.626Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a4"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee8e5f57c315cac41ec"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-22T03:46:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.681Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.681Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a5"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee8e5f57c315cac41ec"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-22T05:46:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.694Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.694Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a6"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac404d"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-23T03:54:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.763Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.763Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a7"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac404d"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 5",
+  "end_time": {
+    "$date": "2020-09-23T05:54:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.776Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.776Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a8"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac411a"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-20T03:45:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.834Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.834Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2a9"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac411a"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-20T05:45:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.845Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.845Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2aa"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac41a6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-21T02:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.914Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.914Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2ab"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac41a6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-21T03:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.922Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.922Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2ac"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac4107"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-22T03:34:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:18.988Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:18.988Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d2742ce9343c06d2ad"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac4107"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-22T05:34:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2ae"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f5ae5f57c315cac42a3"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-23T04:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.071Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.071Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2af"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f5ae5f57c315cac42a3"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 6",
+  "end_time": {
+    "$date": "2020-09-23T07:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.087Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.087Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b0"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac418c"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.142Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.142Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b1"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac418c"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.149Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.149Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b2"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac403a"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.210Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.210Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b3"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac403a"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-21T04:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.218Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.218Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b4"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-22T02:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.281Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.281Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b5"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-22T03:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.289Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.289Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b6"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4291"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-23T04:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.348Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.348Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b7"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4291"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "2D 7",
+  "end_time": {
+    "$date": "2020-09-23T07:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.363Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.363Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b8"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac41a6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-20T02:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.416Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.416Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2b9"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac41a6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-20T03:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.424Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.424Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2ba"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac4041"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-21T02:01:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.489Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.489Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2bb"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac4041"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-21T03:01:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.496Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.496Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2bc"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41ae"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-22T02:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.562Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.562Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2bd"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41ae"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-22T03:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.569Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.569Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2be"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec7e5f57c315cac40ab"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-23T03:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.641Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.641Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2bf"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec7e5f57c315cac40ab"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d70"
+  },
+  "room": "3D",
+  "end_time": {
+    "$date": "2020-09-23T05:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.654Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.654Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c0"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4291"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-20T04:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.721Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.721Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c1"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4291"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-20T05:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.729Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.729Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c2"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4291"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-20T08:04:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T06:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.749Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.749Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c3"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed8e5f57c315cac40bb"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-21T02:22:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.811Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.811Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c4"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed8e5f57c315cac40bb"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-21T03:22:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.821Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.821Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c5"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed8e5f57c315cac40bb"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-21T04:22:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.828Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.828Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c6"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4278"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-22T02:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.883Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.883Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c7"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4278"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-22T03:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.890Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.890Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c8"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4278"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-22T04:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.897Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.897Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2c9"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T04:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.955Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.955Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2ca"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T05:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.962Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.962Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2cb"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T06:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.970Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.970Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2cc"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T07:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.980Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.980Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2cd"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T08:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T06:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.989Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.989Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d3742ce9343c06d2ce"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T09:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T07:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:19.996Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:19.996Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2cf"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T10:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T08:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.004Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.004Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d0"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T11:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T09:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.011Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.011Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d1"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T12:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T10:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.018Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.018Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d2"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T13:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T11:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.025Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.025Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d3"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T14:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T12:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.031Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.031Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d4"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T15:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T13:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.040Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.040Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d5"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T16:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T14:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.045Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.045Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d6"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T17:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T15:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.053Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.053Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d7"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f38e5f57c315cac4292"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-25T18:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T16:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.060Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.060Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d8"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac407f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-20T03:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.068Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.068Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2d9"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac407f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-20T04:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.076Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.076Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2da"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac407f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-20T06:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.084Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.084Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2db"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41ae"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-21T02:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.141Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.141Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2dc"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41ae"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-21T03:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.148Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.148Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2dd"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41ae"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-21T04:05:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.154Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.154Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2de"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4267"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-22T03:35:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.203Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.203Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2df"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4267"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-22T04:35:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.210Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.210Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e0"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4267"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-22T06:35:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.222Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.222Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e1"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-23T02:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.279Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.279Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e2"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-23T03:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.285Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.285Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e3"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4064"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-23T04:02:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.293Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.293Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e4"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac4039"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-20T03:32:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.345Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.345Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e5"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac4039"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-20T04:32:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.350Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.350Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e6"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec4e5f57c315cac4039"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-20T06:32:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.361Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.361Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e7"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41bc"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-21T03:33:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.404Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.404Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e8"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41bc"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-21T04:33:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.410Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.410Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2e9"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41bc"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-21T06:33:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.419Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.419Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2ea"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac408b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.469Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.469Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2eb"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac408b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.476Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.476Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2ec"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac408b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-22T04:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.484Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.484Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2ed"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac409f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-23T03:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.535Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.535Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2ee"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac409f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-23T04:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.542Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.542Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2ef"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac409f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-23T06:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.552Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.552Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f0"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f5ae5f57c315cac42a3"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-20T04:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.598Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.598Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f1"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f5ae5f57c315cac42a3"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-20T05:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.604Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.604Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f2"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f5ae5f57c315cac42a3"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-20T08:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T06:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.616Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.616Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f3"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac409f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-21T03:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.658Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.658Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f4"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac409f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-21T04:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.664Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.664Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f5"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac409f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-21T06:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.675Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.675Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f6"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac405f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.724Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.724Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f7"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac405f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.732Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.732Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f8"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac405f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-22T04:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T04:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.741Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.741Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2f9"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4267"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-23T03:35:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.807Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.807Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2fa"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4267"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-23T04:35:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.819Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.819Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2fb"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684eeae5f57c315cac4267"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d71"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-23T06:35:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T05:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.833Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.833Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2fc"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee1e5f57c315cac4160"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-20T02:20:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.893Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.893Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2fd"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee1e5f57c315cac4160"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-20T04:20:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.905Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.905Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2fe"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac408b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-21T01:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.962Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.962Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d4742ce9343c06d2ff"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac408b"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:20.970Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:20.970Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d300"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee8e5f57c315cac41ff"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-22T02:32:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.033Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.033Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d301"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee8e5f57c315cac41ff"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-22T04:32:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.044Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.044Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d302"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee0e5f57c315cac4137"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-23T02:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.098Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.098Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d303"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee0e5f57c315cac4137"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 1",
+  "end_time": {
+    "$date": "2020-09-23T04:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.107Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.107Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d304"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4066"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-20T01:30:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.179Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.179Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d305"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec5e5f57c315cac4066"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-20T02:30:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.188Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.188Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d306"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed8e5f57c315cac40b0"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-21T02:36:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.261Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.261Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d307"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed8e5f57c315cac40b0"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-21T04:36:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.270Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.270Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d308"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f39e5f57c315cac4295"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-22T01:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.325Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.325Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d309"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684f39e5f57c315cac4295"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.330Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.330Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d30a"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41b1"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-23T01:33:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.388Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.388Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d30b"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee3e5f57c315cac41b1"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 2",
+  "end_time": {
+    "$date": "2020-09-23T02:33:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.394Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.394Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d30c"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac4122"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-20T01:10:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.453Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.453Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d30d"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac4122"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-20T02:10:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.461Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.461Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d30e"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac4105"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-21T02:20:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.538Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.538Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d30f"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac4105"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-21T04:20:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.546Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.546Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d310"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec7e5f57c315cac40ab"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-22T02:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.600Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.600Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d311"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec7e5f57c315cac40ab"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-22T04:50:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.610Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.610Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d312"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac411e"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-23T01:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.667Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.667Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d313"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edbe5f57c315cac411e"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 3",
+  "end_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.675Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.675Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d314"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac407f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-20T02:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.742Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.742Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d315"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ec6e5f57c315cac407f"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-20T04:28:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-20T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.753Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.753Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d316"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac4107"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-21T02:34:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.821Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.821Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d317"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684edae5f57c315cac4107"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-21T04:34:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-21T03:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.833Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.833Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d318"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed9e5f57c315cac40db"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-22T01:11:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.894Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.894Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d319"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ed9e5f57c315cac40db"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-22T02:11:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-22T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.900Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.900Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d31a"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac41a6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-23T01:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T01:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.974Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.974Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f68d1d5742ce9343c06d31b"
+  },
+  "is_active": true,
+  "movie": {
+    "$oid": "5f684ee2e5f57c315cac41a6"
+  },
+  "theatre": {
+    "$oid": "5f68b34045ab693e24bd9d72"
+  },
+  "room": "2D 4",
+  "end_time": {
+    "$date": "2020-09-23T02:12:00Z"
+  },
+  "start_time": {
+    "$date": "2020-09-23T02:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-09-21T16:16:21.983Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T16:16:21.983Z"
+  },
+  "__v": 0
+}]

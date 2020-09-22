@@ -1,0 +1,229 @@
+[{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "name": "Action",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.260Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.260Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac401c"
+  },
+  "name": "Adventure",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.288Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.288Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac401d"
+  },
+  "name": "Animation",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.292Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.292Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "name": "Comedy",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.296Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.296Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "name": "Crime",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.300Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.300Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "name": "Documentary",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.302Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.302Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "name": "Drama",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.306Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.306Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4022"
+  },
+  "name": "Family",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.309Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.309Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4023"
+  },
+  "name": "Fantasy",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.317Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.317Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4024"
+  },
+  "name": "History",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.320Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.320Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4025"
+  },
+  "name": "Horror",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.323Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.323Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4026"
+  },
+  "name": "Music",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.326Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.326Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4027"
+  },
+  "name": "Mystery",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.333Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.333Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4028"
+  },
+  "name": "Romance",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.336Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.336Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac4029"
+  },
+  "name": "Science Fiction",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.340Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.340Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac402a"
+  },
+  "name": "TV Movie",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.345Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.345Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "name": "Thriller",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.349Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.349Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac402c"
+  },
+  "name": "War",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.351Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.351Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f684eaee5f57c315cac402d"
+  },
+  "name": "Western",
+  "createdAt": {
+    "$date": "2020-09-21T06:56:46.354Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-21T06:56:46.354Z"
+  },
+  "__v": 0
+}]
