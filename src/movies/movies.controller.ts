@@ -1,6 +1,17 @@
-import { BadRequestException, Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Get,
+  ParseIntPipe,
+  Post,
+  Query
+} from '@nestjs/common';
 import { MovieDbService } from './movie-db/movie-db.service';
 import { MoviesService } from './movies.service';
+import { Movie } from './movie.schema';
+import { constants } from '../utils';
 
 // @UseGuards(AuthGuard)
 @Controller('movies')
@@ -24,10 +35,20 @@ export class MoviesController {
   async getNowShowingMovies(
       @Query('lat') lat: number,
       @Query('lng') lng: number,
-  ) {
+      @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
+      @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
+  ): Promise<Movie[]> {
     if (!lat || !lng) {
       throw new BadRequestException('Required lat and lng');
     }
-    return this.moviesService.getNowShowingMovies([lng, lat]);
+    return this.moviesService.getNowShowingMovies([lng, lat], page, perPage);
+  }
+
+  @Get('coming-soon')
+  async getComingSoonMovies(
+      @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
+      @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
+  ) {
+    return this.moviesService.getComingSoonMovies(page, perPage);
   }
 }
