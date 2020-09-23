@@ -24,7 +24,7 @@ export class ShowTimesService {
   ) {}
 
   async seed() {
-    if (await this.showTimeModel.estimatedDocumentCount().exec() > 100) {
+    if (await this.showTimeModel.estimatedDocumentCount().exec() > 500) {
       return 'Nice';
     }
 
@@ -46,7 +46,7 @@ export class ShowTimesService {
       this.logger.debug(`Hours for ${theatre.name} are ${JSON.stringify(hours)} -- ${startH}:${startM} -> ${endH}:${endM}`);
 
       for (const room of theatre.rooms) {
-        for (let dDate = -1; dDate <= 2; dDate++) {
+        for (let dDate = -1; dDate <= 7; dDate++) {
           const day = current.startOf('day').add(dDate, 'day');
 
           const thStartTime = day.set('hour', startH).set('minute', startM);
