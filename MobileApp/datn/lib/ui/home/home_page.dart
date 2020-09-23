@@ -151,10 +151,26 @@ class HomeNowPlayingMoviesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const totalHeight = 350.0;
+    const imageHeight = 248.0;
+    const imageWidth = imageHeight / 1.3;
+
+    final titleTextStyle =
+        Theme.of(context).textTheme.headline6.copyWith(fontSize: 14);
+
+    final reviewstextStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+          fontSize: 11,
+          color: Color(0xff5B64CF),
+        );
+
+    final minStyle = Theme.of(context).textTheme.overline.copyWith(
+          fontSize: 12,
+        );
+
     return SliverToBoxAdapter(
       child: Container(
         color: Color(0xFFFCFCFC),
-        constraints: BoxConstraints.expand(height: 264),
+        constraints: BoxConstraints.expand(height: totalHeight),
         child: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
           stream: bloc.state$,
           builder: (context, snapshot) {
@@ -187,46 +203,88 @@ class HomeNowPlayingMoviesList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final item = movies[index];
 
-                return Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 16),
-                  child: AspectRatio(
-                    aspectRatio: 1 / 1.5,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 10,
-                      clipBehavior: Clip.antiAlias,
-                      child: CachedNetworkImage(
-                        imageUrl: item.posterUrl ?? '',
-                        fit: BoxFit.cover,
-                        placeholder: (_, __) => Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 16),
+                      child: Container(
+                        width: imageWidth,
+                        height: imageHeight,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                        ),
-                        errorWidget: (_, __, ___) => Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.error,
-                                color: Theme.of(context).accentColor,
+                          elevation: 10,
+                          clipBehavior: Clip.antiAlias,
+                          child: CachedNetworkImage(
+                            imageUrl: item.posterUrl ?? '',
+                            fit: BoxFit.cover,
+                            placeholder: (_, __) => Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
                               ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Load image error',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2
-                                    .copyWith(fontSize: 12),
+                            ),
+                            errorWidget: (_, __, ___) => Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.error,
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    'Load image error',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(fontSize: 12),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                    Container(
+                      width: imageWidth - 12,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            item.title,
+                            style: titleTextStyle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              Container(
+                                height: 16,
+                                width: 54,
+                                color: Color(0xff5B64CF),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                '200 reviews',
+                                style: reviewstextStyle,
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '#${item.duration} mins',
+                            style: minStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 );
               },
             );
