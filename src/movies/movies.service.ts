@@ -143,6 +143,11 @@ export class MoviesService {
         }
       },
       {
+        $sort: {
+          released_date: 1,
+        }
+      },
+      {
         $skip: skipLimit.skip,
       },
       {
