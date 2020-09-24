@@ -64,7 +64,7 @@ export class MovieDbService {
   }
 
   private detail(movieId: number): Observable<MovieDetailResponseResult> {
-    const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${this.apiKey}&language=en-US`;
+    const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${this.apiKey}&language=en-US&append_to_response=videos`;
     return this.httpService
         .get(url)
         .pipe(map(response => response.data as MovieDetailResponseResult));
@@ -162,10 +162,11 @@ export class MovieDbService {
     const actors = await this.getPeople(c.cast.slice(0, 10));
     const directors = await this.getPeople(c.crew.filter(c => c.job === 'Director'));
 
+    const videoKey = v.videos.results?.[0]?.key;
     const movieDoc: Omit<CreateDocumentDefinition<Movie>, '_id'> = {
       age_type: 'P',
       title: v.title,
-      trailer_video_url: null,
+      trailer_video_url: videoKey ? `https://www.youtube.com/watch?v=${videoKey}` : null,
       poster_url: v.poster_path ? `https://image.tmdb.org/t/p/w342${v.poster_path}` : null,
       overview: v.overview,
       released_date: this.days[this.dayCount],
@@ -242,6 +243,22 @@ export interface MovieDetailResponseResult {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  videos: Videos;
+}
+
+export interface Videos {
+  results: VideoResult[];
+}
+
+export interface VideoResult {
+  id: string;
+  iso_639_1: string;
+  iso_3166_1: string;
+  key: string;
+  name: string;
+  site: string;
+  size: number;
+  type: string;
 }
 
 export interface Genre {
