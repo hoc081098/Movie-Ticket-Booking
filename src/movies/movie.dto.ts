@@ -1,7 +1,7 @@
-import { PaginationDto } from '../pagination.dto';
+import { PaginationDto } from '../common/pagination.dto';
 import { IsNumber, IsOptional, Max, Min } from 'class-validator';
 import { Type } from 'class-transformer';
-import { LatLng } from '../utils';
+import { LatLng } from '../common/utils';
 
 export class GetNowShowingMoviesDto extends PaginationDto implements LatLng {
   @IsOptional()

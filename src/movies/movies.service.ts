@@ -5,8 +5,8 @@ import { Model } from 'mongoose';
 import { ShowTime } from '../show-times/show-time.schema';
 import * as dayjs from 'dayjs';
 import { Theatre } from '../theatres/theatre.schema';
-import { constants, getSkipLimit } from '../utils';
-import { PaginationDto } from '../pagination.dto';
+import { constants, getSkipLimit } from '../common/utils';
+import { PaginationDto } from '../common/pagination.dto';
 
 @Injectable()
 export class MoviesService {
