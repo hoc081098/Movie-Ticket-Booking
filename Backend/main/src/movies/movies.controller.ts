@@ -1,21 +1,9 @@
-import {
-  Body,
-  Controller,
-  DefaultValuePipe,
-  Get,
-  Logger,
-  Param,
-  ParseIntPipe,
-  Post,
-  Query,
-  UseGuards
-} from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Get, Logger, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { MovieDbService } from './movie-db/movie-db.service';
 import { MoviesService } from './movies.service';
 import { Movie } from './movie.schema';
 import { constants } from '../utils';
-import { AuthGuard } from '../auth/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('movies')
 // @UseGuards(AuthGuard)
@@ -28,11 +16,13 @@ export class MoviesController {
       private readonly moviesService: MoviesService,
   ) { }
 
+  @ApiOperation({ summary: 'PRIVATE' })
   @Post('seed')
   seed(@Body() { query, page, year }: { query: string, page: number, year: number }) {
     return this.movieDbService.seed(query, page, year);
   }
 
+  @ApiOperation({ summary: 'PRIVATE' })
   @Post('update-video-url')
   updateVideoUrl() {
     return this.movieDbService.updateVideoUrl();
