@@ -1,12 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShowTime } from './show-time.schema';
+import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
 import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
 import { from } from 'rxjs';
 import { filter, pairwise, take } from 'rxjs/operators';
+import { constants } from '../utils';
 
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');
@@ -135,5 +137,82 @@ export class ShowTimesService {
     const skip = Math.floor(count * Math.random());
 
     return await this.movieModel.findOne().skip(skip).exec();
+  }
+
+  getShowTimesByMovieId(movieId: string, center: [number, number] | null): Promise<{
+    theatre: Theatre;
+    show_time: ShowTime
+  }[]> {
+    const currentDay = new Date();
+
+    const start = dayjs(currentDay).startOf('day').toDate();
+    const end = dayjs(currentDay).endOf('day').add(4, 'day').toDate();
+
+    return this.theatreModel.aggregate([
+      ...(
+          center != null
+              ?
+              [
+                {
+                  $geoNear: {
+                    near: {
+                      type: 'Point',
+                      coordinates: center,
+                    },
+                    distanceField: 'distance',
+                    includeLocs: 'location',
+                    maxDistance: constants.maxDistanceInMeters,
+                    spherical: true,
+                  },
+                },
+                { $match: { is_active: true } }
+              ]
+              : []
+      ),
+      {
+        $addFields: {
+          theatre: '$$ROOT',
+        },
+      },
+      {
+        $project: {
+          theatre: 1,
+        }
+      },
+      {
+        $lookup: {
+          from: 'show_times',
+          localField: '_id',
+          foreignField: 'theatre',
+          as: 'show_time',
+        }
+      },
+      { $unwind: '$show_time' },
+      {
+        $match: {
+          $and: [
+            { 'show_time.movie': new mongoose.Types.ObjectId(movieId) },
+            { 'show_time.start_time': { $gte: start } },
+            { 'show_time.end_time': { $lte: end } },
+            { 'show_time.is_active': true },
+          ]
+        },
+      },
+      {
+        $lookup: {
+          from: 'movies',
+          localField: 'show_time.movie',
+          foreignField: '_id',
+          as: 'movie',
+        }
+      },
+      { $unwind: '$movie' },
+      {
+        $match: {
+          'movie.released_date': { $lte: start },
+        },
+      },
+      { $project: { movie: 0 } },
+    ]).exec();
   }
 }
