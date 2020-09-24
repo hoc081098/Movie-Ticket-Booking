@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { DocumentDefinition, Model } from 'mongoose';
 import { Comment } from './comment.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -7,6 +7,8 @@ import { User } from '../users/user.schema';
 import * as faker from 'faker';
 import { getSkipLimit } from '../common/utils';
 import { PaginationDto } from '../common/pagination.dto';
+import { CreateCommentDto } from './comment.dto';
+import { UserPayload } from '../auth/get-user.decorator';
 
 const rateStars = [1, 2, 3, 4, 5];
 
@@ -76,5 +78,27 @@ export class CommentsService {
         .skip(skipLimit.skip)
         .limit(skipLimit.limit)
         .exec();
+  }
+
+  async createComment(user: UserPayload, dto: CreateCommentDto): Promise<Comment> {
+    if (!user._id) {
+      throw new ForbiddenException(`Not completed login!`);
+    }
+
+    const movie: Movie | null = await this.movieModel.findById(dto.movie_id);
+
+    if (!movie) {
+      throw new NotFoundException(`Movie with id ${dto.movie_id} not found!`);
+    }
+
+    const doc: Omit<DocumentDefinition<Comment>, '_id'> = {
+      content: dto.content,
+      rate_star: dto.rate_star,
+      movie: movie._id,
+      user: user._id,
+      is_active: true,
+    };
+
+    return this.commentModel.create(doc);
   }
 }

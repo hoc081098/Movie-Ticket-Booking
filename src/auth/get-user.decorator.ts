@@ -1,18 +1,29 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Schema } from 'mongoose';
+
+export type RawUserPayload = {
+  uid: string,
+  email?: string,
+  _id?: Schema.Types.ObjectId | null | undefined;
+};
 
 export class UserPayload {
   @IsString()
   @IsNotEmpty()
-  uid: string;
+  readonly uid: string;
 
   @IsString()
   @IsEmail()
-  email: string;
+  readonly email: string;
 
-  constructor(payload: { uid: string, email: string }) {
+  @IsOptional()
+  readonly _id?: Schema.Types.ObjectId | null | undefined;
+
+  constructor(payload: RawUserPayload) {
     this.uid = payload.uid;
     this.email = payload.email;
+    this._id = payload._id;
   }
 }
 

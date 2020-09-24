@@ -4,7 +4,7 @@ import { FirebaseAuthenticationService } from '@aginix/nestjs-firebase-admin/dis
 import * as admin from 'firebase-admin';
 import { User } from '../users/user.schema';
 import { UsersService } from '../users/users.service';
-import { UserPayload } from './get-user.decorator';
+import { RawUserPayload, UserPayload } from './get-user.decorator';
 import { validate } from 'class-validator';
 import * as fs from 'fs';
 
@@ -37,15 +37,15 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const merged = {
+    const merged: RawUserPayload = {
       ...decodedIdToken,
-      ...(user ?? {}),
+      ...(user?.toObject() ?? { _id: null }),
     };
-    const payload = new UserPayload(merged as { uid: string, email: string });
+    const payload = new UserPayload(merged);
 
     try {
       const errors = await validate(payload);
-      this.logger.debug(`Errors: ${JSON.stringify(errors)}`);
+      this.logger.debug(`Errors: ${JSON.stringify(errors)} ${payload._id}`);
 
       if (errors === null || errors === undefined || errors.length === 0) {
         (request as any).user = payload;
