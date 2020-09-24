@@ -4,6 +4,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { getCoordinates } from '../common/utils';
 import { MovieAndTheatre } from './show-time.dto';
 import { AuthGuard } from '../auth/auth.guard';
+import { LocationDto } from '../common/location.dto';
 
 @ApiTags('show-times')
 @UseGuards(AuthGuard)
@@ -24,14 +25,13 @@ export class ShowTimesController {
   @Get('movies/:movie_id')
   async getShowTimesByMovieId(
       @Param('movie_id') movieId: string,
-      @Query('lat') lat?: string,
-      @Query('lng') lng?: string,
+      @Query() locationDto: LocationDto,
   ): Promise<MovieAndTheatre[]> {
-    this.logger.debug(`getShowTimesByMovieId ${movieId} ${lat}, ${lng}`);
+    this.logger.debug(`getShowTimesByMovieId ${movieId} ${locationDto.lat}, ${locationDto.lng}`);
 
     const movieShowTimes = await this.showTimesService.getShowTimesByMovieId(
         movieId,
-        getCoordinates({ lat, lng })
+        getCoordinates(locationDto)
     );
 
     return movieShowTimes.map(doc => new MovieAndTheatre(doc));
