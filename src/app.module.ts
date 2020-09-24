@@ -12,6 +12,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { PeopleModule } from './people/people.module';
 import { ShowTimesModule } from './show-times/show-times.module';
 import { TheatresModule } from './theatres/theatres.module';
+import { CommentsModule } from './comments/comments.module';
 import * as admin from 'firebase-admin';
 
 @Module({
@@ -39,6 +40,7 @@ import * as admin from 'firebase-admin';
     PeopleModule,
     ShowTimesModule,
     TheatresModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [
