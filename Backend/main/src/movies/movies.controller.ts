@@ -2,7 +2,7 @@ import { Body, Controller, DefaultValuePipe, Get, Logger, Param, ParseIntPipe, P
 import { MovieDbService } from './movie-db/movie-db.service';
 import { MoviesService } from './movies.service';
 import { Movie } from './movie.schema';
-import { constants } from '../utils';
+import { constants, getCoordinates } from '../utils';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('movies')
@@ -32,23 +32,15 @@ export class MoviesController {
   async getNowShowingMovies(
       @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
       @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
-      @Query('lat') latS?: string,
-      @Query('lng') lngS?: string,
+      @Query('lat') lat?: string,
+      @Query('lng') lng?: string,
   ): Promise<Movie[]> {
-    this.logger.debug(`getNowShowingMovies [1]: '${latS}', '${lngS}'`);
-    if (!latS || !lngS) {
-      return this.moviesService.getNowShowingMovies(null, page, perPage);
-    }
-
-    const lat = parseFloat(latS);
-    const lng = parseFloat(lngS);
-
-    this.logger.debug(`getNowShowingMovies [1]: ${lat}, ${lng} ${isNaN(lat) || isNaN(lng)}`);
-    if (isNaN(lat) || isNaN(lng)) {
-      return this.moviesService.getNowShowingMovies(null, page, perPage);
-    }
-
-    return this.moviesService.getNowShowingMovies([lng, lat], page, perPage);
+    this.logger.debug(`getNowShowingMovies: '${lat}', '${lng}'`);
+    return this.moviesService.getNowShowingMovies(
+        getCoordinates({ lat, lng }),
+        page,
+        perPage
+    );
   }
 
   @Get('coming-soon')
