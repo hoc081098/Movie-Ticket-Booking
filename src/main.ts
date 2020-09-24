@@ -5,6 +5,7 @@ import * as serviceAccount from '../serviceAccountKey.json';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as mongoose from 'mongoose';
+import * as morgan from 'morgan';
 
 async function bootstrap() {
   const port = 3000;
@@ -24,6 +25,7 @@ async function bootstrap() {
         forbidNonWhitelisted: true,
       })
   );
+  app.use(morgan('common'));
 
   const options = new DocumentBuilder()
       .setTitle('DATN API')

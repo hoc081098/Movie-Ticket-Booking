@@ -1,11 +1,12 @@
-import { Controller, Get, Logger, Param, Post, Query } from '@nestjs/common';
+import { Controller, Get, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ShowTimesService } from './show-times.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { getCoordinates } from '../utils';
 import { MovieAndTheatre } from './show-time.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 @ApiTags('show-times')
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @Controller('show-times')
 export class ShowTimesController {
   private readonly logger = new Logger('ShowTimesController');

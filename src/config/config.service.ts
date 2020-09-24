@@ -5,6 +5,7 @@ import * as fs from 'fs';
 export const enum ConfigKey {
   MONGODB_URL = 'MONGODB_URL',
   MOVIE_DB_API_KEY = 'MOVIE_DB_API_KEY',
+  FIREBASE_API_KEY = 'FIREBASE_API_KEY',
 }
 
 export class ConfigService {

@@ -1,12 +1,24 @@
-import { Body, Controller, DefaultValuePipe, Get, Logger, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Get,
+  Logger,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+  UseGuards
+} from '@nestjs/common';
 import { MovieDbService } from './movie-db/movie-db.service';
 import { MoviesService } from './movies.service';
 import { Movie } from './movie.schema';
 import { constants, getCoordinates } from '../utils';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '../auth/auth.guard';
 
 @ApiTags('movies')
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @Controller('movies')
 export class MoviesController {
   private readonly logger = new Logger('MoviesController');
