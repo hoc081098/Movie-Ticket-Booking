@@ -1,4 +1,4 @@
-import { Body, Controller, DefaultValuePipe, Get, ParseIntPipe, Post, Query, UseGuards, Logger } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Get, Logger, ParseIntPipe, Post, Query, UseGuards } from '@nestjs/common';
 import { MovieDbService } from './movie-db/movie-db.service';
 import { MoviesService } from './movies.service';
 import { Movie } from './movie.schema';
@@ -11,8 +11,8 @@ export class MoviesController {
   private readonly logger = new Logger('MoviesController');
 
   constructor(
-    private readonly movieDbService: MovieDbService,
-    private readonly moviesService: MoviesService,
+      private readonly movieDbService: MovieDbService,
+      private readonly moviesService: MoviesService,
   ) { }
 
   @Post('seed')
@@ -20,17 +20,17 @@ export class MoviesController {
     return this.movieDbService.seed(query, page, year);
   }
 
-  @Get('all')
-  all() {
-    return this.moviesService.all();
+  @Post('update-video-url')
+  updateVideoUrl() {
+    return this.movieDbService.updateVideoUrl();
   }
 
   @Get('now-playing')
   async getNowShowingMovies(
-    @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
-    @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
-    @Query('lat') latS?: string,
-    @Query('lng') lngS?: string,
+      @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
+      @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
+      @Query('lat') latS?: string,
+      @Query('lng') lngS?: string,
   ): Promise<Movie[]> {
     this.logger.debug(`getNowShowingMovies [1]: '${latS}', '${lngS}'`);
     if (!latS || !lngS) {
@@ -50,8 +50,8 @@ export class MoviesController {
 
   @Get('coming-soon')
   async getComingSoonMovies(
-    @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
-    @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
+      @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
+      @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
   ) {
     return this.moviesService.getComingSoonMovies(page, perPage);
   }
