@@ -69,7 +69,7 @@ export class CommentsService {
       movieId: string,
       paginationDto: PaginationDto,
   ): Promise<Comment[]> {
-    const skipLimit = getSkipLimit(paginationDto.page, paginationDto.per_page);
+    const skipLimit = getSkipLimit(paginationDto);
 
     return this.commentModel
         .find({ movie: movieId })

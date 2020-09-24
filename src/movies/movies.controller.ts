@@ -1,21 +1,12 @@
-import {
-  Body,
-  Controller,
-  DefaultValuePipe,
-  Get,
-  Logger,
-  Param,
-  ParseIntPipe,
-  Post,
-  Query,
-  UseGuards
-} from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { MovieDbService } from './movie-db/movie-db.service';
 import { MoviesService } from './movies.service';
 import { Movie } from './movie.schema';
-import { constants, getCoordinates } from '../utils';
+import { getCoordinates } from '../utils';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
+import { PaginationDto } from '../pagination.dto';
+import { GetNowShowingMoviesDto } from './movie.dto';
 
 @ApiTags('movies')
 @UseGuards(AuthGuard)
@@ -42,25 +33,19 @@ export class MoviesController {
 
   @Get('now-playing')
   async getNowShowingMovies(
-      @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
-      @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
-      @Query('lat') lat?: string,
-      @Query('lng') lng?: string,
+      @Query() dto: GetNowShowingMoviesDto,
   ): Promise<Movie[]> {
-    this.logger.debug(`getNowShowingMovies: '${lat}', '${lng}'`);
     return this.moviesService.getNowShowingMovies(
-        getCoordinates({ lat, lng }),
-        page,
-        perPage
+        getCoordinates(dto),
+        dto,
     );
   }
 
   @Get('coming-soon')
   async getComingSoonMovies(
-      @Query('page', new DefaultValuePipe(constants.defaultPage), ParseIntPipe) page: number,
-      @Query('per_page', new DefaultValuePipe(constants.defaultPerPage), ParseIntPipe) perPage: number,
-  ) {
-    return this.moviesService.getComingSoonMovies(page, perPage);
+      @Query() paginationDto: PaginationDto
+  ): Promise<Movie[]> {
+    return this.moviesService.getComingSoonMovies(paginationDto);
   }
 
   @Get(':id')

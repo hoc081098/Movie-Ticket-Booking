@@ -6,6 +6,7 @@ import { ShowTime } from '../show-times/show-time.schema';
 import * as dayjs from 'dayjs';
 import { Theatre } from '../theatres/theatre.schema';
 import { constants, getSkipLimit } from '../utils';
+import { PaginationDto } from '../pagination.dto';
 
 @Injectable()
 export class MoviesService {
@@ -25,13 +26,13 @@ export class MoviesService {
         .exec();
   }
 
-  getNowShowingMovies(center: [number, number] | null, page: number, perPage: number): Promise<Movie[]> {
+  getNowShowingMovies(center: [number, number] | null, paginationDto: PaginationDto): Promise<Movie[]> {
     const currentDay = new Date();
 
     const start = dayjs(currentDay).startOf('day').toDate();
     const end = dayjs(currentDay).endOf('day').add(7, 'day').toDate();
 
-    const skipLimit = getSkipLimit(page, perPage);
+    const skipLimit = getSkipLimit(paginationDto);
 
     this.logger.debug(`getNowShowingMovies: ${currentDay} -- ${start} -- ${end} -- ${center}`);
 
@@ -111,11 +112,11 @@ export class MoviesService {
     ]).exec();
   }
 
-  getComingSoonMovies(page: number, perPage: number): Promise<Movie[]> {
+  getComingSoonMovies(paginationDto: PaginationDto): Promise<Movie[]> {
     const currentDay = new Date();
     const startOfTomorrow = dayjs(currentDay).startOf('day').add(1, 'day').toDate();
 
-    const skipLimit = getSkipLimit(page, perPage);
+    const skipLimit = getSkipLimit(paginationDto);
 
     this.logger.debug(`getComingSoonMovies: ${currentDay} -- ${startOfTomorrow}`);
 

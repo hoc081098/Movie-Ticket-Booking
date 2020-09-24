@@ -6,6 +6,9 @@ import { User } from '../users/user.schema';
 import { UsersService } from '../users/users.service';
 import { UserPayload } from './get-user.decorator';
 import { validate } from 'class-validator';
+import * as fs from 'fs';
+
+let written = false;
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -71,6 +74,7 @@ export class AuthGuard implements CanActivate {
       this.logger.error('Missing token');
       throw new UnauthorizedException();
     }
+    this.debugToken(token);
 
     let decodedIdToken: admin.auth.DecodedIdToken;
     try {
@@ -85,5 +89,16 @@ export class AuthGuard implements CanActivate {
     }
 
     return decodedIdToken;
+  }
+
+  private debugToken(token: string) {
+    if (written) return;
+
+    written = true;
+    fs.writeFile('./token.txt', token, {}, (error) => {
+      if (error) {
+        throw error;
+      }
+    });
   }
 }

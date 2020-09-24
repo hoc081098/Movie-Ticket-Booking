@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShowTime } from './show-time.schema';
 import * as mongoose from 'mongoose';
-import { Model } from 'mongoose';
+import { CreateDocumentDefinition, Model } from 'mongoose';
 import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
@@ -120,14 +120,15 @@ export class ShowTimesService {
       this.logger.debug(`>>> Array ${array}`);
     }
 
-    const showTime = await this.showTimeModel.create({
+    const doc: Omit<CreateDocumentDefinition<ShowTime>, '_id'> = {
       movie: movie._id,
       theatre: theatre._id,
       room,
       is_active: true,
       end_time: endTime.toDate(),
       start_time: startTime.toDate(),
-    });
+    };
+    const showTime = await this.showTimeModel.create(doc);
 
     this.logger.debug(`Saved show time: ${JSON.stringify(showTime)}`);
   }
