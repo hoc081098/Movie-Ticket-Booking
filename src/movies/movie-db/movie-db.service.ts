@@ -1,7 +1,7 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { ConfigKey, ConfigService } from '../../config/config.service';
-import { concatMap, ignoreElements, map, mergeMap, tap } from 'rxjs/operators';
-import { Observable, zip } from 'rxjs';
+import { concatMap, filter, ignoreElements, map, mergeMap, tap } from 'rxjs/operators';
+import { defer, from, Observable, zip } from 'rxjs';
 import { Movie } from '../movie.schema';
 import { CreateDocumentDefinition, Model } from 'mongoose';
 import { Category } from '../../categories/category.schema';
@@ -183,6 +183,41 @@ export class MovieDbService {
 
     this.logger.debug('End save movie detail');
   };
+
+  updateVideoUrl() {
+    return defer(() =>
+        this.movieModel
+            .find({
+              $or: [
+                { trailer_video_url: { $exists: false } },
+                { trailer_video_url: null },
+                { trailer_video_url: '' },
+              ]
+            })
+            .sort({ createdAt: -1 })
+    )
+        .pipe(
+            tap(movies => this.logger.debug(`Start update video url ${movies.length}`)),
+            mergeMap(movies => from(movies)),
+            concatMap((movie, index) =>
+                this.search(movie.title, 1, null)
+                    .pipe(
+                        map(searchResults => searchResults.results[0]?.id),
+                        filter(id => !!id),
+                        mergeMap(id => this.detail(id)),
+                        mergeMap(async v => {
+                          const videoKey = v.videos.results?.[0]?.key;
+                          if (videoKey) {
+                            movie.trailer_video_url = `https://www.youtube.com/watch?v=${videoKey}`;
+                            await movie.save();
+                            this.logger.debug(`Update ${index} ${movie._id} -> ${movie.trailer_video_url}`);
+                          }
+                        }),
+                    )
+            ),
+            tap({ complete: () => this.logger.debug(`Done update video url`) }),
+        );
+  }
 }
 
 //
