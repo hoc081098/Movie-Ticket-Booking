@@ -101,4 +101,12 @@ export class CommentsService {
 
     return this.commentModel.create(doc);
   }
+
+  async deleteComment(id: string): Promise<Comment> {
+    const result = await this.commentModel.findByIdAndDelete(id);
+    if (result == null) {
+      throw new NotFoundException(`Comment with id ${id} not found`);
+    }
+    return result;
+  }
 }
