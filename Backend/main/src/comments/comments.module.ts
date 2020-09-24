@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Comment, CommentSchema } from './comment.schema';
 import { Movie, MovieSchema } from '../movies/movie.schema';
 import { User, UserSchema } from '../users/user.schema';
+import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { User, UserSchema } from '../users/user.schema';
         schema: UserSchema,
       }
     ]),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [CommentsController],
   providers: [CommentsService]

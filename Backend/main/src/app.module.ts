@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
@@ -41,6 +41,7 @@ import * as admin from 'firebase-admin';
     ShowTimesModule,
     TheatresModule,
     CommentsModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [
