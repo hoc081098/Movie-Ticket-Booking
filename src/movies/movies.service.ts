@@ -155,4 +155,12 @@ export class MoviesService {
       },
     ]).exec();
   }
+
+  getDetail(id: string): Promise<Movie | null> {
+    return this.movieModel
+        .findOne({ _id: id })
+        .populate('actors')
+        .populate('directors')
+        .exec()
+  }
 }
