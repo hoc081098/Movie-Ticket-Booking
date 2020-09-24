@@ -4,7 +4,7 @@ import { User } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { UpdateUserDto } from './update-user.dto';
 import { UserPayload } from '../auth/get-user.decorator';
-import { Location } from '../location.inteface';
+import { Location } from '../common/location.inteface';
 
 @Injectable()
 export class UsersService {

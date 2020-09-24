@@ -1,7 +1,7 @@
 import { Controller, Get, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ShowTimesService } from './show-times.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { getCoordinates } from '../utils';
+import { getCoordinates } from '../common/utils';
 import { MovieAndTheatre } from './show-time.dto';
 import { AuthGuard } from '../auth/auth.guard';
 

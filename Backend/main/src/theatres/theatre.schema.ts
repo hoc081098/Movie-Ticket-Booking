@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Location } from '../location.inteface';
+import { Location } from '../common/location.inteface';
 
 @Schema({
   collection: 'theatres',

@@ -3,7 +3,7 @@ import { CommentsService } from './comments.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Comment } from './comment.schema';
 import { AuthGuard } from '../auth/auth.guard';
-import { PaginationDto } from '../pagination.dto';
+import { PaginationDto } from '../common/pagination.dto';
 
 @ApiTags('comments')
 @UseGuards(AuthGuard)

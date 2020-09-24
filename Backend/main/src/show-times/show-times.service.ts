@@ -8,7 +8,7 @@ import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
 import { from } from 'rxjs';
 import { filter, pairwise, take } from 'rxjs/operators';
-import { constants } from '../utils';
+import { constants } from '../common/utils';
 
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');

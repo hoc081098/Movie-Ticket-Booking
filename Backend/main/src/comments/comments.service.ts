@@ -5,8 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from '../movies/movie.schema';
 import { User } from '../users/user.schema';
 import * as faker from 'faker';
-import { getSkipLimit } from '../utils';
-import { PaginationDto } from '../pagination.dto';
+import { getSkipLimit } from '../common/utils';
+import { PaginationDto } from '../common/pagination.dto';
 
 const rateStars = [1, 2, 3, 4, 5];
 

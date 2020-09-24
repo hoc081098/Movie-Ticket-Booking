@@ -2,10 +2,10 @@ import { Body, Controller, Get, Logger, Param, Post, Query, UseGuards } from '@n
 import { MovieDbService } from './movie-db/movie-db.service';
 import { MoviesService } from './movies.service';
 import { Movie } from './movie.schema';
-import { getCoordinates } from '../utils';
+import { getCoordinates } from '../common/utils';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
-import { PaginationDto } from '../pagination.dto';
+import { PaginationDto } from '../common/pagination.dto';
 import { GetNowShowingMoviesDto } from './movie.dto';
 
 @ApiTags('movies')
