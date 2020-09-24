@@ -1,5 +1,6 @@
-import 'package:datn/domain/model/movie.dart';
 import 'package:flutter/material.dart';
+
+import '../../domain/model/movie.dart';
 
 final _cached = <AgeType, String>{};
 

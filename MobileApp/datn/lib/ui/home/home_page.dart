@@ -1,9 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/domain/model/movie.dart';
-import 'package:datn/ui/widgets/age_type.dart';
-import 'package:datn/ui/widgets/error_widget.dart';
-import 'package:datn/utils/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -11,7 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:stream_loader/stream_loader.dart';
 
+import '../../domain/model/movie.dart';
 import '../../domain/repository/movie_repository.dart';
+import '../../utils/error.dart';
+import '../widgets/age_type.dart';
+import '../widgets/error_widget.dart';
 
 enum MovieType {
   nowPlaying,

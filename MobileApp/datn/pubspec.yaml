@@ -26,9 +26,9 @@ dependencies:
   stream_loader: ^1.0.1
   loading_indicator: ^1.2.0
   flutter_facebook_login: ^3.0.0
-  google_sign_in: ^4.5.3
+  google_sign_in: ^4.5.4
   font_awesome_flutter: ^8.8.1
-  image_picker: ^0.6.7+10
+  image_picker: ^0.6.7+11
   cached_network_image: ^2.3.2+1
   firebase_storage: ^4.0.0
   flutter_dotenv: ^2.1.0

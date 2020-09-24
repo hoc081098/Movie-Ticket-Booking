@@ -1,6 +1,5 @@
-import 'package:datn/domain/model/movie.dart';
-
 import '../domain/model/location.dart';
+import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
 import '../utils/type_defs.dart';
 import 'local/user_local.dart';
