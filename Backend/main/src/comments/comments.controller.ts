@@ -1,9 +1,11 @@
-import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Comment } from './comment.schema';
 import { AuthGuard } from '../auth/auth.guard';
 import { PaginationDto } from '../common/pagination.dto';
+import { CreateCommentDto } from './comment.dto';
+import { GetUser, UserPayload } from '../auth/get-user.decorator';
 
 @ApiTags('comments')
 @UseGuards(AuthGuard)
@@ -28,5 +30,13 @@ export class CommentsController {
         movieId,
         paginationDto
     );
+  }
+
+  @Post()
+  createComment(
+      @GetUser() user: UserPayload,
+      @Body() createCommentDto: CreateCommentDto,
+  ): Promise<Comment> {
+    return this.commentsService.createComment(user, createCommentDto);
   }
 }
