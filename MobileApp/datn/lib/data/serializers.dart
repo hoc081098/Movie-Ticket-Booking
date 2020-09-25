@@ -1,8 +1,8 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
+import '../utils/custom_iso_8601_date_time_serializer.dart';
 import 'local/user_local.dart';
 import 'remote/response/error_response.dart';
 import 'remote/response/movie_response.dart';
@@ -46,6 +46,6 @@ final Serializers serializers = (_serializers.toBuilder()
         builtListShowTimeAndTheatreResponse,
         () => ListBuilder<ShowTimeAndTheatreResponse>(),
       )
-      ..add(Iso8601DateTimeSerializer())
+      ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))
     .build();
