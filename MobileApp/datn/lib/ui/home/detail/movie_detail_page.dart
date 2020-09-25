@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'comments_page.dart';
 import 'show_times_page.dart';
 
 class MovieDetailPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     super.initState();
     pages = <Widget>[
       ShowTimesPage(movieId: widget.movieId),
-      Container(),
+      CommentsPage(movieId: widget.movieId),
       Container(),
     ];
   }
