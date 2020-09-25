@@ -1,3 +1,5 @@
+import 'package:datn/data/repository/city_repository_impl.dart';
+import 'package:datn/domain/repository/city_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,7 +12,7 @@ import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 import 'app.dart';
 import 'data/local/user_local_source_impl.dart';
-import 'data/mappers.dart';
+import 'data/mappers.dart' as mappers;
 import 'data/remote/auth_client.dart';
 import 'data/repository/movie_repository_impl.dart';
 import 'data/repository/user_repository_impl.dart';
@@ -63,9 +65,9 @@ void main() async {
     userLocalSource,
     authClient,
     normalClient,
-    userResponseToUserLocal,
+    mappers.userResponseToUserLocal,
     storage,
-    userLocalToUserDomain,
+    mappers.userLocalToUserDomain,
     googleSignIn,
     facebookLogin,
   );
@@ -73,14 +75,18 @@ void main() async {
 
   final movieRepository = MovieRepositoryImpl(
     authClient,
-    movieResponseToMovie,
+    mappers.movieResponseToMovie,
+    mappers.showTimeAndTheatreResponsesToTheatreAndShowTimes,
   );
+
+  final cityRepository = CityRepositoryImpl(preferences, userLocalSource);
 
   runApp(
     Providers(
       providers: [
         Provider<UserRepository>(value: userRepository),
         Provider<MovieRepository>(value: movieRepository),
+        Provider<CityRepository>(value: cityRepository),
       ],
       child: MyApp(),
     ),

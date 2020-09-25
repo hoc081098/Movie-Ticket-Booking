@@ -11,9 +11,15 @@ Serializers _$_serializers = (new Serializers().toBuilder()
       ..add(LocationResponse.serializer)
       ..add(MovieResponse.serializer)
       ..add(MultipleMessagesErrorResponse.serializer)
+      ..add(ShowTimeAndTheatreResponse.serializer)
+      ..add(ShowTimeResponse.serializer)
       ..add(SingleMessageErrorResponse.serializer)
+      ..add(TheatreResponse.serializer)
       ..add(UserLocal.serializer)
       ..add(UserResponse.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

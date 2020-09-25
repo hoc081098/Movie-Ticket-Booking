@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
+import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
+import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
 import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
@@ -21,6 +23,13 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> with DisposeBagMixin {
   static final homeRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) => HomePage(),
+    MovieDetailPage.routeName: (context, settings) {
+      final movie = settings.arguments as Movie;
+      return MovieDetailPage(
+        movieId: movie.id,
+        title: movie.title,
+      );
+    },
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

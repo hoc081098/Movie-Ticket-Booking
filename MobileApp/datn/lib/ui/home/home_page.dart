@@ -10,8 +10,10 @@ import 'package:stream_loader/stream_loader.dart';
 import '../../domain/model/movie.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../../utils/error.dart';
+import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/error_widget.dart';
+import 'detail/movie_detail_page.dart';
 
 enum MovieType {
   nowPlaying,
@@ -259,7 +261,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
     );
   }
 
-  Column buildItem(
+  Widget buildItem(
     double imageWidth,
     double imageHeight,
     Movie item,
@@ -268,67 +270,75 @@ class HomeHorizontalMoviesList extends StatelessWidget {
     TextStyle reviewstextStyle,
     TextStyle minStyle,
   ) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 16),
-          child: Container(
-            width: imageWidth,
-            height: imageHeight,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              elevation: 10,
-              clipBehavior: Clip.antiAlias,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: CachedNetworkImage(
-                      imageUrl: item.posterUrl ?? '',
-                      fit: BoxFit.cover,
-                      placeholder: (_, __) => Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
+    return InkWell(
+      onTap: () {
+        AppScaffold.of(context).pushNamed(
+          MovieDetailPage.routeName,
+          arguments: item,
+        );
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 16),
+            child: Container(
+              width: imageWidth,
+              height: imageHeight,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 10,
+                clipBehavior: Clip.antiAlias,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: CachedNetworkImage(
+                        imageUrl: item.posterUrl ?? '',
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) => Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
                         ),
-                      ),
-                      errorWidget: (_, __, ___) => Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.error,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'Load image error',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2
-                                  .copyWith(fontSize: 12),
-                            ),
-                          ],
+                        errorWidget: (_, __, ___) => Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.error,
+                                color: Theme.of(context).accentColor,
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Load image error',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2
+                                    .copyWith(fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 8,
-                    right: 8,
-                    child: AgeTypeWidget(
-                      ageType: item.ageType,
+                    Positioned(
+                      bottom: 8,
+                      right: 8,
+                      child: AgeTypeWidget(
+                        ageType: item.ageType,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        buildBottom(
-            imageWidth, item, titleTextStyle, reviewstextStyle, minStyle),
-      ],
+          buildBottom(
+              imageWidth, item, titleTextStyle, reviewstextStyle, minStyle),
+        ],
+      ),
     );
   }
 
@@ -400,6 +410,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
           ),
         );
     }
+    throw StateError('Unknown $type');
   }
 }
 

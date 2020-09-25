@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 
 import '../data/remote/response/error_response.dart';
 import '../domain/model/exception.dart';
@@ -37,6 +38,12 @@ String getErrorMessage(dynamic error) {
   }
   if (error is TimeoutException) {
     return 'Slow internet connection';
+  }
+  if (error is HttpException) {
+    return 'Network error';
+  }
+  if (error is ClientException) {
+    return 'Network error';
   }
 
   // firebase & platform errors
