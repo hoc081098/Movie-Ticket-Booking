@@ -29,6 +29,8 @@ class ShowTimesPage extends StatefulWidget {
 class _ShowTimesPageState extends State<ShowTimesPage>
     with AutomaticKeepAliveClientMixin<ShowTimesPage> {
   final dateFormat = DateFormat('dd/MM');
+  final fullDateFormat = DateFormat.yMMMd();
+  final showTimeDateFormat = DateFormat('hh:mm a');
 
   final startDay = startOfDay(DateTime.now());
   List<DateTime> days;
@@ -99,8 +101,6 @@ class _ShowTimesPageState extends State<ShowTimesPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final cityRepo = Provider.of<CityRepository>(context);
-
     final textTheme = Theme.of(context).textTheme;
     final weekDayStyle = textTheme.button;
     final ddMMStyle = textTheme.subtitle1.copyWith(fontSize: 15);
@@ -111,100 +111,68 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     return SafeArea(
       child: Column(
         children: [
-          Row(
-            children: [
-              const SizedBox(width: 16),
-              Text(
-                'Chọn khu vực: ',
-                style: textTheme.headline6.copyWith(fontSize: 16),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: RxStreamBuilder<City>(
-                  stream: cityRepo.selectedCity$,
+          Card(
+            elevation: 5,
+            child: Column(
+              children: [
+                const SelectCityWidget(),
+                const SizedBox(height: 8),
+                RxStreamBuilder<DateTime>(
+                  stream: selectedDayS,
                   builder: (context, snapshot) {
-                    final selected = snapshot.data;
+                    final selectedDay = snapshot.data;
 
-                    return PopupMenuButton<City>(
-                      initialValue: selected,
-                      onSelected: cityRepo.change,
-                      offset: Offset(0, 200),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              selected.name,
-                              style: textTheme.subtitle1,
+                    return Row(
+                      children: [
+                        const SizedBox(width: 4),
+                        for (final day in days)
+                          Expanded(
+                            flex: 1,
+                            child: InkWell(
+                              onTap: () => selectedDayS.add(day),
+                              child: AnimatedContainer(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                duration: const Duration(milliseconds: 300),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: day == selectedDay
+                                      ? accentColor
+                                      : Colors.white,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      day == startDay
+                                          ? 'Today'
+                                          : weekdayOf(day),
+                                      style: day == selectedDay
+                                          ? weekDaySelectedStyle
+                                          : weekDayStyle,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      dateFormat.format(day),
+                                      style: day == selectedDay
+                                          ? ddMMSelectedStyle
+                                          : ddMMStyle,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            SizedBox(width: 8),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                      ),
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          for (final city in cityRepo.allCities)
-                            PopupMenuItem<City>(
-                              child: Text(city.name),
-                              value: city,
-                            )
-                        ];
-                      },
+                          ),
+                        const SizedBox(width: 4),
+                      ],
                     );
                   },
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          RxStreamBuilder<DateTime>(
-            stream: selectedDayS,
-            builder: (context, snapshot) {
-              final selectedDay = snapshot.data;
-
-              return Row(
-                children: [
-                  const SizedBox(width: 4),
-                  for (final day in days)
-                    Expanded(
-                      flex: 1,
-                      child: InkWell(
-                        onTap: () => selectedDayS.add(day),
-                        child: AnimatedContainer(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          duration: const Duration(milliseconds: 300),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color:
-                                day == selectedDay ? accentColor : Colors.white,
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                day == startDay ? 'Today' : weekdayOf(day),
-                                style: day == selectedDay
-                                    ? weekDaySelectedStyle
-                                    : weekDayStyle,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                dateFormat.format(day),
-                                style: day == selectedDay
-                                    ? ddMMSelectedStyle
-                                    : ddMMStyle,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  const SizedBox(width: 4),
-                ],
-              );
-            },
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text('Today, ${fullDateFormat.format(startDay)}'),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 8),
           Expanded(
@@ -215,7 +183,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                 builder: (context, snapshot) {
                   return AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    child: _buildItem(snapshot.data),
+                    child: _buildBottom(snapshot.data),
                   );
                 },
               ),
@@ -226,7 +194,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     );
   }
 
-  Widget _buildItem(LoaderState<BuiltList<TheatreAndShowTimes>> state) {
+  Widget _buildBottom(LoaderState<BuiltList<TheatreAndShowTimes>> state) {
     if (state.error != null) {
       return MyErrorWidget(
         errorText: 'Error: ${getErrorMessage(state.error)}',
@@ -257,18 +225,156 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     }
 
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
       itemCount: list.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(list[index].theatre.name),
-          subtitle: Text(
-            list[index].showTimes.map((e) => e.start_time).join(', '),
-          ),
-        );
-      },
+      itemBuilder: (context, index) => ShowTimeItem(
+        key: ValueKey(list[index].theatre.id),
+        theatreAndShowTimes: list[index],
+        showTimeDateFormat: showTimeDateFormat,
+      ),
     );
   }
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class SelectCityWidget extends StatelessWidget {
+  const SelectCityWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final cityRepo = Provider.of<CityRepository>(context);
+
+    return Row(
+      children: [
+        const SizedBox(width: 16),
+        Text(
+          'Chọn khu vực: ',
+          style: textTheme.headline6.copyWith(fontSize: 16),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: RxStreamBuilder<City>(
+            stream: cityRepo.selectedCity$,
+            builder: (context, snapshot) {
+              final selected = snapshot.data;
+
+              return PopupMenuButton<City>(
+                initialValue: selected,
+                onSelected: cityRepo.change,
+                offset: Offset(0, 200),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        selected.name,
+                        style: textTheme.subtitle1,
+                      ),
+                      SizedBox(width: 8),
+                      Icon(Icons.arrow_drop_down),
+                    ],
+                  ),
+                ),
+                itemBuilder: (BuildContext context) {
+                  return [
+                    for (final city in cityRepo.allCities)
+                      PopupMenuItem<City>(
+                        child: Text(city.name),
+                        value: city,
+                      )
+                  ];
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class ShowTimeItem extends StatelessWidget {
+  final DateFormat showTimeDateFormat;
+  final TheatreAndShowTimes theatreAndShowTimes;
+
+  ShowTimeItem(
+      {Key key,
+      @required this.theatreAndShowTimes,
+      @required this.showTimeDateFormat})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theatre = theatreAndShowTimes.theatre;
+    final showTimes = theatreAndShowTimes.showTimes;
+    final textTheme = Theme.of(context).textTheme;
+
+    return ExpansionTile(
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(theatre.name),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Icon(Icons.map_rounded,
+                color: Colors.grey.shade500,
+                size: 20,
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  theatre.address,
+                  style: textTheme.caption.copyWith(fontSize: 14),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      children: [
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 3,
+          padding: const EdgeInsets.all(16),
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          childAspectRatio: 1.8,
+          children: [
+            for (final show in showTimes)
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                      color: const Color(0xffD1DBE2),
+                      width: 1,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      showTimeDateFormat.format(show.start_time),
+                      textAlign: TextAlign.center,
+                      style: textTheme.subtitle1.copyWith(
+                        fontSize: 18,
+                        color: const Color(0xff687189),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+          ],
+        ),
+      ],
+    );
+  }
 }
