@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { DocumentDefinition, Model } from 'mongoose';
+import { DocumentDefinition, Model, Types } from 'mongoose';
 import { Comment } from './comment.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from '../movies/movie.schema';
@@ -7,7 +7,7 @@ import { User } from '../users/user.schema';
 import * as faker from 'faker';
 import { getSkipLimit } from '../common/utils';
 import { PaginationDto } from '../common/pagination.dto';
-import { CreateCommentDto } from './comment.dto';
+import { CommentsAndRatingSummary, CreateCommentDto } from './comment.dto';
 import { UserPayload } from '../auth/get-user.decorator';
 
 const rateStars = [1, 2, 3, 4, 5];
@@ -67,17 +67,77 @@ export class CommentsService {
     return comments;
   }
 
-  getCommentsByMovieId(
+  async getCommentsByMovieId(
       movieId: string,
       paginationDto: PaginationDto,
-  ): Promise<Comment[]> {
+  ): Promise<CommentsAndRatingSummary> {
     const skipLimit = getSkipLimit(paginationDto);
 
-    return this.commentModel
-        .find({ movie: movieId })
-        .skip(skipLimit.skip)
-        .limit(skipLimit.limit)
-        .exec();
+    const results: {
+      comments: Comment[];
+      rate_avg: number;
+      total: number
+    }[] = await this.commentModel.aggregate()
+        .match({ movie: new Types.ObjectId(movieId) })
+        .facet({
+          comments: [
+            {
+              $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              }
+            },
+            { $unwind: '$user' },
+            { $sort: { createdAt: -1 } },
+            { $skip: skipLimit.skip },
+            { $limit: skipLimit.limit },
+          ],
+          rate_avg: [
+            {
+              $group: {
+                _id: null,
+                rate_avg: { $avg: '$rate_star' },
+              }
+            },
+          ],
+          total: [
+            { $count: 'total' },
+          ]
+        })
+        .project({
+          rate_avg: {
+            $let: {
+              vars: {
+                first: {
+                  $arrayElemAt: ['$rate_avg', 0],
+                }
+              },
+              in: {
+                $ifNull: [
+                  '$$first.rate_avg',
+                  0
+                ]
+              }
+            },
+          },
+          total: {
+            $arrayElemAt: [
+              '$total.total',
+              0,
+            ]
+          },
+          comments: 1,
+        });
+
+    const result = results?.[0];
+
+    return new CommentsAndRatingSummary(
+        result?.comments ?? [],
+        result?.rate_avg ?? 0,
+        result?.total ?? 0,
+    );
   }
 
   async createComment(user: UserPayload, dto: CreateCommentDto): Promise<Comment> {

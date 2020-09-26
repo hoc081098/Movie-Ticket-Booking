@@ -4,7 +4,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Comment } from './comment.schema';
 import { AuthGuard } from '../auth/auth.guard';
 import { PaginationDto } from '../common/pagination.dto';
-import { CreateCommentDto } from './comment.dto';
+import { CommentsAndRatingSummary, CreateCommentDto } from './comment.dto';
 import { GetUser, UserPayload } from '../auth/get-user.decorator';
 
 @ApiTags('comments')
@@ -25,7 +25,7 @@ export class CommentsController {
   getCommentsByMovieId(
       @Param('movie_id')  movieId: string,
       @Query() paginationDto: PaginationDto,
-  ): Promise<Comment[]> {
+  ): Promise<CommentsAndRatingSummary> {
     return this.commentsService.getCommentsByMovieId(
         movieId,
         paginationDto
