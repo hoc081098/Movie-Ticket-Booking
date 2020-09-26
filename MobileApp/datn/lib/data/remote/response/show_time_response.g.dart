@@ -22,9 +22,6 @@ class _$ShowTimeResponseSerializer
     final result = <Object>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'is_active',
-      serializers.serialize(object.is_active,
-          specifiedType: const FullType(bool)),
       'movie',
       serializers.serialize(object.movie,
           specifiedType: const FullType(String)),
@@ -46,7 +43,12 @@ class _$ShowTimeResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-
+    if (object.is_active != null) {
+      result
+        ..add('is_active')
+        ..add(serializers.serialize(object.is_active,
+            specifiedType: const FullType(bool)));
+    }
     return result;
   }
 
@@ -142,9 +144,6 @@ class _$ShowTimeResponse extends ShowTimeResponse {
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('ShowTimeResponse', 'id');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'is_active');
     }
     if (movie == null) {
       throw new BuiltValueNullFieldError('ShowTimeResponse', 'movie');

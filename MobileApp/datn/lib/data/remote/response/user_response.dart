@@ -67,6 +67,7 @@ abstract class UserResponse
   bool get isCompleted;
 
   @BuiltValueField(wireName: 'is_active')
+  @nullable
   bool get isActive;
 
   UserResponse._();

@@ -80,9 +80,6 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
       'is_completed',
       serializers.serialize(object.isCompleted,
           specifiedType: const FullType(bool)),
-      'is_active',
-      serializers.serialize(object.isActive,
-          specifiedType: const FullType(bool)),
     ];
     if (object.phoneNumber != null) {
       result
@@ -113,6 +110,12 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
         ..add('location')
         ..add(serializers.serialize(object.location,
             specifiedType: const FullType(LocationResponse)));
+    }
+    if (object.isActive != null) {
+      result
+        ..add('is_active')
+        ..add(serializers.serialize(object.isActive,
+            specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -330,9 +333,6 @@ class _$UserResponse extends UserResponse {
     }
     if (isCompleted == null) {
       throw new BuiltValueNullFieldError('UserResponse', 'isCompleted');
-    }
-    if (isActive == null) {
-      throw new BuiltValueNullFieldError('UserResponse', 'isActive');
     }
   }
 

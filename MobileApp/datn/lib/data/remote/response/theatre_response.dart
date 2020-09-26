@@ -14,6 +14,7 @@ abstract class TheatreResponse
 
   LocationResponse get location;
 
+  @nullable
   bool get is_active;
 
   BuiltList<String> get rooms;

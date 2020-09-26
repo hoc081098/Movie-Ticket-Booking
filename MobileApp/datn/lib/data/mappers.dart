@@ -1,6 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:tuple/tuple.dart';
 
+import '../domain/model/comment.dart';
+import '../domain/model/comments.dart';
 import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/show_time.dart';
@@ -10,6 +12,8 @@ import '../domain/model/user.dart';
 import '../utils/date_time.dart';
 import '../utils/iterable.dart';
 import 'local/user_local.dart';
+import 'remote/response/comment_response.dart';
+import 'remote/response/comments_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
@@ -36,7 +40,7 @@ UserLocal userResponseToUserLocal(UserResponse response) {
       ..birthday = response.birthday
       ..location = locationLocalBuilder
       ..isCompleted = response.isCompleted
-      ..isActive = response.isActive;
+      ..isActive = response.isActive ?? true;
   });
 }
 
@@ -66,14 +70,14 @@ User userLocalToUserDomain(UserLocal local) {
           ..longitude = local.location.longitude)
         : null
     ..isCompleted = local.isCompleted
-    ..isActive = local.isActive);
+    ..isActive = local.isActive ?? true);
 }
 
 Movie movieResponseToMovie(MovieResponse res) {
   return Movie(
     (b) => b
       ..id = res.id
-      ..isActive = res.is_active
+      ..isActive = res.is_active ?? true
       ..actors = (b.actors..replace(res.actors))
       ..directors = (b.directors..replace(res.directors))
       ..title = res.title
@@ -111,7 +115,7 @@ Theatre theatreResponseToTheatre(TheatreResponse response) {
     return b
       ..id = response.id
       ..location = locationBuilder
-      ..is_active = response.is_active
+      ..is_active = response.is_active ?? true
       ..rooms = roomsBuilder
       ..name = response.name
       ..address = response.address
@@ -128,7 +132,7 @@ Theatre theatreResponseToTheatre(TheatreResponse response) {
 ShowTime showTimeResponseToShowTime(ShowTimeResponse response) {
   return ShowTime((b) => b
     ..id = response.id
-    ..is_active = response.is_active
+    ..is_active = response.is_active ?? true
     ..movie = response.movie
     ..theatre = response.theatre
     ..room = response.room
@@ -186,4 +190,57 @@ BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>
       .map(_tuplesToMapEntry);
 
   return showTimesByDate.build();
+}
+
+Comments commentsResponseToComments(CommentsResponse response) {
+  return Comments((b) {
+    final listBuilder = b.comments
+      ..update(
+        (cb) => cb.addAll(
+          response.comments.map(commentResponseToComment),
+        ),
+      );
+
+    return b
+      ..total = response.total
+      ..average = response.average
+      ..comments = listBuilder;
+  });
+}
+
+Comment commentResponseToComment(CommentResponse response) {
+  return Comment((b) {
+    final userBuilder = b.user..replace(userResponseToUser(response.user));
+
+    return b
+      ..id = response.id
+      ..is_active = response.is_active ?? true
+      ..content = response.content
+      ..rate_star = response.rate_star
+      ..movie = response.movie
+      ..user = userBuilder
+      ..createdAt = response.createdAt
+      ..updatedAt = response.updatedAt;
+  });
+}
+
+User userResponseToUser(UserResponse response) {
+  return User((b) {
+    final locationBuilder = response.location != null
+        ? (b.location..replace(locationResponseToLocation(response.location)))
+        : null;
+
+    return b
+      ..uid = response.uid
+      ..email = response.email
+      ..phoneNumber = response.phoneNumber
+      ..fullName = response.fullName
+      ..gender = stringToGender(response.gender)
+      ..avatar = response.avatar
+      ..address = response.address
+      ..birthday = response.birthday
+      ..location = locationBuilder
+      ..isCompleted = response.isCompleted
+      ..isActive = response.isActive ?? true;
+  });
 }

@@ -23,6 +23,7 @@ environment:
 # flutter packages pub run build_runner build --delete-conflicting-outputs
 
 dependencies:
+  rx_redux: ^2.1.0
   built_collection: ^4.3.2
   stream_loader: ^1.0.1
   loading_indicator: ^1.2.0

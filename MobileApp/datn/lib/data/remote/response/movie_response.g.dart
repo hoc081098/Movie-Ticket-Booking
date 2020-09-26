@@ -21,9 +21,6 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
     final result = <Object>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'is_active',
-      serializers.serialize(object.is_active,
-          specifiedType: const FullType(bool)),
       'actors',
       serializers.serialize(object.actors,
           specifiedType:
@@ -54,6 +51,12 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
       serializers.serialize(object.age_type,
           specifiedType: const FullType(String)),
     ];
+    if (object.is_active != null) {
+      result
+        ..add('is_active')
+        ..add(serializers.serialize(object.is_active,
+            specifiedType: const FullType(bool)));
+    }
     if (object.trailer_video_url != null) {
       result
         ..add('trailer_video_url')
@@ -205,9 +208,6 @@ class _$MovieResponse extends MovieResponse {
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('MovieResponse', 'id');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('MovieResponse', 'is_active');
     }
     if (actors == null) {
       throw new BuiltValueNullFieldError('MovieResponse', 'actors');

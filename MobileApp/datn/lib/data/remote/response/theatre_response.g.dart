@@ -25,9 +25,6 @@ class _$TheatreResponseSerializer
       'location',
       serializers.serialize(object.location,
           specifiedType: const FullType(LocationResponse)),
-      'is_active',
-      serializers.serialize(object.is_active,
-          specifiedType: const FullType(bool)),
       'rooms',
       serializers.serialize(object.rooms,
           specifiedType:
@@ -56,6 +53,12 @@ class _$TheatreResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
+    if (object.is_active != null) {
+      result
+        ..add('is_active')
+        ..add(serializers.serialize(object.is_active,
+            specifiedType: const FullType(bool)));
+    }
     if (object.email != null) {
       result
         ..add('email')
@@ -190,9 +193,6 @@ class _$TheatreResponse extends TheatreResponse {
     }
     if (location == null) {
       throw new BuiltValueNullFieldError('TheatreResponse', 'location');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'is_active');
     }
     if (rooms == null) {
       throw new BuiltValueNullFieldError('TheatreResponse', 'rooms');

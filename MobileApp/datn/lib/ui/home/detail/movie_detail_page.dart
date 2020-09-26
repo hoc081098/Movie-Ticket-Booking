@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'comments_page.dart';
+import 'comments/comments_page.dart';
 import 'show_times_page.dart';
 
 class MovieDetailPage extends StatefulWidget {
