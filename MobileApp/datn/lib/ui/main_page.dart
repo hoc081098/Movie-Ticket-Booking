@@ -7,6 +7,7 @@ import '../domain/model/user.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
+import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
 import 'login/login_page.dart';
@@ -30,6 +31,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         title: movie.title,
       );
     },
+    AddCommentPage.routeName: (context, settings) => AddCommentPage(),
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

@@ -1,6 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/domain/model/user.dart';
-import 'package:datn/domain/repository/user_repository.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -10,13 +8,19 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
 
 import '../../../../domain/model/comment.dart';
+import '../../../../domain/model/user.dart';
 import '../../../../domain/repository/comment_repository.dart';
+import '../../../../domain/repository/user_repository.dart';
 import '../../../../utils/utils.dart';
+import '../../../app_scaffold.dart';
 import '../../../widgets/empty_widget.dart';
 import '../../../widgets/error_widget.dart';
 import 'action.dart';
+import 'add_comment/add_commen_page.dart';
 import 'state.dart' as st;
 import 'store.dart';
+
+const imageSize = 54.0;
 
 class CommentsPage extends StatefulWidget {
   final String movieId;
@@ -256,8 +260,6 @@ class CommentItemWidget extends StatelessWidget {
         optional is Some<User> &&
         optional.value.uid == item.user.uid;
 
-    final imageSize = 54.0;
-
     return InkWell(
       onTap: () {},
       child: Padding(
@@ -427,78 +429,170 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: average.toStringAsFixed(2),
-                    style: Theme.of(context).textTheme.headline6.copyWith(
-                          color: Colors.amber.shade800,
-                          fontSize: 30,
-                        ),
+    final userRepo = Provider.of<UserRepository>(context);
+    final avatar = userRepo.user$.value?.fold(() => null, (u) => u.avatar);
+
+    return Column(
+      children: [
+        Card(
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: average.toStringAsFixed(2),
+                        style: Theme.of(context).textTheme.headline6.copyWith(
+                              color: Colors.amber.shade800,
+                              fontSize: 30,
+                            ),
+                      ),
+                      TextSpan(
+                        text: ' / 5',
+                        style: Theme.of(context).textTheme.headline6.copyWith(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: ' / 5',
-                    style: Theme.of(context).textTheme.headline6.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 4),
-            Center(
-              child: IgnorePointer(
-                child: RatingBar(
-                  initialRating: average,
-                  direction: Axis.horizontal,
-                  itemCount: 5,
-                  allowHalfRating: true,
-                  itemSize: 32,
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (_) {},
-                  tapOnlyMode: true,
                 ),
-              ),
+                const SizedBox(height: 4),
+                Center(
+                  child: IgnorePointer(
+                    child: RatingBar(
+                      initialRating: average,
+                      direction: Axis.horizontal,
+                      itemCount: 5,
+                      allowHalfRating: true,
+                      itemSize: 32,
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (_) {},
+                      tapOnlyMode: true,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Base on ',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                      TextSpan(
+                        text: total.toString(),
+                        style: Theme.of(context).textTheme.headline6.copyWith(
+                              fontSize: 24,
+                              color: Theme.of(context).accentColor,
+                            ),
+                      ),
+                      TextSpan(
+                        text: ' reviews',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 4),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Base on ',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  TextSpan(
-                    text: total.toString(),
-                    style: Theme.of(context).textTheme.headline6.copyWith(
-                          fontSize: 24,
-                          color: Theme.of(context).accentColor,
-                        ),
-                  ),
-                  TextSpan(
-                    text: ' reviews',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        InkWell(
+          onTap: () =>
+              AppScaffold.of(context).pushNamed(AddCommentPage.routeName),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Row(
+              children: [
+                const SizedBox(width: 8),
+                Container(
+                  width: imageSize,
+                  height: imageSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).backgroundColor,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 16,
+                        offset: Offset(2, 2),
+                        color: Colors.grey.shade300,
+                        spreadRadius: 2,
+                      )
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: avatar == null
+                        ? Center(
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: imageSize * 0.7,
+                            ),
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: avatar,
+                            fit: BoxFit.cover,
+                            width: imageSize,
+                            height: imageSize,
+                            progressIndicatorBuilder: (
+                              BuildContext context,
+                              String url,
+                              progress,
+                            ) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: progress.progress,
+                                  strokeWidth: 2.0,
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
+                                ),
+                              );
+                            },
+                            errorWidget: (
+                              BuildContext context,
+                              String url,
+                              dynamic error,
+                            ) {
+                              return Center(
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                  size: imageSize * 0.7,
+                                ),
+                              );
+                            },
+                          ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Container(
+                    height: imageSize * 0.8,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(imageSize * 0.4),
+                      color: Theme.of(context).buttonColor,
+                    ),
+                    child: Center(
+                      child: Text('Your think about this movie?'),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

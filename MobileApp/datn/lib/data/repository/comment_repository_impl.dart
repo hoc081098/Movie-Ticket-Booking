@@ -1,5 +1,3 @@
-import 'package:datn/utils/delay.dart';
-
 import '../../domain/model/comments.dart';
 import '../../domain/repository/comment_repository.dart';
 import '../../utils/type_defs.dart';
