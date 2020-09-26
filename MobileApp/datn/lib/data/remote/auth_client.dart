@@ -34,6 +34,9 @@ abstract class AppClient extends BaseClient {
           .put(url, headers: headers, body: body, encoding: encoding)
           .then(_parseResult);
 
+  Future<dynamic> deleteBody(dynamic url, {Map<String, String> headers}) =>
+      this.delete(url, headers: headers).then(_parseResult);
+
   static dynamic _parseResult(Response response) {
     final statusCode = response.statusCode;
     final json = jsonDecode(response.body);

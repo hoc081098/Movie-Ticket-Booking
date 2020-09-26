@@ -51,7 +51,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               ),
             ],
           ),
-          title: Text(widget.title),
+          title: Text(
+            widget.title,
+            style: Theme.of(context).textTheme.headline6.copyWith(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+          ),
         ),
         body: TabBarView(children: pages),
       ),

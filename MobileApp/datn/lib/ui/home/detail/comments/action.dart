@@ -1,9 +1,12 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:meta/meta.dart';
 
 import '../../../../domain/model/comment.dart';
 import '../../../../domain/model/comments.dart';
 import 'state.dart';
 
+@sealed
+@immutable
 abstract class Action {
   State reduce(State state);
 }
@@ -28,6 +31,15 @@ class LoadNextPageAction implements Action {
 
 class RetryAction implements Action {
   const RetryAction();
+
+  @override
+  State reduce(State state) => state;
+}
+
+class RemoveCommentAction implements Action {
+  final Comment item;
+
+  RemoveCommentAction(this.item);
 
   @override
   State reduce(State state) => state;
@@ -105,4 +117,24 @@ class FailureAction implements Action {
         ..isLoading = false,
     );
   }
+}
+
+class RemoveCommentSuccess implements Action {
+  final Comment comment;
+
+  RemoveCommentSuccess(this.comment);
+
+  @override
+  State reduce(State state) => state
+      .rebuild((b) => b.items..removeWhere((item) => item.id == comment.id));
+}
+
+class RemoveCommentFailure implements Action {
+  final Object error;
+  final Comment comment;
+
+  RemoveCommentFailure(this.error, this.comment);
+
+  @override
+  State reduce(State state) => state;
 }

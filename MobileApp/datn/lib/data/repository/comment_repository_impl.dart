@@ -1,3 +1,5 @@
+import 'package:datn/utils/delay.dart';
+
 import '../../domain/model/comments.dart';
 import '../../domain/repository/comment_repository.dart';
 import '../../utils/type_defs.dart';
@@ -31,5 +33,12 @@ class CommentRepositoryImpl implements CommentRepository {
     );
 
     yield _commentsResponseToComments(CommentsResponse.fromJson(json));
+  }
+
+  @override
+  Stream<void> removeCommentById(String id) async* {
+    ArgumentError.checkNotNull(id, 'id');
+    await _authClient.deleteBody(buildUrl('/comments/$id'));
+    yield null;
   }
 }

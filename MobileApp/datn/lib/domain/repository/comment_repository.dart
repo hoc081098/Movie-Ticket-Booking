@@ -8,4 +8,6 @@ abstract class CommentRepository {
     @required int page,
     @required int perPage,
   });
+
+  Stream<void> removeCommentById(String id);
 }

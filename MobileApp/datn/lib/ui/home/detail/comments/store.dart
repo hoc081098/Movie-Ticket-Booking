@@ -11,26 +11,48 @@ typedef GetComments = Stream<Comments> Function({
   @required int perPage,
 });
 
+typedef RemoveCommentById = Stream<void> Function(String);
+
 const perPage = 32;
 
-RxReduxStore<Action, State> createStore(GetComments getComments) =>
+RxReduxStore<Action, State> createStore(
+  GetComments getComments,
+  RemoveCommentById removeCommentById,
+) =>
     RxReduxStore(
       initialState: State.initial(),
-      sideEffects: HomeSideEffects(getComments)(),
+      sideEffects: HomeSideEffects(getComments, removeCommentById)(),
       reducer: (state, action) => action.reduce(state),
       // logger: rxReduxDefaultLogger,
     );
 
 class HomeSideEffects {
   final GetComments getComments;
+  final RemoveCommentById removeCommentById;
 
-  HomeSideEffects(this.getComments);
+  HomeSideEffects(this.getComments, this.removeCommentById);
 
   List<SideEffect<Action, State>> call() => [
         firstPage,
         nextPage,
         retry,
+        remove,
       ];
+
+  Stream<Action> remove(
+    Stream<Action> actions,
+    GetState<State> getState,
+  ) {
+    return actions
+        .whereType<RemoveCommentAction>()
+        .map((action) => action.item)
+        .flatMap(
+          (comment) => removeCommentById(comment.id)
+              .map<Action>((_) => RemoveCommentSuccess(comment))
+              .onErrorReturnWith(
+                  (error) => RemoveCommentFailure(error, comment)),
+        );
+  }
 
   Stream<Action> firstPage(
     Stream<Action> actions,
