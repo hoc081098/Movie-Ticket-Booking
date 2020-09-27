@@ -1,5 +1,3 @@
-import 'package:datn/domain/repository/comment_repository.dart';
-import 'package:datn/ui/home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -7,10 +5,12 @@ import 'package:flutter_provider/flutter_provider.dart';
 
 import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
+import '../domain/repository/comment_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
 import 'home/detail/comments/add_comment/add_commen_page.dart';
+import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
 import 'login/login_page.dart';
