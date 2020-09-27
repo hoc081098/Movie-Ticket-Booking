@@ -4,9 +4,9 @@ import { MoviesService } from './movies.service';
 import { Movie } from './movie.schema';
 import { getCoordinates } from '../common/utils';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '../auth/auth.guard';
 import { PaginationDto } from '../common/pagination.dto';
 import { GetNowShowingMoviesDto } from './movie.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 @ApiTags('movies')
 @UseGuards(AuthGuard)
@@ -51,7 +51,7 @@ export class MoviesController {
   @Get(':id')
   getDetail(
       @Param('id') id: string,
-  ): Promise<Movie | null> {
-    return this.moviesService.getDetail(id)
+  ): Promise<Movie> {
+    return this.moviesService.getDetail(id);
   }
 }
