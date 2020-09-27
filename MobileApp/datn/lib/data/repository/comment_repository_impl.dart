@@ -79,6 +79,6 @@ class CommentRepositoryImpl implements CommentRepository {
       body: body,
     );
 
-    yield _commentResponseToComment(json);
+    yield _commentResponseToComment(CommentResponse.fromJson(json));
   }
 }

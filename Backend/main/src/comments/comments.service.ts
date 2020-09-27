@@ -159,7 +159,8 @@ export class CommentsService {
       is_active: true,
     };
 
-    return this.commentModel.create(doc);
+    const saved = await this.commentModel.create(doc);
+    return await saved.populate('user').execPopulate();
   }
 
   async deleteComment(id: string): Promise<Comment> {

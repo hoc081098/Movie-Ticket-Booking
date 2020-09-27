@@ -45,6 +45,25 @@ class RemoveCommentAction implements Action {
   State reduce(State state) => state;
 }
 
+class AddedCommentAction implements Action {
+  final Comment comment;
+
+  AddedCommentAction(this.comment);
+
+  @override
+  State reduce(State state) {
+    final avg =
+        (state.total * state.average + comment.rate_star) / (state.total + 1);
+
+    return state.rebuild(
+      (b) => b
+        ..items.insert(0, comment)
+        ..total = state.total + 1
+        ..average = avg,
+    );
+  }
+}
+
 //
 // Side effect actions
 //
@@ -125,8 +144,17 @@ class RemoveCommentSuccess implements Action {
   RemoveCommentSuccess(this.comment);
 
   @override
-  State reduce(State state) => state
-      .rebuild((b) => b.items..removeWhere((item) => item.id == comment.id));
+  State reduce(State state) {
+    final avg =
+        (state.total * state.average - comment.rate_star) / (state.total - 1);
+
+    return state.rebuild(
+      (b) => b
+        ..items.removeWhere((item) => item.id == comment.id)
+        ..total = state.total - 1
+        ..average = avg,
+    );
+  }
 }
 
 class RemoveCommentFailure implements Action {

@@ -226,7 +226,9 @@ Comment commentResponseToComment(CommentResponse response) {
 
 User userResponseToUser(UserResponse response) {
   return User((b) {
-    final locationBuilder = response.location != null
+    final locationBuilder = response.location != null &&
+            response.location.latitude != null &&
+            response.location.longitude != null
         ? (b.location..replace(locationResponseToLocation(response.location)))
         : null;
 

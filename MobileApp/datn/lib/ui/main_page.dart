@@ -1,4 +1,7 @@
+import 'package:datn/domain/repository/comment_repository.dart';
+import 'package:datn/ui/home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
@@ -31,7 +34,15 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         title: movie.title,
       );
     },
-    AddCommentPage.routeName: (context, settings) => AddCommentPage(),
+    AddCommentPage.routeName: (context, settings) {
+      final repo = Provider.of<CommentRepository>(context);
+      final movieId = settings.arguments as String;
+
+      return BlocProvider<AddCommentBloc>(
+        child: AddCommentPage(),
+        initBloc: () => AddCommentBloc(repo, movieId),
+      );
+    },
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

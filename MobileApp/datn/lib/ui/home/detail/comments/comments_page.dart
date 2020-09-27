@@ -31,7 +31,8 @@ class CommentsPage extends StatefulWidget {
   _CommentsPageState createState() => _CommentsPageState();
 }
 
-class _CommentsPageState extends State<CommentsPage> with DisposeBagMixin {
+class _CommentsPageState extends State<CommentsPage>
+    with DisposeBagMixin, AutomaticKeepAliveClientMixin {
   RxReduxStore<Action, st.State> store;
   final commentDateFormat = DateFormat('dd/MM/yy');
 
@@ -103,6 +104,8 @@ class _CommentsPageState extends State<CommentsPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return StreamBuilder<st.State>(
       stream: store.stateStream,
       initialData: store.state,
@@ -143,20 +146,26 @@ class _CommentsPageState extends State<CommentsPage> with DisposeBagMixin {
           state: state,
           dispatch: store.dispatch,
           commentDateFormat: commentDateFormat,
+          movieId: widget.movieId,
         );
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class CommentItemsListWidget extends StatelessWidget {
   final DateFormat commentDateFormat;
+  final String movieId;
 
   const CommentItemsListWidget({
     Key key,
     @required this.state,
     @required this.dispatch,
     @required this.commentDateFormat,
+    @required this.movieId,
   }) : super(key: key);
 
   final st.State state;
@@ -173,6 +182,8 @@ class CommentItemsListWidget extends StatelessWidget {
           return Header(
             average: state.average,
             total: state.total,
+            movieId: movieId,
+            dispatch: dispatch,
           );
         }
 
@@ -424,8 +435,16 @@ class CommentItemWidget extends StatelessWidget {
 class Header extends StatelessWidget {
   final double average;
   final int total;
+  final String movieId;
+  final Function1<Action, void> dispatch;
 
-  const Header({Key key, this.average, this.total}) : super(key: key);
+  const Header({
+    Key key,
+    @required this.average,
+    @required this.total,
+    @required this.movieId,
+    @required this.dispatch,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -508,8 +527,15 @@ class Header extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () =>
-              AppScaffold.of(context).pushNamed(AddCommentPage.routeName),
+          onTap: () async {
+            final comment = await AppScaffold.of(context).pushNamed(
+              AddCommentPage.routeName,
+              arguments: movieId,
+            );
+            if (comment != null) {
+              dispatch(AddedCommentAction(comment));
+            }
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Row(
