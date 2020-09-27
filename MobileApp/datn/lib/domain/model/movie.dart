@@ -15,9 +15,9 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
 
   bool get isActive;
 
-  BuiltList<String> get actors;
+  BuiltList<String> get actorIds;
 
-  BuiltList<String> get directors;
+  BuiltList<String> get directorIds;
 
   String get title;
 

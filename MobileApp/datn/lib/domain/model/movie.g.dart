@@ -12,9 +12,9 @@ class _$Movie extends Movie {
   @override
   final bool isActive;
   @override
-  final BuiltList<String> actors;
+  final BuiltList<String> actorIds;
   @override
-  final BuiltList<String> directors;
+  final BuiltList<String> directorIds;
   @override
   final String title;
   @override
@@ -42,8 +42,8 @@ class _$Movie extends Movie {
   _$Movie._(
       {this.id,
       this.isActive,
-      this.actors,
-      this.directors,
+      this.actorIds,
+      this.directorIds,
       this.title,
       this.trailerVideoUrl,
       this.posterUrl,
@@ -61,11 +61,11 @@ class _$Movie extends Movie {
     if (isActive == null) {
       throw new BuiltValueNullFieldError('Movie', 'isActive');
     }
-    if (actors == null) {
-      throw new BuiltValueNullFieldError('Movie', 'actors');
+    if (actorIds == null) {
+      throw new BuiltValueNullFieldError('Movie', 'actorIds');
     }
-    if (directors == null) {
-      throw new BuiltValueNullFieldError('Movie', 'directors');
+    if (directorIds == null) {
+      throw new BuiltValueNullFieldError('Movie', 'directorIds');
     }
     if (title == null) {
       throw new BuiltValueNullFieldError('Movie', 'title');
@@ -103,8 +103,8 @@ class _$Movie extends Movie {
     return other is Movie &&
         id == other.id &&
         isActive == other.isActive &&
-        actors == other.actors &&
-        directors == other.directors &&
+        actorIds == other.actorIds &&
+        directorIds == other.directorIds &&
         title == other.title &&
         trailerVideoUrl == other.trailerVideoUrl &&
         posterUrl == other.posterUrl &&
@@ -133,8 +133,8 @@ class _$Movie extends Movie {
                                                 $jc(
                                                     $jc($jc(0, id.hashCode),
                                                         isActive.hashCode),
-                                                    actors.hashCode),
-                                                directors.hashCode),
+                                                    actorIds.hashCode),
+                                                directorIds.hashCode),
                                             title.hashCode),
                                         trailerVideoUrl.hashCode),
                                     posterUrl.hashCode),
@@ -152,8 +152,8 @@ class _$Movie extends Movie {
     return (newBuiltValueToStringHelper('Movie')
           ..add('id', id)
           ..add('isActive', isActive)
-          ..add('actors', actors)
-          ..add('directors', directors)
+          ..add('actorIds', actorIds)
+          ..add('directorIds', directorIds)
           ..add('title', title)
           ..add('trailerVideoUrl', trailerVideoUrl)
           ..add('posterUrl', posterUrl)
@@ -179,15 +179,16 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
   bool get isActive => _$this._isActive;
   set isActive(bool isActive) => _$this._isActive = isActive;
 
-  ListBuilder<String> _actors;
-  ListBuilder<String> get actors =>
-      _$this._actors ??= new ListBuilder<String>();
-  set actors(ListBuilder<String> actors) => _$this._actors = actors;
+  ListBuilder<String> _actorIds;
+  ListBuilder<String> get actorIds =>
+      _$this._actorIds ??= new ListBuilder<String>();
+  set actorIds(ListBuilder<String> actorIds) => _$this._actorIds = actorIds;
 
-  ListBuilder<String> _directors;
-  ListBuilder<String> get directors =>
-      _$this._directors ??= new ListBuilder<String>();
-  set directors(ListBuilder<String> directors) => _$this._directors = directors;
+  ListBuilder<String> _directorIds;
+  ListBuilder<String> get directorIds =>
+      _$this._directorIds ??= new ListBuilder<String>();
+  set directorIds(ListBuilder<String> directorIds) =>
+      _$this._directorIds = directorIds;
 
   String _title;
   String get title => _$this._title;
@@ -238,8 +239,8 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
     if (_$v != null) {
       _id = _$v.id;
       _isActive = _$v.isActive;
-      _actors = _$v.actors?.toBuilder();
-      _directors = _$v.directors?.toBuilder();
+      _actorIds = _$v.actorIds?.toBuilder();
+      _directorIds = _$v.directorIds?.toBuilder();
       _title = _$v.title;
       _trailerVideoUrl = _$v.trailerVideoUrl;
       _posterUrl = _$v.posterUrl;
@@ -276,8 +277,8 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
           new _$Movie._(
               id: id,
               isActive: isActive,
-              actors: actors.build(),
-              directors: directors.build(),
+              actorIds: actorIds.build(),
+              directorIds: directorIds.build(),
               title: title,
               trailerVideoUrl: trailerVideoUrl,
               posterUrl: posterUrl,
@@ -291,10 +292,10 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'actors';
-        actors.build();
-        _$failedField = 'directors';
-        directors.build();
+        _$failedField = 'actorIds';
+        actorIds.build();
+        _$failedField = 'directorIds';
+        directorIds.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Movie', _$failedField, e.toString());

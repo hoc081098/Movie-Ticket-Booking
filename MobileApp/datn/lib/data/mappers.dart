@@ -78,8 +78,8 @@ Movie movieResponseToMovie(MovieResponse res) {
     (b) => b
       ..id = res.id
       ..isActive = res.is_active ?? true
-      ..actors = (b.actors..replace(res.actors))
-      ..directors = (b.directors..replace(res.directors))
+      ..actorIds = (b.actorIds..replace(res.actors))
+      ..directorIds = (b.directorIds..replace(res.directors))
       ..title = res.title
       ..trailerVideoUrl = res.trailer_video_url
       ..posterUrl = res.poster_url
