@@ -4,10 +4,13 @@ import 'package:built_value/standard_json_plugin.dart';
 
 import '../utils/custom_iso_8601_date_time_serializer.dart';
 import 'local/user_local.dart';
+import 'remote/response/category_response.dart';
 import 'remote/response/comment_response.dart';
 import 'remote/response/comments_response.dart';
 import 'remote/response/error_response.dart';
+import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
+import 'remote/response/person_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
 import 'remote/response/theatre_response.dart';
@@ -38,6 +41,9 @@ final builtListShowTimeAndTheatreResponse = FullType(
   ShowTimeAndTheatreResponse,
   CommentResponse,
   CommentsResponse,
+  MovieDetailResponse,
+  PersonResponse,
+  CategoryResponse,
 ])
 final Serializers _serializers = _$_serializers;
 

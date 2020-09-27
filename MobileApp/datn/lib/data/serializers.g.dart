@@ -7,12 +7,15 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$_serializers = (new Serializers().toBuilder()
+      ..add(CategoryResponse.serializer)
       ..add(CommentResponse.serializer)
       ..add(CommentsResponse.serializer)
       ..add(LocationLocal.serializer)
       ..add(LocationResponse.serializer)
+      ..add(MovieDetailResponse.serializer)
       ..add(MovieResponse.serializer)
       ..add(MultipleMessagesErrorResponse.serializer)
+      ..add(PersonResponse.serializer)
       ..add(ShowTimeAndTheatreResponse.serializer)
       ..add(ShowTimeResponse.serializer)
       ..add(SingleMessageErrorResponse.serializer)
@@ -22,6 +25,15 @@ Serializers _$_serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(CommentResponse)]),
           () => new ListBuilder<CommentResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PersonResponse)]),
+          () => new ListBuilder<PersonResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PersonResponse)]),
+          () => new ListBuilder<PersonResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(CategoryResponse)]),
+          () => new ListBuilder<CategoryResponse>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

@@ -35,6 +35,12 @@ class _$Movie extends Movie {
   final DateTime updatedAt;
   @override
   final AgeType ageType;
+  @override
+  final BuiltList<Person> actors;
+  @override
+  final BuiltList<Person> directors;
+  @override
+  final BuiltList<Category> categories;
 
   factory _$Movie([void Function(MovieBuilder) updates]) =>
       (new MovieBuilder()..update(updates)).build();
@@ -53,7 +59,10 @@ class _$Movie extends Movie {
       this.originalLanguage,
       this.createdAt,
       this.updatedAt,
-      this.ageType})
+      this.ageType,
+      this.actors,
+      this.directors,
+      this.categories})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Movie', 'id');
@@ -114,7 +123,10 @@ class _$Movie extends Movie {
         originalLanguage == other.originalLanguage &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt &&
-        ageType == other.ageType;
+        ageType == other.ageType &&
+        actors == other.actors &&
+        directors == other.directors &&
+        categories == other.categories;
   }
 
   @override
@@ -131,20 +143,33 @@ class _$Movie extends Movie {
                                         $jc(
                                             $jc(
                                                 $jc(
-                                                    $jc($jc(0, id.hashCode),
-                                                        isActive.hashCode),
-                                                    actorIds.hashCode),
-                                                directorIds.hashCode),
-                                            title.hashCode),
-                                        trailerVideoUrl.hashCode),
-                                    posterUrl.hashCode),
-                                overview.hashCode),
-                            releasedDate.hashCode),
-                        duration.hashCode),
-                    originalLanguage.hashCode),
-                createdAt.hashCode),
-            updatedAt.hashCode),
-        ageType.hashCode));
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    $jc(
+                                                                        0,
+                                                                        id
+                                                                            .hashCode),
+                                                                    isActive
+                                                                        .hashCode),
+                                                                actorIds
+                                                                    .hashCode),
+                                                            directorIds
+                                                                .hashCode),
+                                                        title.hashCode),
+                                                    trailerVideoUrl.hashCode),
+                                                posterUrl.hashCode),
+                                            overview.hashCode),
+                                        releasedDate.hashCode),
+                                    duration.hashCode),
+                                originalLanguage.hashCode),
+                            createdAt.hashCode),
+                        updatedAt.hashCode),
+                    ageType.hashCode),
+                actors.hashCode),
+            directors.hashCode),
+        categories.hashCode));
   }
 
   @override
@@ -163,7 +188,10 @@ class _$Movie extends Movie {
           ..add('originalLanguage', originalLanguage)
           ..add('createdAt', createdAt)
           ..add('updatedAt', updatedAt)
-          ..add('ageType', ageType))
+          ..add('ageType', ageType)
+          ..add('actors', actors)
+          ..add('directors', directors)
+          ..add('categories', categories))
         .toString();
   }
 }
@@ -233,6 +261,22 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
   AgeType get ageType => _$this._ageType;
   set ageType(AgeType ageType) => _$this._ageType = ageType;
 
+  ListBuilder<Person> _actors;
+  ListBuilder<Person> get actors =>
+      _$this._actors ??= new ListBuilder<Person>();
+  set actors(ListBuilder<Person> actors) => _$this._actors = actors;
+
+  ListBuilder<Person> _directors;
+  ListBuilder<Person> get directors =>
+      _$this._directors ??= new ListBuilder<Person>();
+  set directors(ListBuilder<Person> directors) => _$this._directors = directors;
+
+  ListBuilder<Category> _categories;
+  ListBuilder<Category> get categories =>
+      _$this._categories ??= new ListBuilder<Category>();
+  set categories(ListBuilder<Category> categories) =>
+      _$this._categories = categories;
+
   MovieBuilder();
 
   MovieBuilder get _$this {
@@ -251,6 +295,9 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
       _createdAt = _$v.createdAt;
       _updatedAt = _$v.updatedAt;
       _ageType = _$v.ageType;
+      _actors = _$v.actors?.toBuilder();
+      _directors = _$v.directors?.toBuilder();
+      _categories = _$v.categories?.toBuilder();
       _$v = null;
     }
     return this;
@@ -288,7 +335,10 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
               originalLanguage: originalLanguage,
               createdAt: createdAt,
               updatedAt: updatedAt,
-              ageType: ageType);
+              ageType: ageType,
+              actors: _actors?.build(),
+              directors: _directors?.build(),
+              categories: _categories?.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -296,6 +346,13 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
         actorIds.build();
         _$failedField = 'directorIds';
         directorIds.build();
+
+        _$failedField = 'actors';
+        _actors?.build();
+        _$failedField = 'directors';
+        _directors?.build();
+        _$failedField = 'categories';
+        _categories?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Movie', _$failedField, e.toString());

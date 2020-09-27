@@ -1,6 +1,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 
+import 'category.dart';
+import 'person.dart';
+
 part 'movie.g.dart';
 
 enum AgeType {
@@ -41,6 +44,15 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
   DateTime get updatedAt;
 
   AgeType get ageType;
+
+  @nullable
+  BuiltList<Person> get actors;
+
+  @nullable
+  BuiltList<Person> get directors;
+
+  @nullable
+  BuiltList<Category> get categories;
 
   Movie._();
 
