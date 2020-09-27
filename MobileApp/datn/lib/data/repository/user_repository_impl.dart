@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart' hide User;
@@ -29,7 +28,6 @@ class UserRepositoryImpl implements UserRepository {
   final UserLocalSource _userLocalSource;
 
   final AuthClient _authClient;
-  final NormalClient _normalClient;
 
   final Function1<UserResponse, UserLocal> _userResponseToUserLocal;
   final GoogleSignIn _googleSignIn;
@@ -41,7 +39,6 @@ class UserRepositoryImpl implements UserRepository {
     this._auth,
     this._userLocalSource,
     this._authClient,
-    this._normalClient,
     this._userResponseToUserLocal,
     this._storage,
     Function1<UserLocal, User> userLocalToUserDomain,
@@ -247,11 +244,10 @@ class UserRepositoryImpl implements UserRepository {
     updateBody['gender'] = gender.toString().split('.')[1];
 
     final userResponse = UserResponse.fromJson(
-      await _authClient.putBody(buildUrl('users/me'),
-          body: jsonEncode(updateBody),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          }),
+      await _authClient.putBody(
+        buildUrl('users/me'),
+        body: updateBody,
+      ),
     );
 
     await _saveUserResponseToLocal(userResponse);

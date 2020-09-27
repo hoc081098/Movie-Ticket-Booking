@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import '../model/comment.dart';
 import '../model/comments.dart';
 
 abstract class CommentRepository {
@@ -10,4 +11,10 @@ abstract class CommentRepository {
   });
 
   Stream<void> removeCommentById(String id);
+
+  Stream<Comment> addComment({
+    @required String content,
+    @required int rateStar,
+    @required String movieId,
+  });
 }

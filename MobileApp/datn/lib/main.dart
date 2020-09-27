@@ -55,6 +55,7 @@ void main() async {
   const httpTimeout = Duration(seconds: 15);
 
   final normalClient = NormalClient(client, httpTimeout);
+  print(normalClient);
 
   Function0<Future<void>> _onSignOut;
   final authClient = AuthClient(
@@ -71,7 +72,6 @@ void main() async {
     auth,
     userLocalSource,
     authClient,
-    normalClient,
     mappers.userResponseToUserLocal,
     storage,
     mappers.userLocalToUserDomain,
@@ -91,6 +91,7 @@ void main() async {
   final commentRepository = CommentRepositoryImpl(
     authClient,
     mappers.commentsResponseToComments,
+    mappers.commentResponseToComment,
   );
 
   runApp(

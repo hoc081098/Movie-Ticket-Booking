@@ -11,27 +11,39 @@ abstract class AppClient extends BaseClient {
   /// Sends an HTTP GET request with the given headers to the given URL, which can be a Uri or a String.
   /// Returns the resulting Json object.
   /// Throws [ErrorResponse]
-  Future<dynamic> getBody(dynamic url, {Map<String, String> headers}) =>
+  Future<dynamic> getBody(Uri url, {Map<String, String> headers}) =>
       this.get(url, headers: headers).then(_parseResult);
 
   Future<dynamic> postBody(
-    dynamic url, {
+    Uri url, {
     Map<String, String> headers,
-    dynamic body,
-    Encoding encoding,
+    Map<String, dynamic> body,
   }) =>
       this
-          .post(url, headers: headers, body: body, encoding: encoding)
+          .post(
+            url,
+            headers: {
+              ...?headers,
+              HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
+            },
+            body: jsonEncode(body),
+          )
           .then(_parseResult);
 
   Future<dynamic> putBody(
-    dynamic url, {
+    Uri url, {
     Map<String, String> headers,
-    dynamic body,
-    Encoding encoding,
+    Map<String, dynamic> body,
   }) =>
       this
-          .put(url, headers: headers, body: body, encoding: encoding)
+          .put(
+            url,
+            headers: {
+              ...?headers,
+              HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
+            },
+            body: body,
+          )
           .then(_parseResult);
 
   Future<dynamic> deleteBody(dynamic url, {Map<String, String> headers}) =>
