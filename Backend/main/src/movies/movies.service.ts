@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from './movie.schema';
 import { Model } from 'mongoose';
@@ -7,6 +7,7 @@ import * as dayjs from 'dayjs';
 import { Theatre } from '../theatres/theatre.schema';
 import { constants, getSkipLimit } from '../common/utils';
 import { PaginationDto } from '../common/pagination.dto';
+import { Category } from '../categories/category.schema';
 
 @Injectable()
 export class MoviesService {
@@ -157,11 +158,22 @@ export class MoviesService {
     ]).exec();
   }
 
-  getDetail(id: string): Promise<Movie | null> {
-    return this.movieModel
+  async getDetail(id: string): Promise<Movie> {
+    const movie: (Movie & { categories: { category_id: Category }[] }) | null = (await this.movieModel
         .findOne({ _id: id })
         .populate('actors')
         .populate('directors')
-        .exec()
+        .populate({
+          path: 'categories',
+          populate: { path: 'category_id' },
+        })
+        .exec())?.toJSON() as any;
+
+    if (movie == null) {
+      throw new NotFoundException(`Movie with id: ${id} not found`);
+    }
+
+    (movie as any).categories = movie.categories.map(c => c.category_id);
+    return movie;
   }
 }
