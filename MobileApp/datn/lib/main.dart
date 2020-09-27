@@ -84,6 +84,7 @@ void main() async {
     authClient,
     mappers.movieResponseToMovie,
     mappers.showTimeAndTheatreResponsesToTheatreAndShowTimes,
+    mappers.movieDetailResponseToMovie,
   );
 
   final cityRepository = CityRepositoryImpl(preferences, userLocalSource);

@@ -9,6 +9,7 @@ import '../../utils/type_defs.dart';
 import '../../utils/utils.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
+import '../remote/response/movie_detail_response.dart';
 import '../remote/response/movie_response.dart';
 import '../remote/response/show_time_and_theatre_response.dart';
 import '../serializers.dart';
@@ -20,11 +21,13 @@ class MovieRepositoryImpl implements MovieRepository {
   final Function1<BuiltList<ShowTimeAndTheatreResponse>,
           BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>>
       _showTimeAndTheatreResponsesToTheatreAndShowTimes;
+  final Function1<MovieDetailResponse, Movie> _movieDetailResponseToMovie;
 
   MovieRepositoryImpl(
     this._authClient,
     this._movieResponseToMovie,
     this._showTimeAndTheatreResponsesToTheatreAndShowTimes,
+    this._movieDetailResponseToMovie,
   );
 
   @override
@@ -105,5 +108,13 @@ class MovieRepositoryImpl implements MovieRepository {
     ) as BuiltList<ShowTimeAndTheatreResponse>;
 
     yield _showTimeAndTheatreResponsesToTheatreAndShowTimes(response);
+  }
+
+  @override
+  Stream<Movie> getMovieDetail(String movieId) async* {
+    ArgumentError.checkNotNull(movieId, 'movieId');
+
+    final json = await _authClient.getBody(buildUrl('/movies/$movieId'));
+    yield _movieDetailResponseToMovie(MovieDetailResponse.fromJson(json));
   }
 }

@@ -1,10 +1,12 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:tuple/tuple.dart';
 
+import '../domain/model/category.dart';
 import '../domain/model/comment.dart';
 import '../domain/model/comments.dart';
 import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
+import '../domain/model/person.dart';
 import '../domain/model/show_time.dart';
 import '../domain/model/theatre.dart';
 import '../domain/model/theatre_and_show_times.dart';
@@ -12,9 +14,12 @@ import '../domain/model/user.dart';
 import '../utils/date_time.dart';
 import '../utils/iterable.dart';
 import 'local/user_local.dart';
+import 'remote/response/category_response.dart';
 import 'remote/response/comment_response.dart';
 import 'remote/response/comments_response.dart';
+import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
+import 'remote/response/person_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
 import 'remote/response/theatre_response.dart';
@@ -78,8 +83,8 @@ Movie movieResponseToMovie(MovieResponse res) {
     (b) => b
       ..id = res.id
       ..isActive = res.is_active ?? true
-      ..actorIds = (b.actorIds..replace(res.actors))
-      ..directorIds = (b.directorIds..replace(res.directors))
+      ..actorIds = (b.actorIds..safeReplace(res.actors))
+      ..directorIds = (b.directorIds..safeReplace(res.directors))
       ..title = res.title
       ..trailerVideoUrl = res.trailer_video_url
       ..posterUrl = res.poster_url
@@ -110,7 +115,7 @@ Theatre theatreResponseToTheatre(TheatreResponse response) {
   return Theatre((b) {
     final locationBuilder = b.location
       ..replace(locationResponseToLocation(response.location));
-    final roomsBuilder = b.rooms..replace(response.rooms);
+    final roomsBuilder = b.rooms..safeReplace(response.rooms);
 
     return b
       ..id = response.id
@@ -245,4 +250,64 @@ User userResponseToUser(UserResponse response) {
       ..isCompleted = response.isCompleted
       ..isActive = response.isActive ?? true;
   });
+}
+
+Movie movieDetailResponseToMovie(MovieDetailResponse res) {
+  return Movie(
+    (b) {
+      final actorIdsBuilder = b.actorIds
+        ..safeReplace(res.actors.map((a) => a.id));
+      final directorIdsBuilder = b.directorIds
+        ..safeReplace(res.directors.map((a) => a.id));
+
+      final actorsBuilder = b.actors
+        ..safeReplace(res.actors.map(personResponseToPerson));
+      final directorsBuilder = b.directors
+        ..safeReplace(res.directors.map(personResponseToPerson));
+      final categoriesBuilder = b.categories
+        ..safeReplace(res.categories.map(categoryResponseToCategory));
+
+      return b
+        ..id = res.id
+        ..isActive = res.is_active ?? true
+        ..actorIds = actorIdsBuilder
+        ..directorIds = directorIdsBuilder
+        ..title = res.title
+        ..trailerVideoUrl = res.trailer_video_url
+        ..posterUrl = res.poster_url
+        ..overview = res.overview
+        ..releasedDate = res.released_date
+        ..duration = res.duration
+        ..originalLanguage = res.original_language
+        ..createdAt = res.createdAt
+        ..updatedAt = res.updatedAt
+        ..ageType = stringToAgeType(res.age_type)
+        ..actors = actorsBuilder
+        ..directors = directorsBuilder
+        ..categories = categoriesBuilder;
+    },
+  );
+}
+
+Person personResponseToPerson(PersonResponse response) {
+  return Person(
+    (b) => b
+      ..is_active = response.is_active ?? true
+      ..id = response.id
+      ..avatar = response.avatar
+      ..full_name = response.full_name
+      ..createdAt = response.createdAt
+      ..updatedAt = response.updatedAt,
+  );
+}
+
+Category categoryResponseToCategory(CategoryResponse response) {
+  return Category(
+    (b) => b
+      ..id = response.id
+      ..name = response.name
+      ..createdAt = response.createdAt
+      ..updatedAt = response.updatedAt
+      ..is_active = response.is_active ?? true,
+  );
 }

@@ -1,3 +1,5 @@
+import 'package:built_collection/built_collection.dart';
+
 import 'type_defs.dart';
 
 extension GroupByIterableExtension<T> on Iterable<T> {
@@ -19,4 +21,8 @@ extension GroupByIterableExtension<T> on Iterable<T> {
     });
     return map;
   }
+}
+
+extension SafeReplaceListBuilderExtension<T> on ListBuilder<T> {
+  void safeReplace(Iterable<T> iterable) => replace(iterable);
 }

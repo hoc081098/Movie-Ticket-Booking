@@ -21,4 +21,6 @@ abstract class MovieRepository {
     @required String movieId,
     Location location,
   });
+
+  Stream<Movie> getMovieDetail(String movieId);
 }
