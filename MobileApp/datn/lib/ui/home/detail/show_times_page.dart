@@ -251,7 +251,7 @@ class SelectCityWidget extends StatelessWidget {
       children: [
         const SizedBox(width: 16),
         Text(
-          'Chọn khu vực: ',
+          'Select the area: ',
           style: textTheme.headline6.copyWith(fontSize: 16),
         ),
         const SizedBox(width: 16),
