@@ -14,6 +14,9 @@ import { ShowTimesModule } from './show-times/show-times.module';
 import { TheatresModule } from './theatres/theatres.module';
 import { CommentsModule } from './comments/comments.module';
 import { SeatsModule } from './seats/seats.module';
+import { ReservationsModule } from './reservations/reservations.module';
+import { PromotionsModule } from './promotions/promotions.module';
+import { ProductsModule } from './products/products.module';
 import * as admin from 'firebase-admin';
 
 @Module({
@@ -44,6 +47,9 @@ import * as admin from 'firebase-admin';
     CommentsModule,
     HttpModule,
     SeatsModule,
+    ReservationsModule,
+    PromotionsModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -8,6 +8,7 @@ import { Seat, SeatSchema } from './seat.schema';
 import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
 import { ShowTime, ShowTimeSchema } from '../show-times/show-time.schema';
 import { ConfigModule } from '../config/config.module';
+import { Ticket, TicketSchema } from './ticket.schema';
 
 @Module({
   imports: [
@@ -15,6 +16,10 @@ import { ConfigModule } from '../config/config.module';
       {
         name: Seat.name,
         schema: SeatSchema,
+      },
+      {
+        name: Ticket.name,
+        schema: TicketSchema,
       },
       {
         name: Theatre.name,
