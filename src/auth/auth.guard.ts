@@ -7,6 +7,8 @@ import { UsersService } from '../users/users.service';
 import { RawUserPayload, UserPayload } from './get-user.decorator';
 import { validate } from 'class-validator';
 import * as fs from 'fs';
+import { ConfigKey, ConfigService } from '../config/config.service';
+import { Types } from 'mongoose';
 
 let written = false;
 
@@ -17,6 +19,7 @@ export class AuthGuard implements CanActivate {
   constructor(
       private readonly firebaseAuth: FirebaseAuthenticationService,
       private readonly usersService: UsersService,
+      private readonly configService: ConfigService
   ) {
     this.logger.debug(`Created AuthGuard`);
   }
@@ -24,6 +27,15 @@ export class AuthGuard implements CanActivate {
   async canActivate(
       context: ExecutionContext,
   ): Promise<boolean> {
+    if (this.configService.get(ConfigKey.DISABLED_AUTH_GUARD) === 'true') {
+      context.switchToHttp().getRequest().user = new UserPayload({
+        _id: new Types.ObjectId('5f6a22e3075f5b523f6085a4') as any,
+        email: 'hoc081098@gmail.com',
+        uid: 'l9StgzQlR1h3XpaWCf3juyYgG772'
+      });
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest<Request>();
     const decodedIdToken = await this.decodeToken(request);
 
@@ -92,6 +104,10 @@ export class AuthGuard implements CanActivate {
   }
 
   private debugToken(token: string) {
+    if (this.configService.get(ConfigKey.WRITE_TOKEN_TO_FILE) !== 'true') {
+      return;
+    }
+
     if (written) return;
 
     written = true;

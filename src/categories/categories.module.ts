@@ -17,6 +17,7 @@ import { UsersModule } from '../users/users.module';
     ConfigModule,
     AuthModule,
     UsersModule,
+    ConfigModule,
   ],
   controllers: [CategoriesController],
   providers: [CategoriesService]

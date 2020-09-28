@@ -28,6 +28,9 @@ export class Seat extends Document {
   })
   theatre: any;
 
+  @Prop({ required: true })
+  room: string;
+
   @Prop({ default: true })
   is_active: boolean;
 }

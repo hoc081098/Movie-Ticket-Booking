@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-// import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { SeatsService } from './seats.service';
 import { Seat } from './seat.schema';
 
 @ApiTags('seats')
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @Controller('seats')
 export class SeatsController {
   constructor(
@@ -18,10 +18,10 @@ export class SeatsController {
     return this.seatsService.seed(id);
   }
 
-  @Get('/theatres/:theatre_id')
-  getSeatsByTheatreId(
-      @Param('theatre_id') theatreId: string,
+  @Get('/show-times/:show_time_id')
+  getSeatsByShowTimeId(
+      @Param('show_time_id') showTimeId: string,
   ): Promise<Seat[]> {
-    return this.seatsService.getSeatsByTheatreId(theatreId);
+    return this.seatsService.getSeatsByShowTimeId(showTimeId);
   }
 }

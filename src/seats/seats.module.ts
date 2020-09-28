@@ -6,6 +6,8 @@ import { UsersModule } from '../users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Seat, SeatSchema } from './seat.schema';
 import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
+import { ShowTime, ShowTimeSchema } from '../show-times/show-time.schema';
+import { ConfigModule } from '../config/config.module';
 
 @Module({
   imports: [
@@ -17,10 +19,15 @@ import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
       {
         name: Theatre.name,
         schema: TheatreSchema,
+      },
+      {
+        name: ShowTime.name,
+        schema: ShowTimeSchema,
       }
     ]),
     AuthModule,
     UsersModule,
+    ConfigModule,
   ],
   controllers: [SeatsController],
   providers: [SeatsService]
