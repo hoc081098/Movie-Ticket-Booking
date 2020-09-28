@@ -13,6 +13,7 @@ import { PeopleModule } from './people/people.module';
 import { ShowTimesModule } from './show-times/show-times.module';
 import { TheatresModule } from './theatres/theatres.module';
 import { CommentsModule } from './comments/comments.module';
+import { SeatsModule } from './seats/seats.module';
 import * as admin from 'firebase-admin';
 
 @Module({
@@ -42,6 +43,7 @@ import * as admin from 'firebase-admin';
     TheatresModule,
     CommentsModule,
     HttpModule,
+    SeatsModule,
   ],
   controllers: [AppController],
   providers: [
