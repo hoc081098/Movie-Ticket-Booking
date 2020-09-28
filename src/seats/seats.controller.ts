@@ -3,6 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { SeatsService } from './seats.service';
 import { Seat } from './seat.schema';
+import { Ticket } from './ticket.schema';
 
 @ApiTags('seats')
 @UseGuards(AuthGuard)
@@ -18,10 +19,19 @@ export class SeatsController {
     return this.seatsService.seed(id);
   }
 
-  @Get('/show-times/:show_time_id')
-  getSeatsByShowTimeId(
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Post('seed-tickets')
+  seedTickets(): Promise<Ticket[]> {
+    return this.seatsService.seedTickets();
+  }
+
+  @ApiOperation({
+    description: 'Populated seat'
+  })
+  @Get('tickets/show-times/:show_time_id')
+  getTicketsByShowTimeId(
       @Param('show_time_id') showTimeId: string,
-  ): Promise<Seat[]> {
-    return this.seatsService.getSeatsByShowTimeId(showTimeId);
+  ): Promise<Ticket[]> {
+    return this.seatsService.getTicketsByShowTimeId(showTimeId);
   }
 }
