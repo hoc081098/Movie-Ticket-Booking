@@ -4,6 +4,7 @@ import { Seat } from './seat.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Theatre } from '../theatres/theatre.schema';
 import { ShowTime } from '../show-times/show-time.schema';
+import { Ticket } from './ticket.schema';
 
 @Injectable()
 export class SeatsService {
@@ -14,10 +15,50 @@ export class SeatsService {
       @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
+      @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
   ) {}
 
-  async seed(id: string): Promise<Seat[]> {
-    const theatre = await this.theatreModel.findById(id);
+  /**
+   * Helper: Find ShowTime by id
+   * @param id
+   */
+  private async findShowTimeById(id: string): Promise<ShowTime> {
+    const showTime = await this.showTimeModel.findById(id);
+    if (showTime == null) {
+      throw new NotFoundException(`Show time with id: ${id} not found`);
+    }
+    return showTime
+  }
+
+  private async getSeatsByShowTimeId(id: string): Promise<Seat[]> {
+    const showTime = await this.findShowTimeById(id);
+    return this.seatModel.find({
+      theatre: showTime.theatre,
+      room: showTime.room
+    });
+  }
+
+  private async seedTicketsForSingleShowTime(showTime: ShowTime): Promise<Ticket[]> {
+    const seats: Seat[] = await this.getSeatsByShowTimeId(showTime._id);
+    const price = [60_000, 70_000, 80_000, 100_000].random();
+
+    const docs: Omit<DocumentDefinition<Ticket>, '_id'>[] = seats.map(seat => {
+      return {
+        is_active: true,
+        price: price,
+        reservation: null,
+        seat: seat._id,
+        show_time: showTime._id,
+      };
+    });
+
+    const tickets = await this.ticketModel.create(docs);
+    this.logger.debug(`Seeded ${tickets.length} tickets for show time: ${showTime._id}`);
+    return tickets;
+  }
+
+  async seed(theatreId: string): Promise<Seat[]> {
+    const theatre = await this.theatreModel.findById(theatreId);
     if (theatre == null) {
       throw new NotFoundException();
     }
@@ -124,14 +165,35 @@ export class SeatsService {
     return seats;
   }
 
-  async getSeatsByShowTimeId(id: string): Promise<Seat[]> {
-    const showTime = await this.showTimeModel.findById(id);
-    if (showTime == null) {
-      throw new NotFoundException(`Show time with id: ${id} not found`);
+  async seedTickets() {
+    const showTimes = await this
+        .showTimeModel
+        .find({ start_time: { $gte: new Date() } });
+
+    let last: Ticket[] = [];
+    for (const st of showTimes) {
+      last = await this.seedTicketsForSingleShowTime(st);
     }
-    return this.seatModel.find({
-      theatre: showTime.theatre,
-      room: showTime.room
-    });
+    return last;
+  }
+
+  async getTicketsByShowTimeId(id: string): Promise<Ticket[]> {
+    const showTime = await this.findShowTimeById(id);
+    return await this.ticketModel
+        .find({ show_time: showTime._id })
+        .populate('seat')
+        .exec();
+
   }
 }
+
+declare global {
+  interface Array<T> {
+    random(): T | undefined;
+  }
+}
+
+Array.prototype.random = function <T>(this: T[]): T | undefined {
+  const i = Math.floor(Math.random() * this.length);
+  return this[i];
+};
