@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { DocumentDefinition, Model } from 'mongoose';
 import { Seat } from './seat.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -7,6 +7,9 @@ import { ShowTime } from '../show-times/show-time.schema';
 
 @Injectable()
 export class SeatsService {
+  private readonly logger = new Logger('SeatsService');
+  private seedChange = false;
+
   constructor(
       @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
@@ -26,57 +29,98 @@ export class SeatsService {
     const seats: Seat[] = [];
 
     for (const room of theatre.rooms) {
-      for (let row = 0; row <= end - start; row++) {
-        let currentCol = 1;
+      if (await this.seatModel.countDocuments({ theatre: theatre._id, room }) > 0) {
+        continue;
+      }
 
-        if (row < end - start - 1) {
-          for (let col = 2; col <= 11; col++) {
-            const doc: Omit<DocumentDefinition<Seat>, '_id'> = {
-              room: room,
-              theatre: theatre._id,
-              column: currentCol++,
-              row: String.fromCharCode(start + row),
-              coordinates: [col, row],
-              count: 1,
-              is_active: true,
-            };
+      if (this.seedChange) {
+        for (let row = 0; row <= end - start; row++) {
+          let currentCol = 1;
 
-            seats.push(await this.seatModel.create(doc));
+          if (row < end - start - 1) {
+            for (let col = 2; col <= 11; col++) {
+              const doc: Omit<DocumentDefinition<Seat>, '_id'> = {
+                room: room,
+                theatre: theatre._id,
+                column: currentCol++,
+                row: String.fromCharCode(start + row),
+                coordinates: [col, row],
+                count: 1,
+                is_active: true,
+              };
+
+              seats.push(await this.seatModel.create(doc));
+            }
+          } else {
+            for (let col = 0; col <= 5; col += 2) {
+              const doc: Omit<DocumentDefinition<Seat>, '_id'> = {
+                room: room,
+                theatre: theatre._id,
+                column: currentCol++,
+                row: String.fromCharCode(start + row),
+                coordinates: [col, row],
+                count: 2,
+                is_active: true,
+              };
+
+              seats.push(await this.seatModel.create(doc));
+            }
+
+            for (let col = 6; col <= 14; col++) {
+              const doc: Omit<DocumentDefinition<Seat>, '_id'> = {
+                room: room,
+                theatre: theatre._id,
+                column: currentCol++,
+                row: String.fromCharCode(start + row),
+                coordinates: [col, row],
+                count: 1,
+                is_active: true,
+              };
+
+              seats.push(await this.seatModel.create(doc));
+            }
           }
-        } else {
-          for (let col = 0; col <= 5; col += 2) {
-            const doc: Omit<DocumentDefinition<Seat>, '_id'> = {
-              room: room,
-              theatre: theatre._id,
-              column: currentCol++,
-              row: String.fromCharCode(start + row),
-              coordinates: [col, row],
-              count: 2,
-              is_active: true,
-            };
-
-            seats.push(await this.seatModel.create(doc));
-          }
-
-          for (let col = 6; col <= 14; col++) {
-            const doc: Omit<DocumentDefinition<Seat>, '_id'> = {
-              room: room,
-              theatre: theatre._id,
-              column: currentCol++,
-              row: String.fromCharCode(start + row),
-              coordinates: [col, row],
-              count: 1,
-              is_active: true,
-            };
-
-            seats.push(await this.seatModel.create(doc));
-          }
-
         }
+      } else {
+        for (let row = 0; row <= end - start; row++) {
+          let currentCol = 1;
 
+          if (row < end - start - 1) {
+            for (let col = 2; col <= 11; col++) {
+              const doc: Omit<DocumentDefinition<Seat>, '_id'> = {
+                room: room,
+                theatre: theatre._id,
+                column: currentCol++,
+                row: String.fromCharCode(start + row),
+                coordinates: [col, row],
+                count: 1,
+                is_active: true,
+              };
+
+              seats.push(await this.seatModel.create(doc));
+            }
+          } else {
+            for (let col = 0; col <= 14; col++) {
+              const doc: Omit<DocumentDefinition<Seat>, '_id'> = {
+                room: room,
+                theatre: theatre._id,
+                column: currentCol++,
+                row: String.fromCharCode(start + row),
+                coordinates: [col, row],
+                count: 1,
+                is_active: true,
+              };
+
+              seats.push(await this.seatModel.create(doc));
+            }
+          }
+        }
       }
     }
 
+    this.seedChange = !this.seedChange;
+
+    this.logger.debug(`Seed ${seats.length} seats`);
     return seats;
   }
 
