@@ -8,6 +8,8 @@ abstract class Optional<T> {
 
   const factory Optional.some(T value) = Some;
 
+  factory Optional.of(T value) => value == null ? None() : Some(value);
+
   R fold<R>(R Function() none, R Function(T) some) {
     final self = this;
     if (self is Some<T>) {

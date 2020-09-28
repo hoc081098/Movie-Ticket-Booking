@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:built_collection/src/list.dart';
+import 'package:datn/utils/optional.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/src/streams/value_stream.dart';
@@ -31,7 +32,7 @@ class CityRepositoryImpl implements CityRepository {
           ..longitude = 105.834160),
     ),
     City(
-          (b) => b
+      (b) => b
         ..name = 'TP. HCM'
         ..location = (b.location
           ..latitude = 10.762622
@@ -65,8 +66,9 @@ class CityRepositoryImpl implements CityRepository {
     UserLocalSource userLocalSource,
   ) {
     userLocalSource.user$
-        .where((user) => user.location != null)
-        .map((user) => _findNearestCityFrom(user.location).name)
+        .map((user) => Optional.of(user?.location))
+        .whereType<Some<LocationLocal>>()
+        .map((location) => _findNearestCityFrom(location.value).name)
         .switchMap((name) => prefs.setString(_city_key, name).asStream())
         .listen(null);
 
