@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:built_collection/src/list.dart';
-import 'package:datn/utils/optional.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/src/streams/value_stream.dart';
@@ -9,6 +8,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../domain/model/city.dart';
 import '../../domain/repository/city_repository.dart';
+import '../../utils/optional.dart';
 import '../local/user_local.dart';
 import '../local/user_local_source.dart';
 
