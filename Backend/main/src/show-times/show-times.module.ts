@@ -7,6 +7,7 @@ import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
 import { Movie, MovieSchema } from '../movies/movie.schema';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
+import { ConfigModule } from '../config/config.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UsersModule } from '../users/users.module';
     ]),
     AuthModule,
     UsersModule,
+    ConfigModule,
   ],
   controllers: [ShowTimesController],
   providers: [ShowTimesService]

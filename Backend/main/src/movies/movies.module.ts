@@ -45,6 +45,7 @@ import { UsersModule } from '../users/users.module';
     ConfigModule,
     AuthModule,
     UsersModule,
+    ConfigModule,
   ],
   providers: [MoviesService, MovieDbService],
   controllers: [MoviesController]
