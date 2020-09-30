@@ -301,6 +301,11 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
 
     if (x == 0) {
       return Container(
+        decoration: BoxDecoration(
+          color: const Color(0xffE9E6CB),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        margin: const EdgeInsets.all(0.5),
         width: widthPerSeat,
         height: widthPerSeat,
         child: Center(
@@ -326,6 +331,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
       return prevCount != null && prevCount > 1
           ? const SizedBox(width: 0, height: 0)
           : Container(
+              margin: const EdgeInsets.all(0.5),
               width: widthPerSeat,
               height: widthPerSeat,
             );
@@ -361,6 +367,7 @@ class SeatWidget extends StatelessWidget {
 
     if (ticket.reservation != null) {
       return Container(
+        margin: const EdgeInsets.all(0.5),
         width: width,
         height: widthPerSeat,
         decoration: BoxDecoration(
@@ -387,6 +394,7 @@ class SeatWidget extends StatelessWidget {
     return InkWell(
       onTap: () => tapTicket(ticket),
       child: Container(
+        margin: const EdgeInsets.all(0.5),
         width: width,
         height: widthPerSeat,
         decoration: BoxDecoration(
