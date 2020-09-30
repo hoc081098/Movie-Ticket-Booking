@@ -1,16 +1,20 @@
 import 'dart:math' as math;
 
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/widgets/age_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
+import '../../../domain/model/movie.dart';
 import '../../../domain/model/seat.dart';
 import '../../../domain/model/show_time.dart';
+import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/ticket_repository.dart';
 import '../../../utils/error.dart';
@@ -21,8 +25,15 @@ class TicketsPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets';
 
   final ShowTime showTime;
+  final Theatre theatre;
+  final Movie movie;
 
-  const TicketsPage({Key key, @required this.showTime}) : super(key: key);
+  const TicketsPage({
+    Key key,
+    @required this.showTime,
+    @required this.movie,
+    @required this.theatre,
+  }) : super(key: key);
 
   @override
   _TicketsPageState createState() => _TicketsPageState();
@@ -103,7 +114,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                 tickets: state.content,
                 selectedTicketIds$: selectedTicketIdsS,
                 tapTicket: (ticket) {
-                  if (ticket.reservation != null) {
+                  if (ticket == null || ticket.reservation != null) {
                     throw Exception('Something was wrong');
                   }
 
@@ -120,7 +131,24 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   selectedTicketIdsS.add(newIds);
                 },
               ),
-              LegendsWidget()
+              LegendsWidget(),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Divider(
+                    height: 1,
+                    color: Color(0xffD1DBE2),
+                  ),
+                ),
+              ),
+              BottomWidget(
+                movie: widget.movie,
+                theatre: widget.theatre,
+                showTime: widget.showTime,
+                ids$: selectedTicketIdsS,
+                tickets: BuiltMap.of(Map.fromEntries(
+                    state.content.map((t) => MapEntry(t.id, t)))),
+              ),
             ],
           ),
         );
@@ -364,7 +392,7 @@ class SeatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final seat = ticket.seat;
-    final width = widthPerSeat * seat.count;
+    final width = widthPerSeat * seat.count + (seat.count - 1) * 1;
 
     if (ticket.reservation != null) {
       return Container(
@@ -522,6 +550,151 @@ class LegendsWidget extends StatelessWidget {
                   style: textStyle,
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BottomWidget extends StatelessWidget {
+  final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
+  final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
+
+  final ShowTime showTime;
+  final Theatre theatre;
+  final Movie movie;
+  final ValueStream<BuiltSet<String>> ids$;
+  final BuiltMap<String, Ticket> tickets;
+
+  BottomWidget({
+    Key key,
+    @required this.showTime,
+    @required this.theatre,
+    @required this.movie,
+    @required this.ids$,
+    @required this.tickets,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    final textStyle = textTheme.subtitle1.copyWith(
+      fontSize: 15,
+      fontWeight: FontWeight.w400,
+      color: const Color(0xff98A8BA),
+    );
+
+    final textStyle2 = textTheme.subtitle1.copyWith(
+      fontSize: 16,
+      color: const Color(0xff687189),
+      fontWeight: FontWeight.w600,
+    );
+
+    final selectTextStyle = textTheme.headline6.copyWith(
+      fontSize: 18,
+      color: const Color(0xff687189),
+      fontWeight: FontWeight.normal,
+    );
+
+    final seatsCountStyle = textStyle2.copyWith(fontSize: 20);
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              movie.title,
+              style: textTheme.headline4.copyWith(
+                fontSize: 24,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xff687189),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Row(
+              children: [
+                AgeTypeWidget(ageType: movie.ageType),
+                const SizedBox(width: 8),
+                Text('${movie.duration} minutes'),
+              ],
+            ),
+            const SizedBox(height: 8),
+            RichText(
+              text: TextSpan(text: 'Start at: ', style: textStyle, children: [
+                TextSpan(
+                  text: startTimeFormat.format(showTime.start_time),
+                  style: textStyle2,
+                ),
+              ]),
+            ),
+            const SizedBox(height: 8),
+            RichText(
+              text: TextSpan(text: 'Theatre: ', style: textStyle, children: [
+                TextSpan(
+                  text: theatre.name,
+                  style: textStyle2,
+                ),
+                TextSpan(
+                  text: ' Room: ',
+                  style: textStyle,
+                ),
+                TextSpan(
+                  text: showTime.room,
+                  style: textStyle2,
+                ),
+              ]),
+            ),
+            const SizedBox(height: 6),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: const Divider(
+                height: 1,
+                color: Color(0xffD1DBE2),
+              ),
+            ),
+            RxStreamBuilder<BuiltSet<String>>(
+              stream: ids$,
+              builder: (context, snapshot) {
+                return Row(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: 'Select',
+                        style: selectTextStyle,
+                        children: [
+                          TextSpan(
+                            text: ' ${snapshot.data.length} ',
+                            style: seatsCountStyle,
+                          ),
+                          TextSpan(
+                            text: 'seats',
+                            style: selectTextStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Spacer(),
+                    RichText(
+                      text: TextSpan(
+                        text: currencyFormat.format(snapshot.data
+                            .fold(0, (acc, e) => acc + tickets[e].price)),
+                        style: seatsCountStyle,
+                        children: [
+                          TextSpan(
+                            text: ' VND',
+                            style: selectTextStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),

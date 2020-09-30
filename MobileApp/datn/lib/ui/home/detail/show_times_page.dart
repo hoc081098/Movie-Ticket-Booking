@@ -9,6 +9,7 @@ import 'package:stream_loader/stream_loader.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/city.dart';
+import '../../../domain/model/movie.dart';
 import '../../../domain/model/theatre_and_show_times.dart';
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
@@ -20,9 +21,9 @@ import '../../widgets/error_widget.dart';
 import '../tickets/ticket_page.dart';
 
 class ShowTimesPage extends StatefulWidget {
-  final String movieId;
+  final Movie movie;
 
-  const ShowTimesPage({Key key, @required this.movieId}) : super(key: key);
+  const ShowTimesPage({Key key, @required this.movie}) : super(key: key);
 
   @override
   _ShowTimesPageState createState() => _ShowTimesPageState();
@@ -70,7 +71,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
               .switchMap(
             (tuple) {
               final s$ = movieRepo.getShowTimes(
-                movieId: widget.movieId,
+                movieId: widget.movie.id,
                 location: tuple.item1,
               );
               return tuple.item2 == 0 ? s$ : s$.startWith(emptyMap);
@@ -233,6 +234,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
         key: ValueKey(list[index].theatre.id),
         theatreAndShowTimes: list[index],
         showTimeDateFormat: showTimeDateFormat,
+        movie: widget.movie,
       ),
     );
   }
@@ -303,11 +305,13 @@ class SelectCityWidget extends StatelessWidget {
 class ShowTimeItem extends StatelessWidget {
   final DateFormat showTimeDateFormat;
   final TheatreAndShowTimes theatreAndShowTimes;
+  final Movie movie;
 
   ShowTimeItem(
       {Key key,
       @required this.theatreAndShowTimes,
-      @required this.showTimeDateFormat})
+      @required this.showTimeDateFormat,
+      @required this.movie})
       : super(key: key);
 
   @override
@@ -356,7 +360,11 @@ class ShowTimeItem extends StatelessWidget {
               InkWell(
                 onTap: () => AppScaffold.of(context).pushNamed(
                   TicketsPage.routeName,
-                  arguments: show,
+                  arguments: <String, dynamic>{
+                    'theatre': theatre,
+                    'showTime': show,
+                    'movie': movie,
+                  },
                 ),
                 child: Container(
                   decoration: BoxDecoration(

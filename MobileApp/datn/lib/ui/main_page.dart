@@ -4,7 +4,6 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
 import '../domain/model/movie.dart';
-import '../domain/model/show_time.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
 import '../domain/repository/user_repository.dart';
@@ -31,10 +30,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     Navigator.defaultRouteName: (context, settings) => HomePage(),
     MovieDetailPage.routeName: (context, settings) {
       final movie = settings.arguments as Movie;
-      return MovieDetailPage(
-        movieId: movie.id,
-        title: movie.title,
-      );
+      return MovieDetailPage(movie: movie);
     },
     AddCommentPage.routeName: (context, settings) {
       final repo = Provider.of<CommentRepository>(context);
@@ -46,8 +42,12 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       );
     },
     TicketsPage.routeName: (context, settings) {
+      final arguments = settings.arguments as Map<String, dynamic>;
+
       return TicketsPage(
-        showTime: settings.arguments as ShowTime,
+        theatre: arguments['theatre'],
+        showTime: arguments['showTime'],
+        movie: arguments['movie'],
       );
     },
   };
