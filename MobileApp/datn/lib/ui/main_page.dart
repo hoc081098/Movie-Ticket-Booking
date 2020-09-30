@@ -1,10 +1,10 @@
-import 'package:datn/domain/model/show_time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
 import '../domain/model/movie.dart';
+import '../domain/model/show_time.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
 import '../domain/repository/user_repository.dart';

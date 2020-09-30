@@ -1,6 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/ui/app_scaffold.dart';
-import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -16,8 +14,10 @@ import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
 import '../../../utils/date_time.dart';
 import '../../../utils/error.dart';
+import '../../app_scaffold.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
+import '../tickets/ticket_page.dart';
 
 class ShowTimesPage extends StatefulWidget {
   final String movieId;

@@ -1,7 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/data/remote/response/ticket_response.dart';
-import 'package:datn/domain/model/seat.dart';
-import 'package:datn/domain/model/ticket.dart';
 import 'package:tuple/tuple.dart';
 
 import '../domain/model/category.dart';
@@ -10,9 +7,11 @@ import '../domain/model/comments.dart';
 import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/person.dart';
+import '../domain/model/seat.dart';
 import '../domain/model/show_time.dart';
 import '../domain/model/theatre.dart';
 import '../domain/model/theatre_and_show_times.dart';
+import '../domain/model/ticket.dart';
 import '../domain/model/user.dart';
 import '../utils/date_time.dart';
 import '../utils/iterable.dart';
@@ -26,6 +25,7 @@ import 'remote/response/person_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
 import 'remote/response/theatre_response.dart';
+import 'remote/response/ticket_response.dart';
 import 'remote/response/user_response.dart';
 
 UserLocal userResponseToUserLocal(UserResponse response) {
