@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -102,6 +103,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           );
 
           final buttonHeight = 54.0;
+          final marginTop = MediaQuery.of(context).padding.top + 8;
 
           return Stack(
             children: [
@@ -111,7 +113,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Container(
-                        height: MediaQuery.of(context).padding.top + 8,
+                        height: marginTop,
                         width: double.infinity,
                         color: const Color(0xffE9CBD1).withOpacity(0.2),
                       ),
@@ -181,7 +183,32 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                       style: Theme.of(context)
                           .textTheme
                           .headline6
-                          .copyWith(fontSize: 15, color: Colors.white),
+                          .copyWith(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: marginTop,
+                left: 8,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black.withOpacity(0.16),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => AppScaffold.of(context).maybePop(),
+                      customBorder: CircleBorder(),
+                      splashColor: Colors.white30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
