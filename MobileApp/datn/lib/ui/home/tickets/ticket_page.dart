@@ -104,7 +104,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   color: const Color(0xffE9CBD1).withOpacity(0.2),
                 ),
               ),
-              ScreenWidget(),
+              const ScreenWidget(),
               SliverToBoxAdapter(
                 child: const SizedBox(
                   height: 16,
@@ -164,6 +164,8 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
 }
 
 class ScreenWidget extends StatelessWidget {
+  const ScreenWidget({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -229,7 +231,7 @@ class ScreenWidgetPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
 class SeatsGridWidget extends StatefulWidget {
