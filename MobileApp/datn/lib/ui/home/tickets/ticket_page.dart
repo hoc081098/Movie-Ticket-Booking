@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/ui/widgets/age_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -19,6 +18,7 @@ import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/ticket_repository.dart';
 import '../../../utils/error.dart';
 import '../../../utils/type_defs.dart';
+import '../../widgets/age_type.dart';
 import '../../widgets/error_widget.dart';
 
 class TicketsPage extends StatefulWidget {
@@ -41,7 +41,7 @@ class TicketsPage extends StatefulWidget {
 
 class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Ticket>> bloc;
-  final selectedTicketIdsS = BehaviorSubject.seeded(BuiltSet.of(<String>[]));
+  final selectedTicketIdsS = BehaviorSubject.seeded(BuiltList.of(<String>[]));
 
   @override
   void initState() {
@@ -93,6 +93,12 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
             ),
           );
         }
+
+        final builtMap = BuiltMap.of(
+          Map.fromEntries(
+            state.content.map((t) => MapEntry(t.id, t)),
+          ),
+        );
 
         return Scaffold(
           body: CustomScrollView(
@@ -146,8 +152,11 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                 theatre: widget.theatre,
                 showTime: widget.showTime,
                 ids$: selectedTicketIdsS,
-                tickets: BuiltMap.of(Map.fromEntries(
-                    state.content.map((t) => MapEntry(t.id, t)))),
+                tickets: builtMap,
+              ),
+              SelectedSeatsGridWidget(
+                ids$: selectedTicketIdsS,
+                tickets: builtMap,
               ),
             ],
           ),
@@ -237,7 +246,7 @@ class ScreenWidgetPainter extends CustomPainter {
 class SeatsGridWidget extends StatefulWidget {
   final BuiltList<Ticket> tickets;
   final Function1<Ticket, void> tapTicket;
-  final ValueStream<BuiltSet<String>> selectedTicketIds$;
+  final ValueStream<BuiltList<String>> selectedTicketIds$;
 
   const SeatsGridWidget({
     Key key,
@@ -274,7 +283,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
         MediaQuery.of(context).size.width * widthExtra / (maxX + 2);
     final totalWidth = MediaQuery.of(context).size.width * widthExtra;
 
-    return RxStreamBuilder<BuiltSet<String>>(
+    return RxStreamBuilder<BuiltList<String>>(
       stream: widget.selectedTicketIds$,
       builder: (context, snapshot) {
         return SliverToBoxAdapter(
@@ -325,7 +334,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
     BuildContext context,
     int y,
     int x,
-    BuiltSet<String> ids,
+    BuiltList<String> ids,
     double widthPerSeat,
   ) {
     final row = String.fromCharCode('A'.codeUnitAt(0) + y);
@@ -569,7 +578,7 @@ class BottomWidget extends StatelessWidget {
   final ShowTime showTime;
   final Theatre theatre;
   final Movie movie;
-  final ValueStream<BuiltSet<String>> ids$;
+  final ValueStream<BuiltList<String>> ids$;
   final BuiltMap<String, Ticket> tickets;
 
   BottomWidget({
@@ -661,7 +670,7 @@ class BottomWidget extends StatelessWidget {
                 color: Color(0xffD1DBE2),
               ),
             ),
-            RxStreamBuilder<BuiltSet<String>>(
+            RxStreamBuilder<BuiltList<String>>(
               stream: ids$,
               builder: (context, snapshot) {
                 return Row(
@@ -702,6 +711,60 @@ class BottomWidget extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SelectedSeatsGridWidget extends StatelessWidget {
+  final ValueStream<BuiltList<String>> ids$;
+  final BuiltMap<String, Ticket> tickets;
+
+  const SelectedSeatsGridWidget({Key key, this.ids$, this.tickets})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final accentColor = Theme.of(context).accentColor;
+
+    return SliverPadding(
+      padding: const EdgeInsets.all(8.0),
+      sliver: RxStreamBuilder<BuiltList<String>>(
+        stream: ids$,
+        builder: (context, snapshot) {
+          final ids = snapshot.data;
+          return SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final seat = tickets[ids[index]].seat;
+
+                return Container(
+                  margin: const EdgeInsets.all(0.5),
+                  decoration: BoxDecoration(
+                    color: accentColor,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${seat.row}${seat.column}',
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                );
+              },
+              childCount: ids.length,
+            ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 10,
+                mainAxisSpacing: 2,
+                crossAxisSpacing: 2,
+                childAspectRatio: 1),
+          );
+        },
       ),
     );
   }
