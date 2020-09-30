@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/app_scaffold.dart';
+import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -322,7 +324,8 @@ class ShowTimeItem extends StatelessWidget {
           const SizedBox(height: 4),
           Row(
             children: [
-              Icon(Icons.map_rounded,
+              Icon(
+                Icons.map_rounded,
                 color: Colors.grey.shade500,
                 size: 20,
               ),
@@ -351,7 +354,10 @@ class ShowTimeItem extends StatelessWidget {
           children: [
             for (final show in showTimes)
               InkWell(
-                onTap: () {},
+                onTap: () => AppScaffold.of(context).pushNamed(
+                  TicketsPage.routeName,
+                  arguments: show,
+                ),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),

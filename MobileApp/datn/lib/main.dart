@@ -1,4 +1,8 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
+import 'package:datn/data/remote/response/ticket_response.dart';
+import 'package:datn/data/repository/ticket_repository_impl.dart';
+import 'package:datn/domain/model/ticket.dart';
+import 'package:datn/domain/repository/ticket_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -95,6 +99,11 @@ void main() async {
     mappers.commentResponseToComment,
   );
 
+  final ticketRepository = TicketRepositoryImpl(
+    authClient,
+    mappers.ticketResponseToTicket,
+  );
+
   runApp(
     Providers(
       providers: [
@@ -102,6 +111,7 @@ void main() async {
         Provider<MovieRepository>(value: movieRepository),
         Provider<CityRepository>(value: cityRepository),
         Provider<CommentRepository>(value: commentRepository),
+        Provider<TicketRepository>(value: ticketRepository),
       ],
       child: MyApp(),
     ),

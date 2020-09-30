@@ -1,3 +1,4 @@
+import 'package:datn/domain/model/show_time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -13,6 +14,7 @@ import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
+import 'home/tickets/ticket_page.dart';
 import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
 import 'profile/profile_page.dart';
@@ -41,6 +43,11 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       return BlocProvider<AddCommentBloc>(
         child: AddCommentPage(),
         initBloc: () => AddCommentBloc(repo, movieId),
+      );
+    },
+    TicketsPage.routeName: (context, settings) {
+      return TicketsPage(
+        showTime: settings.arguments as ShowTime,
       );
     },
   };

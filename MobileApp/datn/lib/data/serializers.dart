@@ -11,9 +11,11 @@ import 'remote/response/error_response.dart';
 import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
+import 'remote/response/seat_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
 import 'remote/response/theatre_response.dart';
+import 'remote/response/ticket_response.dart';
 import 'remote/response/user_response.dart';
 
 part 'serializers.g.dart';
@@ -26,6 +28,11 @@ final builtListMovieResponse = FullType(
 final builtListShowTimeAndTheatreResponse = FullType(
   BuiltList,
   [FullType(ShowTimeAndTheatreResponse)],
+);
+
+final builtListTicketResponse = FullType(
+  BuiltList,
+  [FullType(TicketResponse)],
 );
 
 @SerializersFor([
@@ -44,6 +51,8 @@ final builtListShowTimeAndTheatreResponse = FullType(
   MovieDetailResponse,
   PersonResponse,
   CategoryResponse,
+  TicketResponse,
+  SeatResponse,
 ])
 final Serializers _serializers = _$_serializers;
 
@@ -55,6 +64,10 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListShowTimeAndTheatreResponse,
         () => ListBuilder<ShowTimeAndTheatreResponse>(),
+      )
+      ..addBuilderFactory(
+        builtListTicketResponse,
+        () => ListBuilder<TicketResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))

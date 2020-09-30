@@ -1,4 +1,7 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/data/remote/response/ticket_response.dart';
+import 'package:datn/domain/model/seat.dart';
+import 'package:datn/domain/model/ticket.dart';
 import 'package:tuple/tuple.dart';
 
 import '../domain/model/category.dart';
@@ -309,5 +312,33 @@ Category categoryResponseToCategory(CategoryResponse response) {
       ..createdAt = response.createdAt
       ..updatedAt = response.updatedAt
       ..is_active = response.is_active ?? true,
+  );
+}
+
+Ticket ticketResponseToTicket(TicketResponse response) {
+  final seat = response.seat;
+  return Ticket.from(
+    id: response.id,
+    is_active: response.is_active ?? true,
+    price: response.price,
+    reservation: response.reservation,
+    seat: Seat.from(
+      is_active: seat.is_active ?? true,
+      coordinates: SeatCoordinates.from(
+        x: seat.coordinates[0],
+        y: seat.coordinates[1],
+      ),
+      id: seat.id,
+      room: seat.room,
+      theatre: seat.theatre,
+      column: seat.column,
+      row: seat.row,
+      count: seat.count,
+      createdAt: seat.createdAt,
+      updatedAt: seat.updatedAt,
+    ),
+    show_time: response.show_time,
+    createdAt: response.createdAt,
+    updatedAt: response.updatedAt,
   );
 }
