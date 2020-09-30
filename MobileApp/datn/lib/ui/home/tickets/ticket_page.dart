@@ -67,101 +67,129 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
-    return RxStreamBuilder<LoaderState<BuiltList<Ticket>>>(
-      stream: bloc.state$,
-      builder: (context, snapshot) {
-        final state = snapshot.data;
+    return Scaffold(
+      body: RxStreamBuilder<LoaderState<BuiltList<Ticket>>>(
+        stream: bloc.state$,
+        builder: (context, snapshot) {
+          final state = snapshot.data;
 
-        if (state.isLoading) {
-          return Center(
-            child: SizedBox(
-              width: 56,
-              height: 56,
-              child: LoadingIndicator(
-                color: Theme.of(context).accentColor,
-                indicatorType: Indicator.ballScaleMultiple,
+          if (state.isLoading) {
+            return Center(
+              child: SizedBox(
+                width: 56,
+                height: 56,
+                child: LoadingIndicator(
+                  color: Theme.of(context).accentColor,
+                  indicatorType: Indicator.ballScaleMultiple,
+                ),
               ),
+            );
+          }
+
+          if (state.error != null) {
+            return Center(
+              child: MyErrorWidget(
+                errorText: 'Error: ${getErrorMessage(state.error)}',
+                onPressed: bloc.fetch,
+              ),
+            );
+          }
+
+          final builtMap = BuiltMap.of(
+            Map.fromEntries(
+              state.content.map((t) => MapEntry(t.id, t)),
             ),
           );
-        }
 
-        if (state.error != null) {
-          return Center(
-            child: MyErrorWidget(
-              errorText: 'Error: ${getErrorMessage(state.error)}',
-              onPressed: bloc.fetch,
-            ),
-          );
-        }
+          final buttonHeight = 54.0;
 
-        final builtMap = BuiltMap.of(
-          Map.fromEntries(
-            state.content.map((t) => MapEntry(t.id, t)),
-          ),
-        );
+          return Stack(
+            children: [
+              Positioned.fill(
+                bottom: buttonHeight,
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Container(
+                        height: MediaQuery.of(context).padding.top + 8,
+                        width: double.infinity,
+                        color: const Color(0xffE9CBD1).withOpacity(0.2),
+                      ),
+                    ),
+                    const ScreenWidget(),
+                    SliverToBoxAdapter(
+                      child: const SizedBox(
+                        height: 16,
+                      ),
+                    ),
+                    SeatsGridWidget(
+                      tickets: state.content,
+                      selectedTicketIds$: selectedTicketIdsS,
+                      tapTicket: (ticket) {
+                        if (ticket == null || ticket.reservation != null) {
+                          throw Exception('Something was wrong');
+                        }
 
-        return Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
+                        final ids = selectedTicketIdsS.value;
+                        final newIds = ids.rebuild((b) {
+                          if (ids.contains(ticket.id)) {
+                            b.remove(ticket.id);
+                          } else {
+                            b.add(ticket.id);
+                          }
+                        });
+
+                        if (ids == newIds) return;
+                        selectedTicketIdsS.add(newIds);
+                      },
+                    ),
+                    const LegendsWidget(),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Divider(
+                          height: 1,
+                          color: Color(0xffD1DBE2),
+                        ),
+                      ),
+                    ),
+                    BottomWidget(
+                      movie: widget.movie,
+                      theatre: widget.theatre,
+                      showTime: widget.showTime,
+                      ids$: selectedTicketIdsS,
+                      tickets: builtMap,
+                    ),
+                    SelectedSeatsGridWidget(
+                      ids$: selectedTicketIdsS,
+                      tickets: builtMap,
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
                 child: Container(
-                  height: MediaQuery.of(context).padding.top + 8,
-                  width: double.infinity,
-                  color: const Color(0xffE9CBD1).withOpacity(0.2),
-                ),
-              ),
-              const ScreenWidget(),
-              SliverToBoxAdapter(
-                child: const SizedBox(
-                  height: 16,
-                ),
-              ),
-              SeatsGridWidget(
-                tickets: state.content,
-                selectedTicketIds$: selectedTicketIdsS,
-                tapTicket: (ticket) {
-                  if (ticket == null || ticket.reservation != null) {
-                    throw Exception('Something was wrong');
-                  }
-
-                  final ids = selectedTicketIdsS.value;
-                  final newIds = ids.rebuild((b) {
-                    if (ids.contains(ticket.id)) {
-                      b.remove(ticket.id);
-                    } else {
-                      b.add(ticket.id);
-                    }
-                  });
-
-                  if (ids == newIds) return;
-                  selectedTicketIdsS.add(newIds);
-                },
-              ),
-              const LegendsWidget(),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Divider(
-                    height: 1,
-                    color: Color(0xffD1DBE2),
+                  height: buttonHeight,
+                  child: FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () {},
+                    child: Text(
+                      'CONTINUE',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          .copyWith(fontSize: 15, color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-              BottomWidget(
-                movie: widget.movie,
-                theatre: widget.theatre,
-                showTime: widget.showTime,
-                ids$: selectedTicketIdsS,
-                tickets: builtMap,
-              ),
-              SelectedSeatsGridWidget(
-                ids$: selectedTicketIdsS,
-                tickets: builtMap,
-              ),
+              )
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
