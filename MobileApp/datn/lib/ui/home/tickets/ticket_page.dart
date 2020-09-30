@@ -1,6 +1,6 @@
+import 'dart:math' as math;
+
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/utils/type_defs.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -14,6 +14,7 @@ import '../../../domain/model/show_time.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/ticket_repository.dart';
 import '../../../utils/error.dart';
+import '../../../utils/type_defs.dart';
 import '../../widgets/error_widget.dart';
 
 class TicketsPage extends StatefulWidget {
@@ -219,68 +220,123 @@ class SeatsGridWidget extends StatefulWidget {
 }
 
 class _SeatsGridWidgetState extends State<SeatsGridWidget> {
-  SeatCoordinates maxCoordinates;
+  int maxX;
+  int maxY;
+  Map<SeatCoordinates, Ticket> ticketByCoordinates;
 
   @override
   void initState() {
     super.initState();
-    final tickets = widget.tickets;
 
-    final seats = tickets.map((t) => t.seat);
-    final coordinates = seats.map((s) => s.coordinates);
+    final seats = widget.tickets.map((t) => t.seat);
+    maxX = seats.map((s) => s.coordinates.x + s.count - 1).reduce(math.max);
+    maxY = seats.map((s) => s.coordinates.y).reduce(math.max);
 
-    final maxX = coordinates
-        .reduce((acc, element) => element.x > acc.x ? element : acc)
-        .x;
-    final maxY = coordinates
-        .reduce((acc, element) => element.y > acc.y ? element : acc)
-        .y;
-
-    maxCoordinates = SeatCoordinates.from(x: maxX, y: maxY);
-    assert(coordinates.contains(maxCoordinates));
-
-    print(maxCoordinates);
+    ticketByCoordinates = Map.fromEntries(
+        widget.tickets.map((t) => MapEntry(t.seat.coordinates, t)));
   }
 
   @override
   Widget build(BuildContext context) {
+    final widthExtra = 1.4;
+    final widthPerSeat =
+        MediaQuery.of(context).size.width * widthExtra / (maxX + 2);
+    final totalWidth = MediaQuery.of(context).size.width * widthExtra;
+
     return RxStreamBuilder<BuiltSet<String>>(
       stream: widget.selectedTicketIds$,
       builder: (context, snapshot) {
-        return SliverGrid.count(
-          crossAxisCount: maxCoordinates.x + 2,
-          crossAxisSpacing: 0.5,
-          mainAxisSpacing: 0.5,
-          children: childrenSeats(snapshot.data),
+        return SliverToBoxAdapter(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: widthPerSeat * maxY * 1.2,
+                  width: totalWidth,
+                  child: Center(
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: maxY,
+                      itemBuilder: (context, row) {
+                        return Container(
+                          height: widthPerSeat,
+                          width: totalWidth,
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: maxX + 2,
+                            itemBuilder: (context, col) {
+                              return buildItem(
+                                context,
+                                row,
+                                col,
+                                snapshot.data,
+                                widthPerSeat,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
   }
 
-  List<Widget> childrenSeats(BuiltSet<String> ids) {
-    return Iterable.generate(maxCoordinates.y + 1).expand((y) {
-      final row = String.fromCharCode('A'.codeUnitAt(0) + y);
+  Widget buildItem(
+    BuildContext context,
+    int y,
+    int x,
+    BuiltSet<String> ids,
+    double widthPerSeat,
+  ) {
+    final row = String.fromCharCode('A'.codeUnitAt(0) + y);
 
-      final ticketByX = Map.fromEntries(
-        widget.tickets
-            .where((t) => t.seat.row == row)
-            .map((t) => MapEntry(t.seat.coordinates.x, t)),
-      );
-
-      return [
-        Container(
-          child: Center(
-            child: Text(row),
+    if (x == 0) {
+      return Container(
+        width: widthPerSeat,
+        height: widthPerSeat,
+        child: Center(
+          child: Text(
+            row,
+            style: Theme.of(context).textTheme.caption.copyWith(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff687189),
+                ),
           ),
         ),
-        for (var x = 0; x <= maxCoordinates.x; x++)
-          SeatWidget(
-            ticket: ticketByX[x],
-            tapTicket: widget.tapTicket,
-            isSelected: ids.contains(ticketByX[x]?.id),
-          ),
-      ];
-    }).toList();
+      );
+    }
+
+    x--;
+    final ticket = ticketByCoordinates[SeatCoordinates.from(x: x, y: y)];
+    if (ticket == null) {
+      final prevCount =
+          ticketByCoordinates[SeatCoordinates.from(x: x - 1, y: y)]
+              ?.seat
+              ?.count;
+      return prevCount != null && prevCount > 1
+          ? const SizedBox(width: 0, height: 0)
+          : Container(
+              width: widthPerSeat,
+              height: widthPerSeat,
+            );
+    } else {
+      return SeatWidget(
+        ticket: ticket,
+        tapTicket: widget.tapTicket,
+        isSelected: ids.contains(ticket?.id),
+        widthPerSeat: widthPerSeat,
+      );
+    }
   }
 }
 
@@ -288,24 +344,25 @@ class SeatWidget extends StatelessWidget {
   final Ticket ticket;
   final Function1<Ticket, void> tapTicket;
   final bool isSelected;
+  final double widthPerSeat;
 
   const SeatWidget({
     Key key,
     this.ticket,
     this.tapTicket,
     this.isSelected,
+    this.widthPerSeat,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final seat = ticket?.seat;
-
-    if (seat == null) {
-      return Container();
-    }
+    final seat = ticket.seat;
+    final width = widthPerSeat * seat.count;
 
     if (ticket.reservation != null) {
       return Container(
+        width: width,
+        height: widthPerSeat,
         decoration: BoxDecoration(
           color: const Color(0xffCBD7E9),
           borderRadius: BorderRadius.circular(5),
@@ -326,11 +383,12 @@ class SeatWidget extends StatelessWidget {
       );
     }
 
-    assert(ticket != null);
     final accentColor = Theme.of(context).accentColor;
     return InkWell(
       onTap: () => tapTicket(ticket),
       child: Container(
+        width: width,
+        height: widthPerSeat,
         decoration: BoxDecoration(
           color: isSelected ? accentColor : Colors.white,
           borderRadius: BorderRadius.circular(5),
