@@ -131,7 +131,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   selectedTicketIdsS.add(newIds);
                 },
               ),
-              LegendsWidget(),
+              const LegendsWidget(),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -450,6 +450,8 @@ class SeatWidget extends StatelessWidget {
 }
 
 class LegendsWidget extends StatelessWidget {
+  const LegendsWidget({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final widthPerSeat = MediaQuery.of(context).size.width / 12;
@@ -546,7 +548,7 @@ class LegendsWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Duplicated seat',
+                  'Doubled seat',
                   style: textStyle,
                 ),
               ],
