@@ -63,6 +63,11 @@ export class User extends Document {
 
   @Prop({ default: true })
   is_active: boolean;
+
+  @Prop()
+  stripe_customer_id?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.index({ uid: 1 });

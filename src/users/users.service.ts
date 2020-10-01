@@ -5,12 +5,23 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UpdateUserDto } from './update-user.dto';
 import { UserPayload } from '../auth/get-user.decorator';
 import { Location } from '../common/location.inteface';
+import { Stripe } from 'stripe';
+import { ConfigKey, ConfigService } from '../config/config.service';
+import { Card } from './card.dto';
 
 @Injectable()
 export class UsersService {
+  private readonly stripe: Stripe;
+
   constructor(
       @InjectModel(User.name) private readonly userModel: Model<User>,
-  ) {}
+      configService: ConfigService
+  ) {
+    this.stripe = new Stripe(
+        configService.get(ConfigKey.STRIPE_SECRET_API),
+        null
+    );
+  }
 
   findByUid(uid: string): Promise<User | undefined> {
     return this.userModel.findOne({ uid }).exec();
@@ -43,5 +54,39 @@ export class UsersService {
             { upsert: true, new: true }
         )
         .exec();
+  }
+
+  private async createStripeCustomerIfNeeded(user: UserPayload): Promise<User> {
+    if (user.stripe_customer_id) {
+      return this.findByUid(user.uid);
+    }
+
+    const customer = await this.stripe.customers.create({ email: user.email });
+
+    return this.userModel.findOneAndUpdate(
+        { uid: user.uid },
+        { stripe_customer_id: customer.id },
+        { new: true },
+    ).exec();
+  }
+
+  async getCards(userPayload: UserPayload): Promise<Card[]> {
+    const user = await this.createStripeCustomerIfNeeded(userPayload);
+    const paymentMethods = await this.stripe.paymentMethods.list({ customer: user.stripe_customer_id, type: 'card' });
+
+    return paymentMethods.data.map(paymentMethod => {
+      const card = paymentMethod.card;
+
+      return new Card({
+        brand: card.brand,
+        card_holder_name: paymentMethod.billing_details.name,
+        country: card.country,
+        exp_month: card.exp_month,
+        exp_year: card.exp_year,
+        funding: card.funding,
+        id: paymentMethod.id,
+        last4: card.last4,
+      });
+    });
   }
 }
