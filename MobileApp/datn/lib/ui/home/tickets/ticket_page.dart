@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/ui/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -19,8 +18,11 @@ import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/ticket_repository.dart';
 import '../../../utils/error.dart';
 import '../../../utils/type_defs.dart';
+import '../../../utils/utils.dart';
+import '../../app_scaffold.dart';
 import '../../widgets/age_type.dart';
 import '../../widgets/error_widget.dart';
+import 'combo_page.dart';
 
 class TicketsPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets';
@@ -177,7 +179,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   height: buttonHeight,
                   child: FlatButton(
                     color: Theme.of(context).primaryColor,
-                    onPressed: () {},
+                    onPressed: () => tapContinue(builtMap),
                     child: Text(
                       'CONTINUE',
                       style: Theme.of(context)
@@ -224,6 +226,24 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   void dispose() {
     bloc.dispose();
     super.dispose();
+  }
+
+  void tapContinue(BuiltMap<String, Ticket> ticketsMap) {
+    final ids = selectedTicketIdsS.value;
+    if (ids.isEmpty) {
+      return context.showSnackBar('Must select at least one seat');
+    }
+
+    final tickets = ids.map((id) => ticketsMap[id]).toBuiltList();
+    AppScaffold.of(context).pushNamed(
+      ComboPage.routeName,
+      arguments: {
+        'showTime': widget.showTime,
+        'theatre': widget.theatre,
+        'movie': widget.movie,
+        'tickets': tickets,
+      },
+    );
   }
 }
 

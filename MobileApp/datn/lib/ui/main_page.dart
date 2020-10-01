@@ -13,6 +13,7 @@ import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
+import 'home/tickets/combo_page.dart';
 import 'home/tickets/ticket_page.dart';
 import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
@@ -50,6 +51,16 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         movie: arguments['movie'],
       );
     },
+    ComboPage.routeName: (context, settings) {
+      final arguments = settings.arguments as Map<String, dynamic>;
+
+      return ComboPage(
+        movie: arguments['movie'],
+        tickets: arguments['tickets'],
+        theatre: arguments['theatre'],
+        showTime: arguments['showTime'],
+      );
+    }
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{
