@@ -26,10 +26,6 @@ export class ShowTimesService {
   ) {}
 
   async seed() {
-    if (await this.showTimeModel.estimatedDocumentCount().exec() > 500) {
-      return 'Nice';
-    }
-
     const current = dayjs(new Date());
     const theatres = await this.theatreModel.find({});
 
@@ -48,7 +44,7 @@ export class ShowTimesService {
       this.logger.debug(`Hours for ${theatre.name} are ${JSON.stringify(hours)} -- ${startH}:${startM} -> ${endH}:${endM}`);
 
       for (const room of theatre.rooms) {
-        for (let dDate = -1; dDate <= 7; dDate++) {
+        for (let dDate = -1; dDate <= 20; dDate++) {
           const day = current.startOf('day').add(dDate, 'day');
 
           const thStartTime = day.set('hour', startH).set('minute', startM);

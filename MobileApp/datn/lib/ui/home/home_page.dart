@@ -48,12 +48,15 @@ class _HomePageState extends State<HomePage> {
 
     nowPlayingBloc ??= () {
       final repo = Provider.of<MovieRepository>(context);
+      final loaderFunction = () => repo.getNowPlayingMovies(
+            location: null,
+            page: 1,
+            perPage: 32,
+          );
+
       return LoaderBloc(
-        loaderFunction: () => repo.getNowPlayingMovies(
-          location: null,
-          page: 1,
-          perPage: 32,
-        ),
+        loaderFunction: loaderFunction,
+        refresherFunction: loaderFunction,
         initialContent: <Movie>[].build(),
         enableLogger: true,
       )..fetch();
@@ -61,11 +64,14 @@ class _HomePageState extends State<HomePage> {
 
     comingSoonBloc ??= () {
       final repo = Provider.of<MovieRepository>(context);
+      final loaderFunction = () => repo.getComingSoonMovies(
+            page: 1,
+            perPage: 32,
+          );
+
       return LoaderBloc(
-        loaderFunction: () => repo.getComingSoonMovies(
-          page: 1,
-          perPage: 32,
-        ),
+        loaderFunction: loaderFunction,
+        refresherFunction: loaderFunction,
         initialContent: <Movie>[].build(),
         enableLogger: true,
       )..fetch();
@@ -78,23 +84,29 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Home page'),
       ),
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        slivers: [
-          const HomeLocationHeader(),
-          HomeHorizontalMoviesList(
-            key: ValueKey('movies/now-playing'),
-            bloc: nowPlayingBloc,
-            type: MovieType.nowPlaying,
-          ),
-          const ComingSoonHeader(),
-          HomeHorizontalMoviesList(
-            key: ValueKey('movies/coming-soon'),
-            bloc: comingSoonBloc,
-            type: MovieType.comingSoon,
-          ),
-        ],
+      body: RefreshIndicator(
+        onRefresh: () => Future.wait([
+          nowPlayingBloc.refresh(),
+          comingSoonBloc.refresh(),
+        ]),
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          slivers: [
+            const HomeLocationHeader(),
+            HomeHorizontalMoviesList(
+              key: ValueKey('movies/now-playing'),
+              bloc: nowPlayingBloc,
+              type: MovieType.nowPlaying,
+            ),
+            const ComingSoonHeader(),
+            HomeHorizontalMoviesList(
+              key: ValueKey('movies/coming-soon'),
+              bloc: comingSoonBloc,
+              type: MovieType.comingSoon,
+            ),
+          ],
+        ),
       ),
     );
   }
