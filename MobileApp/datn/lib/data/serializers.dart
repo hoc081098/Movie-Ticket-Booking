@@ -11,6 +11,7 @@ import 'remote/response/error_response.dart';
 import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
+import 'remote/response/product_response.dart';
 import 'remote/response/seat_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
@@ -35,6 +36,11 @@ final builtListTicketResponse = FullType(
   [FullType(TicketResponse)],
 );
 
+final builtListProductResponse = FullType(
+  BuiltList,
+  [FullType(ProductResponse)],
+);
+
 @SerializersFor([
   UserLocal,
   LocationLocal,
@@ -53,6 +59,7 @@ final builtListTicketResponse = FullType(
   CategoryResponse,
   TicketResponse,
   SeatResponse,
+  ProductResponse,
 ])
 final Serializers _serializers = _$_serializers;
 
@@ -68,6 +75,10 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListTicketResponse,
         () => ListBuilder<TicketResponse>(),
+      )
+      ..addBuilderFactory(
+        builtListProductResponse,
+        () => ListBuilder<ProductResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))
