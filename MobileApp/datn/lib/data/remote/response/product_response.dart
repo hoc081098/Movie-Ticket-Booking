@@ -14,6 +14,7 @@ abstract class ProductResponse
 
   String get image;
 
+  @nullable
   bool get is_active;
 
   String get name;

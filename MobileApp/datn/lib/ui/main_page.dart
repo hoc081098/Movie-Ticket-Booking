@@ -3,6 +3,9 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
+import '../data/mappers.dart' show productResponseToProduct;
+import '../data/remote/auth_client.dart';
+import '../data/repository/product_repository_impl.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
@@ -13,6 +16,7 @@ import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
+import 'home/tickets/combo_bloc.dart';
 import 'home/tickets/combo_page.dart';
 import 'home/tickets/ticket_page.dart';
 import 'login/login_page.dart';
@@ -52,13 +56,22 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       );
     },
     ComboPage.routeName: (context, settings) {
+      final authClient = Provider.of<AuthClient>(context);
       final arguments = settings.arguments as Map<String, dynamic>;
 
-      return ComboPage(
-        movie: arguments['movie'],
-        tickets: arguments['tickets'],
-        theatre: arguments['theatre'],
-        showTime: arguments['showTime'],
+      return BlocProvider<ComboBloc>(
+        initBloc: () => ComboBloc(
+          ProductRepositoryImpl(
+            authClient,
+            productResponseToProduct,
+          ),
+        )..fetch(),
+        child: ComboPage(
+          movie: arguments['movie'],
+          tickets: arguments['tickets'],
+          theatre: arguments['theatre'],
+          showTime: arguments['showTime'],
+        ),
       );
     }
   };

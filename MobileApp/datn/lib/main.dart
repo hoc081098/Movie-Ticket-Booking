@@ -105,6 +105,7 @@ void main() async {
   runApp(
     Providers(
       providers: [
+        Provider<AuthClient>(value: authClient),
         Provider<UserRepository>(value: userRepository),
         Provider<MovieRepository>(value: movieRepository),
         Provider<CityRepository>(value: cityRepository),

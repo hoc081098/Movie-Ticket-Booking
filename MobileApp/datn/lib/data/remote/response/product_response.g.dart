@@ -28,9 +28,6 @@ class _$ProductResponseSerializer
       'image',
       serializers.serialize(object.image,
           specifiedType: const FullType(String)),
-      'is_active',
-      serializers.serialize(object.is_active,
-          specifiedType: const FullType(bool)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'price',
@@ -42,7 +39,12 @@ class _$ProductResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-
+    if (object.is_active != null) {
+      result
+        ..add('is_active')
+        ..add(serializers.serialize(object.is_active,
+            specifiedType: const FullType(bool)));
+    }
     return result;
   }
 
@@ -136,9 +138,6 @@ class _$ProductResponse extends ProductResponse {
     }
     if (image == null) {
       throw new BuiltValueNullFieldError('ProductResponse', 'image');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('ProductResponse', 'is_active');
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('ProductResponse', 'name');

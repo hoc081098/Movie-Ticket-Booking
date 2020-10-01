@@ -7,6 +7,7 @@ import '../domain/model/comments.dart';
 import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/person.dart';
+import '../domain/model/product.dart';
 import '../domain/model/seat.dart';
 import '../domain/model/show_time.dart';
 import '../domain/model/theatre.dart';
@@ -22,6 +23,7 @@ import 'remote/response/comments_response.dart';
 import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
+import 'remote/response/product_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
 import 'remote/response/theatre_response.dart';
@@ -338,6 +340,19 @@ Ticket ticketResponseToTicket(TicketResponse response) {
       updatedAt: seat.updatedAt,
     ),
     show_time: response.show_time,
+    createdAt: response.createdAt,
+    updatedAt: response.updatedAt,
+  );
+}
+
+Product productResponseToProduct(ProductResponse response) {
+  return Product.from(
+    id: response.id,
+    description: response.description,
+    image: response.image,
+    is_active: response.is_active ?? true,
+    name: response.name,
+    price: response.price,
     createdAt: response.createdAt,
     updatedAt: response.updatedAt,
   );

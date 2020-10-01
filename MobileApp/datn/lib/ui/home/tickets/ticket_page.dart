@@ -355,7 +355,8 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
   Widget build(BuildContext context) {
     final widthExtra = 1.4;
     final widthPerSeat =
-        MediaQuery.of(context).size.width * widthExtra / (maxX + 2);
+        (MediaQuery.of(context).size.width * widthExtra - (maxX + 2) * 1) /
+            (maxX + 2);
     final totalWidth = MediaQuery.of(context).size.width * widthExtra;
 
     return RxStreamBuilder<BuiltList<String>>(
