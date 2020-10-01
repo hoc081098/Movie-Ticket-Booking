@@ -8,7 +8,6 @@ import { RawUserPayload, UserPayload } from './get-user.decorator';
 import { validate } from 'class-validator';
 import * as fs from 'fs';
 import { ConfigKey, ConfigService } from '../config/config.service';
-import { Types } from 'mongoose';
 
 let written = false;
 
@@ -28,11 +27,8 @@ export class AuthGuard implements CanActivate {
       context: ExecutionContext,
   ): Promise<boolean> {
     if (this.configService.get(ConfigKey.DISABLED_AUTH_GUARD) === 'true') {
-      context.switchToHttp().getRequest().user = new UserPayload({
-        _id: new Types.ObjectId('5f6a22e3075f5b523f6085a4') as any,
-        email: 'hoc081098@gmail.com',
-        uid: 'l9StgzQlR1h3XpaWCf3juyYgG772'
-      });
+      const me = await this.usersService.findByUid('l9StgzQlR1h3XpaWCf3juyYgG772');
+      context.switchToHttp().getRequest().user = new UserPayload(me);
       return true;
     }
 
@@ -51,7 +47,7 @@ export class AuthGuard implements CanActivate {
 
     const merged: RawUserPayload = {
       ...decodedIdToken,
-      ...(user?.toObject() ?? { _id: null }),
+      ...(user?.toObject() ?? { _id: null, stripe_customer_id: null }),
     };
     const payload = new UserPayload(merged);
 

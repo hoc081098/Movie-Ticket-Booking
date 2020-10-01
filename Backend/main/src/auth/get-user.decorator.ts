@@ -6,6 +6,7 @@ export type RawUserPayload = {
   uid: string,
   email?: string,
   _id?: Schema.Types.ObjectId | null | undefined;
+  stripe_customer_id?: string | null | undefined;
 };
 
 export class UserPayload {
@@ -20,10 +21,14 @@ export class UserPayload {
   @IsOptional()
   readonly _id?: Schema.Types.ObjectId | null | undefined;
 
+  @IsOptional()
+  readonly stripe_customer_id?: string | null | undefined;
+
   constructor(payload: RawUserPayload) {
     this.uid = payload.uid;
     this.email = payload.email;
     this._id = payload._id;
+    this.stripe_customer_id = payload.stripe_customer_id;
   }
 }
 
