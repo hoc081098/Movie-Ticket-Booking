@@ -12,6 +12,7 @@ import '../domain/repository/comment_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
+import 'home/checkout/cards/cards_page.dart';
 import 'home/checkout/checkout_page.dart';
 import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
@@ -78,13 +79,19 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     CheckoutPage.routeName: (context, settings) {
       final arguments = settings.arguments as Map<String, dynamic>;
 
-      return CheckoutPage(
-        tickets: arguments['tickets'],
-        showTime: arguments['showTime'],
-        theatre: arguments['theatre'],
-        movie: arguments['movie'],
-        products: arguments['products'],
+      return BlocProvider<CheckoutBloc>(
+        child: CheckoutPage(
+          tickets: arguments['tickets'],
+          showTime: arguments['showTime'],
+          theatre: arguments['theatre'],
+          movie: arguments['movie'],
+          products: arguments['products'],
+        ),
+        initBloc: () => CheckoutBloc(),
       );
+    },
+    CardsPage.routeName: (context, settings) {
+      return CardsPage();
     }
   };
 
