@@ -12,6 +12,7 @@ import '../domain/repository/comment_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
+import 'home/checkout/checkout_page.dart';
 import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
@@ -72,6 +73,17 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           theatre: arguments['theatre'],
           showTime: arguments['showTime'],
         ),
+      );
+    },
+    CheckoutPage.routeName: (context, settings) {
+      final arguments = settings.arguments as Map<String, dynamic>;
+
+      return CheckoutPage(
+        tickets: arguments['tickets'],
+        showTime: arguments['showTime'],
+        theatre: arguments['theatre'],
+        movie: arguments['movie'],
+        products: arguments['products'],
       );
     }
   };

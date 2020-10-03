@@ -1,20 +1,24 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/ui/widgets/age_type.dart';
-import 'package:datn/ui/widgets/error_widget.dart';
-import 'package:datn/utils/error.dart';
-import 'package:datn/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/movie.dart';
 import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
+import '../../../utils/error.dart';
+import '../../../utils/iterable.dart';
+import '../../../utils/utils.dart';
+import '../../app_scaffold.dart';
+import '../../widgets/age_type.dart';
+import '../../widgets/error_widget.dart';
+import '../checkout/checkout_page.dart';
 import 'combo_bloc.dart';
 import 'combo_state.dart';
 
@@ -41,12 +45,23 @@ class ComboPage extends StatefulWidget {
 class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
   dynamic token;
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
+  final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
   int ticketsPrice;
+
+  BuiltList<MapEntry<int, List<Ticket>>> ticketsByCount;
 
   @override
   void initState() {
     super.initState();
     ticketsPrice = widget.tickets.fold(0, (acc, e) => acc + e.price);
+
+    ticketsByCount = widget.tickets
+        .groupBy(
+          (t) => t.seat.count,
+          (v) => v,
+        )
+        .entries
+        .toBuiltList();
   }
 
   @override
@@ -95,20 +110,31 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
 
           final items = state.items;
 
-          final titleStyle =
-              Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 16);
-          final priceStyle = Theme.of(context).textTheme.subtitle1.copyWith(
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w500,
-              );
+          final textTheme = Theme.of(context).textTheme;
+          final titleStyle = textTheme.subtitle2.copyWith(fontSize: 16);
+          final priceStyle = textTheme.subtitle1.copyWith(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.w500,
+          );
 
-          final movieTitleStyle =
-              Theme.of(context).textTheme.headline4.copyWith(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xff687189),
-                  );
+          final movieTitleStyle = textTheme.headline4.copyWith(
+            fontSize: 24,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xff687189),
+          );
           final buttonHeight = 54.0;
+
+          final textStyle = textTheme.subtitle1.copyWith(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            color: const Color(0xff98A8BA),
+          );
+
+          final textStyle2 = textTheme.subtitle1.copyWith(
+            fontSize: 16,
+            color: const Color(0xff687189),
+            fontWeight: FontWeight.w600,
+          );
 
           return Stack(
             children: [
@@ -120,83 +146,12 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     if (index == 0) {
-                      const h = 128.0;
-                      const w = h / 1.3;
-
-                      return Container(
-                        padding: const EdgeInsets.all(8),
-                        margin: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 8,
-                              spreadRadius: 1,
-                              offset: Offset(4, 0),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    widget.movie.title,
-                                    style: movieTitleStyle,
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Row(
-                                    children: [
-                                      AgeTypeWidget(
-                                          ageType: widget.movie.ageType),
-                                      const SizedBox(width: 8),
-                                      Text('${widget.movie.duration} minutes'),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Container(
-                                width: w,
-                                height: h,
-                                child: CachedNetworkImage(
-                                  imageUrl: widget.movie.posterUrl ?? '',
-                                  fit: BoxFit.cover,
-                                  placeholder: (_, __) => Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                  errorWidget: (_, __, ___) => Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.error,
-                                          color: Theme.of(context).accentColor,
-                                        ),
-                                        SizedBox(height: 4),
-                                        Text(
-                                          'Load image error',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2
-                                              .copyWith(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                      return buildTopHeader(
+                        movieTitleStyle,
+                        context,
+                        textTheme,
+                        textStyle,
+                        textStyle2,
                       );
                     }
 
@@ -207,16 +162,17 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 8,
-                              spreadRadius: 1,
-                              offset: Offset(4, 0),
-                            ),
-                          ]),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade300,
+                            blurRadius: 8,
+                            spreadRadius: 1,
+                            offset: Offset(4, 0),
+                          ),
+                        ],
+                      ),
                       child: ExpansionTile(
                         title: Text(
                           product.name,
@@ -235,7 +191,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                         children: [
                           Text(
                             product.description,
-                            style: Theme.of(context).textTheme.caption,
+                            style: textTheme.caption,
                           ),
                         ],
                         trailing: Row(
@@ -272,56 +228,308 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  color: const Color(0xffCBD7E9),
-                  height: buttonHeight,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap:() {},
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(width: 8),
-                              FaIcon(
-                                FontAwesomeIcons.cartPlus,
-                                color: const Color(0xff687189),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                    '${currencyFormat.format(state.totalPrice + ticketsPrice)} VND',
-                                    style: priceStyle.copyWith(fontSize: 16),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: FlatButton(
-                          color: Theme.of(context).primaryColor,
-                          onPressed: () {},
-                          child: Text(
-                            'CONTINUE',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .copyWith(fontSize: 16, color: Colors.white),
-                          ),
-                        ),
+                  decoration: BoxDecoration(
+                    // color: const Color(0xffCBD7E9),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade400,
+                        offset: Offset(0, -4),
+                        blurRadius: 8,
+                        spreadRadius: 2,
                       ),
                     ],
                   ),
+                  height: buttonHeight,
+                  child: buildBottomRow(state, priceStyle, context, textTheme),
                 ),
               ),
             ],
           );
         },
       ),
+    );
+  }
+
+  Container buildTopHeader(
+    TextStyle movieTitleStyle,
+    BuildContext context,
+    TextTheme textTheme,
+    TextStyle textStyle,
+    TextStyle textStyle2,
+  ) {
+    const h = 128.0;
+    const w = h / 1.3;
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300,
+            blurRadius: 8,
+            spreadRadius: 1,
+            offset: Offset(4, 0),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      widget.movie.title,
+                      style: movieTitleStyle,
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        AgeTypeWidget(ageType: widget.movie.ageType),
+                        const SizedBox(width: 8),
+                        Text('${widget.movie.duration} minutes'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  width: w,
+                  height: h,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.movie.posterUrl ?? '',
+                    fit: BoxFit.cover,
+                    placeholder: (_, __) => Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+                    errorWidget: (_, __, ___) => Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.error,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Load image error',
+                            style: textTheme.subtitle2.copyWith(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(text: 'Start at: ', style: textStyle, children: [
+              TextSpan(
+                text: startTimeFormat.format(widget.showTime.start_time),
+                style: textStyle2,
+              ),
+            ]),
+          ),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(text: 'Theatre: ', style: textStyle, children: [
+              TextSpan(
+                text: widget.theatre.name,
+                style: textStyle2,
+              ),
+              TextSpan(
+                text: ' Room: ',
+                style: textStyle,
+              ),
+              TextSpan(
+                text: widget.showTime.room,
+                style: textStyle2,
+              ),
+            ]),
+          ),
+          const SizedBox(height: 6),
+        ],
+      ),
+    );
+  }
+
+  Row buildBottomRow(
+    ComboState state,
+    TextStyle priceStyle,
+    BuildContext context,
+    TextTheme textTheme,
+  ) {
+    final comboItems = state.items.where((i) => i.count > 0).toBuiltList();
+    final totalCount =
+        comboItems.fold(0, (acc, e) => acc + e.count) + widget.tickets.length;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: InkWell(
+            onTap: () => showOrder(comboItems),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(width: 4),
+                Container(
+                  height: 36,
+                  width: 36,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: FaIcon(
+                          FontAwesomeIcons.cartPlus,
+                          color: const Color(0xff687189),
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional.topEnd,
+                        child: Container(
+                          width: 18,
+                          height: 18,
+                          decoration: BoxDecoration(
+                            color: const Color(0xfffe4023),
+                            borderRadius: BorderRadius.circular(9),
+                          ),
+                          child: Center(
+                            child: Text(
+                              totalCount.toString(),
+                              style: textTheme.headline6.copyWith(
+                                fontSize: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      '${currencyFormat.format(state.totalPrice + ticketsPrice)} VND',
+                      style: priceStyle.copyWith(fontSize: 16),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: FlatButton(
+            color: Theme.of(context).primaryColor,
+            onPressed: () => tapContinue(comboItems),
+            child: Text(
+              'CONTINUE',
+              style: textTheme.headline6
+                  .copyWith(fontSize: 16, color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void showOrder(BuiltList<ComboItem> comboItems) {
+    final style = Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15);
+    final style2 = style.copyWith(fontSize: 17);
+    final titleStyle =
+        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 13);
+
+    final children = [
+      ...[
+        for (var item in ticketsByCount)
+          item.key == 1
+              ? ListTile(
+                  title: Text(
+                    'Normal ticket',
+                    style: titleStyle,
+                  ),
+                  subtitle: Text(
+                    currencyFormat.format(item.value[0].price) + ' VND',
+                    style: style,
+                  ),
+                  trailing: Text(
+                    'x' + item.value.length.toString(),
+                    style: style2,
+                  ),
+                )
+              : ListTile(
+                  title: Text(
+                    'Doubled ticket',
+                    style: titleStyle,
+                  ),
+                  subtitle: Text(
+                    currencyFormat.format(item.value[0].price) + ' VND',
+                    style: style,
+                  ),
+                  trailing: Text(
+                    'x' + item.value.length.toString(),
+                    style: style2,
+                  ),
+                ),
+      ],
+      ...[
+        for (var item in comboItems)
+          ListTile(
+            title: Text(
+              item.product.name,
+              style: titleStyle,
+            ),
+            subtitle: Text(
+              currencyFormat.format(item.product.price) + ' VND',
+              style: style,
+            ),
+            trailing: Text(
+              'x' + item.count.toString(),
+              style: style2,
+            ),
+          ),
+      ],
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: 72.0 * children.length,
+          child: ListView(
+            children: children,
+          ),
+        );
+      },
+    );
+  }
+
+  void tapContinue(BuiltList<ComboItem> comboItems) {
+    AppScaffold.of(context).pushNamed(
+      CheckoutPage.routeName,
+      arguments: <String, dynamic>{
+        'showTime': widget.showTime,
+        'theatre': widget.theatre,
+        'movie': widget.movie,
+        'products':
+            comboItems.map((i) => Tuple2(i.product, i.count)).toBuiltList(),
+        'tickets': widget.tickets,
+      },
     );
   }
 }

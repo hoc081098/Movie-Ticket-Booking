@@ -761,7 +761,8 @@ class BottomWidget extends StatelessWidget {
                             style: seatsCountStyle,
                           ),
                           TextSpan(
-                            text: 'seats',
+                            text:
+                                'seat' + (snapshot.data.length > 1 ? 's' : ''),
                             style: selectTextStyle,
                           ),
                         ],
