@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -7,11 +7,27 @@ import { UserPayload } from '../auth/get-user.decorator';
 import { Location } from '../common/location.inteface';
 import { Stripe } from 'stripe';
 import { ConfigKey, ConfigService } from '../config/config.service';
-import { Card } from './card.dto';
+import { AddCardDto, Card } from './cards/card.dto';
+
+function paymentMethodToCardDto(paymentMethod: Stripe.PaymentMethod): Card {
+  const card = paymentMethod.card;
+
+  return new Card({
+    brand: card.brand,
+    card_holder_name: paymentMethod.billing_details.name,
+    country: card.country,
+    exp_month: card.exp_month,
+    exp_year: card.exp_year,
+    funding: card.funding,
+    id: paymentMethod.id,
+    last4: card.last4,
+  });
+}
 
 @Injectable()
 export class UsersService {
   private readonly stripe: Stripe;
+  private readonly logger = new Logger('UsersService');
 
   constructor(
       @InjectModel(User.name) private readonly userModel: Model<User>,
@@ -74,19 +90,35 @@ export class UsersService {
     const user = await this.createStripeCustomerIfNeeded(userPayload);
     const paymentMethods = await this.stripe.paymentMethods.list({ customer: user.stripe_customer_id, type: 'card' });
 
-    return paymentMethods.data.map(paymentMethod => {
-      const card = paymentMethod.card;
+    return paymentMethods.data.map(paymentMethodToCardDto);
+  }
 
-      return new Card({
-        brand: card.brand,
-        card_holder_name: paymentMethod.billing_details.name,
-        country: card.country,
-        exp_month: card.exp_month,
-        exp_year: card.exp_year,
-        funding: card.funding,
-        id: paymentMethod.id,
-        last4: card.last4,
-      });
+  async addCard(userPayload: UserPayload, cardDto: AddCardDto): Promise<Card> {
+    const user = await this.createStripeCustomerIfNeeded(userPayload);
+    this.logger.debug(`addCard ${JSON.stringify(user)} ${JSON.stringify(cardDto)}`);
+
+    let paymentMethod = await this.stripe.paymentMethods.create({
+      type: 'card',
+      billing_details: {
+        name: cardDto.card_holder_name,
+      },
+      card: {
+        number: cardDto.number,
+        exp_month: cardDto.exp_month,
+        exp_year: cardDto.exp_year,
+        cvc: cardDto.cvc,
+      },
     });
+
+    paymentMethod = await this.stripe.paymentMethods.attach(paymentMethod.id, { customer: user.stripe_customer_id });
+    return paymentMethodToCardDto(paymentMethod);
+  }
+
+  async removeCard(userPayload: UserPayload, cardId: string): Promise<'SUCCESS'> {
+    const paymentMethod = await this.stripe.paymentMethods.retrieve(cardId);
+    if (paymentMethod && paymentMethod.customer === userPayload.stripe_customer_id) {
+      await this.stripe.paymentMethods.detach(paymentMethod.id);
+    }
+    return 'SUCCESS';
   }
 }
