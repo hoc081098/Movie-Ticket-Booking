@@ -111,7 +111,8 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           final items = state.items;
 
           final textTheme = Theme.of(context).textTheme;
-          final titleStyle = textTheme.subtitle2.copyWith(fontSize: 16);
+          final titleStyle = textTheme.subtitle2.copyWith(fontSize: 15);
+          final countStyle = titleStyle.copyWith(fontSize: 18);
           final priceStyle = textTheme.subtitle1.copyWith(
             color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.w500,
@@ -142,7 +143,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                 top: 0,
                 right: 0,
                 left: 0,
-                bottom: buttonHeight,
+                bottom: buttonHeight + 8,
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     if (index == 0) {
@@ -198,22 +199,33 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             if (item.count > 0)
-                              IconButton(
-                                icon: Icon(Icons.remove),
-                                onPressed: () => bloc.decrement(item),
+                              InkWell(
+                                onTap: () => bloc.decrement(item),
+                                child: Container(
+                                  child: Icon(Icons.remove),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.grey)),
+                                  padding: const EdgeInsets.all(6),
+                                ),
                               )
                             else
-                              IconButton(
-                                icon: const SizedBox(width: 24, height: 24),
-                                onPressed: () {},
-                              ),
+                              const SizedBox(width: 30, height: 30),
+                            const SizedBox(width: 4),
                             Text(
                               item.count.toString(),
-                              style: titleStyle,
+                              style: countStyle,
                             ),
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () => bloc.increment(item),
+                            const SizedBox(width: 4),
+                            InkWell(
+                              onTap: () => bloc.increment(item),
+                              child: Container(
+                                child: Icon(Icons.add),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Colors.grey)),
+                                padding: const EdgeInsets.all(6),
+                              ),
                             ),
                           ],
                         ),
