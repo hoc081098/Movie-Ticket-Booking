@@ -31,7 +31,7 @@ export class MoviesService {
     const currentDay = new Date();
 
     const start = dayjs(currentDay).startOf('day').toDate();
-    const end = dayjs(currentDay).endOf('day').add(7, 'day').toDate();
+    const end = dayjs(currentDay).endOf('day').add(4, 'day').toDate();
 
     const skipLimit = getSkipLimit(paginationDto);
 
