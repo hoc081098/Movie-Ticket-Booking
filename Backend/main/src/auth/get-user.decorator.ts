@@ -1,12 +1,11 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { Schema } from 'mongoose';
+import { User } from '../users/user.schema';
 
 export type RawUserPayload = {
   uid: string,
   email?: string,
-  _id?: Schema.Types.ObjectId | null | undefined;
-  stripe_customer_id?: string | null | undefined;
+  user_entity?: User | undefined | null;
 };
 
 export class UserPayload {
@@ -19,16 +18,12 @@ export class UserPayload {
   readonly email: string;
 
   @IsOptional()
-  readonly _id?: Schema.Types.ObjectId | null | undefined;
-
-  @IsOptional()
-  readonly stripe_customer_id?: string | null | undefined;
+  readonly user_entity?: User | undefined | null;
 
   constructor(payload: RawUserPayload) {
     this.uid = payload.uid;
     this.email = payload.email;
-    this._id = payload._id;
-    this.stripe_customer_id = payload.stripe_customer_id;
+    this.user_entity = payload.user_entity;
   }
 }
 

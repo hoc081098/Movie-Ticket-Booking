@@ -141,7 +141,7 @@ export class CommentsService {
   }
 
   async createComment(user: UserPayload, dto: CreateCommentDto): Promise<Comment> {
-    if (!user._id) {
+    if (!user.user_entity?._id) {
       throw new ForbiddenException(`Not completed login!`);
     }
 
@@ -155,7 +155,7 @@ export class CommentsService {
       content: dto.content,
       rate_star: dto.rate_star,
       movie: movie._id,
-      user: user._id,
+      user: user.user_entity.id,
       is_active: true,
     };
 

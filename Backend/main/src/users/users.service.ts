@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -73,7 +73,11 @@ export class UsersService {
   }
 
   private async createStripeCustomerIfNeeded(user: UserPayload): Promise<User> {
-    if (user.stripe_customer_id) {
+    if (!user.user_entity) {
+      throw new ForbiddenException(`Not completed login!`);
+    }
+
+    if (user.user_entity.stripe_customer_id) {
       return this.findByUid(user.uid);
     }
 
@@ -116,7 +120,7 @@ export class UsersService {
 
   async removeCard(userPayload: UserPayload, cardId: string): Promise<'SUCCESS'> {
     const paymentMethod = await this.stripe.paymentMethods.retrieve(cardId);
-    if (paymentMethod && paymentMethod.customer === userPayload.stripe_customer_id) {
+    if (paymentMethod && paymentMethod.customer === userPayload.user_entity?.stripe_customer_id) {
       await this.stripe.paymentMethods.detach(paymentMethod.id);
     }
     return 'SUCCESS';
