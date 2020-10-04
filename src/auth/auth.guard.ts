@@ -27,8 +27,10 @@ export class AuthGuard implements CanActivate {
       context: ExecutionContext,
   ): Promise<boolean> {
     if (this.configService.get(ConfigKey.DISABLED_AUTH_GUARD) === 'true') {
+      this.logger.debug('>>> DISABLED_AUTH_GUARD');
+
       const me = await this.usersService.findByUid('l9StgzQlR1h3XpaWCf3juyYgG772');
-      context.switchToHttp().getRequest().user = new UserPayload(me);
+      context.switchToHttp().getRequest().user = new UserPayload({ ...me, user_entity: me });
       return true;
     }
 
@@ -47,13 +49,14 @@ export class AuthGuard implements CanActivate {
 
     const merged: RawUserPayload = {
       ...decodedIdToken,
-      ...(user?.toObject() ?? { _id: null, stripe_customer_id: null }),
+      ...(user?.toObject() ?? {}),
+      user_entity: user,
     };
     const payload = new UserPayload(merged);
 
     try {
       const errors = await validate(payload);
-      this.logger.debug(`Errors: ${JSON.stringify(errors)} ${payload._id}`);
+      this.logger.debug(`Errors: ${JSON.stringify(errors)} ${payload.user_entity?._id}`);
 
       if (errors === null || errors === undefined || errors.length === 0) {
         (request as any).user = payload;

@@ -52,11 +52,11 @@ export class User extends Document {
 
   @Prop({
     type: String,
-    enum: ['ADMIN', 'ADMIN'],
+    enum: ['ADMIN', 'ADMIN', 'STAFF'],
     required: true,
     default: 'USER',
   })
-  role: 'ADMIN' | 'USER';
+  role: 'ADMIN' | 'USER' | 'STAFF';
 
   @Prop({ default: false })
   is_completed: boolean;
