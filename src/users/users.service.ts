@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -8,6 +8,7 @@ import { Location } from '../common/location.inteface';
 import { Stripe } from 'stripe';
 import { ConfigKey, ConfigService } from '../config/config.service';
 import { AddCardDto, Card } from './cards/card.dto';
+import { FirebaseAuthenticationService } from '@aginix/nestjs-firebase-admin/dist';
 
 function paymentMethodToCardDto(paymentMethod: Stripe.PaymentMethod): Card {
   const card = paymentMethod.card;
@@ -31,7 +32,8 @@ export class UsersService {
 
   constructor(
       @InjectModel(User.name) private readonly userModel: Model<User>,
-      configService: ConfigService
+      configService: ConfigService,
+      private readonly firebaseAuthenticationService: FirebaseAuthenticationService,
   ) {
     this.stripe = new Stripe(
         configService.get(ConfigKey.STRIPE_SECRET_API),
@@ -124,5 +126,16 @@ export class UsersService {
       await this.stripe.paymentMethods.detach(paymentMethod.id);
     }
     return 'SUCCESS';
+  }
+
+  async delete(uid: string) {
+    const result = await this.userModel.findOneAndDelete({ uid });
+
+    if (result == null) {
+      throw new NotFoundException(`User with uid ${uid} not found`);
+    }
+
+    await this.firebaseAuthenticationService.deleteUser(uid);
+    return result;
   }
 }
