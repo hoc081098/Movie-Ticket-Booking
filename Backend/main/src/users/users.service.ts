@@ -75,12 +75,14 @@ export class UsersService {
   }
 
   private async createStripeCustomerIfNeeded(user: UserPayload): Promise<User> {
-    if (!user.user_entity) {
+    const entity: User | undefined | null = user.user_entity;
+
+    if (!entity) {
       throw new ForbiddenException(`Not completed login!`);
     }
 
-    if (user.user_entity.stripe_customer_id) {
-      return this.findByUid(user.uid);
+    if (entity.stripe_customer_id) {
+      return entity;
     }
 
     const customer = await this.stripe.customers.create({ email: user.email });

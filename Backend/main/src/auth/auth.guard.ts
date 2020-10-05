@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
     if (this.configService.get(ConfigKey.DISABLED_AUTH_GUARD) === 'true') {
       this.logger.debug('>>> DISABLED_AUTH_GUARD');
 
-      const me = await this.usersService.findByUid('l9StgzQlR1h3XpaWCf3juyYgG772');
+      const me = (await this.usersService.findByUid('l9StgzQlR1h3XpaWCf3juyYgG772'))?.toJSON() ?? {};
       context.switchToHttp().getRequest().user = new UserPayload({ ...me, user_entity: me });
       return true;
     }
