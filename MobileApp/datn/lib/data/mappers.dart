@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:tuple/tuple.dart';
 
+import '../domain/model/card.dart';
 import '../domain/model/category.dart';
 import '../domain/model/comment.dart';
 import '../domain/model/comments.dart';
@@ -17,6 +18,7 @@ import '../domain/model/user.dart';
 import '../utils/date_time.dart';
 import '../utils/iterable.dart';
 import 'local/user_local.dart';
+import 'remote/response/card_response.dart';
 import 'remote/response/category_response.dart';
 import 'remote/response/comment_response.dart';
 import 'remote/response/comments_response.dart';
@@ -355,5 +357,19 @@ Product productResponseToProduct(ProductResponse response) {
     price: response.price,
     createdAt: response.createdAt,
     updatedAt: response.updatedAt,
+  );
+}
+
+Card cardResponseToCard(CardResponse response) {
+  return Card(
+    (b) => b
+      ..brand = response.brand
+      ..card_holder_name = response.card_holder_name
+      ..country = response.country
+      ..exp_month = response.exp_month
+      ..exp_year = response.exp_year
+      ..funding = response.funding
+      ..id = response.id
+      ..last4 = response.last4,
   );
 }

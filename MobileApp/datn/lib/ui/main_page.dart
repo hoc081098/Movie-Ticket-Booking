@@ -1,9 +1,10 @@
+import 'package:datn/data/repository/card_repository_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
-import '../data/mappers.dart' show productResponseToProduct;
+import '../data/mappers.dart' show productResponseToProduct, cardResponseToCard;
 import '../data/remote/auth_client.dart';
 import '../data/repository/product_repository_impl.dart';
 import '../domain/model/movie.dart';
@@ -91,7 +92,17 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       );
     },
     CardsPage.routeName: (context, settings) {
-      return CardsPage();
+      final authClient = Provider.of<AuthClient>(context);
+
+      return BlocProvider<CardsBloc>(
+        child: CardsPage(),
+        initBloc: () => CardsBloc(
+          CardRepositoryImpl(
+            authClient,
+            cardResponseToCard,
+          ),
+        ),
+      );
     }
   };
 
