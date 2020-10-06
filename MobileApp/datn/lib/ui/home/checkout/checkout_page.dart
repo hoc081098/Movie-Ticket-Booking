@@ -9,6 +9,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/movie.dart';
 import '../../../domain/model/product.dart';
+import '../../../domain/model/card.dart' as domain;
 import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
@@ -27,6 +28,7 @@ final phoneNumberRegex = RegExp(
 class CheckoutBloc implements BaseBloc {
   final _emailS = PublishSubject<String>();
   final _phoneS = PublishSubject<String>();
+  final _cardS = BehaviorSubject<domain.Card>.seeded(null);
   final _bag = DisposeBag();
 
   ///
@@ -38,10 +40,14 @@ class CheckoutBloc implements BaseBloc {
 
   Function1<String, void> get phoneChanged => _phoneS.add;
 
+  Function1<domain.Card, void> get selectedCard => _cardS.add;
+
   /// Outputs
   ValueStream<String> get emailError$ => _emailError$;
 
   ValueStream<String> get phoneError$ => _phoneError$;
+
+  ValueStream<domain.Card> get selectedCard$ => _cardS;
 
   CheckoutBloc() {
     _emailError$ = _emailS

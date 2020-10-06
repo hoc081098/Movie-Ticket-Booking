@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/card.dart';
 import '../../domain/repository/card_repository.dart';
@@ -21,4 +22,9 @@ class CardRepositoryImpl implements CardRepository {
         .map(_cardResponseToCard)
         .toBuiltList();
   }
+
+  @override
+  Stream<Card> removeCard(Card card) => Rx.defer(
+          () => _authClient.delete(buildUrl('/cards/${card.id}')).asStream())
+      .mapTo(card);
 }

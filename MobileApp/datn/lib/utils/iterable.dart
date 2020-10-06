@@ -26,3 +26,7 @@ extension GroupByIterableExtension<T> on Iterable<T> {
 extension SafeReplaceListBuilderExtension<T> on ListBuilder<T> {
   void safeReplace(Iterable<T> iterable) => replace(iterable);
 }
+
+extension FirstOrNullIterableExtension<T> on Iterable<T> {
+  T get firstOrNull => isEmpty ? null : first;
+}

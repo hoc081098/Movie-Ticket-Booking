@@ -4,4 +4,6 @@ import '../model/card.dart';
 
 abstract class CardRepository {
   Stream<BuiltList<Card>> getCards();
+
+  Stream<Card> removeCard(Card card);
 }
