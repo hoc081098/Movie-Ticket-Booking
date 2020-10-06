@@ -53,7 +53,7 @@ class SelectedCard extends StatelessWidget {
                       return Expanded(
                         child: Text(card == null
                             ? 'Select or add a card'
-                            : "Selected '${card.last4}'. Tap to change"),
+                            : "Selected '••••${card.last4}'. Tap to change"),
                       );
                     }),
                 Icon(
