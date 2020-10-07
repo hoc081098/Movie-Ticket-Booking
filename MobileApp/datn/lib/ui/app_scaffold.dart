@@ -53,7 +53,7 @@ class _AppScaffoldState extends State<AppScaffold> {
         final canPop = navigatorState.canPop();
 
         if (canPop) {
-          navigatorState.pop();
+          navigatorState.maybePop();
         }
 
         if (!canPop && index > 0) {

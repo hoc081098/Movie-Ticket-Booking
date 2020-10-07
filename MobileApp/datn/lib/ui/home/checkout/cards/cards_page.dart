@@ -1,6 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/ui/app_scaffold.dart';
-import 'package:datn/ui/widgets/empty_widget.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +14,10 @@ import '../../../../domain/model/card.dart' as domain;
 import '../../../../domain/repository/card_repository.dart';
 import '../../../../utils/error.dart';
 import '../../../../utils/utils.dart';
+import '../../../app_scaffold.dart';
+import '../../../widgets/empty_widget.dart';
 import '../../../widgets/error_widget.dart';
+import 'add_card/add_card_page.dart';
 
 abstract class Message {}
 
@@ -58,7 +59,9 @@ class CardsBloc extends DisposeCallbackBaseBloc {
   }) : super(dispose);
 
   factory CardsBloc(
-      CardRepository cardRepository, domain.Card initialSelected) {
+    CardRepository cardRepository,
+    domain.Card initialSelected,
+  ) {
     DistinctValueConnectableStream<
         Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card>> state$;
 
@@ -68,19 +71,17 @@ class CardsBloc extends DisposeCallbackBaseBloc {
 
     final cardAddedS = PublishSubject<domain.Card>();
     final removedCard$ = removeCardS.flatMap(
-      (card) => cardRepository
-          .removeCard(card)
-          .doOnData((removed) {
-            final state = state$.value;
-            if (state.item2.id == removed.id) {
-              selectedCardS.add(state.item1.content
-                  .where((i) => i.id != removed.id)
-                  .firstOrNull);
-            }
-            cardMessageS.add(RemovedSuccess(removed));
-          })
-          .doOnError((e, s) => cardMessageS.add(RemoveFailure(card, e)))
-          .onErrorResume((error) => Stream.empty()),
+      (card) => cardRepository.removeCard(card).doOnData((removed) {
+        final state = state$.value;
+        if (state.item2?.id == removed.id) {
+          selectedCardS.add(
+              state.item1.content.where((i) => i.id != removed.id).firstOrNull);
+        }
+        cardMessageS.add(RemovedSuccess(removed));
+      }).doOnError((e, s) {
+        print(s);
+        cardMessageS.add(RemoveFailure(card, e));
+      }).onErrorResume((error) => Stream.empty()),
     );
 
     final cardStreamFunc = () => cardRepository.getCards().exhaustMap(
@@ -101,7 +102,7 @@ class CardsBloc extends DisposeCallbackBaseBloc {
     final loader = LoaderBloc<BuiltList<domain.Card>>(
       loaderFunction: cardStreamFunc,
       initialContent: BuiltList.of(<domain.Card>[]),
-      enableLogger: true,
+      enableLogger: false,
     );
 
     state$ = Rx.combineLatest2(
@@ -115,7 +116,10 @@ class CardsBloc extends DisposeCallbackBaseBloc {
     ).publishValueSeededDistinct(
         seedValue: Tuple2(loader.state$.value, selectedCardS.value));
 
-    final bag = DisposeBag([state$.connect()]);
+    final bag = DisposeBag([
+      state$.connect(),
+      selectedCardS.listen((value) => print('[DEBUG] >>> selectedCard=$value')),
+    ]);
     loader.fetch();
 
     return CardsBloc._(
@@ -203,7 +207,11 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context, bloc.state$.value.item2);
+        final selected = bloc.state$.value.item2;
+        print('[DEBUG] pop selected=$selected');
+
+        AppScaffold.of(context).pop(selected);
+
         return false;
       },
       child: Scaffold(
@@ -217,8 +225,12 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
             return Visibility(
               visible: snapshot.data,
               child: FloatingActionButton.extended(
-                onPressed: () {
-                  AppScaffold.of(context).pushNamed('routeName');
+                onPressed: () async {
+                  final added = await AppScaffold.of(context)
+                      .pushNamed(AddCardPage.routeName);
+                  if (added != null) {
+                    bloc.cardAdded(added as domain.Card);
+                  }
                 },
                 label: Text('Add card'),
               ),

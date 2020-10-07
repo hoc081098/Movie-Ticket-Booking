@@ -27,4 +27,26 @@ class CardRepositoryImpl implements CardRepository {
   Stream<Card> removeCard(Card card) => Rx.defer(
           () => _authClient.delete(buildUrl('/cards/${card.id}')).asStream())
       .mapTo(card);
+
+  @override
+  Stream<Card> addCard({
+    String cardHolderName,
+    String number,
+    int cvc,
+    int expYear,
+    int expMonth,
+  }) async* {
+    final body = {
+      'card_holder_name': cardHolderName,
+      'number': number,
+      'cvc': cvc.toString(),
+      'exp_month': expMonth,
+      'exp_year': expYear,
+    };
+    final json = await _authClient.postBody(
+      buildUrl('/cards'),
+      body: body,
+    );
+    yield _cardResponseToCard(CardResponse.fromJson(json));
+  }
 }

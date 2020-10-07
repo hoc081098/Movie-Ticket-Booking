@@ -28,7 +28,7 @@ class PhoneEmailForm extends StatelessWidget {
       ),
       child: Column(
         children: [
-          StreamBuilder<String>(
+          RxStreamBuilder<String>(
             stream: bloc.emailError$,
             builder: (context, snapshot) {
               return TextField(
@@ -53,7 +53,7 @@ class PhoneEmailForm extends StatelessWidget {
             },
           ),
           const SizedBox(height: 12),
-          StreamBuilder<String>(
+          RxStreamBuilder<String>(
             stream: bloc.phoneError$,
             builder: (context, snapshot) {
               return TextField(

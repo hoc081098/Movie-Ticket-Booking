@@ -13,6 +13,8 @@ import '../domain/repository/comment_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
+import 'home/checkout/cards/add_card/add_card_bloc.dart';
+import 'home/checkout/cards/add_card/add_card_page.dart';
 import 'home/checkout/cards/cards_page.dart';
 import 'home/checkout/checkout_page.dart';
 import 'home/detail/comments/add_comment/add_commen_page.dart';
@@ -102,6 +104,19 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
             cardResponseToCard,
           ),
           settings.arguments,
+        ),
+      );
+    },
+    AddCardPage.routeName: (context, settings) {
+      final authClient = Provider.of<AuthClient>(context);
+
+      return BlocProvider<AddCardBloc>(
+        child: AddCardPage(),
+        initBloc: () => AddCardBloc(
+          CardRepositoryImpl(
+            authClient,
+            cardResponseToCard,
+          ),
         ),
       );
     }
