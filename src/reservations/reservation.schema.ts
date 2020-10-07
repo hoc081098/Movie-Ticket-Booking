@@ -20,8 +20,8 @@ export class Reservation extends Document {
   })
   show_time: any;
 
-  @Prop()
-  phone_number?: string;
+  @Prop({ required: true })
+  phone_number: string;
 
   @Prop({ required: true })
   email: string;
@@ -55,6 +55,9 @@ export class Reservation extends Document {
     ref: 'Promotion',
   })
   promotion_id?: any;
+
+  @Prop({ required: true })
+  payment_intent_id: string;
 
   @Prop()
   is_active: boolean;

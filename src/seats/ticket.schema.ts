@@ -23,8 +23,9 @@ export class Ticket extends Document {
   @Prop({
     type: MongooseSchema.Types.ObjectId,
     ref: 'Reservation',
+    default: null,
   })
-  reservation?: any;
+  reservation?: any | null;
 
   @Prop({ required: true })
   price: number;

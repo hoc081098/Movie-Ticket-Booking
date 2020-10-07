@@ -1,4 +1,12 @@
-import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  NotFoundException
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -94,6 +102,22 @@ export class UsersService {
     ).exec();
   }
 
+  private static checkOwner(paymentMethod: Stripe.PaymentMethod, userPayload: UserPayload): boolean {
+    if (!paymentMethod || !paymentMethod.customer) {
+      return false;
+    }
+
+    if (typeof paymentMethod.customer === 'string') {
+      if (paymentMethod.customer === userPayload.user_entity.stripe_customer_id) {
+        return true;
+      }
+    } else if (paymentMethod.customer.id === userPayload.user_entity.stripe_customer_id) {
+      return true;
+    }
+
+    return false;
+  }
+
   async getCards(userPayload: UserPayload): Promise<Card[]> {
     const user = await this.createStripeCustomerIfNeeded(userPayload);
     const paymentMethods = await this.stripe.paymentMethods.list({ customer: user.stripe_customer_id, type: 'card' });
@@ -124,7 +148,7 @@ export class UsersService {
 
   async removeCard(userPayload: UserPayload, cardId: string): Promise<'SUCCESS'> {
     const paymentMethod = await this.stripe.paymentMethods.retrieve(cardId);
-    if (paymentMethod && paymentMethod.customer === userPayload.user_entity?.stripe_customer_id) {
+    if (UsersService.checkOwner(paymentMethod, userPayload)) {
       await this.stripe.paymentMethods.detach(paymentMethod.id);
     }
     return 'SUCCESS';
@@ -139,5 +163,32 @@ export class UsersService {
 
     await this.firebaseAuthenticationService.deleteUser(uid);
     return result;
+  }
+
+  async getCardById(userPayload: UserPayload, cardId: string): Promise<Stripe.PaymentMethod> {
+    const paymentMethod = await this.stripe.paymentMethods.retrieve(cardId);
+    if (UsersService.checkOwner(paymentMethod, userPayload)) {
+      return paymentMethod;
+    }
+    throw new BadRequestException(`Invalid payment card: ${cardId}`);
+  }
+
+  charge(
+      card: Stripe.PaymentMethod,
+      amount: number,
+      currency: string
+  ): Promise<Stripe.PaymentIntent> {
+    return this.stripe.paymentIntents
+        .create({
+          amount,
+          currency,
+          confirm: true,
+          payment_method: card.id,
+          customer: typeof card.customer === 'string' ? card.customer : card.customer.id,
+        })
+        .catch(error => {
+          this.logger.debug(`Charge ${amount}${currency} failed: ${JSON.stringify(error)}`);
+          return Promise.reject(new HttpException('Charge failed. Please try again', HttpStatus.PAYMENT_REQUIRED));
+        });
   }
 }
