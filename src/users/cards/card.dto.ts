@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsNumber, IsString, Length, Matches, Max, Min } from 'class-validator';
-import dayjs = require('dayjs');
 
 export class Card {
   readonly id: string;
@@ -37,7 +36,7 @@ export class AddCardDto {
   readonly number: string;
 
   @IsNumber()
-  @Min(dayjs().year() % 100)
+  @Min(20)
   @Max(99)
   readonly exp_year: number;
 
