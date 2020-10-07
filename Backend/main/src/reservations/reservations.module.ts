@@ -6,6 +6,8 @@ import { Reservation, ReservationSchema } from './reservation.schema';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '../config/config.module';
+import { Product, ProductSchema } from '../products/product.schema';
+import { Ticket, TicketSchema } from '../seats/ticket.schema';
 
 @Module({
   imports: [
@@ -14,6 +16,14 @@ import { ConfigModule } from '../config/config.module';
         name: Reservation.name,
         schema: ReservationSchema,
       },
+      {
+        name: Product.name,
+        schema: ProductSchema,
+      },
+      {
+        name: Ticket.name,
+        schema: TicketSchema,
+      }
     ]),
     AuthModule,
     UsersModule,
