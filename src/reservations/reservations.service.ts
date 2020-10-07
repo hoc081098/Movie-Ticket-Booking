@@ -28,7 +28,7 @@ export class ReservationsService {
   async createReservation(
       userPayload: UserPayload,
       dto: CreateReservationDto,
-  ) {
+  ): Promise<Reservation> {
     this.logger.debug(`createReservation: ${JSON.stringify(dto)}`);
 
     if (!userPayload.user_entity) {
@@ -91,5 +91,7 @@ export class ReservationsService {
         {}
     ).exec();
     this.logger.debug(`[PASSED] done`);
+
+    return reservation;
   }
 }
