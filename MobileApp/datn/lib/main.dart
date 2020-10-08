@@ -16,11 +16,13 @@ import 'data/remote/auth_client.dart';
 import 'data/repository/city_repository_impl.dart';
 import 'data/repository/comment_repository_impl.dart';
 import 'data/repository/movie_repository_impl.dart';
+import 'data/repository/reservation_repository_impl.dart';
 import 'data/repository/ticket_repository_impl.dart';
 import 'data/repository/user_repository_impl.dart';
 import 'domain/repository/city_repository.dart';
 import 'domain/repository/comment_repository.dart';
 import 'domain/repository/movie_repository.dart';
+import 'domain/repository/reservation_repository.dart';
 import 'domain/repository/ticket_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
@@ -102,6 +104,8 @@ void main() async {
     mappers.ticketResponseToTicket,
   );
 
+  final reservationRepository = ReservationRepositoryImpl(authClient);
+
   runApp(
     Providers(
       providers: [
@@ -111,6 +115,7 @@ void main() async {
         Provider<CityRepository>(value: cityRepository),
         Provider<CommentRepository>(value: commentRepository),
         Provider<TicketRepository>(value: ticketRepository),
+        Provider<ReservationRepository>(value: reservationRepository),
       ],
       child: MyApp(),
     ),

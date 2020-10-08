@@ -10,6 +10,7 @@ import '../data/repository/product_repository_impl.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
+import '../domain/repository/reservation_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
@@ -81,6 +82,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     CheckoutPage.routeName: (context, settings) {
       final arguments = settings.arguments as Map<String, dynamic>;
+      final reservationRepository = Provider.of<ReservationRepository>(context);
 
       return BlocProvider<CheckoutBloc>(
         child: CheckoutPage(
@@ -90,7 +92,12 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           movie: arguments['movie'],
           products: arguments['products'],
         ),
-        initBloc: () => CheckoutBloc(),
+        initBloc: () => CheckoutBloc(
+          reservationRepository: reservationRepository,
+          tickets: arguments['tickets'],
+          showTime: arguments['showTime'],
+          products: arguments['products'],
+        ),
       );
     },
     CardsPage.routeName: (context, settings) {

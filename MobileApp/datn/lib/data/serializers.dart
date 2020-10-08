@@ -12,6 +12,7 @@ import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
 import 'remote/response/product_response.dart';
+import 'remote/response/reservation_response.dart';
 import 'remote/response/seat_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
@@ -60,6 +61,8 @@ final builtListProductResponse = FullType(
   TicketResponse,
   SeatResponse,
   ProductResponse,
+  ReservationResponse,
+  ProductAndCountResponse,
 ])
 final Serializers _serializers = _$_serializers;
 

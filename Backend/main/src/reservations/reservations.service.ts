@@ -13,6 +13,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Product } from '../products/product.schema';
 import { Ticket } from '../seats/ticket.schema';
+import { Seat } from 'src/seats/seat.schema';
 
 @Injectable()
 export class ReservationsService {
@@ -52,9 +53,14 @@ export class ReservationsService {
         { _id: { $in: ticketIds } },
         { reservation: { $ne: null } },
       ]
-    });
+    }).populate('seat');
     if (invalidTickets.length > 0) {
-      throw  new UnprocessableEntityException(`Tickets already reserved: ${JSON.stringify(invalidTickets.map(t => t._id))}`)
+      const seats = invalidTickets.map(t => {
+        const seat = (t.seat as Seat);
+        return `${seat.row}${seat.column}`;
+      }).join(', ');
+      
+      throw new UnprocessableEntityException(`Tickets already reserved: ${seats}`)
     }
     this.logger.debug(`[PASSED] check tickets`);
 

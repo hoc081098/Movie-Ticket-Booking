@@ -96,17 +96,27 @@ class BottomRow extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: FlatButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              //TODO
-              bloc.submit();
+          child: RxStreamBuilder<bool>(
+            stream: bloc.isLoading$,
+            builder: (context, snapshot) {
+              if (snapshot.data) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                  ),
+                );
+              }
+
+              return FlatButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: bloc.submit,
+                child: Text(
+                  'FINISH',
+                  style: textTheme.headline6
+                      .copyWith(fontSize: 16, color: Colors.white),
+                ),
+              );
             },
-            child: Text(
-              'FINISH',
-              style: textTheme.headline6
-                  .copyWith(fontSize: 16, color: Colors.white),
-            ),
           ),
         ),
       ],
