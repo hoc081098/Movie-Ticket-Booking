@@ -77,6 +77,11 @@ export class MoviesService {
         },
       },
       {
+        $sort: {
+          'show_time.start_time': 1
+        }
+      },
+      {
         $lookup: {
           from: 'movies',
           localField: 'show_time.movie',
