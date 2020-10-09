@@ -155,11 +155,20 @@ export class CommentsService {
       content: dto.content,
       rate_star: dto.rate_star,
       movie: movie._id,
-      user: user.user_entity.id,
+      user: user.user_entity._id,
       is_active: true,
     };
 
     const saved = await this.commentModel.create(doc);
+
+    const total_rate = movie.total_rate + 1;
+    const rate_star = (movie.rate_star * movie.total_rate + doc.rate_star) / total_rate;
+    await this.movieModel.updateOne(
+        { _id: doc.movie },
+        { total_rate, rate_star }
+    );
+    this.logger.debug(`[DONE] updated ${movie._id} ${total_rate}, ${rate_star}`);
+
     return await saved.populate('user').execPopulate();
   }
 
