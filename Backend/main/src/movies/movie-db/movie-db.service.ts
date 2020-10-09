@@ -164,6 +164,9 @@ export class MovieDbService {
 
     const videoKey = v.videos.results?.[0]?.key;
     const movieDoc: Omit<CreateDocumentDefinition<Movie>, '_id'> = {
+      rate_star: 0,
+      total_rate: 0,
+      total_favorite: 0,
       age_type: 'P',
       title: v.title,
       trailer_video_url: videoKey ? `https://www.youtube.com/watch?v=${videoKey}` : null,
