@@ -40,6 +40,18 @@ export class CommentsService {
   ) {}
 
   async seed(): Promise<Comment[]> {
+    // const list = await this.movieModel.find({});
+    // for (const m of list) {
+    //   const com = await this.commentModel.find({ movie: m._id });
+    //   if (com.length === 0) {
+    //     await this.movieModel.findByIdAndUpdate(m._id, { total_favorite: 0, total_rate: 0, rate_star: 0 }).exec();
+    //   } else {
+    //     const rate_star = com.reduce((acc, e) => acc + e.rate_star, 0) / com.length;
+    //     await this.movieModel.findByIdAndUpdate(m._id, { total_favorite: 0, total_rate: com.length, rate_star }).exec();
+    //   }
+    // }
+    // this.logger.debug(`Seed comments done`);
+    // return;
     this.logger.debug(`Seed comments start`);
 
     const users = await this.userModel.find({});

@@ -61,13 +61,13 @@ export class Movie extends Document {
   })
   age_type: 'P' | 'C13' | 'C16' | 'C18';
 
-  @Prop({ default: 0 })
+  @Prop()
   total_rate: number;
 
-  @Prop({ default: 0 })
+  @Prop()
   rate_star: number;
 
-  @Prop({ default: 0 })
+  @Prop()
   total_favorite: number;
 
   @Prop({ default: true })
