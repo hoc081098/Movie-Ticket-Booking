@@ -189,8 +189,8 @@ export class CommentsService {
     }
 
     const movie = await this.movieModel.findById(result.movie);
-    const totalRate = movie.total_rate - 1;
-    movie.rate_star = (movie.rate_star * movie.total_rate - result.rate_star) / totalRate;
+    const totalRate = Math.max(movie.total_rate - 1, 0);
+    movie.rate_star = totalRate == 0 ? 0 : (movie.rate_star * movie.total_rate - result.rate_star) / totalRate;
     movie.total_rate = totalRate;
     await movie.save();
 

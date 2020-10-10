@@ -53,7 +53,7 @@ export class FavoritesService {
       is_favorite = true;
     }
     await this.usersService.userModel.updateOne({ _id: user._id }, { favorite_movie_ids });
-    movie.total_favorite = movie.total_favorite + (is_favorite ? 1 : -1);
+    movie.total_favorite = Math.max(movie.total_favorite + (is_favorite ? 1 : -1), 0);
     await movie.save();
 
     return new ToggleFavoriteResponse({ movie, is_favorite });
