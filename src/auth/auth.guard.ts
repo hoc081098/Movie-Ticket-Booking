@@ -26,11 +26,13 @@ export class AuthGuard implements CanActivate {
   async canActivate(
       context: ExecutionContext,
   ): Promise<boolean> {
-    if (this.configService.get(ConfigKey.DISABLED_AUTH_GUARD) === 'true') {
-      this.logger.debug('>>> DISABLED_AUTH_GUARD');
+    const test = this.configService.get(ConfigKey.TEST_AUTH_GUARD);
+    if (test === 'USER' || test === 'ADMIN') {
+      this.logger.debug(`>>> TEST ${test}`);
 
-      const me = (await this.usersService.findByUid('l9StgzQlR1h3XpaWCf3juyYgG772'))?.toJSON() ?? {};
+      const me = (await this.usersService.findByUid(test === 'USER' ? 'l9StgzQlR1h3XpaWCf3juyYgG772' : 'NePOX4o5zhPqLUlHR9IY8eigNd92'))?.toJSON() ?? {};
       context.switchToHttp().getRequest().user = new UserPayload({ ...me, user_entity: me });
+
       return true;
     }
 

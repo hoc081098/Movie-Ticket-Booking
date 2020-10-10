@@ -9,7 +9,8 @@ import { Stripe } from 'stripe';
 import { ConfigKey, ConfigService } from '../config/config.service';
 import { AddCardDto, Card } from './cards/card.dto';
 import { FirebaseAuthenticationService } from '@aginix/nestjs-firebase-admin/dist';
-import { checkCompletedLogin } from '../common/utils';
+import { checkCompletedLogin, getSkipLimit } from '../common/utils';
+import { PaginationDto } from '../common/pagination.dto';
 
 function paymentMethodToCardDto(paymentMethod: Stripe.PaymentMethod): Card {
   const card = paymentMethod.card;
@@ -179,5 +180,15 @@ export class UsersService {
           this.logger.debug(`Charge ${amount}${currency} failed: ${JSON.stringify(error)}`);
           return Promise.reject(new HttpException('Charge failed. Please try again', HttpStatus.PAYMENT_REQUIRED));
         });
+  }
+
+  getAllUsers(dto: PaginationDto): Promise<User[]> {
+    const { limit, skip } = getSkipLimit(dto);
+
+    return this.userModel.find({})
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec();
   }
 }
