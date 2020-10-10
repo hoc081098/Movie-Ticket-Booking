@@ -1,8 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/domain/model/city.dart';
-import 'package:datn/domain/repository/city_repository.dart';
-import 'package:datn/ui/widgets/empty_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -12,11 +9,14 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:stream_loader/stream_loader.dart';
 
+import '../../domain/model/city.dart';
 import '../../domain/model/movie.dart';
+import '../../domain/repository/city_repository.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../../utils/error.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
+import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'detail/movie_detail_page.dart';
 
