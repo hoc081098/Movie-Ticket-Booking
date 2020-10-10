@@ -53,6 +53,8 @@ export class FavoritesService {
       is_favorite = true;
     }
     await this.usersService.userModel.updateOne({ _id: user._id }, { favorite_movie_ids });
+    movie.total_favorite = movie.total_favorite + (is_favorite ? 1 : -1);
+    await movie.save();
 
     return new ToggleFavoriteResponse({ movie, is_favorite });
   }
@@ -60,6 +62,10 @@ export class FavoritesService {
   async checkFavorite(userPayload: UserPayload, movieId: string): Promise<FavoriteResponse> {
     const user = await this.usersService.findByUid(checkCompletedLogin(userPayload).uid);
     const movie = await this.movieModel.findById(movieId);
+    if (!movie) {
+      throw new NotFoundException(`Not found movie with id: ${movieId}`);
+    }
+
     const is_favorite = !!(user.favorite_movie_ids ?? {})[movieId];
     return new FavoriteResponse({ movie, is_favorite });
   }
