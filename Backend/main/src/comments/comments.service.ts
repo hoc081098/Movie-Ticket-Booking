@@ -187,6 +187,13 @@ export class CommentsService {
     if (result == null) {
       throw new NotFoundException(`Comment with id ${id} not found`);
     }
+
+    const movie = await this.movieModel.findById(result.movie);
+    const totalRate = movie.total_rate - 1;
+    movie.rate_star = (movie.rate_star * movie.total_rate - result.rate_star) / totalRate;
+    movie.total_rate = totalRate;
+    await movie.save();
+
     return result;
   }
 }
