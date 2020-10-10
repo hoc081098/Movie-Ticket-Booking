@@ -41,6 +41,12 @@ class _$Movie extends Movie {
   final BuiltList<Person> directors;
   @override
   final BuiltList<Category> categories;
+  @override
+  final double rateStar;
+  @override
+  final int totalFavorite;
+  @override
+  final int totalRate;
 
   factory _$Movie([void Function(MovieBuilder) updates]) =>
       (new MovieBuilder()..update(updates)).build();
@@ -62,7 +68,10 @@ class _$Movie extends Movie {
       this.ageType,
       this.actors,
       this.directors,
-      this.categories})
+      this.categories,
+      this.rateStar,
+      this.totalFavorite,
+      this.totalRate})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Movie', 'id');
@@ -97,6 +106,15 @@ class _$Movie extends Movie {
     if (ageType == null) {
       throw new BuiltValueNullFieldError('Movie', 'ageType');
     }
+    if (rateStar == null) {
+      throw new BuiltValueNullFieldError('Movie', 'rateStar');
+    }
+    if (totalFavorite == null) {
+      throw new BuiltValueNullFieldError('Movie', 'totalFavorite');
+    }
+    if (totalRate == null) {
+      throw new BuiltValueNullFieldError('Movie', 'totalRate');
+    }
   }
 
   @override
@@ -126,7 +144,10 @@ class _$Movie extends Movie {
         ageType == other.ageType &&
         actors == other.actors &&
         directors == other.directors &&
-        categories == other.categories;
+        categories == other.categories &&
+        rateStar == other.rateStar &&
+        totalFavorite == other.totalFavorite &&
+        totalRate == other.totalRate;
   }
 
   @override
@@ -148,28 +169,27 @@ class _$Movie extends Movie {
                                                             $jc(
                                                                 $jc(
                                                                     $jc(
-                                                                        0,
-                                                                        id
-                                                                            .hashCode),
-                                                                    isActive
-                                                                        .hashCode),
-                                                                actorIds
-                                                                    .hashCode),
-                                                            directorIds
-                                                                .hashCode),
-                                                        title.hashCode),
-                                                    trailerVideoUrl.hashCode),
-                                                posterUrl.hashCode),
-                                            overview.hashCode),
-                                        releasedDate.hashCode),
-                                    duration.hashCode),
-                                originalLanguage.hashCode),
-                            createdAt.hashCode),
-                        updatedAt.hashCode),
-                    ageType.hashCode),
-                actors.hashCode),
-            directors.hashCode),
-        categories.hashCode));
+                                                                        $jc(
+                                                                            $jc($jc(0, id.hashCode),
+                                                                                isActive.hashCode),
+                                                                            actorIds.hashCode),
+                                                                        directorIds.hashCode),
+                                                                    title.hashCode),
+                                                                trailerVideoUrl.hashCode),
+                                                            posterUrl.hashCode),
+                                                        overview.hashCode),
+                                                    releasedDate.hashCode),
+                                                duration.hashCode),
+                                            originalLanguage.hashCode),
+                                        createdAt.hashCode),
+                                    updatedAt.hashCode),
+                                ageType.hashCode),
+                            actors.hashCode),
+                        directors.hashCode),
+                    categories.hashCode),
+                rateStar.hashCode),
+            totalFavorite.hashCode),
+        totalRate.hashCode));
   }
 
   @override
@@ -191,7 +211,10 @@ class _$Movie extends Movie {
           ..add('ageType', ageType)
           ..add('actors', actors)
           ..add('directors', directors)
-          ..add('categories', categories))
+          ..add('categories', categories)
+          ..add('rateStar', rateStar)
+          ..add('totalFavorite', totalFavorite)
+          ..add('totalRate', totalRate))
         .toString();
   }
 }
@@ -277,6 +300,18 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
   set categories(ListBuilder<Category> categories) =>
       _$this._categories = categories;
 
+  double _rateStar;
+  double get rateStar => _$this._rateStar;
+  set rateStar(double rateStar) => _$this._rateStar = rateStar;
+
+  int _totalFavorite;
+  int get totalFavorite => _$this._totalFavorite;
+  set totalFavorite(int totalFavorite) => _$this._totalFavorite = totalFavorite;
+
+  int _totalRate;
+  int get totalRate => _$this._totalRate;
+  set totalRate(int totalRate) => _$this._totalRate = totalRate;
+
   MovieBuilder();
 
   MovieBuilder get _$this {
@@ -298,6 +333,9 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
       _actors = _$v.actors?.toBuilder();
       _directors = _$v.directors?.toBuilder();
       _categories = _$v.categories?.toBuilder();
+      _rateStar = _$v.rateStar;
+      _totalFavorite = _$v.totalFavorite;
+      _totalRate = _$v.totalRate;
       _$v = null;
     }
     return this;
@@ -338,7 +376,10 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
               ageType: ageType,
               actors: _actors?.build(),
               directors: _directors?.build(),
-              categories: _categories?.build());
+              categories: _categories?.build(),
+              rateStar: rateStar,
+              totalFavorite: totalFavorite,
+              totalRate: totalRate);
     } catch (_) {
       String _$failedField;
       try {

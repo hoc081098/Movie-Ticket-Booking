@@ -45,6 +45,12 @@ abstract class MovieDetailResponse
 
   BuiltList<CategoryResponse> get categories;
 
+  double get rate_star;
+
+  int get total_favorite;
+
+  int get total_rate;
+
   MovieDetailResponse._();
 
   factory MovieDetailResponse(

@@ -50,6 +50,15 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
       'age_type',
       serializers.serialize(object.age_type,
           specifiedType: const FullType(String)),
+      'rate_star',
+      serializers.serialize(object.rate_star,
+          specifiedType: const FullType(double)),
+      'total_favorite',
+      serializers.serialize(object.total_favorite,
+          specifiedType: const FullType(int)),
+      'total_rate',
+      serializers.serialize(object.total_rate,
+          specifiedType: const FullType(int)),
     ];
     if (object.is_active != null) {
       result
@@ -150,6 +159,18 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
           result.age_type = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'rate_star':
+          result.rate_star = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
+        case 'total_favorite':
+          result.total_favorite = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'total_rate':
+          result.total_rate = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
       }
     }
 
@@ -186,6 +207,12 @@ class _$MovieResponse extends MovieResponse {
   final DateTime updatedAt;
   @override
   final String age_type;
+  @override
+  final double rate_star;
+  @override
+  final int total_favorite;
+  @override
+  final int total_rate;
 
   factory _$MovieResponse([void Function(MovieResponseBuilder) updates]) =>
       (new MovieResponseBuilder()..update(updates)).build();
@@ -204,7 +231,10 @@ class _$MovieResponse extends MovieResponse {
       this.original_language,
       this.createdAt,
       this.updatedAt,
-      this.age_type})
+      this.age_type,
+      this.rate_star,
+      this.total_favorite,
+      this.total_rate})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('MovieResponse', 'id');
@@ -236,6 +266,15 @@ class _$MovieResponse extends MovieResponse {
     if (age_type == null) {
       throw new BuiltValueNullFieldError('MovieResponse', 'age_type');
     }
+    if (rate_star == null) {
+      throw new BuiltValueNullFieldError('MovieResponse', 'rate_star');
+    }
+    if (total_favorite == null) {
+      throw new BuiltValueNullFieldError('MovieResponse', 'total_favorite');
+    }
+    if (total_rate == null) {
+      throw new BuiltValueNullFieldError('MovieResponse', 'total_rate');
+    }
   }
 
   @override
@@ -262,7 +301,10 @@ class _$MovieResponse extends MovieResponse {
         original_language == other.original_language &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt &&
-        age_type == other.age_type;
+        age_type == other.age_type &&
+        rate_star == other.rate_star &&
+        total_favorite == other.total_favorite &&
+        total_rate == other.total_rate;
   }
 
   @override
@@ -279,20 +321,32 @@ class _$MovieResponse extends MovieResponse {
                                         $jc(
                                             $jc(
                                                 $jc(
-                                                    $jc($jc(0, id.hashCode),
-                                                        is_active.hashCode),
-                                                    actors.hashCode),
-                                                directors.hashCode),
-                                            title.hashCode),
-                                        trailer_video_url.hashCode),
-                                    poster_url.hashCode),
-                                overview.hashCode),
-                            released_date.hashCode),
-                        duration.hashCode),
-                    original_language.hashCode),
-                createdAt.hashCode),
-            updatedAt.hashCode),
-        age_type.hashCode));
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    $jc(
+                                                                        0,
+                                                                        id
+                                                                            .hashCode),
+                                                                    is_active
+                                                                        .hashCode),
+                                                                actors
+                                                                    .hashCode),
+                                                            directors.hashCode),
+                                                        title.hashCode),
+                                                    trailer_video_url.hashCode),
+                                                poster_url.hashCode),
+                                            overview.hashCode),
+                                        released_date.hashCode),
+                                    duration.hashCode),
+                                original_language.hashCode),
+                            createdAt.hashCode),
+                        updatedAt.hashCode),
+                    age_type.hashCode),
+                rate_star.hashCode),
+            total_favorite.hashCode),
+        total_rate.hashCode));
   }
 
   @override
@@ -311,7 +365,10 @@ class _$MovieResponse extends MovieResponse {
           ..add('original_language', original_language)
           ..add('createdAt', createdAt)
           ..add('updatedAt', updatedAt)
-          ..add('age_type', age_type))
+          ..add('age_type', age_type)
+          ..add('rate_star', rate_star)
+          ..add('total_favorite', total_favorite)
+          ..add('total_rate', total_rate))
         .toString();
   }
 }
@@ -381,6 +438,19 @@ class MovieResponseBuilder
   String get age_type => _$this._age_type;
   set age_type(String age_type) => _$this._age_type = age_type;
 
+  double _rate_star;
+  double get rate_star => _$this._rate_star;
+  set rate_star(double rate_star) => _$this._rate_star = rate_star;
+
+  int _total_favorite;
+  int get total_favorite => _$this._total_favorite;
+  set total_favorite(int total_favorite) =>
+      _$this._total_favorite = total_favorite;
+
+  int _total_rate;
+  int get total_rate => _$this._total_rate;
+  set total_rate(int total_rate) => _$this._total_rate = total_rate;
+
   MovieResponseBuilder();
 
   MovieResponseBuilder get _$this {
@@ -399,6 +469,9 @@ class MovieResponseBuilder
       _createdAt = _$v.createdAt;
       _updatedAt = _$v.updatedAt;
       _age_type = _$v.age_type;
+      _rate_star = _$v.rate_star;
+      _total_favorite = _$v.total_favorite;
+      _total_rate = _$v.total_rate;
       _$v = null;
     }
     return this;
@@ -436,7 +509,10 @@ class MovieResponseBuilder
               original_language: original_language,
               createdAt: createdAt,
               updatedAt: updatedAt,
-              age_type: age_type);
+              age_type: age_type,
+              rate_star: rate_star,
+              total_favorite: total_favorite,
+              total_rate: total_rate);
     } catch (_) {
       String _$failedField;
       try {

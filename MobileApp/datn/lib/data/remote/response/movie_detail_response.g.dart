@@ -59,6 +59,15 @@ class _$MovieDetailResponseSerializer
       serializers.serialize(object.categories,
           specifiedType: const FullType(
               BuiltList, const [const FullType(CategoryResponse)])),
+      'rate_star',
+      serializers.serialize(object.rate_star,
+          specifiedType: const FullType(double)),
+      'total_favorite',
+      serializers.serialize(object.total_favorite,
+          specifiedType: const FullType(int)),
+      'total_rate',
+      serializers.serialize(object.total_rate,
+          specifiedType: const FullType(int)),
     ];
     if (object.is_active != null) {
       result
@@ -165,6 +174,18 @@ class _$MovieDetailResponseSerializer
                       BuiltList, const [const FullType(CategoryResponse)]))
               as BuiltList<Object>);
           break;
+        case 'rate_star':
+          result.rate_star = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
+        case 'total_favorite':
+          result.total_favorite = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'total_rate':
+          result.total_rate = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
       }
     }
 
@@ -203,6 +224,12 @@ class _$MovieDetailResponse extends MovieDetailResponse {
   final DateTime updatedAt;
   @override
   final BuiltList<CategoryResponse> categories;
+  @override
+  final double rate_star;
+  @override
+  final int total_favorite;
+  @override
+  final int total_rate;
 
   factory _$MovieDetailResponse(
           [void Function(MovieDetailResponseBuilder) updates]) =>
@@ -223,7 +250,10 @@ class _$MovieDetailResponse extends MovieDetailResponse {
       this.original_language,
       this.createdAt,
       this.updatedAt,
-      this.categories})
+      this.categories,
+      this.rate_star,
+      this.total_favorite,
+      this.total_rate})
       : super._() {
     if (age_type == null) {
       throw new BuiltValueNullFieldError('MovieDetailResponse', 'age_type');
@@ -260,6 +290,16 @@ class _$MovieDetailResponse extends MovieDetailResponse {
     if (categories == null) {
       throw new BuiltValueNullFieldError('MovieDetailResponse', 'categories');
     }
+    if (rate_star == null) {
+      throw new BuiltValueNullFieldError('MovieDetailResponse', 'rate_star');
+    }
+    if (total_favorite == null) {
+      throw new BuiltValueNullFieldError(
+          'MovieDetailResponse', 'total_favorite');
+    }
+    if (total_rate == null) {
+      throw new BuiltValueNullFieldError('MovieDetailResponse', 'total_rate');
+    }
   }
 
   @override
@@ -289,7 +329,10 @@ class _$MovieDetailResponse extends MovieDetailResponse {
         original_language == other.original_language &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt &&
-        categories == other.categories;
+        categories == other.categories &&
+        rate_star == other.rate_star &&
+        total_favorite == other.total_favorite &&
+        total_rate == other.total_rate;
   }
 
   @override
@@ -309,23 +352,32 @@ class _$MovieDetailResponse extends MovieDetailResponse {
                                                     $jc(
                                                         $jc(
                                                             $jc(
-                                                                0,
-                                                                is_active
+                                                                $jc(
+                                                                    $jc(
+                                                                        $jc(
+                                                                            0,
+                                                                            is_active
+                                                                                .hashCode),
+                                                                        age_type
+                                                                            .hashCode),
+                                                                    actors
+                                                                        .hashCode),
+                                                                directors
                                                                     .hashCode),
-                                                            age_type.hashCode),
-                                                        actors.hashCode),
-                                                    directors.hashCode),
-                                                id.hashCode),
-                                            title.hashCode),
-                                        trailer_video_url.hashCode),
-                                    poster_url.hashCode),
-                                overview.hashCode),
-                            released_date.hashCode),
-                        duration.hashCode),
-                    original_language.hashCode),
-                createdAt.hashCode),
-            updatedAt.hashCode),
-        categories.hashCode));
+                                                            id.hashCode),
+                                                        title.hashCode),
+                                                    trailer_video_url.hashCode),
+                                                poster_url.hashCode),
+                                            overview.hashCode),
+                                        released_date.hashCode),
+                                    duration.hashCode),
+                                original_language.hashCode),
+                            createdAt.hashCode),
+                        updatedAt.hashCode),
+                    categories.hashCode),
+                rate_star.hashCode),
+            total_favorite.hashCode),
+        total_rate.hashCode));
   }
 
   @override
@@ -345,7 +397,10 @@ class _$MovieDetailResponse extends MovieDetailResponse {
           ..add('original_language', original_language)
           ..add('createdAt', createdAt)
           ..add('updatedAt', updatedAt)
-          ..add('categories', categories))
+          ..add('categories', categories)
+          ..add('rate_star', rate_star)
+          ..add('total_favorite', total_favorite)
+          ..add('total_rate', total_rate))
         .toString();
   }
 }
@@ -422,6 +477,19 @@ class MovieDetailResponseBuilder
   set categories(ListBuilder<CategoryResponse> categories) =>
       _$this._categories = categories;
 
+  double _rate_star;
+  double get rate_star => _$this._rate_star;
+  set rate_star(double rate_star) => _$this._rate_star = rate_star;
+
+  int _total_favorite;
+  int get total_favorite => _$this._total_favorite;
+  set total_favorite(int total_favorite) =>
+      _$this._total_favorite = total_favorite;
+
+  int _total_rate;
+  int get total_rate => _$this._total_rate;
+  set total_rate(int total_rate) => _$this._total_rate = total_rate;
+
   MovieDetailResponseBuilder();
 
   MovieDetailResponseBuilder get _$this {
@@ -441,6 +509,9 @@ class MovieDetailResponseBuilder
       _createdAt = _$v.createdAt;
       _updatedAt = _$v.updatedAt;
       _categories = _$v.categories?.toBuilder();
+      _rate_star = _$v.rate_star;
+      _total_favorite = _$v.total_favorite;
+      _total_rate = _$v.total_rate;
       _$v = null;
     }
     return this;
@@ -479,7 +550,10 @@ class MovieDetailResponseBuilder
               original_language: original_language,
               createdAt: createdAt,
               updatedAt: updatedAt,
-              categories: categories.build());
+              categories: categories.build(),
+              rate_star: rate_star,
+              total_favorite: total_favorite,
+              total_rate: total_rate);
     } catch (_) {
       String _$failedField;
       try {

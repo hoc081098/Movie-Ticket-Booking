@@ -41,6 +41,12 @@ abstract class MovieResponse
 
   String get age_type;
 
+  double get rate_star;
+
+  int get total_favorite;
+
+  int get total_rate;
+
   MovieResponse._();
 
   factory MovieResponse([void Function(MovieResponseBuilder) updates]) =

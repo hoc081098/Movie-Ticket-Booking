@@ -101,7 +101,10 @@ Movie movieResponseToMovie(MovieResponse res) {
       ..originalLanguage = res.original_language
       ..createdAt = res.createdAt
       ..updatedAt = res.updatedAt
-      ..ageType = stringToAgeType(res.age_type),
+      ..ageType = stringToAgeType(res.age_type)
+      ..rateStar = res.rate_star
+      ..totalRate = res.total_rate
+      ..totalFavorite = res.total_favorite,
   );
 }
 
@@ -291,7 +294,10 @@ Movie movieDetailResponseToMovie(MovieDetailResponse res) {
         ..ageType = stringToAgeType(res.age_type)
         ..actors = actorsBuilder
         ..directors = directorsBuilder
-        ..categories = categoriesBuilder;
+        ..categories = categoriesBuilder
+        ..rateStar = res.rate_star
+        ..totalRate = res.total_rate
+        ..totalFavorite = res.total_favorite;
     },
   );
 }

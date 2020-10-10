@@ -54,6 +54,12 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
   @nullable
   BuiltList<Category> get categories;
 
+  double get rateStar;
+
+  int get totalFavorite;
+
+  int get totalRate;
+
   Movie._();
 
   factory Movie([void Function(MovieBuilder) updates]) = _$Movie;

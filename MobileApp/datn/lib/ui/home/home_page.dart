@@ -1,8 +1,13 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:datn/domain/model/city.dart';
+import 'package:datn/domain/repository/city_repository.dart';
+import 'package:datn/ui/widgets/empty_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:stream_loader/stream_loader.dart';
@@ -25,9 +30,10 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Movie>> nowPlayingBloc;
   LoaderBloc<BuiltList<Movie>> comingSoonBloc;
+  Object token;
 
   @override
   void initState() {
@@ -46,35 +52,49 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    nowPlayingBloc ??= () {
-      final repo = Provider.of<MovieRepository>(context);
-      final loaderFunction = () => repo.getNowPlayingMovies(
-            location: null,
+    token ??= () {
+      final cityRepo = Provider.of<CityRepository>(context);
+
+      nowPlayingBloc = () {
+        final repo = Provider.of<MovieRepository>(context);
+
+        final loaderFunction = () {
+          final location = cityRepo.selectedCity$.value.location;
+          print('[DEBUG] fetch location=$location');
+          return repo.getNowPlayingMovies(
+            location: location,
             page: 1,
             perPage: 32,
           );
+        };
 
-      return LoaderBloc(
-        loaderFunction: loaderFunction,
-        refresherFunction: loaderFunction,
-        initialContent: <Movie>[].build(),
-        enableLogger: true,
-      )..fetch();
-    }();
+        return LoaderBloc(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: <Movie>[].build(),
+          enableLogger: true,
+        );
+      }();
 
-    comingSoonBloc ??= () {
-      final repo = Provider.of<MovieRepository>(context);
-      final loaderFunction = () => repo.getComingSoonMovies(
-            page: 1,
-            perPage: 32,
-          );
+      cityRepo.selectedCity$.distinct().listen((city) {
+        print('[DEBUG] city=$city');
+        nowPlayingBloc.fetch();
+      }).disposedBy(bag);
 
-      return LoaderBloc(
-        loaderFunction: loaderFunction,
-        refresherFunction: loaderFunction,
-        initialContent: <Movie>[].build(),
-        enableLogger: true,
-      )..fetch();
+      comingSoonBloc = () {
+        final repo = Provider.of<MovieRepository>(context);
+        final loaderFunction = () => repo.getComingSoonMovies(
+              page: 1,
+              perPage: 32,
+            );
+
+        return LoaderBloc(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: <Movie>[].build(),
+          enableLogger: true,
+        )..fetch();
+      }();
     }();
   }
 
@@ -120,6 +140,7 @@ class HomeLocationHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final cityRepo = Provider.of<CityRepository>(context);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -129,7 +150,7 @@ class HomeLocationHeader extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             InkWell(
-              onTap: () {},
+              onTap: () => changeCity(cityRepo, context),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -163,11 +184,16 @@ class HomeLocationHeader extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          'Đà nẵng',
-                          maxLines: 1,
-                          style: textTheme.headline6.copyWith(fontSize: 13),
-                        ),
+                        RxStreamBuilder<City>(
+                            stream: cityRepo.selectedCity$,
+                            builder: (context, snapshot) {
+                              return Text(
+                                snapshot.data.name,
+                                maxLines: 1,
+                                style:
+                                    textTheme.headline6.copyWith(fontSize: 13),
+                              );
+                            }),
                       ],
                     ),
                   ],
@@ -191,6 +217,46 @@ class HomeLocationHeader extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void changeCity(CityRepository cityRepo, BuildContext context) async {
+    final newCity = await showDialog<City>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('Select city'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (final city in cityRepo.allCities)
+                  ListTile(
+                    title: Text(city.name),
+                    onTap: () => Navigator.of(dialogContext).pop(city),
+                    selected: city == cityRepo.selectedCity$.value,
+                  ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(dialogContext).pop(),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (newCity == null) {
+      return;
+    }
+    if (newCity == cityRepo.selectedCity$.value) {
+      return;
+    }
+
+    await cityRepo.change(newCity);
   }
 }
 
@@ -249,6 +315,12 @@ class HomeHorizontalMoviesList extends StatelessWidget {
             }
 
             final movies = state.content;
+
+            if (movies.isEmpty) {
+              return Center(
+                child: EmptyWidget(message: 'Empty movies'),
+              );
+            }
 
             return ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -381,12 +453,27 @@ class HomeHorizontalMoviesList extends StatelessWidget {
                 children: [
                   Container(
                     height: 16,
-                    width: 54,
-                    color: Color(0xff5B64CF),
+                    child: IgnorePointer(
+                      child: Center(
+                        child: RatingBar(
+                          initialRating: item.rateStar,
+                          allowHalfRating: true,
+                          direction: Axis.horizontal,
+                          itemCount: 5,
+                          itemSize: 14,
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: const Color(0xff5B64CF),
+                          ),
+                          onRatingUpdate: (_) {},
+                          tapOnlyMode: true,
+                        ),
+                      ),
+                    ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 6),
                   Text(
-                    '200 reviews',
+                    '${item.totalRate} review${item.totalRate > 1 ? 's' : ''}',
                     style: reviewstextStyle,
                   )
                 ],
