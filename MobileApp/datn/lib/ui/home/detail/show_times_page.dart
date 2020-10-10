@@ -1,12 +1,12 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/city.dart';
 import '../../../domain/model/movie.dart';
@@ -30,7 +30,7 @@ class ShowTimesPage extends StatefulWidget {
 }
 
 class _ShowTimesPageState extends State<ShowTimesPage>
-    with AutomaticKeepAliveClientMixin<ShowTimesPage> {
+    with AutomaticKeepAliveClientMixin<ShowTimesPage>, DisposeBagMixin {
   final dateFormat = DateFormat('dd/MM');
   final fullDateFormat = DateFormat.yMMMd();
   final showTimeDateFormat = DateFormat('hh:mm a');
@@ -45,6 +45,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     super.initState();
 
     selectedDayS = BehaviorSubject.seeded(startDay);
+    selectedDayS.disposedBy(bag);
     days = [for (var i = 0; i <= 4; i++) startDay.add(Duration(days: i))];
   }
 
@@ -55,27 +56,13 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     bloc ??= () {
       final cityRepo = Provider.of<CityRepository>(context);
       final movieRepo = Provider.of<MovieRepository>(context);
-
       final emptyList = <TheatreAndShowTimes>[].build();
-      final emptyMap = <DateTime, BuiltList<TheatreAndShowTimes>>{}.build();
 
-      return LoaderBloc<BuiltList<TheatreAndShowTimes>>(
+      final bloc = LoaderBloc<BuiltList<TheatreAndShowTimes>>(
         loaderFunction: () {
-          final showTimesByDay$ = cityRepo.selectedCity$
-              .map((city) => city.location)
-              .distinct()
-              .scan(
-                (_, value, index) => Tuple2(value, index),
-                Tuple2(null, -1),
-              )
-              .switchMap(
-            (tuple) {
-              final s$ = movieRepo.getShowTimes(
-                movieId: widget.movie.id,
-                location: tuple.item1,
-              );
-              return tuple.item2 == 0 ? s$ : s$.startWith(emptyMap);
-            },
+          final showTimesByDay$ = movieRepo.getShowTimes(
+            movieId: widget.movie.id,
+            location: cityRepo.selectedCity$.value.location,
           );
 
           return Rx.combineLatest2(
@@ -90,13 +77,21 @@ class _ShowTimesPageState extends State<ShowTimesPage>
         },
         enableLogger: true,
         initialContent: emptyList,
-      )..fetch();
+      );
+
+      cityRepo.selectedCity$
+          .map((city) => city.location)
+          .distinct()
+          .listen((_) => bloc.fetch())
+          .disposedBy(bag);
+
+      return bloc;
     }();
   }
 
   @override
   void dispose() {
-    print('$this::dispose');
+    bloc.dispose();
     super.dispose();
   }
 
