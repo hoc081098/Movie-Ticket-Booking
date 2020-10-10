@@ -6,7 +6,7 @@ import { UserPayload } from '../auth/get-user.decorator';
 import { PaginationDto } from '../common/pagination.dto';
 import { checkCompletedLogin, getSkipLimit } from '../common/utils';
 import * as dayjs from 'dayjs';
-import { ToggleFavoriteDto, ToggleFavoriteResponse } from './favorites.dto';
+import { FavoriteResponse, ToggleFavoriteDto, ToggleFavoriteResponse } from './favorites.dto';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -55,5 +55,12 @@ export class FavoritesService {
     await this.usersService.userModel.updateOne({ _id: user._id }, { favorite_movie_ids });
 
     return new ToggleFavoriteResponse({ movie, is_favorite });
+  }
+
+  async checkFavorite(userPayload: UserPayload, movieId: string): Promise<FavoriteResponse> {
+    const user = await this.usersService.findByUid(checkCompletedLogin(userPayload).uid);
+    const movie = await this.movieModel.findById(movieId);
+    const is_favorite = !!(user.favorite_movie_ids ?? {})[movieId];
+    return new FavoriteResponse({ movie, is_favorite });
   }
 }
