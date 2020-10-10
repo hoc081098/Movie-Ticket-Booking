@@ -7,6 +7,7 @@ import { UpdateUserDto } from './update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles, RolesGuard } from '../auth/roles.guard';
 import { PaginationDto } from '../common/pagination.dto';
+import { ForAdmin } from '../common/swagger.decorator';
 
 @ApiTags('users')
 @Controller('users')
@@ -49,6 +50,7 @@ export class UsersController {
     return this.usersService.update(user, updateUserDto);
   }
 
+  @ForAdmin()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Delete(':uid')
@@ -58,6 +60,7 @@ export class UsersController {
     return this.usersService.delete(uid);
   }
 
+  @ForAdmin()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Get()
