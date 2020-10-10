@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
@@ -408,9 +409,12 @@ class DetailAppBar extends StatelessWidget {
                           }
 
                           if (state.error != null) {
-                            return const SizedBox(
-                              width: 32,
-                              height: 32,
+                            return IconButton(
+                              icon: FaIcon(
+                                FontAwesomeIcons.exclamation,
+                                color: Colors.white,
+                              ),
+                              onPressed: favBloc.fetch,
                             );
                           }
 
