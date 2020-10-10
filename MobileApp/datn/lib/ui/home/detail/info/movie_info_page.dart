@@ -3,14 +3,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../domain/model/movie.dart';
 import '../../../../domain/model/person.dart';
+import '../../../../domain/repository/favorites_repository.dart';
 import '../../../../domain/repository/movie_repository.dart';
 import '../../../../utils/error.dart';
 import '../../../../utils/utils.dart';
@@ -27,18 +30,38 @@ class MovieInfoPage extends StatefulWidget {
 }
 
 class _MovieInfoPageState extends State<MovieInfoPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, DisposeBagMixin {
   LoaderBloc<Movie> bloc;
+  LoaderBloc<bool> favBloc;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   final releaseDateFormat = DateFormat('dd/MM/yy');
+  final toggleS = PublishSubject<void>(sync: true);
+  Object token;
+  var firstMsg = true;
 
   @override
   void initState() {
     super.initState();
+    toggleS.disposedBy(bag);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    favBloc ??= () {
+      final repo = Provider.of<FavoritesRepository>(context);
+      final loaderFunction = () => repo.checkFavorite(widget.movieId);
+
+      final loaderBloc = LoaderBloc(
+        loaderFunction: loaderFunction,
+        enableLogger: true,
+      )..fetch();
+      loaderBloc.message$.listen(handleFavMessage).disposedBy(bag);
+
+      return loaderBloc;
+    }();
 
     bloc ??= () {
       final repository = Provider.of<MovieRepository>(context);
@@ -50,6 +73,15 @@ class _MovieInfoPageState extends State<MovieInfoPage>
         initialContent: null,
         enableLogger: true,
       )..fetch();
+    }();
+
+    token ??= () {
+      final repo = Provider.of<FavoritesRepository>(context);
+
+      toggleS
+          .exhaustMap((_) => repo.toggleFavorite(widget.movieId))
+          .listen(null)
+          .disposedBy(bag);
     }();
   }
 
@@ -66,6 +98,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
     final themeData = Theme.of(context);
 
     return Scaffold(
+      key: scaffoldKey,
       body: RxStreamBuilder<LoaderState<Movie>>(
         stream: bloc.state$,
         builder: (context, snapshot) {
@@ -98,7 +131,11 @@ class _MovieInfoPageState extends State<MovieInfoPage>
 
           return CustomScrollView(
             slivers: [
-              DetailAppBar(movie: movie),
+              DetailAppBar(
+                movie: movie,
+                favBloc: favBloc,
+                onFavPressed: () => toggleS.add(null),
+              ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -225,15 +262,35 @@ class _MovieInfoPageState extends State<MovieInfoPage>
 
   @override
   bool get wantKeepAlive => true;
+
+  void handleFavMessage(LoaderMessage<bool> msg) {
+    msg.fold(
+      onFetchFailure: (e, s) =>
+          scaffoldKey.showSnackBar('Failed: ${getErrorMessage(e)}'),
+      onFetchSuccess: (data) {
+        if (firstMsg) {
+          firstMsg = false;
+        } else {
+          scaffoldKey.showSnackBar('Toggled successfully');
+        }
+      },
+      onRefreshFailure: (e, s) {},
+      onRefreshSuccess: (data) {},
+    );
+  }
 }
 
 class DetailAppBar extends StatelessWidget {
   const DetailAppBar({
     Key key,
     @required this.movie,
+    @required this.onFavPressed,
+    @required this.favBloc,
   }) : super(key: key);
 
   final Movie movie;
+  final Function0<void> onFavPressed;
+  final LoaderBloc<bool> favBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -333,12 +390,40 @@ class DetailAppBar extends StatelessWidget {
                         onPressed: () {},
                       ),
                       const SizedBox(width: 8),
-                      IconButton(
-                        icon: Icon(
-                          Icons.favorite,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {},
+                      RxStreamBuilder<LoaderState<bool>>(
+                        stream: favBloc.state$,
+                        builder: (context, snapshot) {
+                          final state = snapshot.data;
+
+                          if (state.isLoading) {
+                            return SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (state.error != null) {
+                            return const SizedBox(
+                              width: 32,
+                              height: 32,
+                            );
+                          }
+
+                          return IconButton(
+                            icon: Icon(
+                              state.content
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: Colors.white,
+                            ),
+                            onPressed: onFavPressed,
+                          );
+                        },
                       ),
                     ],
                   ),

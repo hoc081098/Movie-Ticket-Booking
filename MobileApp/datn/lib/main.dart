@@ -1,4 +1,6 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
+import 'package:datn/data/repository/favorites_repository_impl.dart';
+import 'package:datn/domain/repository/favorites_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -52,6 +54,7 @@ void main() async {
   //
   // Local and remote
   //
+  RxSharedPreferencesConfigs.logger = null;
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
 
@@ -106,6 +109,8 @@ void main() async {
 
   final reservationRepository = ReservationRepositoryImpl(authClient);
 
+  final favoritesRepository = FavoritesRepositoryImpl(authClient);
+
   runApp(
     Providers(
       providers: [
@@ -116,6 +121,7 @@ void main() async {
         Provider<CommentRepository>(value: commentRepository),
         Provider<TicketRepository>(value: ticketRepository),
         Provider<ReservationRepository>(value: reservationRepository),
+        Provider<FavoritesRepository>(value: favoritesRepository),
       ],
       child: MyApp(),
     ),

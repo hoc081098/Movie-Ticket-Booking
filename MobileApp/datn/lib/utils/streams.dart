@@ -41,3 +41,18 @@ extension DebugExt<T> on Stream<T> {
     );
   }
 }
+
+extension MapNotNullStreamExt<T> on Stream<T> {
+  Stream<R> mapNotNull<R>(R Function(T) mapper) {
+    return transform(StreamTransformer<T, R>.fromHandlers(
+      handleData: (data, sink) {
+        final mapped = mapper(data);
+        if (mapped != null) {
+          sink.add(mapped);
+        }
+      },
+      handleError: (e, st, sink) => sink.addError(e, st),
+      handleDone: (sink) => sink.close(),
+    ));
+  }
+}

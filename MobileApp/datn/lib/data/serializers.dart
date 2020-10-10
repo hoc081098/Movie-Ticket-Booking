@@ -8,6 +8,7 @@ import 'remote/response/category_response.dart';
 import 'remote/response/comment_response.dart';
 import 'remote/response/comments_response.dart';
 import 'remote/response/error_response.dart';
+import 'remote/response/favorite_response.dart';
 import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
@@ -63,6 +64,7 @@ final builtListProductResponse = FullType(
   ProductResponse,
   ReservationResponse,
   ProductAndCountResponse,
+  FavoriteResponse,
 ])
 final Serializers _serializers = _$_serializers;
 
