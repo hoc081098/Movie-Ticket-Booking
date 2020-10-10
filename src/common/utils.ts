@@ -1,4 +1,7 @@
 import { PaginationDto } from './pagination.dto';
+import { UserPayload } from '../auth/get-user.decorator';
+import { User } from '../users/user.schema';
+import { ForbiddenException } from '@nestjs/common';
 
 export const constants = {
   maxDistanceInMeters: 30_000,
@@ -44,4 +47,19 @@ export function getSkipLimit(paginationDto: PaginationDto): SkipAndLimit {
     limit: perPage,
     skip: (page - 1) * perPage,
   };
+}
+
+/**
+ * @throws ForbiddenException
+ * @param userPayload
+ * @returns User not null, not undefined.
+ */
+export function checkCompletedLogin(userPayload: UserPayload): User {
+  const entity: User | undefined | null = userPayload.user_entity;
+
+  if (!entity) {
+    throw new ForbiddenException(`Not completed login!`);
+  }
+
+  return entity;
 }

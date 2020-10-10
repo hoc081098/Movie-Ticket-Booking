@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Location } from '../common/location.inteface';
 
@@ -66,6 +66,12 @@ export class User extends Document {
 
   @Prop()
   stripe_customer_id?: string;
+
+  @Prop({
+    type: MongooseSchema.Types.Mixed,
+    default: {},
+  })
+  favorite_movie_ids?: Record<string, Date> | null;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
