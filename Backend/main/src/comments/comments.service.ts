@@ -1,11 +1,11 @@
-import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { DocumentDefinition, Model, Types } from 'mongoose';
 import { Comment } from './comment.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from '../movies/movie.schema';
 import { User } from '../users/user.schema';
 import * as faker from 'faker';
-import { getSkipLimit } from '../common/utils';
+import { checkCompletedLogin, getSkipLimit } from '../common/utils';
 import { PaginationDto } from '../common/pagination.dto';
 import { CommentsAndRatingSummary, CreateCommentDto } from './comment.dto';
 import { UserPayload } from '../auth/get-user.decorator';
@@ -153,9 +153,7 @@ export class CommentsService {
   }
 
   async createComment(user: UserPayload, dto: CreateCommentDto): Promise<Comment> {
-    if (!user.user_entity?._id) {
-      throw new ForbiddenException(`Not completed login!`);
-    }
+    const userId = checkCompletedLogin(user)._id;
 
     const movie: Movie | null = await this.movieModel.findById(dto.movie_id);
 
@@ -167,7 +165,7 @@ export class CommentsService {
       content: dto.content,
       rate_star: dto.rate_star,
       movie: movie._id,
-      user: user.user_entity._id,
+      user: userId,
       is_active: true,
     };
 

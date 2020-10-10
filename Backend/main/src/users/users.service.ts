@@ -1,12 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Logger,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -17,6 +9,7 @@ import { Stripe } from 'stripe';
 import { ConfigKey, ConfigService } from '../config/config.service';
 import { AddCardDto, Card } from './cards/card.dto';
 import { FirebaseAuthenticationService } from '@aginix/nestjs-firebase-admin/dist';
+import { checkCompletedLogin } from '../common/utils';
 
 function paymentMethodToCardDto(paymentMethod: Stripe.PaymentMethod): Card {
   const card = paymentMethod.card;
@@ -39,7 +32,7 @@ export class UsersService {
   private readonly logger = new Logger('UsersService');
 
   constructor(
-      @InjectModel(User.name) private readonly userModel: Model<User>,
+      @InjectModel(User.name) readonly userModel: Model<User>,
       configService: ConfigService,
       private readonly firebaseAuthenticationService: FirebaseAuthenticationService,
   ) {
@@ -83,11 +76,7 @@ export class UsersService {
   }
 
   private async createStripeCustomerIfNeeded(user: UserPayload): Promise<User> {
-    const entity: User | undefined | null = user.user_entity;
-
-    if (!entity) {
-      throw new ForbiddenException(`Not completed login!`);
-    }
+    const entity = checkCompletedLogin(user);
 
     if (entity.stripe_customer_id) {
       return entity;

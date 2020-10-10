@@ -17,6 +17,7 @@ import { SeatsModule } from './seats/seats.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { ProductsModule } from './products/products.module';
+import { FavoritesModule } from './favorites/favorites.module';
 import * as admin from 'firebase-admin';
 
 @Module({
@@ -50,6 +51,7 @@ import * as admin from 'firebase-admin';
     ReservationsModule,
     PromotionsModule,
     ProductsModule,
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,10 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  Logger,
-  NotFoundException,
-  UnprocessableEntityException
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { UserPayload } from '../auth/get-user.decorator';
 import { CreateReservationDto } from './reservation.dto';
 import { CreateDocumentDefinition, Model, Types } from 'mongoose';
@@ -14,6 +8,7 @@ import { UsersService } from '../users/users.service';
 import { Product } from '../products/product.schema';
 import { Ticket } from '../seats/ticket.schema';
 import { Seat } from 'src/seats/seat.schema';
+import { checkCompletedLogin } from '../common/utils';
 
 @Injectable()
 export class ReservationsService {
@@ -32,9 +27,7 @@ export class ReservationsService {
   ): Promise<Reservation> {
     this.logger.debug(`createReservation: ${JSON.stringify(dto)}`);
 
-    if (!userPayload.user_entity) {
-      throw new ForbiddenException('Not completed login');
-    }
+    checkCompletedLogin(userPayload);
     this.logger.debug(`[PASSED] completed login`);
 
     for (const p of dto.products) {
@@ -59,7 +52,7 @@ export class ReservationsService {
         const seat = (t.seat as Seat);
         return `${seat.row}${seat.column}`;
       }).join(', ');
-      
+
       throw new UnprocessableEntityException(`Tickets already reserved: ${seats}`)
     }
     this.logger.debug(`[PASSED] check tickets`);
