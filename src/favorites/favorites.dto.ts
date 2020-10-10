@@ -15,3 +15,12 @@ export class ToggleFavoriteResponse {
     Object.assign(this, res);
   }
 }
+
+export class FavoriteResponse {
+  readonly movie: Movie;
+  readonly is_favorite: boolean;
+
+  constructor(res: { movie: Movie, is_favorite: boolean }) {
+    Object.assign(this, res);
+  }
+}
