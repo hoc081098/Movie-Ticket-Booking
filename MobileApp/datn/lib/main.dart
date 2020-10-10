@@ -109,7 +109,10 @@ void main() async {
 
   final reservationRepository = ReservationRepositoryImpl(authClient);
 
-  final favoritesRepository = FavoritesRepositoryImpl(authClient);
+  final favoritesRepository = FavoritesRepositoryImpl(
+    authClient,
+    mappers.movieResponseToMovie,
+  );
 
   runApp(
     Providers(

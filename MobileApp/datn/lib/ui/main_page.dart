@@ -14,6 +14,7 @@ import '../domain/repository/reservation_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
+import 'favorites/favorites_page.dart';
 import 'home/checkout/cards/add_card/add_card_bloc.dart';
 import 'home/checkout/cards/add_card/add_card_page.dart';
 import 'home/checkout/cards/cards_page.dart';
@@ -138,6 +139,10 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
   };
 
+  static final favoritesRoutes = <String, AppScaffoldWidgetBuilder>{
+    Navigator.defaultRouteName: (context, settings) => FavoritesPage(),
+  };
+
   dynamic listenToken;
 
   @override
@@ -158,15 +163,21 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     return AppScaffold(
       builders: [
         (context, settings) => homeRoutes[settings.name](context, settings),
+        (context, settings) =>
+            favoritesRoutes[settings.name](context, settings),
         (context, settings) => profileRoutes[settings.name](context, settings),
       ],
-      items: [
+      items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.home_rounded),
           title: Text('Home'),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Icon(Icons.favorite_rounded),
+          title: Text('Favorites'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_rounded),
           title: Text('Profile'),
         ),
       ],
