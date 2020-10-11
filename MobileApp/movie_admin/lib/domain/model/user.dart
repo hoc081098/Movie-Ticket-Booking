@@ -1,0 +1,43 @@
+import 'package:meta/meta.dart';
+
+import 'location.dart';
+
+enum Gender { MALE, FEMALE }
+
+class User {
+  final String uid;
+
+  final String email;
+
+  final String phoneNumber;
+
+  final String fullName;
+
+  final Gender gender;
+
+  final String avatar;
+
+  final String address;
+
+  final DateTime birthday;
+
+  final Location location;
+
+  final bool isCompleted;
+
+  final bool isActive;
+
+  User({
+    @required this.uid,
+    @required this.email,
+    @required this.phoneNumber,
+    @required this.fullName,
+    @required this.gender,
+    @required this.avatar,
+    @required this.address,
+    @required this.birthday,
+    @required this.location,
+    @required this.isCompleted,
+    @required this.isActive,
+  });
+}
