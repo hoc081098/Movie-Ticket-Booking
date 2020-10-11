@@ -1,67 +1,80 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_provider/flutter_provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'data/local/user_local_source_impl.dart';
+import 'data/mappers.dart' as mappers;
+import 'data/remote/auth_client.dart';
+import 'data/repository/user_repository_impl.dart';
+import 'domain/repository/user_repository.dart';
+import 'env_manager.dart';
+import 'my_app.dart';
+import 'utils/type_defs.dart';
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  //
+  // Env
+  //
+  await EnvManager.shared.config();
 
-  final String title;
+  //
+  // Firebase, Google, Facebook
+  //
+  await Firebase.initializeApp();
+  final auth = FirebaseAuth.instance;
+  final storage = FirebaseStorage.instance;
+  final googleSignIn = GoogleSignIn();
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+  //
+  // Local and remote
+  //
+  RxSharedPreferencesConfigs.logger = null;
+  final preferences = RxSharedPreferences.getInstance();
+  final userLocalSource = UserLocalSourceImpl(preferences);
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final client = http.Client();
+  const httpTimeout = Duration(seconds: 15);
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final normalClient = NormalClient(client, httpTimeout);
+  print(normalClient);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+  Function0<Future<void>> _onSignOut;
+  final authClient = AuthClient(
+    client,
+    httpTimeout,
+    () => _onSignOut(),
+    () => userLocalSource.token$.first,
+  );
+
+  //
+  // Repositories
+  //
+  final userRepository = UserRepositoryImpl(
+    auth,
+    userLocalSource,
+    authClient,
+    mappers.userResponseToUserLocal,
+    storage,
+    mappers.userLocalToUserDomain,
+    googleSignIn,
+  );
+  _onSignOut = userRepository.logout;
+
+  runApp(
+    Providers(
+      providers: [
+        Provider<AuthClient>(value: authClient),
+        Provider<UserRepository>(value: userRepository),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
