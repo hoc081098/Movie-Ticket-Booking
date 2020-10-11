@@ -83,7 +83,11 @@ class LoginBloc extends DisposeCallbackBaseBloc {
             })
                 .doOnListen(() => isLoadingController.add(true))
                 .doOnData((_) => isLoadingController.add(false))
-                .doOnError((e, s) => isLoadingController.add(false))
+                .doOnError((e, s) {
+                  print(e);
+                  print(s);
+                  isLoadingController.add(false);
+                })
                 .map<LoginMessage>((_) => const LoginSuccessMessage())
                 .onErrorReturnWith(
                   (error) => LoginErrorMessage(

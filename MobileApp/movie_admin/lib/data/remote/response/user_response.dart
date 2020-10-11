@@ -6,7 +6,16 @@ class LocationResponse {
   LocationResponse._(this.coordinates);
 
   factory LocationResponse.fromJson(Map map) {
-    return LocationResponse._(map['coordinates']);
+    final list = map['coordinates'] as List;
+    if (list == null) {
+      return LocationResponse._([]);
+    }
+
+    final nums = list.cast<num>();
+    return LocationResponse._([
+      nums[0].toDouble(),
+      nums[1].toDouble(),
+    ]);
   }
 
   double get longitude => coordinates.isEmpty ? null : coordinates[0];
@@ -60,7 +69,9 @@ class UserResponse {
       gender: map['gender'],
       avatar: map['avatar'],
       address: map['address'],
-      birthday: DateTime.parse(map['birthday']).toLocal(),
+      birthday: map['birthday'] != null
+          ? DateTime.parse(map['birthday']).toLocal()
+          : null,
       location: LocationResponse.fromJson(map['location']),
       is_completed: map['is_completed'],
       is_active: map['is_active'],

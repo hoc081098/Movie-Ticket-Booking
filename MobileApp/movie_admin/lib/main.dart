@@ -36,7 +36,7 @@ void main() async {
   //
   // Local and remote
   //
-  RxSharedPreferencesConfigs.logger = null;
+  // RxSharedPreferencesConfigs.logger = null;
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
 

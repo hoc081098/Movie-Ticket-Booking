@@ -14,6 +14,13 @@ class LocationLocal {
     return LocationLocal(
         latitude: map['latitude'], longitude: map['longitude']);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'latitude': latitude,
+      'longitude': longitude,
+    };
+  }
 }
 
 class UserLocal {
@@ -55,16 +62,37 @@ class UserLocal {
 
   factory UserLocal.fromJson(Map<String, dynamic> map) {
     return UserLocal(
-        uid: map['uid'],
-        email: map['email'],
-        phone_number: map['phone_number'],
-        full_name: map['full_name'],
-        gender: map['gender'],
-        avatar: map['avatar'],
-        address: map['address'],
-        birthday: DateTime.parse(map['birthday']).toLocal(),
-        location: LocationLocal.fromJson(map['location']),
-        is_completed: map['is_completed'],
-        is_active: map['is_active']);
+      uid: map['uid'],
+      email: map['email'],
+      phone_number: map['phone_number'],
+      full_name: map['full_name'],
+      gender: map['gender'],
+      avatar: map['avatar'],
+      address: map['address'],
+      birthday: map['birthday'] == null
+          ? null
+          : DateTime.parse(map['birthday']).toLocal(),
+      location: map['location'] == null
+          ? null
+          : LocationLocal.fromJson(map['location']),
+      is_completed: map['is_completed'],
+      is_active: map['is_active'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'uid': uid,
+      'email': email,
+      'phone_number': phone_number,
+      'full_name': full_name,
+      'gender': gender,
+      'avatar': avatar,
+      'address': address,
+      'birthday': birthday?.toIso8601String(),
+      'location': location?.toJson(),
+      'is_completed': is_completed,
+      'is_active': is_active,
+    };
   }
 }
