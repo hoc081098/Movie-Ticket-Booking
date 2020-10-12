@@ -10,6 +10,7 @@ import { Ticket } from '../seats/ticket.schema';
 import { checkCompletedLogin } from '../common/utils';
 import { Seat } from '../seats/seat.schema';
 import { Stripe } from 'stripe';
+import { AppGateway } from '../socket/app.gateway';
 
 @Injectable()
 export class ReservationsService {
@@ -20,6 +21,7 @@ export class ReservationsService {
       @InjectModel(Product.name) private readonly productModel: Model<Product>,
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
       private readonly usersService: UsersService,
+      private readonly appGateway: AppGateway,
   ) {}
 
   async createReservation(
@@ -51,13 +53,17 @@ export class ReservationsService {
     );
     this.logger.debug(`[PASSED] charge`);
 
-    return await this.saveAndUpdate(
+    const reservation = await this.saveAndUpdate(
         dto,
         total_price,
         userPayload,
         paymentIntent,
         ticketIds
     );
+    this.appGateway.server
+        .to(`reservation:${dto.show_time_id}`)
+        .emit('reserved', { ticketIds });
+    return reservation;
   }
 
   private async saveAndUpdate(
@@ -66,7 +72,7 @@ export class ReservationsService {
       userPayload: UserPayload,
       paymentIntent: Stripe.PaymentIntent,
       ticketIds: any[]
-  ) {
+  ): Promise<Reservation> {
     // const session = await this.ticketModel.db.startSession();
     try {
       // session.startTransaction();
