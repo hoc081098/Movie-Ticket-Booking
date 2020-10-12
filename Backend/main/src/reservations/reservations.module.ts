@@ -8,9 +8,11 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '../config/config.module';
 import { Product, ProductSchema } from '../products/product.schema';
 import { Ticket, TicketSchema } from '../seats/ticket.schema';
+import { SocketModule } from '../socket/socket.module';
 
 @Module({
   imports: [
+    SocketModule,
     MongooseModule.forFeature([
       {
         name: Reservation.name,
