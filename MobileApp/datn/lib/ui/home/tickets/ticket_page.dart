@@ -46,7 +46,6 @@ class TicketsPage extends StatefulWidget {
 class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Ticket>> bloc;
   final selectedTicketIdsS = BehaviorSubject.seeded(BuiltList.of(<String>[]));
-  dynamic token;
 
   @override
   void initState() {
@@ -60,21 +59,33 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
 
     bloc ??= () {
       final ticketRepository = Provider.of<TicketRepository>(context);
-      final loaderFunction =
-          () => ticketRepository.getTicketsByShowTimeId(widget.showTime.id);
+      final reservationRepository = Provider.of<ReservationRepository>(context);
+
+      final loaderFunction = () => ticketRepository
+          .getTicketsByShowTimeId(widget.showTime.id)
+          .exhaustMap(
+            (tickets) => reservationRepository
+                .watchReservedTicket(widget.showTime.id)
+                .scan<BuiltList<Ticket>>(
+                  (acc, value, _) => acc.rebuild(
+                    (lb) => lb.map(
+                      (ticket) {
+                        final id = value[ticket.id];
+                        return id == null
+                            ? ticket
+                            : ticket.rebuild((b) => b.reservation = id);
+                      },
+                    ),
+                  ),
+                  tickets,
+                )
+                .startWith(tickets),
+          );
       return LoaderBloc(
         loaderFunction: loaderFunction,
-        refresherFunction: loaderFunction,
         enableLogger: true,
       )..fetch();
     }();
-
-    final reservationRepository = Provider.of<ReservationRepository>(context);
-    token ??= reservationRepository
-        .watchReservedTicket(widget.showTime.id)
-        .listen((event) {
-      print('@@@@@@@ >>>>>> $event');
-    }).disposedBy(bag);
   }
 
   @override

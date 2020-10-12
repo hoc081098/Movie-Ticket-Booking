@@ -5,7 +5,7 @@ import 'package:tuple/tuple.dart';
 import '../model/product.dart';
 
 abstract class ReservationRepository {
-  Stream<BuiltList<String>> watchReservedTicket(String showTimeId);
+  Stream<BuiltMap<String, String>> watchReservedTicket(String showTimeId);
 
   Stream<void> createReservation({
     @required String showTimeId,

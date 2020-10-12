@@ -56,16 +56,17 @@ class ReservationRepositoryImpl implements ReservationRepository {
   }
 
   @override
-  Stream<BuiltList<String>> watchReservedTicket(String showTimeId) =>
+  Stream<BuiltMap<String, String>> watchReservedTicket(String showTimeId) =>
       _userLocalSource.token$
           .take(1)
           .exhaustMap((token) => _connectSocket(token, showTimeId));
 
-  Stream<BuiltList<String>> _connectSocket(String token, String showTimeId) {
+  Stream<BuiltMap<String, String>> _connectSocket(
+      String token, String showTimeId) {
     final roomId = 'reservation:${showTimeId}';
 
     io.Socket socket;
-    StreamController<BuiltList<String>> controller;
+    StreamController<BuiltMap<String, String>> controller;
 
     controller = StreamController(
       sync: true,
@@ -90,12 +91,9 @@ class ReservationRepositoryImpl implements ReservationRepository {
           socket.on('reserved', (data) {
             print('[ReservationRepositoryImpl] reserved $data');
 
-            final ids =
-                ((data as Map<String, dynamic>)['ticketIds'] as List<dynamic>)
-                    .cast<String>()
-                    .build();
+            final map = BuiltMap.from(data as Map<String, dynamic>);
             assert(controller != null);
-            controller.add(ids);
+            controller.add(map);
           });
         });
 
