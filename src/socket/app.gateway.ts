@@ -1,12 +1,16 @@
 import {
+  ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
+  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
+import { WsGuard } from './ws.guard';
 
 @WebSocketGateway(3001)
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -21,19 +25,29 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
   handleConnection(client: Socket, ...args: any[]) {
     this.logger.debug(`Connected ${client.id}`);
-
-    client.on('join', (room: string) => {
-      this.logger.debug(`${client.id} joined ${room}`);
-      client.join(room);
-    });
-
-    client.on('leave', (room: string) => {
-      this.logger.debug(`${client.id} leaved ${room}`);
-      client.leave(room);
-    });
   }
 
   handleDisconnect(client: Socket) {
     this.logger.debug(`Disconnected ${client.id}`);
+  }
+
+  @UseGuards(WsGuard)
+  @SubscribeMessage('join')
+  joinRoom(
+      @ConnectedSocket() client: Socket,
+      @MessageBody() room: string
+  ) {
+    this.logger.debug(`${client.id} joined ${room}`);
+    client.join(room);
+  }
+
+  @UseGuards(WsGuard)
+  @SubscribeMessage('leave')
+  leaveRoom(
+      @ConnectedSocket() client: Socket,
+      @MessageBody() room: string
+  ) {
+    this.logger.debug(`${client.id} leaved ${room}`);
+    client.leave(room);
   }
 }
