@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 enum EnvKey {
   BASE_URL,
   PLACES_API_KEY,
+  WS_URL,
 }
 
 class EnvManager {

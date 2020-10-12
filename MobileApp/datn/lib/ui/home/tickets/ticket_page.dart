@@ -15,6 +15,7 @@ import '../../../domain/model/seat.dart';
 import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
+import '../../../domain/repository/reservation_repository.dart';
 import '../../../domain/repository/ticket_repository.dart';
 import '../../../utils/error.dart';
 import '../../../utils/type_defs.dart';
@@ -45,6 +46,7 @@ class TicketsPage extends StatefulWidget {
 class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Ticket>> bloc;
   final selectedTicketIdsS = BehaviorSubject.seeded(BuiltList.of(<String>[]));
+  dynamic token;
 
   @override
   void initState() {
@@ -66,6 +68,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
         enableLogger: true,
       )..fetch();
     }();
+
+    final reservationRepository = Provider.of<ReservationRepository>(context);
+    token ??= reservationRepository
+        .watchReservedTicket(widget.showTime.id)
+        .listen((event) {
+      print('@@@@@@@ >>>>>> $event');
+    }).disposedBy(bag);
   }
 
   @override

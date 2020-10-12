@@ -107,7 +107,10 @@ void main() async {
     mappers.ticketResponseToTicket,
   );
 
-  final reservationRepository = ReservationRepositoryImpl(authClient);
+  final reservationRepository = ReservationRepositoryImpl(
+    authClient,
+    userLocalSource,
+  );
 
   final favoritesRepository = FavoritesRepositoryImpl(
     authClient,
