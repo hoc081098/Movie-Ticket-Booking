@@ -60,9 +60,16 @@ export class ReservationsService {
         paymentIntent,
         ticketIds
     );
+    const data: Record<string, string> = ticketIds.reduce(
+        (acc, e) => ({
+          ...acc,
+          [e.toHexString()]: reservation.id,
+        }),
+        {},
+    );
     this.appGateway.server
         .to(`reservation:${dto.show_time_id}`)
-        .emit('reserved', { ticketIds });
+        .emit('reserved', data);
     return reservation;
   }
 
