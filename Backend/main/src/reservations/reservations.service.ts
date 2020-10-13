@@ -71,7 +71,7 @@ export class ReservationsService {
         .to(`reservation:${dto.show_time_id}`)
         .emit('reserved', data);
 
-    return await reservation.populate('user').execPopulate();
+    return reservation;
   }
 
   private async saveAndUpdate(
@@ -99,7 +99,7 @@ export class ReservationsService {
         user: userPayload.user_entity._id,
         payment_intent_id: paymentIntent.id,
       };
-      const reservation = await this.reservationModel.create(
+      let reservation = await this.reservationModel.create(
           [doc],
           { session },
       ).then(v => v[0]);
@@ -115,10 +115,12 @@ export class ReservationsService {
         }
       }
 
+      reservation = await reservation.populate('user').execPopulate();
+
       await session.commitTransaction();
       session.endSession();
 
-      this.logger.debug(`[PASSED] done`);
+      this.logger.debug(`[PASSED] done ${JSON.stringify(reservation)}`);
       return reservation;
     } catch (e) {
       await session.abortTransaction();
