@@ -92,7 +92,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
           socket.on('reserved', (data) {
             print('[ReservationRepositoryImpl] reserved $data');
 
-            final map = BuiltMap.from(data as Map<String, dynamic>);
+            final map = BuiltMap<String, String>.from(data as Map<String, dynamic>);
             assert(controller != null);
             controller.add(map);
           });

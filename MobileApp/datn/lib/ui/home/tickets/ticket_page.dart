@@ -81,10 +81,21 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                 )
                 .startWith(tickets),
           );
-      return LoaderBloc(
+      final loaderBloc = LoaderBloc(
         loaderFunction: loaderFunction,
         enableLogger: true,
-      )..fetch();
+      );
+
+      loaderBloc.state$
+          .distinct()
+          .map((state) => conflict(state, selectedTicketIdsS.value))
+          .where((tickets) => tickets.isNotEmpty)
+          .doOnData(handleConflictSelection)
+          .exhaustMap(showConflictDialog)
+          .listen(null)
+          .disposedBy(bag);
+
+      return loaderBloc..fetch();
     }();
   }
 
@@ -265,6 +276,49 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       },
     );
   }
+
+  void handleConflictSelection(BuiltSet<Ticket> conflictTickets) {
+    selectedTicketIdsS.add(
+      BuiltSet.of(selectedTicketIdsS.value)
+          .difference(conflictTickets)
+          .toBuiltList(),
+    );
+  }
+
+  BuiltSet<Ticket> conflict(
+    LoaderState<BuiltList<Ticket>> state,
+    BuiltList<String> selectedIds,
+  ) {
+    final map = BuiltMap.of(
+      Map.fromEntries(
+        state.content.map((t) => MapEntry(t.id, t)),
+      ),
+    );
+    return selectedIds
+        .map((id) => map[id])
+        .where((ticket) => ticket.reservation != null)
+        .toBuiltSet();
+  }
+
+  Stream<void> showConflictDialog(BuiltSet<Ticket> _) => Rx.defer(
+        () => showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext dialogContext) {
+            return AlertDialog(
+              title: Text('Warning'),
+              content: Text(
+                  'Some seats you choose have been reserved. Please select other seats.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('OK'),
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                ),
+              ],
+            );
+          },
+        ).asStream(),
+      );
 }
 
 class ScreenWidget extends StatelessWidget {
@@ -363,12 +417,25 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
   void initState() {
     super.initState();
 
+    init();
+  }
+
+  void init() {
     final seats = widget.tickets.map((t) => t.seat);
     maxX = seats.map((s) => s.coordinates.x + s.count - 1).reduce(math.max);
     maxY = seats.map((s) => s.coordinates.y).reduce(math.max);
 
     ticketByCoordinates = Map.fromEntries(
         widget.tickets.map((t) => MapEntry(t.seat.coordinates, t)));
+  }
+
+  @override
+  void didUpdateWidget(SeatsGridWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.tickets != widget.tickets) {
+      init();
+    }
   }
 
   @override
