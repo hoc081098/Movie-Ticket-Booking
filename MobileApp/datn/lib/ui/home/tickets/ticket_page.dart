@@ -312,7 +312,11 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               actions: <Widget>[
                 FlatButton(
                   child: Text('OK'),
-                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                    AppScaffold.of(context)
+                        .popUntil(ModalRoute.withName(TicketsPage.routeName));
+                  },
                 ),
               ],
             );
