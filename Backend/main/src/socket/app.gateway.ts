@@ -12,7 +12,7 @@ import { Server, Socket } from 'socket.io';
 import { Logger, UseGuards } from '@nestjs/common';
 import { WsGuard } from './ws.guard';
 
-@WebSocketGateway(3001)
+@WebSocketGateway({ path: '/socket' })
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;

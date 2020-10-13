@@ -1902,4 +1902,1976 @@
   "updatedAt": {
     "$date": "2020-09-21T06:59:38.143Z"
   }
+},{
+  "_id": {
+    "$oid": "5f699e97075f5b523f60778f"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "movie_id": {
+    "$oid": "5f699e97b45b762e80de7733"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:49:59.766Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:49:59.766Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e97075f5b523f607791"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "movie_id": {
+    "$oid": "5f699e97b45b762e80de7733"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:49:59.776Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:49:59.776Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e97075f5b523f607793"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4027"
+  },
+  "movie_id": {
+    "$oid": "5f699e97b45b762e80de7733"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:49:59.779Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:49:59.779Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e97075f5b523f607795"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699e97b45b762e80de7733"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:49:59.783Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:49:59.783Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e98075f5b523f6077ae"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "movie_id": {
+    "$oid": "5f699e98b45b762e80de773f"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:00.292Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:00.292Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e98075f5b523f6077b0"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699e98b45b762e80de773f"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:00.299Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:00.299Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e98075f5b523f6077ca"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699e98b45b762e80de774b"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:00.787Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:00.787Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e99075f5b523f6077e5"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4022"
+  },
+  "movie_id": {
+    "$oid": "5f699e99b45b762e80de7757"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:01.290Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:01.290Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e99075f5b523f6077e7"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699e99b45b762e80de7757"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:01.293Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:01.293Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e99075f5b523f6077ea"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699e99b45b762e80de7757"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:01.298Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:01.298Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e99075f5b523f607803"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699e99b45b762e80de7762"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:01.896Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:01.896Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e99075f5b523f607805"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4029"
+  },
+  "movie_id": {
+    "$oid": "5f699e99b45b762e80de7762"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:01.903Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:01.903Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e99075f5b523f607807"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699e99b45b762e80de7762"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:01.907Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:01.907Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9a075f5b523f607823"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699e9ab45b762e80de776e"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:02.506Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:02.506Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9a075f5b523f607825"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402c"
+  },
+  "movie_id": {
+    "$oid": "5f699e9ab45b762e80de776e"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:02.511Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:02.511Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9a075f5b523f607827"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4024"
+  },
+  "movie_id": {
+    "$oid": "5f699e9ab45b762e80de776e"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:02.516Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:02.516Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9b075f5b523f60783c"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "movie_id": {
+    "$oid": "5f699e9bb45b762e80de7778"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.059Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:03.059Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9b075f5b523f60783e"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699e9bb45b762e80de7778"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.069Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:03.069Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9b075f5b523f607840"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699e9bb45b762e80de7778"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.076Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:03.076Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9b075f5b523f60785e"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401c"
+  },
+  "movie_id": {
+    "$oid": "5f699e9bb45b762e80de7785"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.596Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:03.596Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9b075f5b523f607860"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401d"
+  },
+  "movie_id": {
+    "$oid": "5f699e9bb45b762e80de7785"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.600Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:03.600Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9b075f5b523f607862"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4022"
+  },
+  "movie_id": {
+    "$oid": "5f699e9bb45b762e80de7785"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.602Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:03.602Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9b075f5b523f607864"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4023"
+  },
+  "movie_id": {
+    "$oid": "5f699e9bb45b762e80de7785"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.610Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:03.610Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9c075f5b523f60786d"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401d"
+  },
+  "movie_id": {
+    "$oid": "5f699e9cb45b762e80de7789"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:04.054Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:04.054Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9c075f5b523f60786f"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4022"
+  },
+  "movie_id": {
+    "$oid": "5f699e9cb45b762e80de7789"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:04.057Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:04.057Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9c075f5b523f607871"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4023"
+  },
+  "movie_id": {
+    "$oid": "5f699e9cb45b762e80de7789"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:04.061Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:04.061Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9c075f5b523f60788a"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699e9cb45b762e80de7795"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:04.543Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:04.543Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9d075f5b523f6078a5"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "movie_id": {
+    "$oid": "5f699e9db45b762e80de77a1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:05.053Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:05.053Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9d075f5b523f6078a7"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699e9db45b762e80de77a1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:05.057Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:05.057Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9d075f5b523f6078a9"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699e9db45b762e80de77a1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:05.061Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:05.061Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9d075f5b523f6078ab"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "movie_id": {
+    "$oid": "5f699e9db45b762e80de77a1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:05.066Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:05.066Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9d075f5b523f6078c4"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699e9db45b762e80de77ad"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:05.564Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:05.564Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9d075f5b523f6078c6"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699e9db45b762e80de77ad"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:05.571Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:05.571Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9e075f5b523f6078dc"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "movie_id": {
+    "$oid": "5f699e9eb45b762e80de77b7"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:06.032Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:06.032Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9e075f5b523f6078f2"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401d"
+  },
+  "movie_id": {
+    "$oid": "5f699e9eb45b762e80de77c1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:06.509Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:06.509Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9e075f5b523f6078f4"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401c"
+  },
+  "movie_id": {
+    "$oid": "5f699e9eb45b762e80de77c1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:06.515Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:06.515Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9e075f5b523f6078f6"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4022"
+  },
+  "movie_id": {
+    "$oid": "5f699e9eb45b762e80de77c1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:06.522Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:06.522Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9e075f5b523f6078f8"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4023"
+  },
+  "movie_id": {
+    "$oid": "5f699e9eb45b762e80de77c1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:06.526Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:06.526Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9f075f5b523f60790f"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699e9fb45b762e80de77cc"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:07.012Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:07.012Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9f075f5b523f607926"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401c"
+  },
+  "movie_id": {
+    "$oid": "5f699e9fb45b762e80de77d7"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:07.471Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:07.471Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699e9f075f5b523f607931"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4029"
+  },
+  "movie_id": {
+    "$oid": "5f699e9fb45b762e80de77dc"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:07.880Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:07.880Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ea0075f5b523f607949"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401c"
+  },
+  "movie_id": {
+    "$oid": "5f699ea0b45b762e80de77e7"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:08.325Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:08.325Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ea0075f5b523f60794b"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4023"
+  },
+  "movie_id": {
+    "$oid": "5f699ea0b45b762e80de77e7"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:08.327Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:08.327Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ea0075f5b523f60794d"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4022"
+  },
+  "movie_id": {
+    "$oid": "5f699ea0b45b762e80de77e7"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:08.331Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:08.331Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ea0075f5b523f607967"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4025"
+  },
+  "movie_id": {
+    "$oid": "5f699ea0b45b762e80de77f3"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:08.805Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:08.805Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ea1075f5b523f607974"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4025"
+  },
+  "movie_id": {
+    "$oid": "5f699ea1b45b762e80de77f9"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:09.217Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:09.217Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ea1075f5b523f607976"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ea1b45b762e80de77f9"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:09.221Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:09.221Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ead075f5b523f607a89"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4028"
+  },
+  "movie_id": {
+    "$oid": "5f699eadb45b762e80de7804"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:21.254Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:21.254Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ead075f5b523f607a8b"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699eadb45b762e80de7804"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:21.257Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:21.257Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ead075f5b523f607aa5"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699eadb45b762e80de7810"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:21.746Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:21.746Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eae075f5b523f607ac1"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699eaeb45b762e80de781d"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:22.232Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:22.232Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eae075f5b523f607ac3"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401d"
+  },
+  "movie_id": {
+    "$oid": "5f699eaeb45b762e80de781d"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:22.236Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:22.236Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eae075f5b523f607ac5"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4022"
+  },
+  "movie_id": {
+    "$oid": "5f699eaeb45b762e80de781d"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:22.239Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:22.239Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eae075f5b523f607ade"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699eaeb45b762e80de7829"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:22.691Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:22.691Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eae075f5b523f607ae0"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4028"
+  },
+  "movie_id": {
+    "$oid": "5f699eaeb45b762e80de7829"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:22.695Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:22.695Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eaf075f5b523f607ae9"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "movie_id": {
+    "$oid": "5f699eafb45b762e80de782d"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:23.087Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:23.087Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eaf075f5b523f607af2"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "movie_id": {
+    "$oid": "5f699eafb45b762e80de7831"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:23.483Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:23.483Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eaf075f5b523f607b0c"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699eafb45b762e80de783d"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:23.938Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:23.938Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eaf075f5b523f607b0e"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402a"
+  },
+  "movie_id": {
+    "$oid": "5f699eafb45b762e80de783d"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:23.942Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:23.942Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb0075f5b523f607b29"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699eb0b45b762e80de784a"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:24.404Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:24.404Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb0075f5b523f607b2b"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4028"
+  },
+  "movie_id": {
+    "$oid": "5f699eb0b45b762e80de784a"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:24.407Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:24.407Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb0075f5b523f607b46"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699eb0b45b762e80de7856"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:24.892Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:24.892Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb0075f5b523f607b48"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699eb0b45b762e80de7856"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:24.897Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:24.897Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb1075f5b523f607b60"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699eb1b45b762e80de7861"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:25.347Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:25.347Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb1075f5b523f607b7d"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4025"
+  },
+  "movie_id": {
+    "$oid": "5f699eb1b45b762e80de786f"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:25.860Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:25.860Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb2075f5b523f607b88"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "movie_id": {
+    "$oid": "5f699eb2b45b762e80de7874"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:26.254Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:26.254Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb2075f5b523f607b9d"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699eb2b45b762e80de787e"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:26.709Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:26.709Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb2075f5b523f607b9f"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401d"
+  },
+  "movie_id": {
+    "$oid": "5f699eb2b45b762e80de787e"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:26.712Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:26.712Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb2075f5b523f607ba1"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401c"
+  },
+  "movie_id": {
+    "$oid": "5f699eb2b45b762e80de787e"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:26.716Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:26.716Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb2075f5b523f607ba3"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4022"
+  },
+  "movie_id": {
+    "$oid": "5f699eb2b45b762e80de787e"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:26.720Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:26.720Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb2075f5b523f607ba5"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4023"
+  },
+  "movie_id": {
+    "$oid": "5f699eb2b45b762e80de787e"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:26.723Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:26.723Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb3075f5b523f607bbd"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699eb3b45b762e80de7889"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:27.185Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:27.185Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb4075f5b523f607bee"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699eb4b45b762e80de78a0"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:28.088Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:28.088Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb4075f5b523f607c06"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401c"
+  },
+  "movie_id": {
+    "$oid": "5f699eb4b45b762e80de78ab"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:28.556Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:28.556Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb4075f5b523f607c08"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "movie_id": {
+    "$oid": "5f699eb4b45b762e80de78ab"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:28.564Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:28.564Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb4075f5b523f607c0a"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "movie_id": {
+    "$oid": "5f699eb4b45b762e80de78ab"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:28.585Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:28.585Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb4075f5b523f607c0c"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4027"
+  },
+  "movie_id": {
+    "$oid": "5f699eb4b45b762e80de78ab"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:28.588Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:28.588Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb5075f5b523f607c13"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401d"
+  },
+  "movie_id": {
+    "$oid": "5f699eb5b45b762e80de78ae"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:29.086Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:29.086Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb5075f5b523f607c18"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "movie_id": {
+    "$oid": "5f699eb5b45b762e80de78b0"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:29.478Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:29.478Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb5075f5b523f607c31"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699eb5b45b762e80de78bc"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:29.923Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:29.923Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eb5075f5b523f607c33"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4028"
+  },
+  "movie_id": {
+    "$oid": "5f699eb5b45b762e80de78bc"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:29.928Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:29.928Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec1075f5b523f607cf6"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec1b45b762e80de78c8"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:41.247Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:41.247Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec1075f5b523f607cf8"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699ec1b45b762e80de78c8"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:41.250Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:41.250Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec1075f5b523f607d14"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699ec1b45b762e80de78d5"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:41.759Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:41.759Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec1075f5b523f607d16"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699ec1b45b762e80de78d5"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:41.761Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:41.761Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec2075f5b523f607d32"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402c"
+  },
+  "movie_id": {
+    "$oid": "5f699ec2b45b762e80de78e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:42.235Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:42.235Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec2075f5b523f607d34"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec2b45b762e80de78e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:42.242Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:42.242Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec2075f5b523f607d3b"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "movie_id": {
+    "$oid": "5f699ec2b45b762e80de78e4"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:42.635Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:42.635Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec3075f5b523f607d54"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699ec3b45b762e80de78f0"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:43.084Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:43.084Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec3075f5b523f607d6d"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec3b45b762e80de78fc"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:43.543Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:43.543Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec3075f5b523f607d6f"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699ec3b45b762e80de78fc"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:43.545Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:43.545Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec4075f5b523f607d88"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4025"
+  },
+  "movie_id": {
+    "$oid": "5f699ec4b45b762e80de7908"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:44.023Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:44.023Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec4075f5b523f607da1"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401e"
+  },
+  "movie_id": {
+    "$oid": "5f699ec4b45b762e80de7914"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:44.567Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:44.567Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec4075f5b523f607da3"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "movie_id": {
+    "$oid": "5f699ec4b45b762e80de7914"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:44.571Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:44.571Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec4075f5b523f607da5"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec4b45b762e80de7914"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:44.573Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:44.573Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec5075f5b523f607dbe"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4025"
+  },
+  "movie_id": {
+    "$oid": "5f699ec5b45b762e80de791f"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:45.026Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:45.026Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec6075f5b523f607dd7"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699ec6b45b762e80de792b"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.076Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:46.076Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec6075f5b523f607de0"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec6b45b762e80de792f"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.453Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:46.453Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec6075f5b523f607de2"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402c"
+  },
+  "movie_id": {
+    "$oid": "5f699ec6b45b762e80de792f"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.456Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:46.456Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec6075f5b523f607dfb"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4021"
+  },
+  "movie_id": {
+    "$oid": "5f699ec6b45b762e80de793b"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.929Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:46.929Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec6075f5b523f607dfd"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402c"
+  },
+  "movie_id": {
+    "$oid": "5f699ec6b45b762e80de793b"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.932Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:46.932Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec6075f5b523f607dff"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec6b45b762e80de793b"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.935Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:46.935Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec7075f5b523f607e14"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec7b45b762e80de7945"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:47.482Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:47.482Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec8075f5b523f607e2d"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402a"
+  },
+  "movie_id": {
+    "$oid": "5f699ec8b45b762e80de7951"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:48.069Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:48.069Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec8075f5b523f607e2f"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4028"
+  },
+  "movie_id": {
+    "$oid": "5f699ec8b45b762e80de7951"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:48.073Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:48.073Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec8075f5b523f607e48"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "movie_id": {
+    "$oid": "5f699ec8b45b762e80de795d"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:48.623Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:48.623Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec9075f5b523f607e61"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401d"
+  },
+  "movie_id": {
+    "$oid": "5f699ec9b45b762e80de7969"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:49.084Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:49.084Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec9075f5b523f607e63"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec9b45b762e80de7969"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:49.090Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:49.090Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec9075f5b523f607e65"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec9b45b762e80de7969"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:49.092Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:49.092Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec9075f5b523f607e67"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "movie_id": {
+    "$oid": "5f699ec9b45b762e80de7969"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:49.094Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:49.094Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec9075f5b523f607e80"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ec9b45b762e80de7975"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:49.582Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:49.582Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699ec9075f5b523f607e82"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "movie_id": {
+    "$oid": "5f699ec9b45b762e80de7975"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:49.584Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:49.584Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eca075f5b523f607e9a"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac4020"
+  },
+  "movie_id": {
+    "$oid": "5f699ecab45b762e80de7980"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:50.038Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:50.038Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eca075f5b523f607eb1"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ecab45b762e80de798b"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:50.494Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:50.494Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eca075f5b523f607eca"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac401f"
+  },
+  "movie_id": {
+    "$oid": "5f699ecab45b762e80de7997"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:50.956Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:50.956Z"
+  }
+},{
+  "_id": {
+    "$oid": "5f699eca075f5b523f607ecc"
+  },
+  "category_id": {
+    "$oid": "5f684eaee5f57c315cac402b"
+  },
+  "movie_id": {
+    "$oid": "5f699ecab45b762e80de7997"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2020-09-22T06:50:50.960Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-22T06:50:50.960Z"
+  }
 }]

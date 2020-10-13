@@ -41,7 +41,7 @@
     }
   ],
   "title": "1 Angry Black Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=FCDExdcfVqg",
   "poster_url": "https://image.tmdb.org/t/p/w342/kSurPlagwTPcMkIXYlB6yjyptk1.jpg",
   "overview": "Mike Anderson is a senior at the quintessential New-England liberal arts school, Frost College. And Mike is eight weeks away from graduation. On this particular day he has his African-American Literature class with his favorite professor. But today, Mike is feeling sadness. He's feeling isolated. He's feeling Angry.",
   "released_date": {
@@ -53,10 +53,13 @@
     "$date": "2020-09-21T06:57:08.262Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.158Z"
+    "$date": "2020-10-09T07:06:54.708Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.654320987654321,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec4e5f57c315cac403a"
@@ -77,10 +80,13 @@
     "$date": "2020-09-21T06:57:08.444Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.173Z"
+    "$date": "2020-10-09T07:06:54.786Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0246913580246915,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec4e5f57c315cac403f"
@@ -115,10 +121,13 @@
     "$date": "2020-09-21T06:57:08.585Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.180Z"
+    "$date": "2020-10-09T07:06:54.824Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.271604938271605,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec4e5f57c315cac4041"
@@ -135,7 +144,7 @@
     }
   ],
   "title": "Blind Man Goes to War",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=ePR8RY8EwWE",
   "poster_url": "https://image.tmdb.org/t/p/w342/oKjGYKNuU5foev2xcN9YQAa9AbD.jpg",
   "overview": "A blind man goes to war.",
   "released_date": {
@@ -147,10 +156,13 @@
     "$date": "2020-09-21T06:57:08.714Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.188Z"
+    "$date": "2020-10-09T07:06:54.856Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.1728395061728394,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec4e5f57c315cac404d"
@@ -194,7 +206,7 @@
     }
   ],
   "title": "The Man Standing Next",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=7764OsNo2O4",
   "poster_url": "https://image.tmdb.org/t/p/w342/rXvGB9uDdpg1vq1UKLgfdBR6KQe.jpg",
   "overview": "In the 1970s, Korea is under the absolute control of the President Park who controls the KCIA, the organization with an edge over any branch of government. The director of KCIA, KIM Gyu-pyeong, is the seemingly most prospective second-in-command. In the midst of reign of fear, a former KCIA director, PARK Yong-gak who knows all about the government’s obscure operations, exiles to the U.S. where the investigation of ‘Koreagate’ is underway. As the tension escalates, the stifling political maneuvering by the all second-in-command’s unfolds.",
   "released_date": {
@@ -206,10 +218,13 @@
     "$date": "2020-09-21T06:57:08.895Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.194Z"
+    "$date": "2020-10-09T07:06:54.894Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.074074074074074,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec5e5f57c315cac4053"
@@ -247,10 +262,13 @@
     "$date": "2020-09-21T06:57:09.054Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.204Z"
+    "$date": "2020-10-09T07:06:54.930Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0123456790123457,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec5e5f57c315cac405f"
@@ -306,10 +324,13 @@
     "$date": "2020-09-21T06:57:09.228Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.212Z"
+    "$date": "2020-10-09T07:06:54.959Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.962962962962963,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec5e5f57c315cac4062"
@@ -338,10 +359,13 @@
     "$date": "2020-09-21T06:57:09.359Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.218Z"
+    "$date": "2020-10-09T07:06:54.993Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.6790123456790123,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec5e5f57c315cac4064"
@@ -373,10 +397,13 @@
     "$date": "2020-09-21T06:57:09.487Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.226Z"
+    "$date": "2020-10-09T07:06:55.025Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.8641975308641974,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec5e5f57c315cac4066"
@@ -401,10 +428,13 @@
     "$date": "2020-09-21T06:57:09.626Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.233Z"
+    "$date": "2020-10-09T07:06:55.061Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.753086419753086,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec5e5f57c315cac4067"
@@ -436,10 +466,13 @@
     "$date": "2020-09-21T06:57:09.742Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.241Z"
+    "$date": "2020-10-09T07:06:55.101Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.8395061728395063,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec5e5f57c315cac406b"
@@ -459,7 +492,7 @@
     }
   ],
   "title": "Dennis: The Man Who Legalized Cannabis",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=2-NOybN63-Q",
   "poster_url": "https://image.tmdb.org/t/p/w342/pNbyje1vj4EANO8XEIS3Xt8M4Vs.jpg",
   "overview": "He’s known as the “father of medical marijuana.” He was an early advocate of its health benefits for HIV/AIDS patients and, with his partner John Entwistle Jr., started the first Cannabis Buyer's Club to distribute cannabis to AIDS patients and others in medical need.  Together with Bay Area filmmakers, Bone & Gold, we’ve created “Dennis: The Man Who Legalized Cannabis” to tell the story of veteran, LGBTQ+ and cannabis activist, Dennis Peron, who despite repeated arrests and intimidation from authorities, successfully co-authored and passed proposition 215 in 1996, making California the first state to legalize cannabis for medical use.",
   "released_date": {
@@ -471,10 +504,13 @@
     "$date": "2020-09-21T06:57:09.879Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.247Z"
+    "$date": "2020-10-09T07:06:55.150Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.6666666666666665,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec6e5f57c315cac406f"
@@ -494,7 +530,7 @@
     }
   ],
   "title": "The Man Who Tried to Feed the World",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=4tXIG5rsGNM",
   "poster_url": "https://image.tmdb.org/t/p/w342/aUUTARgwsF0GOubqMcY2D2bbEhi.jpg",
   "overview": "The Man Who Tried to Feed the World recounts the story of Norman Borlaug, a man who not only solved India's famine problem but would go on to lead a \"Green Revolution\" of worldwide agriculture programs estimated to have saved one billion lives. He was awarded the 1970 Nobel Peace Prize for his work but spent the rest of his life watching his methods and achievements come under increasing fire.",
   "released_date": {
@@ -506,10 +542,13 @@
     "$date": "2020-09-21T06:57:10.020Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.254Z"
+    "$date": "2020-10-09T07:06:55.181Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0987654320987654,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec6e5f57c315cac4073"
@@ -541,10 +580,13 @@
     "$date": "2020-09-21T06:57:10.161Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.262Z"
+    "$date": "2020-10-09T07:06:55.232Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec6e5f57c315cac407f"
@@ -588,7 +630,7 @@
     }
   ],
   "title": "Man Up!",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=mMHejG4lPHs",
   "poster_url": "https://image.tmdb.org/t/p/w342/t37i63GN6ja3piv3BhOrbEFZmfy.jpg",
   "overview": "Tom, 16, is a sensitive teenager who is about to enter a new high school after being expelled. He intends to find his place, make friends and seduce the girl he loves. Tom needs the support of his older brother, Leo, a true mentor, who is working to make him a “cool kid”. However, Leo's fraternal benevolence hides a destructive temperament... Will Tom be able to grow up finding his own path?",
   "released_date": {
@@ -600,10 +642,13 @@
     "$date": "2020-09-21T06:57:10.359Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.271Z"
+    "$date": "2020-10-09T07:06:55.279Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.740740740740741,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec6e5f57c315cac408b"
@@ -659,10 +704,13 @@
     "$date": "2020-09-21T06:57:10.550Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.281Z"
+    "$date": "2020-10-09T07:06:55.314Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.814814814814815,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec6e5f57c315cac4093"
@@ -706,10 +754,13 @@
     "$date": "2020-09-21T06:57:10.727Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.289Z"
+    "$date": "2020-10-09T07:06:55.345Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.876543209876543,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec6e5f57c315cac409f"
@@ -753,7 +804,7 @@
     }
   ],
   "title": "They Reach",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=NMMLm-vMHK4",
   "poster_url": "https://image.tmdb.org/t/p/w342/dh267vFiMLU5TZJABILs9rapLtn.jpg",
   "overview": "In 1979, a young girl stumbles upon a possessed tape player. She unknowingly unleashes a demonic entity that haunts her family while slowly dragging the small town of Clarkston to Hell.",
   "released_date": {
@@ -765,10 +816,13 @@
     "$date": "2020-09-21T06:57:10.916Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.297Z"
+    "$date": "2020-10-12T02:46:47.018Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec7e5f57c315cac40ab"
@@ -812,7 +866,7 @@
     }
   ],
   "title": "Man on the Roof",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=3EUhmAVn-po",
   "poster_url": "https://image.tmdb.org/t/p/w342/rINQDnAqcnfnaHPSIMeOGZVl1Zm.jpg",
   "overview": "A police officer is murdered with a bayonet while staying in hospital. The investigative team, lead by Martin Beck, soon discover that the man had frequently abused suspects as well as civilians but that any complaints had been ignored owing to the misguided loyalty of his colleagues. The volatile mind of the killer means that Beck has to resolve the case quickly before more people are hurt.",
   "released_date": {
@@ -824,10 +878,13 @@
     "$date": "2020-09-21T06:57:11.115Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.306Z"
+    "$date": "2020-10-10T16:21:02.257Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.9135802469135803,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ec7e5f57c315cac40ad"
@@ -852,10 +909,13 @@
     "$date": "2020-09-21T06:57:11.257Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.312Z"
+    "$date": "2020-10-09T07:06:55.449Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.234567901234568,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ed8e5f57c315cac40b0"
@@ -884,10 +944,13 @@
     "$date": "2020-09-21T06:57:28.729Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.318Z"
+    "$date": "2020-10-09T07:06:55.476Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.876543209876543,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ed8e5f57c315cac40bb"
@@ -931,7 +994,7 @@
     }
   ],
   "title": "Attraction Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=vBI51us85Fg",
   "poster_url": "https://image.tmdb.org/t/p/w342/zDizlVQm7irEcRhHSAFTs6a5Pq7.jpg",
   "overview": "A down and out guy has a rare change of fate when a meteorite hits a magnetite rock giving him magnetic powers.",
   "released_date": {
@@ -943,10 +1006,13 @@
     "$date": "2020-09-21T06:57:28.939Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.326Z"
+    "$date": "2020-10-09T07:06:55.510Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.308641975308642,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ed9e5f57c315cac40c1"
@@ -984,10 +1050,13 @@
     "$date": "2020-09-21T06:57:29.095Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.331Z"
+    "$date": "2020-10-09T07:06:55.543Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.814814814814815,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ed9e5f57c315cac40cd"
@@ -1043,10 +1112,13 @@
     "$date": "2020-09-21T06:57:29.297Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.338Z"
+    "$date": "2020-10-09T07:06:55.573Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.432098765432099,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ed9e5f57c315cac40d9"
@@ -1090,7 +1162,7 @@
     }
   ],
   "title": "Macho Man 2",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=oB3aBs1Xcls",
   "poster_url": "https://image.tmdb.org/t/p/w342/nKH68XV1TffxCN7eEcqKN4qcIMG.jpg",
   "overview": "Sequel to \"Macho Man\" (1985).",
   "released_date": {
@@ -1102,10 +1174,13 @@
     "$date": "2020-09-21T06:57:29.489Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.347Z"
+    "$date": "2020-10-09T07:06:55.592Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.9135802469135803,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ed9e5f57c315cac40db"
@@ -1130,10 +1205,13 @@
     "$date": "2020-09-21T06:57:29.613Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.354Z"
+    "$date": "2020-10-09T07:06:55.611Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0617283950617282,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ed9e5f57c315cac40e2"
@@ -1174,10 +1252,13 @@
     "$date": "2020-09-21T06:57:29.794Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.361Z"
+    "$date": "2020-10-09T07:06:55.636Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0864197530864197,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ed9e5f57c315cac40e5"
@@ -1206,10 +1287,13 @@
     "$date": "2020-09-21T06:57:29.924Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.367Z"
+    "$date": "2020-10-09T07:06:55.664Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.962962962962963,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edae5f57c315cac40e6"
@@ -1230,10 +1314,13 @@
     "$date": "2020-09-21T06:57:30.050Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.376Z"
+    "$date": "2020-10-09T07:06:55.690Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.037037037037037,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edae5f57c315cac40ea"
@@ -1268,10 +1355,13 @@
     "$date": "2020-09-21T06:57:30.191Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.385Z"
+    "$date": "2020-10-10T16:21:08.841Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.1728395061728394,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edae5f57c315cac40ef"
@@ -1294,7 +1384,7 @@
     }
   ],
   "title": "Art Paul of Playboy: The Man Behind the Bunny",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=WTTJX3F09ac",
   "poster_url": "https://image.tmdb.org/t/p/w342/maWc78LK4rqMGJkyG4YYwRp2ulf.jpg",
   "overview": "ART PAUL OF PLAYBOY: The Man Behind the Bunny, a documentary film on the innovation and impact of Art Paul, the creator of the iconic bunny logo, founding art director of Playboy, and the magazine's visual guru for its first 30 years. Paul is also an extraordinary artist, creating thousands of drawings and paintings of his own. The film combines interviews with historical footage and artworks--works that were art directed by Paul and/or created by him, to bring to life a legendary figure of our time. The film is a production of MoraQuest Media, a company based in Chicago.",
   "released_date": {
@@ -1306,10 +1396,13 @@
     "$date": "2020-09-21T06:57:30.335Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.392Z"
+    "$date": "2020-10-09T07:06:55.749Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0246913580246915,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edae5f57c315cac40fb"
@@ -1365,10 +1458,13 @@
     "$date": "2020-09-21T06:57:30.517Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.398Z"
+    "$date": "2020-10-09T07:06:55.770Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.9753086419753085,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edae5f57c315cac4105"
@@ -1418,10 +1514,13 @@
     "$date": "2020-09-21T06:57:30.679Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.405Z"
+    "$date": "2020-10-09T07:06:55.789Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0617283950617282,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edae5f57c315cac4107"
@@ -1434,7 +1533,7 @@
     }
   ],
   "title": "Burning Man: Art on Fire",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=430111526",
   "poster_url": "https://image.tmdb.org/t/p/w342/cJ8l6SVVb1GAU6hvLKx4maAOZmB.jpg",
   "overview": "An inspirational insight into the spectacular art at the center of this annual celebration, BURNING MAN: ART ON FIRE follows the unpredictable journey of the artists who defy reason to bring their massive installations and sculptures to the punishing Nevada desert. Filmed just after Burning Man’s legendary founder suddenly died, the community of artists is challenged by impossible timing and blinding dust storms. This richly cinematic, multi-character narrative unfolds over months as they imagine, build and ultimately burn the extraordinary main structures in this temporary city of dreams…a poignant and uplifting feel-good movie!",
   "released_date": {
@@ -1446,10 +1545,13 @@
     "$date": "2020-09-21T06:57:30.811Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.411Z"
+    "$date": "2020-10-09T07:06:55.823Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0123456790123457,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edae5f57c315cac410a"
@@ -1478,10 +1580,13 @@
     "$date": "2020-09-21T06:57:30.942Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.416Z"
+    "$date": "2020-10-09T07:06:55.842Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.2839506172839505,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edbe5f57c315cac410e"
@@ -1507,7 +1612,7 @@
     }
   ],
   "title": "The Man In The Mask",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=yAEQafvL6nQ",
   "poster_url": null,
   "overview": "A young man wakes up in the middle of the night to a strange noise. When he starts to explore the house, he is unknowingly stalked by a creepy figure wearing a white mask, who stalks the boy throughout the short, and seems to have some sort of paranormal ability.",
   "released_date": {
@@ -1519,10 +1624,13 @@
     "$date": "2020-09-21T06:57:31.089Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.423Z"
+    "$date": "2020-10-09T07:06:55.861Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0864197530864197,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edbe5f57c315cac411a"
@@ -1566,7 +1674,7 @@
     }
   ],
   "title": "Ip Man 4: The Finale",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=oCBGTCNJW2g",
   "poster_url": "https://image.tmdb.org/t/p/w342/swmjF0CQc59K3jdUFzOirXESeGN.jpg",
   "overview": "Following the death of his wife, Ip Man travels to San Francisco to ease tensions between the local kung fu masters and his star student, Bruce Lee, while searching for a better future for his son.",
   "released_date": {
@@ -1578,10 +1686,13 @@
     "$date": "2020-09-21T06:57:31.274Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.428Z"
+    "$date": "2020-10-10T17:18:54.971Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.950617283950617,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edbe5f57c315cac411e"
@@ -1619,10 +1730,13 @@
     "$date": "2020-09-21T06:57:31.425Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.434Z"
+    "$date": "2020-10-09T07:06:55.920Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.185185185185185,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edbe5f57c315cac4120"
@@ -1647,10 +1761,13 @@
     "$date": "2020-09-21T06:57:31.559Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.440Z"
+    "$date": "2020-10-09T07:06:55.942Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.9876543209876543,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684edbe5f57c315cac4122"
@@ -1675,10 +1792,13 @@
     "$date": "2020-09-21T06:57:31.677Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.445Z"
+    "$date": "2020-10-09T07:06:55.962Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.111111111111111,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee0e5f57c315cac412b"
@@ -1713,7 +1833,7 @@
     }
   ],
   "title": "Mambo Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=442380808",
   "poster_url": "https://image.tmdb.org/t/p/w342/i8I90j13FT4c26yQUppn5jfGWd7.jpg",
   "overview": "Desperate to support his family and crops, a Cuban farmer and music promoter gambles everything on a deal that appears too good to be true.",
   "released_date": {
@@ -1725,10 +1845,13 @@
     "$date": "2020-09-21T06:57:36.407Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.450Z"
+    "$date": "2020-10-09T07:06:55.981Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.197530864197531,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee0e5f57c315cac4137"
@@ -1784,10 +1907,13 @@
     "$date": "2020-09-21T06:57:36.591Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.458Z"
+    "$date": "2020-10-09T07:06:56.004Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.4444444444444446,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee0e5f57c315cac413f"
@@ -1834,10 +1960,13 @@
     "$date": "2020-09-21T06:57:36.779Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.464Z"
+    "$date": "2020-10-09T07:06:56.028Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.1728395061728394,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee0e5f57c315cac4147"
@@ -1884,10 +2013,13 @@
     "$date": "2020-09-21T06:57:36.934Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.475Z"
+    "$date": "2020-10-09T07:06:56.056Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.123456790123457,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee1e5f57c315cac4152"
@@ -1931,7 +2063,7 @@
     }
   ],
   "title": "Ashiap Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=40BEiMgXwLs",
   "poster_url": "https://image.tmdb.org/t/p/w342/cZ6qOvx3xvbyQtCqIVFi4F9fWp2.jpg",
   "overview": "Plot unknown.",
   "released_date": {
@@ -1943,10 +2075,13 @@
     "$date": "2020-09-21T06:57:37.117Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.484Z"
+    "$date": "2020-10-09T07:06:56.075Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.2098765432098766,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee1e5f57c315cac415d"
@@ -1986,7 +2121,7 @@
   ],
   "directors": [],
   "title": "Man In The Arena",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=ZodODEcAHFY",
   "poster_url": "https://image.tmdb.org/t/p/w342/bE0H6rkj2Py3TaNqqGmqycArts5.jpg",
   "overview": "Man in the Arena is a feature-length documentary film exploring the life and accomplishments of media icon and political strategist Roger Ailes. Long before founding FOX News, Roger Ailes was an Emmy Award winning producer, director, documentarian, sought-after corporate consultant, and top political strategist.  Many know of Ailes and his association with FOX, but few know how he got there, his work electing three presidents, or his pioneering mastery of television production and broadcasting.",
   "released_date": {
@@ -1998,10 +2133,13 @@
     "$date": "2020-09-21T06:57:37.289Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.491Z"
+    "$date": "2020-10-09T07:06:56.092Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.8395061728395063,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee1e5f57c315cac4160"
@@ -2029,10 +2167,13 @@
     "$date": "2020-09-21T06:57:37.415Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.499Z"
+    "$date": "2020-10-09T07:06:56.113Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.9382716049382718,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee1e5f57c315cac416b"
@@ -2085,10 +2226,13 @@
     "$date": "2020-09-21T06:57:37.580Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.508Z"
+    "$date": "2020-10-09T07:06:56.140Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.925925925925926,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee1e5f57c315cac4173"
@@ -2120,7 +2264,7 @@
     }
   ],
   "title": "A Good Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=pYcobufHJAA",
   "poster_url": "https://image.tmdb.org/t/p/w342/hJliDia9p4kLo58FfXus9yUZqjP.jpg",
   "overview": "Benjamin and Aude have loved each other for 7 years. They live together on a small island in Brittany. Benjamin dreams of starting a family but the couple learns that Aude is sterile. So Benjamin has an idea. He is the one who will bear their child because before being Benjamin, his name was Sarah.",
   "released_date": {
@@ -2132,10 +2276,13 @@
     "$date": "2020-09-21T06:57:37.729Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.514Z"
+    "$date": "2020-10-09T07:06:56.163Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.2222222222222223,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee1e5f57c315cac417d"
@@ -2176,7 +2323,7 @@
     }
   ],
   "title": "Spider-Man 2: Another World",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=5QVO93LFDHY",
   "poster_url": "https://image.tmdb.org/t/p/w342/ytgKsLtMFyN6F1Rb7YPaTsdthSJ.jpg",
   "overview": "The goal isn't to live forever, its to create something that will. Leaping off of the events of Lost Cause, an experienced Spider-Man must grapple with the guilt of sectioning his old friend Eddie Brock and dealing with the aftermath of an unchained Oscorp. When Peter encounters Madam Webb, an ethereal being capable of warping time, Spider-Man must once again leap into action to save his world from crashing down under a new, symbiotic threat.",
   "released_date": {
@@ -2188,10 +2335,13 @@
     "$date": "2020-09-21T06:57:37.891Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.522Z"
+    "$date": "2020-10-09T07:06:56.215Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.753086419753086,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee2e5f57c315cac4188"
@@ -2231,7 +2381,7 @@
   ],
   "directors": [],
   "title": "The Man from Kathmandu",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=Wd1AYY3Heho",
   "poster_url": "https://image.tmdb.org/t/p/w342/9mKnk1Lgt9clLfdUAWL9tHzliSD.jpg",
   "overview": "A disaffected American-Nepali half Hindu-Muslim boy detours to Kathmandu on his way to join the on going war in Syria, but his battle against a local don who kills his grandfather teaches him to follow a far more greater purpose in life, and in the process he reconnects with his roots, culture and traditions of the Himalayan nation, which he had forgotten.",
   "released_date": {
@@ -2243,10 +2393,13 @@
     "$date": "2020-09-21T06:57:38.061Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.529Z"
+    "$date": "2020-10-09T07:06:56.244Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.950617283950617,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee2e5f57c315cac418a"
@@ -2271,10 +2424,13 @@
     "$date": "2020-09-21T06:57:38.189Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.535Z"
+    "$date": "2020-10-09T07:06:56.264Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.950617283950617,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee2e5f57c315cac418c"
@@ -2299,10 +2455,13 @@
     "$date": "2020-09-21T06:57:38.319Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.543Z"
+    "$date": "2020-10-09T07:06:56.285Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.740740740740741,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee2e5f57c315cac4196"
@@ -2352,10 +2511,13 @@
     "$date": "2020-09-21T06:57:38.490Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.551Z"
+    "$date": "2020-10-09T07:06:56.310Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.7777777777777777,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee2e5f57c315cac4199"
@@ -2384,10 +2546,13 @@
     "$date": "2020-09-21T06:57:38.654Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.561Z"
+    "$date": "2020-10-09T07:06:56.337Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.8641975308641974,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee2e5f57c315cac41a4"
@@ -2427,7 +2592,7 @@
   ],
   "directors": [],
   "title": "National Theatre Live: One Man, Two Guvnors",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=8MM6hSr9eFo",
   "poster_url": "https://image.tmdb.org/t/p/w342/YN1k9f6Lll01Blccmbkau0b8oO.jpg",
   "overview": "Fired from his skiffle band, Francis Henshall becomes minder to Roscoe Crabbe, a small time East End hood, now in Brighton to collect £6,000 from his fiancée’s dad. But Roscoe is really his sister Rachel posing as her own dead brother, who’s been killed by her boyfriend Stanley Stubbers.  Holed up at The Cricketers’ Arms, the permanently ravenous Francis spots the chance of an extra meal ticket and takes a second job with one Stanley Stubbers, who is hiding from the police and waiting to be re-united with Rachel. To prevent discovery, Francis must keep his two guvnors apart.  Simple.",
   "released_date": {
@@ -2439,10 +2604,13 @@
     "$date": "2020-09-21T06:57:38.827Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.569Z"
+    "$date": "2020-10-09T07:06:56.359Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.8641975308641974,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee2e5f57c315cac41a6"
@@ -2455,7 +2623,7 @@
     }
   ],
   "title": "MAN",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=weOF9_FGjOk",
   "poster_url": "https://image.tmdb.org/t/p/w342/ubnHgigHV7cC8yepVvzqYX7Yk0t.jpg",
   "overview": "A story about several hours, which significantly change the adolescent boy's life. In a small town in Latvia, there is an old Ferris wheel near a bar, in which the protagonist meets a female truck driver, and soon the wheel of fate of the adolescent boy is set in motion.",
   "released_date": {
@@ -2467,10 +2635,13 @@
     "$date": "2020-09-21T06:57:38.956Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.578Z"
+    "$date": "2020-10-09T07:06:56.385Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.1481481481481484,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee3e5f57c315cac41ae"
@@ -2514,10 +2685,13 @@
     "$date": "2020-09-21T06:57:39.120Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.585Z"
+    "$date": "2020-10-09T07:06:56.417Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.1604938271604937,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee3e5f57c315cac41b1"
@@ -2549,10 +2723,13 @@
     "$date": "2020-09-21T06:57:39.257Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.592Z"
+    "$date": "2020-10-09T07:06:56.448Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.111111111111111,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee3e5f57c315cac41bc"
@@ -2605,10 +2782,13 @@
     "$date": "2020-09-21T06:57:39.435Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.598Z"
+    "$date": "2020-10-09T07:06:56.481Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.888888888888889,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee7e5f57c315cac41c8"
@@ -2652,7 +2832,7 @@
     }
   ],
   "title": "Superman: Man of Tomorrow",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=weOF9_FGjOk",
   "poster_url": "https://image.tmdb.org/t/p/w342/6Bbq8qQWpoApLZYWFFAuZ1r2gFw.jpg",
   "overview": "It’s the dawn of a new age of heroes, and Metropolis has just met its first. But as Daily Planet intern Clark Kent – working alongside reporter Lois Lane – secretly wields his alien powers of flight, super-strength and x-ray vision in the battle for good, there’s even greater trouble on the horizon.",
   "released_date": {
@@ -2664,10 +2844,13 @@
     "$date": "2020-09-21T06:57:43.561Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.602Z"
+    "$date": "2020-10-09T07:06:56.513Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.8395061728395063,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee7e5f57c315cac41d4"
@@ -2711,7 +2894,7 @@
     }
   ],
   "title": "Gemini Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=AbyJignbSj0",
   "poster_url": "https://image.tmdb.org/t/p/w342/uTALxjQU8e1lhmNjP9nnJ3t2pRU.jpg",
   "overview": "Henry Brogan is an elite 51-year-old assassin who's ready to call it quits after completing his 72nd job. His plans get turned upside down when he becomes the target of a mysterious operative who can seemingly predict his every move. To his horror, Brogan soon learns that the man who's trying to kill him is a younger, faster, cloned version of himself.",
   "released_date": {
@@ -2723,10 +2906,13 @@
     "$date": "2020-09-21T06:57:43.798Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.609Z"
+    "$date": "2020-10-09T07:06:56.541Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.765432098765432,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee8e5f57c315cac41e0"
@@ -2770,7 +2956,7 @@
     }
   ],
   "title": "The Invisible Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=dSBsNeYqh-k",
   "poster_url": "https://image.tmdb.org/t/p/w342/5EufsDwXdY2CVttYOk2WtYhgKpa.jpg",
   "overview": "When Cecilia's abusive ex takes his own life and leaves her his fortune, she suspects his death was a hoax. As a series of coincidences turn lethal, Cecilia works to prove that she is being hunted by someone nobody can see.",
   "released_date": {
@@ -2782,10 +2968,13 @@
     "$date": "2020-09-21T06:57:44.028Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.615Z"
+    "$date": "2020-10-09T07:06:56.563Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.888888888888889,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee8e5f57c315cac41ec"
@@ -2829,7 +3018,7 @@
     }
   ],
   "title": "Inside Man: Most Wanted",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=tlg4BQqhn3I",
   "poster_url": "https://image.tmdb.org/t/p/w342/kxvxcgRHwV7T3PR4jNFDdQTLPm.jpg",
   "overview": "An NYPD hostage negotiator teams up with a federal agent to rescue dozens of tourists held hostage during a 10-hour seige at the U.S. Federal Reserve.",
   "released_date": {
@@ -2841,10 +3030,13 @@
     "$date": "2020-09-21T06:57:44.233Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.623Z"
+    "$date": "2020-10-09T07:06:56.586Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.049382716049383,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee8e5f57c315cac41f3"
@@ -2888,10 +3080,13 @@
     "$date": "2020-09-21T06:57:44.390Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.631Z"
+    "$date": "2020-10-09T07:06:56.610Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.962962962962963,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee8e5f57c315cac41ff"
@@ -2935,7 +3130,7 @@
     }
   ],
   "title": "Feels Good Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=t9l7km6A9EQ",
   "poster_url": "https://image.tmdb.org/t/p/w342/osN5whpwiXN5j7umqemCKoCiXKi.jpg",
   "overview": "When indie comic character Pepe the Frog becomes an unwitting icon of hate, his creator, artist Matt Furie, fights to bring Pepe back from the darkness and navigate America's cultural divide.",
   "released_date": {
@@ -2947,10 +3142,13 @@
     "$date": "2020-09-21T06:57:44.574Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.642Z"
+    "$date": "2020-10-09T07:06:56.637Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.049382716049383,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee8e5f57c315cac4207"
@@ -2982,7 +3180,7 @@
     }
   ],
   "title": "Odd Man Rush",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=Phw6-EnhhHk",
   "poster_url": "https://image.tmdb.org/t/p/w342/auEc1RpGzziZ87JifaNEoPQ9Gki.jpg",
   "overview": "When Harvard hockey’s Bobby Sanders lands in Sweden’s minor leagues, his relationship with the girl at the local market forces him to confront the reality of his childhood NHL dream before the hockey gods intervene.",
   "released_date": {
@@ -2994,10 +3192,13 @@
     "$date": "2020-09-21T06:57:44.740Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.647Z"
+    "$date": "2020-10-09T07:06:56.666Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.9753086419753085,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee8e5f57c315cac4210"
@@ -3032,7 +3233,7 @@
     }
   ],
   "title": "Stick Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=K7SLexWe6ko",
   "poster_url": "https://image.tmdb.org/t/p/w342/hChFSATMxo9cDpDGl5iit5dx7yy.jpg",
   "overview": "Stick Man lives in the family tree with his Stick Lady Love and their stick children three, and he's heading on an epic adventure across the seasons. Will he get back to his family in time for Christmas?",
   "released_date": {
@@ -3044,10 +3245,13 @@
     "$date": "2020-09-21T06:57:44.899Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.654Z"
+    "$date": "2020-10-09T07:06:56.692Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0123456790123457,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee9e5f57c315cac421c"
@@ -3091,7 +3295,7 @@
     }
   ],
   "title": "The Faceless Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=qSL7rw7LsrE",
   "poster_url": "https://image.tmdb.org/t/p/w342/LmJ1ishq3UJvc174Y1hzrR9pBT.jpg",
   "overview": "Emily is a recovering cancer survivor of three years. Faced with her fear of getting sick again, her best friend Nina plans a weekend away. Six friends venture out to a country holiday house to party over a weekend. Cut off from the rest of the world they soon learn the inhabitants are unsettling red neck individuals who terrorize and humiliate travelers. At the same time a para-normal monster seen as the faceless man haunts the house pushing the friends to their limits.",
   "released_date": {
@@ -3103,10 +3307,13 @@
     "$date": "2020-09-21T06:57:45.084Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.661Z"
+    "$date": "2020-10-09T07:06:56.714Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.925925925925926,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee9e5f57c315cac4223"
@@ -3135,7 +3342,7 @@
     }
   ],
   "title": "Message Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=3FxPi1Suy_c",
   "poster_url": "https://image.tmdb.org/t/p/w342/ysYgmy2ZqhVNXRw7gCahMhe1bMG.jpg",
   "overview": "A retired assassins past catches up with him and his brutality surfaces as he goes on a final killing spree to make things right.",
   "released_date": {
@@ -3147,10 +3354,13 @@
     "$date": "2020-09-21T06:57:45.248Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.667Z"
+    "$date": "2020-10-09T07:06:56.735Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.271604938271605,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee9e5f57c315cac4230"
@@ -3197,7 +3407,7 @@
     }
   ],
   "title": "Blow the Man Down",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=uWM1U_kd0rE",
   "poster_url": "https://image.tmdb.org/t/p/w342/AgxDU9Vp0R6RIV6jpmQ4JrTcZzv.jpg",
   "overview": "While grieving for the loss of their mother, the Connolly sisters suddenly find they have a crime to cover up, leading them deep into the underbelly of their salty Maine fishing village.",
   "released_date": {
@@ -3209,10 +3419,13 @@
     "$date": "2020-09-21T06:57:45.436Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.676Z"
+    "$date": "2020-10-10T17:25:28.012Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.1481481481481484,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee9e5f57c315cac423b"
@@ -3268,10 +3481,13 @@
     "$date": "2020-09-21T06:57:45.618Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.682Z"
+    "$date": "2020-10-09T07:06:56.779Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0617283950617282,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684ee9e5f57c315cac4247"
@@ -3315,7 +3531,7 @@
     }
   ],
   "title": "The Man Who Killed Don Quixote",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=CmscmzjFLdc",
   "poster_url": "https://image.tmdb.org/t/p/w342/4o4zw2c9sfHvszIb5xpuFagnouR.jpg",
   "overview": "Toby, a cynical film director finds himself trapped in the outrageous delusions of an old Spanish shoe-maker who believes himself to be Don Quixote. In the course of their comic and increasingly surreal adventures, Toby is forced to confront the tragic repercussions of a film he made in his idealistic youth.",
   "released_date": {
@@ -3327,10 +3543,13 @@
     "$date": "2020-09-21T06:57:45.798Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.688Z"
+    "$date": "2020-10-09T07:06:56.804Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.8395061728395063,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684eeae5f57c315cac424f"
@@ -3362,7 +3581,7 @@
     }
   ],
   "title": "Working Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=bvh_l8IJIUA",
   "poster_url": "https://image.tmdb.org/t/p/w342/plmz36TvOP34IVWvBuPF7kPFxAn.jpg",
   "overview": "When the last factory in a small Rust Belt town closes its doors, an unlikely hero emerges in dutiful, quiet Allery Parkes. A career employee of the factory, the aging Allery can’t reconcile how to live a life simply sitting at home doing nothing. Against the advice and pleas of his loving wife Iola, he forms an unlikely friendship with his charismatic neighbor Walter Brewer in order to revive the defunct factory.",
   "released_date": {
@@ -3374,10 +3593,13 @@
     "$date": "2020-09-21T06:57:46.109Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.693Z"
+    "$date": "2020-10-09T07:06:56.835Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.1358024691358026,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684eeae5f57c315cac425b"
@@ -3421,7 +3643,7 @@
     }
   ],
   "title": "Monsters of Man",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=Ada9SU8tShA",
   "poster_url": "https://image.tmdb.org/t/p/w342/oEynHPJUAZwexTtaFv2quxE22Vd.jpg",
   "overview": "A robotics company vying to win a lucrative military contract team up with a corrupt CIA agent to conduct an illegal live field test. They deploy four weaponized prototype robots into a suspected drug manufacturing camp in the Golden Triangle, assuming they'd be killing drug runners that no one would miss. Six doctors on a humanitarian mission witness the brutal slaughter and become prime targets.",
   "released_date": {
@@ -3433,10 +3655,13 @@
     "$date": "2020-09-21T06:57:46.297Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.698Z"
+    "$date": "2020-10-09T07:06:56.867Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.3333333333333335,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684eeae5f57c315cac4267"
@@ -3492,10 +3717,13 @@
     "$date": "2020-09-21T06:57:46.489Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.703Z"
+    "$date": "2020-10-09T07:06:56.898Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.9135802469135803,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684eeae5f57c315cac4273"
@@ -3539,7 +3767,7 @@
     }
   ],
   "title": "The Sandman",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=zn8WDXY6hRM",
   "poster_url": "https://image.tmdb.org/t/p/w342/2UZtGDRZzXyGYrvJ1kCvA4hMHul.jpg",
   "overview": "The Sandman tells the tale of Morpheus – a.k.a. Dream of the Endless – an impossibly old being who is also the living personification of dreams. He lives in a realm called, appropriately enough, The Dreaming, where he tends to the REM state of being all over the universe; of course, this means he spends a lot of time near Earth, courting gods, inspiring fools to become authors, and occasionally arousing waking terrors. As the series begins, in 1916, an exhausted Morpheus is captured by an immortality-seeking magus. He eventually escapes in 1989 and sets out to put his broken kingdom back in order.",
   "released_date": {
@@ -3551,10 +3779,13 @@
     "$date": "2020-09-21T06:57:46.679Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.709Z"
+    "$date": "2020-10-09T07:06:56.933Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.197530864197531,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684eeae5f57c315cac4275"
@@ -3579,10 +3810,13 @@
     "$date": "2020-09-21T06:57:46.800Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.714Z"
+    "$date": "2020-10-09T07:06:56.959Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.037037037037037,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684eeae5f57c315cac4278"
@@ -3611,10 +3845,13 @@
     "$date": "2020-09-21T06:57:46.924Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.719Z"
+    "$date": "2020-10-09T07:06:56.981Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.0864197530864197,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684eebe5f57c315cac4284"
@@ -3670,10 +3907,13 @@
     "$date": "2020-09-21T06:57:47.102Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.725Z"
+    "$date": "2020-10-09T07:06:57.011Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.925925925925926,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684f38e5f57c315cac4291"
@@ -3720,7 +3960,7 @@
     }
   ],
   "title": "Captain Marvel",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=Z1BCujX3pw8",
   "poster_url": "https://image.tmdb.org/t/p/w342/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg",
   "overview": "The story follows Carol Danvers as she becomes one of the universe’s most powerful heroes when Earth is caught in the middle of a galactic war between two alien races. Set in the 1990s, Captain Marvel is an all-new adventure from a previously unseen period in the history of the Marvel Cinematic Universe.",
   "released_date": {
@@ -3732,10 +3972,13 @@
     "$date": "2020-09-21T06:59:04.870Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.730Z"
+    "$date": "2020-10-09T07:06:57.027Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.074074074074074,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684f38e5f57c315cac4292"
@@ -3756,10 +3999,13 @@
     "$date": "2020-09-21T06:59:04.996Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.735Z"
+    "$date": "2020-10-09T07:06:57.044Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.8518518518518516,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684f39e5f57c315cac4294"
@@ -3784,10 +4030,13 @@
     "$date": "2020-09-21T06:59:05.129Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.741Z"
+    "$date": "2020-10-12T02:48:05.448Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 3.1728395061728394,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684f39e5f57c315cac4295"
@@ -3796,7 +4045,7 @@
   "actors": [],
   "directors": [],
   "title": "Thomas & Friends: Marvelous Machinery",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=ZEnvutQ0UI4",
   "poster_url": null,
   "overview": "Ruth, Thomas's new friend will bring great exciting adventures and technology.",
   "released_date": {
@@ -3808,10 +4057,13 @@
     "$date": "2020-09-21T06:59:05.262Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.746Z"
+    "$date": "2020-10-09T07:06:57.076Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.7901234567901234,
+  "total_favorite": 0,
+  "total_rate": 81
 },{
   "_id": {
     "$oid": "5f684f5ae5f57c315cac42a3"
@@ -3861,7 +4113,7 @@
     }
   ],
   "title": "The Endless Trench",
-  "trailer_video_url": null,
+  "trailer_video_url": "https://www.youtube.com/watch?v=3ttcAKAsyPE",
   "poster_url": "https://image.tmdb.org/t/p/w342/rgS3e3sTUHeVgKzKmFhIJcl9tVA.jpg",
   "overview": "A small village in Huelva, Andalusia, Spain, 1936. Higinio and Rosa have been married only for a few months when the Civil War breaks out. Higinio, being afraid of possible reprisals from the rebel faction, decides to use a hole dug in his own house as a temporary hideout.",
   "released_date": {
@@ -3873,8 +4125,3403 @@
     "$date": "2020-09-21T06:59:38.136Z"
   },
   "updatedAt": {
-    "$date": "2020-09-22T05:54:17.751Z"
+    "$date": "2020-10-09T07:06:57.091Z"
   },
   "__v": 0,
-  "age_type": "P"
+  "age_type": "P",
+  "rate_star": 2.962962962962963,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e97b45b762e80de7733"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e97b45b762e80de772e"
+    },
+    {
+      "$oid": "5f699e97b45b762e80de772f"
+    },
+    {
+      "$oid": "5f699e97b45b762e80de7730"
+    },
+    {
+      "$oid": "5f699e97b45b762e80de7731"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e97b45b762e80de7732"
+    }
+  ],
+  "title": "A Perfect Plan",
+  "trailer_video_url": "https://www.youtube.com/watch?v=qyslJduGzRc",
+  "poster_url": "https://image.tmdb.org/t/p/w342/wah4b3hDb3ueVNuwNxdplUE8ppQ.jpg",
+  "overview": "Four notorious thieves wake up in a fortified warehouse and are forced by a cunning master thief to plan and commit an extraordinary diamond heist.",
+  "released_date": {
+    "$date": "2020-09-16T06:49:24.035Z"
+  },
+  "duration": 78,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:49:59.741Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.111Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0246913580246915,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e98b45b762e80de773f"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e98b45b762e80de7734"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7735"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7736"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7737"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7738"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7739"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de773a"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de773b"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de773c"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de773d"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e98b45b762e80de773e"
+    }
+  ],
+  "title": "Offering to the Storm",
+  "trailer_video_url": "https://www.youtube.com/watch?v=btpK02HkGps",
+  "poster_url": "https://image.tmdb.org/t/p/w342/4u9PSC3ZsTp37ND39eZ8SkgJkaf.jpg",
+  "overview": "Inspector Amaia Salazar confronts the origins of her nightmares as she unfolds the darkest secrets of the Baztan valley. Part 3 in the Baztan Trilogy.",
+  "released_date": {
+    "$date": "2020-09-17T06:49:24.035Z"
+  },
+  "duration": 139,
+  "original_language": "es",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:00.282Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.128Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0864197530864197,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e98b45b762e80de774b"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e98b45b762e80de7740"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7741"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7742"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7743"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7744"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7745"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7746"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7747"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7748"
+    },
+    {
+      "$oid": "5f699e98b45b762e80de7749"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e98b45b762e80de774a"
+    }
+  ],
+  "title": "Like a Boss",
+  "trailer_video_url": "https://www.youtube.com/watch?v=9ESkyRFEso4",
+  "poster_url": "https://image.tmdb.org/t/p/w342/yce0CZPWd0GGudksRJi8p4gDj1M.jpg",
+  "overview": "Two female friends with very different ideals decide to start a beauty company together. One is more practical, while the other wants to earn her fortune and live a lavish lifestyle.",
+  "released_date": {
+    "$date": "2020-09-18T06:49:24.035Z"
+  },
+  "duration": 83,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:00.778Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.156Z"
+  },
+  "__v": 0,
+  "rate_star": 3.049382716049383,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e99b45b762e80de7757"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e99b45b762e80de774c"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de774d"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de774e"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de774f"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de7750"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de7751"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de7752"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de7753"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de7754"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de7755"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e99b45b762e80de7756"
+    }
+  ],
+  "title": "Think Like a Dog",
+  "trailer_video_url": "https://www.youtube.com/watch?v=s3_5WZSOsn8",
+  "poster_url": "https://image.tmdb.org/t/p/w342/cDbOrc2RtIA37nLm0CzVpFLrdaG.jpg",
+  "overview": "A 12-year-old tech prodigy whose science experiment goes awry and he forges a telepathic connection with his best friend, his dog. The duo join forces and use their unique perspectives on life to comically overcome complications of family and school.",
+  "released_date": {
+    "$date": "2020-09-19T06:49:24.035Z"
+  },
+  "duration": 91,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:01.276Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.174Z"
+  },
+  "__v": 0,
+  "rate_star": 3.2564102564102564,
+  "total_favorite": 0,
+  "total_rate": 78
+},{
+  "_id": {
+    "$oid": "5f699e99b45b762e80de7762"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e99b45b762e80de7758"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de7759"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de775a"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de775b"
+    },
+    {
+      "$oid": "5f684f38e5f57c315cac428a"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de775c"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de775d"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de775e"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de775f"
+    },
+    {
+      "$oid": "5f699e99b45b762e80de7760"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e99b45b762e80de7761"
+    }
+  ],
+  "title": "A Quiet Place Part II",
+  "trailer_video_url": "https://www.youtube.com/watch?v=XEMwSdne6UE",
+  "poster_url": "https://image.tmdb.org/t/p/w342/4q2hz2m8hubgvijz8Ez0T2Os2Yv.jpg",
+  "overview": "Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize that the creatures that hunt by sound are not the only threats that lurk beyond the sand path.",
+  "released_date": {
+    "$date": "2020-09-20T06:49:24.035Z"
+  },
+  "duration": 97,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:01.884Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.193Z"
+  },
+  "__v": 0,
+  "rate_star": 3.3580246913580245,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9ab45b762e80de776e"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9ab45b762e80de7763"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7764"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7765"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7766"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7767"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7768"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7769"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de776a"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de776b"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de776c"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9ab45b762e80de776d"
+    }
+  ],
+  "title": "A Hidden Life",
+  "trailer_video_url": "https://www.youtube.com/watch?v=qJXmdY4lVR0",
+  "poster_url": "https://image.tmdb.org/t/p/w342/eSpfKXBLMUr8iViLiBFub9OQxfq.jpg",
+  "overview": "Austrian farmer Franz Jägerstätter faces the threat of execution for refusing to fight for the Nazis during World War II.",
+  "released_date": {
+    "$date": "2020-09-21T06:49:24.035Z"
+  },
+  "duration": 174,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:02.488Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.210Z"
+  },
+  "__v": 0,
+  "rate_star": 3.197530864197531,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9bb45b762e80de7778"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9ab45b762e80de776f"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7770"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7771"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7772"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7773"
+    },
+    {
+      "$oid": "5f699e9ab45b762e80de7774"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de7775"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de7776"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9bb45b762e80de7777"
+    }
+  ],
+  "title": "A Score to Settle",
+  "trailer_video_url": "https://www.youtube.com/watch?v=KQXz_wJl-Zw",
+  "poster_url": "https://image.tmdb.org/t/p/w342/4PBwZGBP6ziKuOgHRpbVRyGoqy3.jpg",
+  "overview": "A former mob enforcer who is released from prison after serving 22 years for a crime he didn't commit sets out on a path for revenge against the people who wronged him.",
+  "released_date": {
+    "$date": "2020-09-22T06:49:24.035Z"
+  },
+  "duration": 103,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.032Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.225Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0123456790123457,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9bb45b762e80de7785"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9bb45b762e80de7779"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de777a"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de777b"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de777c"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de777d"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de777e"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de777f"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de7780"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de7781"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de7782"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9bb45b762e80de7783"
+    },
+    {
+      "$oid": "5f699e9bb45b762e80de7784"
+    }
+  ],
+  "title": "Bayala - A Magical Adventure",
+  "trailer_video_url": "https://www.youtube.com/watch?v=KJ4ZnPqqDyY",
+  "poster_url": "https://image.tmdb.org/t/p/w342/niXQcMUbYEzKDMcHeKelAWW5cyT.jpg",
+  "overview": "As the dragons have almost disappeared from the kingdom of Bayala, the magic powers of the fairies are weakening. The fairy princesses Sera and Surah are thrilled when they discover they have the key to save the world in their hands: a dragon egg! Now the sisters must reach the dragon mountains and they embark on an adventurous journey into the unknown...",
+  "released_date": {
+    "$date": "2020-09-23T06:49:24.035Z"
+  },
+  "duration": 85,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:03.580Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.240Z"
+  },
+  "__v": 0,
+  "rate_star": 2.8641975308641974,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9cb45b762e80de7789"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9cb45b762e80de7786"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de7787"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9cb45b762e80de7788"
+    }
+  ],
+  "title": "The Swan Princess: A Royal Wedding",
+  "trailer_video_url": "https://www.youtube.com/watch?v=nsZKCVFztLM",
+  "poster_url": "https://image.tmdb.org/t/p/w342/cf82AT3tzhm3YlTnqivLvCqfX7R.jpg",
+  "overview": "Princess Odette and Prince Derek are going to a wedding at Princess Mei Li and her beloved Chen. But evil forces are at stake and the wedding plans are tarnished and true love has difficult conditions.",
+  "released_date": {
+    "$date": "2020-09-24T06:49:24.035Z"
+  },
+  "duration": 0,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:04.048Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.263Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0617283950617282,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9cb45b762e80de7795"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9cb45b762e80de778a"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de778b"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de778c"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de778d"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de778e"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de778f"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de7790"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de7791"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de7792"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de7793"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9cb45b762e80de7794"
+    }
+  ],
+  "title": "All Day and a Night",
+  "trailer_video_url": "https://www.youtube.com/watch?v=BC9Kk8Np9-Y",
+  "poster_url": "https://image.tmdb.org/t/p/w342/8xiV8j18GhWnnrfMGaDR0E5oOif.jpg",
+  "overview": "While serving life in prison, a young man looks back at the people, the circumstances and the system that set him on the path toward his crime.",
+  "released_date": {
+    "$date": "2020-09-25T06:49:24.035Z"
+  },
+  "duration": 121,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:04.539Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.281Z"
+  },
+  "__v": 0,
+  "rate_star": 3.3580246913580245,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9db45b762e80de77a1"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9cb45b762e80de7796"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de7797"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de7798"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de7799"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de779a"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de779b"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de779c"
+    },
+    {
+      "$oid": "5f699e9cb45b762e80de779d"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de779e"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de779f"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9db45b762e80de77a0"
+    }
+  ],
+  "title": "El Camino: A Breaking Bad Movie",
+  "trailer_video_url": "https://www.youtube.com/watch?v=lZKqMVPlDg8",
+  "poster_url": "https://image.tmdb.org/t/p/w342/ePXuKdXZuJx8hHMNr2yM4jY2L7Z.jpg",
+  "overview": "In the wake of his dramatic escape from captivity, Jesse Pinkman must come to terms with his past in order to forge some kind of future.",
+  "released_date": {
+    "$date": "2020-09-26T06:49:24.035Z"
+  },
+  "duration": 123,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:05.039Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.297Z"
+  },
+  "__v": 0,
+  "rate_star": 2.9135802469135803,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9db45b762e80de77ad"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9db45b762e80de77a2"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77a3"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77a4"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77a5"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77a6"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77a7"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77a8"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77a9"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77aa"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77ab"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9db45b762e80de77ac"
+    }
+  ],
+  "title": "A Vigilante",
+  "trailer_video_url": "https://www.youtube.com/watch?v=wyZ_Gu8rSZE",
+  "poster_url": "https://image.tmdb.org/t/p/w342/53QtZhtuw0aKu14DukYTtVtcrES.jpg",
+  "overview": "A once-abused woman devotes herself to ridding victims of their domestic abusers while hunting down the one she must kill to be truly free.",
+  "released_date": {
+    "$date": "2020-09-27T06:49:24.035Z"
+  },
+  "duration": 92,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:05.546Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.326Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0246913580246915,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9eb45b762e80de77b7"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9db45b762e80de77ae"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77af"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77b0"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77b1"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77b2"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77b3"
+    },
+    {
+      "$oid": "5f699e9db45b762e80de77b4"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9eb45b762e80de77b5"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77b6"
+    }
+  ],
+  "title": "Athlete A",
+  "trailer_video_url": "https://www.youtube.com/watch?v=JzeP0DKSqdQ",
+  "poster_url": "https://image.tmdb.org/t/p/w342/jUVbqKcDgcLSS5s4UV82XUkMKlU.jpg",
+  "overview": "Follow the Indianapolis Star reporters that broke the story about USA Gymnastics doctor Larry Nassar's abuse and hear from gymnasts.",
+  "released_date": {
+    "$date": "2020-09-28T06:49:24.035Z"
+  },
+  "duration": 104,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:06.020Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.349Z"
+  },
+  "__v": 0,
+  "rate_star": 2.580246913580247,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9eb45b762e80de77c1"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9ab45b762e80de776f"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77b8"
+    },
+    {
+      "$oid": "5f684eeae5f57c315cac426c"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77b9"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77ba"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77bb"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77bc"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77bd"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77be"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77bf"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9eb45b762e80de77c0"
+    }
+  ],
+  "title": "The Croods: A New Age",
+  "trailer_video_url": "https://www.youtube.com/watch?v=GkXeVIfbJOw",
+  "poster_url": "https://image.tmdb.org/t/p/w342/8u1JT7w94Mi20pH3UYv2gUnyXSY.jpg",
+  "overview": "The Croods need a new place to live. So, the first prehistoric family sets off into the world in search of a safer place to call home. When they discover an idyllic walled-in paradise that meets all their needs, they think their problems are solved … except for one thing. Another family already lives there: the Bettermans. The Bettermans (emphasis on the “better”)—with their elaborate tree house, amazing inventions and irrigated acres of fresh produce—are a couple of steps above the Croods on the evolutionary ladder. When they take the Croods in as the world’s first houseguests, it isn’t long before tensions escalate between the cave family and the modern family.",
+  "released_date": {
+    "$date": "2020-09-29T06:49:24.035Z"
+  },
+  "duration": 0,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:06.497Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.371Z"
+  },
+  "__v": 0,
+  "rate_star": 3.3333333333333335,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9fb45b762e80de77cc"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9eb45b762e80de77c2"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77c3"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77c4"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77c5"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77c6"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77c7"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77c8"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77c9"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77ca"
+    },
+    {
+      "$oid": "5f699e9eb45b762e80de77cb"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9eb45b762e80de77c7"
+    }
+  ],
+  "title": "A Fall from Grace",
+  "trailer_video_url": "https://www.youtube.com/watch?v=KxLb3aLb5j4",
+  "poster_url": "https://image.tmdb.org/t/p/w342/h47JJZ015VF4neia33AFwTU37Yb.jpg",
+  "overview": "When a law-abiding woman gets indicted for murdering her husband, her lawyer soon realizes that a larger conspiracy may be at work.",
+  "released_date": {
+    "$date": "2020-09-30T06:49:24.035Z"
+  },
+  "duration": 120,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:07.003Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.399Z"
+  },
+  "__v": 0,
+  "rate_star": 3.064516129032258,
+  "total_rate": 93,
+  "total_favorite": 0
+},{
+  "_id": {
+    "$oid": "5f699e9fb45b762e80de77d7"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9fb45b762e80de77cd"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77ce"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77cf"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77d0"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77d1"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77d2"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77d3"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77d4"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77d5"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9fb45b762e80de77d6"
+    }
+  ],
+  "title": "De patitas a la calle",
+  "trailer_video_url": "https://www.youtube.com/watch?v=m1kQO8v8Jk8",
+  "poster_url": "https://image.tmdb.org/t/p/w342/1Jq7Ra5DBueK98zPf1fMmqdbITc.jpg",
+  "overview": "A dog named Lasmi lost herself in the city of Lima. A group of dog patrol help her to find her family. But a group of traffickers are kidnaping dogs, so they have to found out them and cought them.",
+  "released_date": {
+    "$date": "2020-10-01T06:49:24.035Z"
+  },
+  "duration": 83,
+  "original_language": "es",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:07.463Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.428Z"
+  },
+  "__v": 0,
+  "rate_star": 2.9753086419753085,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699e9fb45b762e80de77dc"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699e9fb45b762e80de77d8"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77d9"
+    },
+    {
+      "$oid": "5f699e9fb45b762e80de77da"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699e9fb45b762e80de77db"
+    }
+  ],
+  "title": "Assassin 33 A.D.",
+  "trailer_video_url": "https://www.youtube.com/watch?v=HGQK3WG2MYc",
+  "poster_url": "https://image.tmdb.org/t/p/w342/8jDvtdH327I8TgX3UPdkAsZF1dA.jpg",
+  "overview": "When a billionaire gives a group of young scientists unlimited resources to study the science of matter transfer, the scientists unlock the secrets of time travel. But they soon find out that the project is backed by a militant extremist group, and the billionaire plans to go back in time and prove that Jesus never rose from the dead.",
+  "released_date": {
+    "$date": "2020-10-02T06:49:24.035Z"
+  },
+  "duration": 108,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:07.874Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.453Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0864197530864197,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ea0b45b762e80de77e7"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ea0b45b762e80de77dd"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77de"
+    },
+    {
+      "$oid": "5f684ee8e5f57c315cac41f1"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77df"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77e0"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77e1"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77e2"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77e3"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77e4"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77e5"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ea0b45b762e80de77e6"
+    }
+  ],
+  "title": "Anastasia: Once Upon a Time",
+  "trailer_video_url": "https://www.youtube.com/watch?v=ok0y4YgVYWY",
+  "poster_url": "https://image.tmdb.org/t/p/w342/1g9R5lpmJ77kRcx4agxc3oIzN1C.jpg",
+  "overview": "Anastasia Romanov escapes through a portal when her family is threatened by Vladimir Lenin, and she finds herself in the year 1988, befriended by a young American girl.",
+  "released_date": {
+    "$date": "2020-10-03T06:49:24.035Z"
+  },
+  "duration": 89,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:08.319Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.475Z"
+  },
+  "__v": 0,
+  "rate_star": 3.049382716049383,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ea0b45b762e80de77f3"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ea0b45b762e80de77e8"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77e9"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77ea"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77eb"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77ec"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77ed"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77ee"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77ef"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77f0"
+    },
+    {
+      "$oid": "5f699ea0b45b762e80de77f1"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ea0b45b762e80de77f2"
+    }
+  ],
+  "title": "Patients of a Saint",
+  "trailer_video_url": "https://www.youtube.com/watch?v=297843366",
+  "poster_url": "https://image.tmdb.org/t/p/w342/6uSR3687xtyS207S8nYp1voT9mR.jpg",
+  "overview": "The film follows a group of doctors, guards and violent prisoners on St Leonards Island in the north Atlantic, who must unite when a rampant disease threatens the high security units.",
+  "released_date": {
+    "$date": "2020-10-04T06:49:24.035Z"
+  },
+  "duration": 106,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:08.798Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.494Z"
+  },
+  "__v": 0,
+  "rate_star": 3.037037037037037,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ea1b45b762e80de77f9"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ea1b45b762e80de77f4"
+    },
+    {
+      "$oid": "5f699ea1b45b762e80de77f5"
+    },
+    {
+      "$oid": "5f699ea1b45b762e80de77f6"
+    },
+    {
+      "$oid": "5f699ea1b45b762e80de77f7"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ea1b45b762e80de77f8"
+    }
+  ],
+  "title": "Rent-A-Pal",
+  "trailer_video_url": "https://www.youtube.com/watch?v=N_kraLkWdbw",
+  "poster_url": "https://image.tmdb.org/t/p/w342/wFaO4uc8po7uNCTSdvbqduMTyuu.jpg",
+  "overview": "Set in 1990, a lonely bachelor named David searches for an escape from the day-to-day drudgery of caring for his aging mother.  While seeking a partner through a video dating service, he discovers a strange VHS tape called Rent-A-Pal. Hosted by the charming and charismatic Andy, the tape offers him much-needed company, compassion, and friendship. But Andy's friendship comes at a cost, and David desperately struggles to afford the price of admission.",
+  "released_date": {
+    "$date": "2020-10-05T06:49:24.035Z"
+  },
+  "duration": 108,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:09.204Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.515Z"
+  },
+  "__v": 0,
+  "rate_star": 2.6296296296296298,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eadb45b762e80de7804"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f684ee7e5f57c315cac41be"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de77fa"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de77fb"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de77fc"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de77fd"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de77fe"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de77ff"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de7800"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de7801"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de7802"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eadb45b762e80de7803"
+    }
+  ],
+  "title": "Can You Keep a Secret?",
+  "trailer_video_url": "https://www.youtube.com/watch?v=3IM1vSNJw3Y",
+  "poster_url": "https://image.tmdb.org/t/p/w342/7QtCOlHESPEYtFANmd4yLqsYKZ4.jpg",
+  "overview": "Emma Corrigan, a girl with a few secrets on a turbulent plane ride, thinks she’s about to die, Emma spills them all to the handsome stranger sitting next to her. At least, she thought he was a stranger. But then, her company’s young and elusive CEO, arrives at the office. It’s him. And he knows every single humiliating detail about Emma.",
+  "released_date": {
+    "$date": "2020-10-06T06:49:24.035Z"
+  },
+  "duration": 94,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:21.246Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.541Z"
+  },
+  "__v": 0,
+  "rate_star": 3,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eadb45b762e80de7810"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eadb45b762e80de7805"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de7806"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de7807"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de7808"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de7809"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de780a"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de780b"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de780c"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de780d"
+    },
+    {
+      "$oid": "5f699eadb45b762e80de780e"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eadb45b762e80de780f"
+    }
+  ],
+  "title": "By the Grace of God",
+  "trailer_video_url": null,
+  "poster_url": "https://image.tmdb.org/t/p/w342/qbwcnAdBkfGBIbQ1xdQZtiUg2lf.jpg",
+  "overview": "Alexandre lives in Lyon with his wife and children. One day, he discovered by chance that the priest who abused him to scouts always officiates with children. He then starts a fight, quickly joined by François and Emmanuel, also victims of the priest, to \"release their word\" on what they suffered.",
+  "released_date": {
+    "$date": "2020-10-07T06:49:24.036Z"
+  },
+  "duration": 137,
+  "original_language": "fr",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:21.741Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.559Z"
+  },
+  "__v": 0,
+  "rate_star": 2.950617283950617,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eaeb45b762e80de781d"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eaeb45b762e80de7811"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7812"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7813"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7814"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7815"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7816"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7817"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7818"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7819"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de781a"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eaeb45b762e80de781b"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de781c"
+    }
+  ],
+  "title": "A Shaun the Sheep Movie: Farmageddon",
+  "trailer_video_url": "https://www.youtube.com/watch?v=YlYN4UjMXA0",
+  "poster_url": "https://image.tmdb.org/t/p/w342/p08FoXVFgcRm5QZBaGj0VKa2W2Y.jpg",
+  "overview": "When an alien with amazing powers crash-lands near Mossy Bottom Farm, Shaun the Sheep goes on a mission to shepherd the intergalactic visitor home before a sinister organization can capture her.",
+  "released_date": {
+    "$date": "2020-10-08T06:49:24.036Z"
+  },
+  "duration": 87,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:22.217Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.579Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0246913580246915,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eaeb45b762e80de7829"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eaeb45b762e80de781e"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de781f"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7820"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7821"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7822"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7823"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7824"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7825"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7826"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7827"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eaeb45b762e80de7828"
+    }
+  ],
+  "title": "A Room with a View",
+  "trailer_video_url": "https://www.youtube.com/watch?v=DgZkCc3xFl4",
+  "poster_url": "https://image.tmdb.org/t/p/w342/sO2FECZGmmeisdYWzoQzGRjSZag.jpg",
+  "overview": "When Lucy Honeychurch and chaperon Charlotte Bartlett find themselves in Florence with rooms without views, fellow guests Mr Emerson and son George step in to remedy the situation. Meeting the Emersons could change Lucy's life forever but, once back in England, how will her experiences in Tuscany affect her marriage plans?",
+  "released_date": {
+    "$date": "2020-10-09T06:49:24.036Z"
+  },
+  "duration": 117,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:22.686Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.600Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0987654320987654,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eafb45b762e80de782d"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eafb45b762e80de782a"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de782b"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eafb45b762e80de782c"
+    }
+  ],
+  "title": "A Secret Love",
+  "trailer_video_url": "https://www.youtube.com/watch?v=ghv3-lpFOcc",
+  "poster_url": "https://image.tmdb.org/t/p/w342/28LNd4KEpqt9i8sgXrVcrdr2kgI.jpg",
+  "overview": "Amid shifting times, two women kept their decades-long love a secret. But coming out later in life comes with its own set of challenges.",
+  "released_date": {
+    "$date": "2020-10-10T06:49:24.036Z"
+  },
+  "duration": 83,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:23.082Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.623Z"
+  },
+  "__v": 0,
+  "rate_star": 3.271604938271605,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eafb45b762e80de7831"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eafb45b762e80de782e"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eafb45b762e80de782f"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de7830"
+    }
+  ],
+  "title": "Road to Roma",
+  "trailer_video_url": null,
+  "poster_url": "https://image.tmdb.org/t/p/w342/uciEQzSbJWVD7fxWwGTAZyvcl3U.jpg",
+  "overview": "Director Alfonso Cuarón reflects on the childhood memories, period details and creative choices that shaped his Academy Award-winning film 'ROMA.'",
+  "released_date": {
+    "$date": "2020-10-11T06:49:24.036Z"
+  },
+  "duration": 73,
+  "original_language": "es",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:23.478Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.646Z"
+  },
+  "__v": 0,
+  "rate_star": 3.1604938271604937,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eafb45b762e80de783d"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eafb45b762e80de7832"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de7833"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de7834"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de7835"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de7836"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de7837"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de7838"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de7839"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de783a"
+    },
+    {
+      "$oid": "5f699eafb45b762e80de783b"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eafb45b762e80de783c"
+    }
+  ],
+  "title": "A Predator's Obsession",
+  "trailer_video_url": "https://www.youtube.com/watch?v=z87GPo_qa0E",
+  "poster_url": "https://image.tmdb.org/t/p/w342/aC5lJIQLFMjvsd3iPQdYpD9yrvg.jpg",
+  "overview": "On an idyllic day at the beach, Alison and her younger brother, Kevin, are saved from a vicious shark attack by the brooding and mysterious Daniel. Welcomed into their home, Alison soon discovers that her mysterious savior and protector has a dark and disturbing past.",
+  "released_date": {
+    "$date": "2020-10-12T06:49:24.036Z"
+  },
+  "duration": 0,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:23.925Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.675Z"
+  },
+  "__v": 0,
+  "rate_star": 2.8518518518518516,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb0b45b762e80de784a"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb0b45b762e80de783e"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de783f"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7840"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7841"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7842"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7843"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7844"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7845"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7846"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7847"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb0b45b762e80de7848"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7849"
+    }
+  ],
+  "title": "A Nice Girl Like You",
+  "trailer_video_url": "https://www.youtube.com/watch?v=-Wjjo30JJck",
+  "poster_url": "https://image.tmdb.org/t/p/w342/qVFfofTQCaoru8oiaOGW0G4YSwQ.jpg",
+  "overview": "Lucy Neal is thrown for a loop when she is accused of being too inhibited by her ex-boyfriend. In an effort to prove him wrong, Lucy creates a rather wild to-do list that sends her on a whirlwind and surprising journey of self-discovery, friendship, and new love.",
+  "released_date": {
+    "$date": "2020-10-13T06:49:24.036Z"
+  },
+  "duration": 94,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:24.399Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.692Z"
+  },
+  "__v": 0,
+  "rate_star": 3.185185185185185,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb0b45b762e80de7856"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb0b45b762e80de784b"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de784c"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de784d"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de784e"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de784f"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7850"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7851"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7852"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7853"
+    },
+    {
+      "$oid": "5f699eb0b45b762e80de7854"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb0b45b762e80de7855"
+    }
+  ],
+  "title": "I Met a Girl",
+  "trailer_video_url": "https://www.youtube.com/watch?v=fUaXQqVjbcY",
+  "poster_url": "https://image.tmdb.org/t/p/w342/lsh9aUn4FSPl29moszp12LZ4wha.jpg",
+  "overview": "An impulsive musician struggling with schizophrenia falls for a mysterious woman who may be all in his head. When she suddenly vanishes, he takes off on a cross- country journey across Australia to find her, forcing his long-suffering brother to try to rescue him.",
+  "released_date": {
+    "$date": "2020-10-14T06:49:24.036Z"
+  },
+  "duration": 108,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:24.884Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.710Z"
+  },
+  "__v": 0,
+  "rate_star": 3.111111111111111,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb1b45b762e80de7861"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb1b45b762e80de7857"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de7858"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de7859"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de785a"
+    },
+    {
+      "$oid": "5f684ec6e5f57c315cac4082"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de785b"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de785c"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de785d"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de785e"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de785f"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb1b45b762e80de7860"
+    }
+  ],
+  "title": "A Call to Spy",
+  "trailer_video_url": "https://www.youtube.com/watch?v=TbZgLKjrdnA",
+  "poster_url": "https://image.tmdb.org/t/p/w342/uvT6wHiCMJstgE6ZLd2dgwGFZ4.jpg",
+  "overview": "The story of Vera Atkins, a crafty spy recruiter, and two of the first women she selects for Churchill's \"secret army\": Virginia Hall, a daring American undaunted by a disability and Noor Inayat Khan, a pacifist. These civilian women form an unlikely sisterhood while entangled in dangerous missions to turn the tide of the war.",
+  "released_date": {
+    "$date": "2020-10-15T06:49:24.036Z"
+  },
+  "duration": 0,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:25.342Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.726Z"
+  },
+  "__v": 0,
+  "rate_star": 2.888888888888889,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb1b45b762e80de786f"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb1b45b762e80de7862"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de7863"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de7864"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de7865"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb1b45b762e80de7866"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de7867"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de7868"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de7869"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de786a"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de786b"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de786c"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de786d"
+    },
+    {
+      "$oid": "5f699eb1b45b762e80de786e"
+    }
+  ],
+  "title": "A Night of Horror: Nightmare Radio",
+  "trailer_video_url": "https://www.youtube.com/watch?v=J4ptzG7N84E",
+  "poster_url": "https://image.tmdb.org/t/p/w342/g7EYDfGgNEF1IQymS7EvDLKnpxT.jpg",
+  "overview": "Rod leads a radio show dedicated to horror. Until suddenly the announcer begins to receive strange calls from a child who desperately asks for help. At first thinks that it is a bad joke until he discovers that this is not the case. These calls hide a dark secret…",
+  "released_date": {
+    "$date": "2020-10-16T06:49:24.036Z"
+  },
+  "duration": 100,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:25.854Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.744Z"
+  },
+  "__v": 0,
+  "rate_star": 2.9135802469135803,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb2b45b762e80de7874"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb2b45b762e80de7870"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de7871"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de7872"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb2b45b762e80de7873"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de7872"
+    }
+  ],
+  "title": "Crip Camp: A Disability Revolution",
+  "trailer_video_url": "https://www.youtube.com/watch?v=XRrIs22plz0",
+  "poster_url": "https://image.tmdb.org/t/p/w342/iALSypN3MhC6kBVwc9VpuJUlm1j.jpg",
+  "overview": "Down the road from Woodstock in the early 1970s, a revolution blossomed in a ramshackle summer camp for disabled teenagers, transforming their young lives and igniting a landmark movement.",
+  "released_date": {
+    "$date": "2020-10-17T06:49:24.036Z"
+  },
+  "duration": 107,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:26.249Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.766Z"
+  },
+  "__v": 0,
+  "rate_star": 2.7777777777777777,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb2b45b762e80de787e"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb2b45b762e80de7875"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de7876"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de7877"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de7878"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7815"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de7879"
+    },
+    {
+      "$oid": "5f699eaeb45b762e80de7818"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de787a"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de787b"
+    },
+    {
+      "$oid": "5f699eb2b45b762e80de787c"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb2b45b762e80de787d"
+    }
+  ],
+  "title": "A Wizard's Tale",
+  "trailer_video_url": "https://www.youtube.com/watch?v=8RmkGNe1cXc",
+  "poster_url": "https://image.tmdb.org/t/p/w342/azvZPjrMOfQyIdNL7wyHSztAGqq.jpg",
+  "overview": "Balloon kingdoms, dopey police dragons and happy wizards are exactly how Terry remembered his Grandmother's whacky fairy tales. Except they are real and it's definitely not as 'cheerful.'",
+  "released_date": {
+    "$date": "2020-10-18T06:49:24.036Z"
+  },
+  "duration": 97,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:26.699Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.788Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0246913580246915,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb3b45b762e80de7889"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb3b45b762e80de787f"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7880"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7881"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7882"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7883"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7884"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7885"
+    },
+    {
+      "$oid": "5f684ee7e5f57c315cac41c6"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7886"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7887"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb3b45b762e80de7888"
+    }
+  ],
+  "title": "A Million Little Pieces",
+  "trailer_video_url": "https://www.youtube.com/watch?v=ebG00FXR0PA",
+  "poster_url": "https://image.tmdb.org/t/p/w342/loC9ptPrTT1e09frmddn6LU612d.jpg",
+  "overview": "A young drug-addled writer approaching the bottom of his descent submits to two months of agonizing detox at a treatment center in Minnesota.",
+  "released_date": {
+    "$date": "2020-10-19T06:49:24.036Z"
+  },
+  "duration": 113,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:27.182Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.807Z"
+  },
+  "__v": 0,
+  "rate_star": 2.8518518518518516,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb4b45b762e80de78a0"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb3b45b762e80de7895"
+    },
+    {
+      "$oid": "5f699eb3b45b762e80de7896"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de7897"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de7898"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de7899"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de789a"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de789b"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de789c"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de789d"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de789e"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb4b45b762e80de789f"
+    }
+  ],
+  "title": "A Beautiful Day in the Neighborhood",
+  "trailer_video_url": "https://www.youtube.com/watch?v=-VLEPhfEN2M",
+  "poster_url": "https://image.tmdb.org/t/p/w342/p9vCAVhDK375XyobVcKqzqzsUHE.jpg",
+  "overview": "An award-winning cynical journalist, Lloyd Vogel, begrudgingly accepts an assignment to write an Esquire profile piece on the beloved television icon Fred Rogers. After his encounter with Rogers, Vogel's perspective on life is transformed.",
+  "released_date": {
+    "$date": "2020-09-16T06:49:24.035Z"
+  },
+  "duration": 109,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:28.083Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.825Z"
+  },
+  "__v": 0,
+  "rate_star": 2.7777777777777777,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb4b45b762e80de78ab"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb4b45b762e80de78a1"
+    },
+    {
+      "$oid": "5f684f38e5f57c315cac4288"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de78a2"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de78a3"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de78a4"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de78a5"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de78a6"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de78a7"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de78a8"
+    },
+    {
+      "$oid": "5f699eb4b45b762e80de78a9"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb4b45b762e80de78aa"
+    }
+  ],
+  "title": "Sherlock Holmes: A Game of Shadows",
+  "trailer_video_url": "https://www.youtube.com/watch?v=DzPHzAR9GYw",
+  "poster_url": "https://image.tmdb.org/t/p/w342/y1MYZkwhZK6L0Jy4YMuPktzDOfn.jpg",
+  "overview": "There is a new criminal mastermind at large (Professor Moriarty) and not only is he Holmes’ intellectual equal, but his capacity for evil and lack of conscience may give him an advantage over the  detective.",
+  "released_date": {
+    "$date": "2020-09-17T06:49:24.035Z"
+  },
+  "duration": 129,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:28.529Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.848Z"
+  },
+  "__v": 0,
+  "rate_star": 2.740740740740741,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb5b45b762e80de78ae"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [],
+  "directors": [
+    {
+      "$oid": "5f699eb5b45b762e80de78ac"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78ad"
+    }
+  ],
+  "title": "4 North A",
+  "trailer_video_url": "https://www.youtube.com/watch?v=QAB3ATcc8C4",
+  "poster_url": null,
+  "overview": "The story of a young woman facing her father’s death, remembering moments in life that help her make sense of it, and finding connection in unlikely places.",
+  "released_date": {
+    "$date": "2020-09-18T06:49:24.035Z"
+  },
+  "duration": 11,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:29.081Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.870Z"
+  },
+  "__v": 0,
+  "rate_star": 2.9135802469135803,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb5b45b762e80de78b0"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [],
+  "directors": [
+    {
+      "$oid": "5f699eb5b45b762e80de78af"
+    }
+  ],
+  "title": "Sing Me a Song",
+  "trailer_video_url": null,
+  "poster_url": "https://image.tmdb.org/t/p/w342/jGOrs2G3li5FgKdpTEqtParzhJ8.jpg",
+  "overview": "As the Internet finally arrives in tiny Bhutan, documentarian Thomas Balmès is there to witness its transformative impact on a young Buddhist monk whose initial trepidation gives way to profound engagement with the technology.",
+  "released_date": {
+    "$date": "2020-09-19T06:49:24.035Z"
+  },
+  "duration": 99,
+  "original_language": "dz",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:29.472Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.896Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0617283950617282,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699eb5b45b762e80de78bc"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699eb5b45b762e80de78b1"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78b2"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78b3"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78b4"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78b5"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78b6"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78b7"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78b8"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78b9"
+    },
+    {
+      "$oid": "5f699eb5b45b762e80de78ba"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699eb5b45b762e80de78bb"
+    }
+  ],
+  "title": "Last Year at Marienbad",
+  "trailer_video_url": null,
+  "poster_url": "https://image.tmdb.org/t/p/w342/aGPYM6Y8RtaL8DD8u6rfVsRvhD7.jpg",
+  "overview": "In a strange and isolated chateau, a man becomes acquainted with a woman and insists that they have met before.",
+  "released_date": {
+    "$date": "2020-09-20T06:49:24.035Z"
+  },
+  "duration": 95,
+  "original_language": "fr",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:29.914Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.916Z"
+  },
+  "__v": 0,
+  "rate_star": 3.259259259259259,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec1b45b762e80de78c8"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec1b45b762e80de78bd"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78be"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78bf"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78c0"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78c1"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78c2"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78c3"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78c4"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78c5"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78c6"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec1b45b762e80de78c7"
+    }
+  ],
+  "title": "Eye for an Eye",
+  "trailer_video_url": "https://www.youtube.com/watch?v=jY56N6irNCk",
+  "poster_url": "https://image.tmdb.org/t/p/w342/3WEJAWFusNeZIJDNYxeIPytuZ1g.jpg",
+  "overview": "Mario, an exemplary man, lives in a village on the Galician coast. In the old people’s home, where he works as a nurse, everyone appreciates him. When the best known narco in the area, Antonio Padín, recently released from prison, enters the residence, Mario tries to make Antonio feel at home.  Now, Padín's two sons, Kike and Toño, are in charge of the family business. The failure of an operation will put Kike in jail and cause them to owe a large debt to a Colombian supplier. Toño will turn to the nurse to try to convince his father to assume the debt. But Mario has his own plans.",
+  "released_date": {
+    "$date": "2020-09-21T06:49:24.035Z"
+  },
+  "duration": 107,
+  "original_language": "es",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:41.234Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.936Z"
+  },
+  "__v": 0,
+  "rate_star": 3.271604938271605,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec1b45b762e80de78d5"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec1b45b762e80de78c9"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78ca"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78cb"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78cc"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78cd"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78ce"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78cf"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78d0"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78d1"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78d2"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec1b45b762e80de78d3"
+    },
+    {
+      "$oid": "5f699ec1b45b762e80de78d4"
+    }
+  ],
+  "title": "The Best Is Yet to Come",
+  "trailer_video_url": null,
+  "poster_url": "https://image.tmdb.org/t/p/w342/A3aI1wH2lIeKZ5ML4AO0IevACv0.jpg",
+  "overview": "Following a huge misunderstanding, two friends always decide to tackle everything to make up for lost time.",
+  "released_date": {
+    "$date": "2020-09-22T06:49:24.035Z"
+  },
+  "duration": 117,
+  "original_language": "fr",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:41.755Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.951Z"
+  },
+  "__v": 0,
+  "rate_star": 3.037037037037037,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec2b45b762e80de78e1"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec2b45b762e80de78d6"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78d7"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78d8"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78d9"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78da"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78db"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78dc"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78dd"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78de"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78df"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec2b45b762e80de78e0"
+    }
+  ],
+  "title": "Rogue Warfare: Death of a Nation",
+  "trailer_video_url": "https://www.youtube.com/watch?v=HM0NtRctAjM",
+  "poster_url": "https://image.tmdb.org/t/p/w342/w1ZxQAHPDW2roZF1fcKGHfRpUYi.jpg",
+  "overview": "The Black Mask Organization coordinates a twisted plot which will devastate the world within the next 36 hours. The TEAM is immediately dispatched again for what will hopefully be the last stand against the ‘Supreme Leader.’ As the clock ticks, so does the bomb and they need to strike back at the very core of the terrorist group. The team must throw their lives on the line as it’s the only way to deactivate the dangerous weapons which are set to explode across the world at the same time. Each soldier must find his inner strength and skill to disarm this terrorist group once and for all.",
+  "released_date": {
+    "$date": "2020-09-23T06:49:24.035Z"
+  },
+  "duration": 103,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:42.225Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.966Z"
+  },
+  "__v": 0,
+  "rate_star": 3.074074074074074,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec2b45b762e80de78e4"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [],
+  "directors": [
+    {
+      "$oid": "5f699ec2b45b762e80de78e2"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78e3"
+    }
+  ],
+  "title": "A House in Pieces",
+  "trailer_video_url": null,
+  "poster_url": null,
+  "overview": "",
+  "released_date": {
+    "$date": "2020-09-24T06:49:24.035Z"
+  },
+  "duration": 0,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:42.632Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.982Z"
+  },
+  "__v": 0,
+  "rate_star": 3.111111111111111,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec3b45b762e80de78f0"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec2b45b762e80de78e5"
+    },
+    {
+      "$oid": "5f699ec2b45b762e80de78e6"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78e7"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78e8"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78e9"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78ea"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78eb"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78ec"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78ed"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78ee"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec3b45b762e80de78ef"
+    }
+  ],
+  "title": "Ride Like a Girl",
+  "trailer_video_url": "https://www.youtube.com/watch?v=gLn7UOw-tF8",
+  "poster_url": "https://image.tmdb.org/t/p/w342/axXI9HOiBVJIblWBbSH7mIUB5Yb.jpg",
+  "overview": "The story of Michelle Payne, the first female jockey to win the Melbourne Cup.",
+  "released_date": {
+    "$date": "2020-09-25T06:49:24.035Z"
+  },
+  "duration": 98,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:43.080Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:57.996Z"
+  },
+  "__v": 0,
+  "rate_star": 2.7901234567901234,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec3b45b762e80de78fc"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec3b45b762e80de78f1"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78f2"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78f3"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78f4"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78f5"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78f6"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78f7"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78f8"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78f9"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78fa"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec3b45b762e80de78fb"
+    }
+  ],
+  "title": "Ulysses: A Dark Odyssey",
+  "trailer_video_url": "https://www.youtube.com/watch?v=4sd99-5P-1c",
+  "poster_url": "https://image.tmdb.org/t/p/w342/yB6XZYgIRWjbn5vlLCj0PmPNxwW.jpg",
+  "overview": "Taurus City, The United States of Europe, 2023. Uly, a disillusioned soldier riddled with amnesia, returns home from a war in the Middle East, knowing only that he must desperately comb the city to find his beloved wife, Penelope. Fate fills this endless night with a series of chance meetings. Whether it be the wealthy Alcyde, the beastly cyclops Popov, Aeo the Gyspy, or Cici the Sorceress, good or evil that they be, each encounter fills in a missing piece of Uly's memory, so that he can finally face his past.",
+  "released_date": {
+    "$date": "2020-09-26T06:49:24.035Z"
+  },
+  "duration": 110,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:43.539Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.020Z"
+  },
+  "__v": 0,
+  "rate_star": 3.037037037037037,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec4b45b762e80de7908"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec3b45b762e80de78fd"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78fe"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de78ff"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de7900"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de7901"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de7902"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de7903"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de7904"
+    },
+    {
+      "$oid": "5f699ec3b45b762e80de7905"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de7906"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec4b45b762e80de7907"
+    }
+  ],
+  "title": "A Dark Path",
+  "trailer_video_url": "https://www.youtube.com/watch?v=2Y-L-MOUWyc",
+  "poster_url": "https://image.tmdb.org/t/p/w342/238G58S8pTKoB77Fj8meAnTIm21.jpg",
+  "overview": "On their way home from a party in eastern Europe, sisters Abi and Lily get lost. With no signal and an unreliable GPS, they try to navigate their way out using road signs. Along a narrow road, through a deep forest, their front tire suddenly blows out. With no spare or cell service, they are completely cut off. Soon they discover that this is no ordinary forest and there is a reason no cars come up here, for the locals know of what lives deep in the woods and if they’re woken, there is nowhere to run.",
+  "released_date": {
+    "$date": "2020-09-27T06:49:24.035Z"
+  },
+  "duration": 75,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:44.015Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.064Z"
+  },
+  "__v": 0,
+  "rate_star": 3.1358024691358026,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec4b45b762e80de7914"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec4b45b762e80de7909"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de790a"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de790b"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de790c"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de790d"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de790e"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de790f"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de7910"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de7911"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de7912"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec4b45b762e80de7913"
+    }
+  ],
+  "title": "A Serial Killer's Guide to Life",
+  "trailer_video_url": "https://www.youtube.com/watch?v=395fp-nEkoU",
+  "poster_url": "https://image.tmdb.org/t/p/w342/9YMM2audtZ2Qg0XOg1tW11IkHtV.jpg",
+  "overview": "Louise Farnt is obsessed with the world of self-help. And when she meets the not necessarily sane guru wannabe Val Stone, a murderous spree begins.",
+  "released_date": {
+    "$date": "2020-09-28T06:49:24.035Z"
+  },
+  "duration": 81,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:44.561Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.090Z"
+  },
+  "__v": 0,
+  "rate_star": 2.9753086419753085,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec5b45b762e80de791f"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec4b45b762e80de7915"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de7916"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de7917"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de7918"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de7919"
+    },
+    {
+      "$oid": "5f699ec4b45b762e80de791a"
+    },
+    {
+      "$oid": "5f699ec5b45b762e80de791b"
+    },
+    {
+      "$oid": "5f699ec5b45b762e80de791c"
+    },
+    {
+      "$oid": "5f699ec5b45b762e80de791d"
+    },
+    {
+      "$oid": "5f699ec5b45b762e80de791e"
+    }
+  ],
+  "directors": [],
+  "title": "A Werewolf in England",
+  "trailer_video_url": null,
+  "poster_url": "https://image.tmdb.org/t/p/w342/4c5a6Q4ZBTAYV7JZvRBbKMJWbvs.jpg",
+  "overview": "In Victorian-Era England, a Parish Councillor and criminal take refuge from a storm, at a remote countryside Inn. Forced to stay the night, they soon uncover a deadly pact between the strange Innkeepers and the flesh-hungry werewolves that inhabit the surrounding woodlands... now, as the werewolves close in, the guests must band together and fight tooth and nail to survive the night!",
+  "released_date": {
+    "$date": "2020-09-29T06:49:24.035Z"
+  },
+  "duration": 0,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:45.023Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.111Z"
+  },
+  "__v": 0,
+  "rate_star": 2.962962962962963,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec6b45b762e80de792b"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec5b45b762e80de7920"
+    },
+    {
+      "$oid": "5f699ec5b45b762e80de7921"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7922"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7923"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7924"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7925"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7926"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7927"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7928"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7929"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec6b45b762e80de792a"
+    }
+  ],
+  "title": "Paris Is Us",
+  "trailer_video_url": "https://www.youtube.com/watch?v=NYCLXB5JNv8",
+  "poster_url": "https://image.tmdb.org/t/p/w342/7Yr5JOC5slZWf1uCA7Va6V7drEH.jpg",
+  "overview": "Dreams and reality collide as a young woman navigates a tumultuous relationship amid rising social tensions, protests and tragedies in Paris.",
+  "released_date": {
+    "$date": "2020-09-30T06:49:24.035Z"
+  },
+  "duration": 83,
+  "original_language": "fr",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.066Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-10T17:18:30.751Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0864197530864197,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec6b45b762e80de792f"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec6b45b762e80de792c"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de792d"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de792e"
+    }
+  ],
+  "directors": [],
+  "title": "A Rebel Born",
+  "trailer_video_url": "https://www.youtube.com/watch?v=h8Jgd_w0O9k",
+  "poster_url": "https://image.tmdb.org/t/p/w342/rlCsOIm5HGZ0IADLo7j373WVBy3.jpg",
+  "overview": "A Rebel Born follows the life of Nathan Bedford Forrest, who was a brilliant and very controversial Confederate general in the War Between the States. Even now, more than 150 years after the end of the war, Forrest has remained surrounded in controversy.",
+  "released_date": {
+    "$date": "2020-10-01T06:49:24.035Z"
+  },
+  "duration": 0,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.449Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.164Z"
+  },
+  "__v": 0,
+  "rate_star": 3.074074074074074,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec6b45b762e80de793b"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec6b45b762e80de7930"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7931"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7932"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7933"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7934"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7935"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7936"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7937"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7938"
+    },
+    {
+      "$oid": "5f699ec6b45b762e80de7939"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec6b45b762e80de793a"
+    }
+  ],
+  "title": "The Catcher Was a Spy",
+  "trailer_video_url": "https://www.youtube.com/watch?v=W0XTxOs-_Os",
+  "poster_url": "https://image.tmdb.org/t/p/w342/eF6LubTEp1KI6NXUP2o5G4g9AOP.jpg",
+  "overview": "Former major league baseball player Moe Berg lives a double life working for the Office of Strategic Services in World War II Europe.",
+  "released_date": {
+    "$date": "2020-10-02T06:49:24.035Z"
+  },
+  "duration": 98,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:46.916Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.180Z"
+  },
+  "__v": 0,
+  "rate_star": 3.234567901234568,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec7b45b762e80de7945"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec7b45b762e80de793c"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de793d"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de793e"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de793f"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de7940"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de7941"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de7942"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de7943"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec7b45b762e80de7944"
+    }
+  ],
+  "title": "Friends Who Kill",
+  "trailer_video_url": "https://www.youtube.com/watch?v=TfC-wDJmXfs",
+  "poster_url": "https://image.tmdb.org/t/p/w342/ks8finYQk0GmlPVGINGTUgX7Keq.jpg",
+  "overview": "Hope has always been close to her daughter Lacy. But since her divorce from her husband, Hope has been worried about Lacy, who is struggling to cope. So Hope is excited when Lacy brings home a new friend, Cassie, whose parents recently divorced as well. Lacy and Cassie quickly become the best of friends. But when Cassie begins to drive a wedge between Lacy and her mother, Hope beings to wonder if Cassie is the godsend she first imagined.",
+  "released_date": {
+    "$date": "2020-10-03T06:49:24.035Z"
+  },
+  "duration": 0,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:47.478Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.196Z"
+  },
+  "__v": 0,
+  "rate_star": 2.753086419753086,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec8b45b762e80de7951"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec7b45b762e80de7946"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de7947"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de7948"
+    },
+    {
+      "$oid": "5f699ec7b45b762e80de7949"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de794a"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de794b"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de794c"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de794d"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de794e"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de794f"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec8b45b762e80de7950"
+    }
+  ],
+  "title": "A Summer Romance",
+  "trailer_video_url": "https://www.youtube.com/watch?v=GGOh9IBgdWU",
+  "poster_url": "https://image.tmdb.org/t/p/w342/2u193j1mPdJanOCiIFvC6XyNQXZ.jpg",
+  "overview": "Samantha’s Montana ranch is her family’s legacy, so when a developer shows up to buy it, Sam isn’t interested. But as he tries to win her trust and her ranch, Sam finds he might also be winning her heart.",
+  "released_date": {
+    "$date": "2020-10-04T06:49:24.035Z"
+  },
+  "duration": 90,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:48.061Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.211Z"
+  },
+  "__v": 0,
+  "rate_star": 2.950617283950617,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec8b45b762e80de795d"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec8b45b762e80de7952"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de7953"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de7954"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de7955"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de7956"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de7957"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de7958"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de7959"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de795a"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de795b"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec8b45b762e80de795c"
+    }
+  ],
+  "title": "Have a Good Trip: Adventures in Psychedelics",
+  "trailer_video_url": "https://www.youtube.com/watch?v=FmQygtqDLHs",
+  "poster_url": "https://image.tmdb.org/t/p/w342/hUEdgqgl7OSL3hoCOes7lTQGzTM.jpg",
+  "overview": "Celebrities recall their most mind-bending trips via animations, reenactments and more in this comedic documentary exploring the story of psychedelics.",
+  "released_date": {
+    "$date": "2020-10-05T06:49:24.035Z"
+  },
+  "duration": 85,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:48.619Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.226Z"
+  },
+  "__v": 0,
+  "rate_star": 3.0864197530864197,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec9b45b762e80de7969"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec8b45b762e80de795e"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de795f"
+    },
+    {
+      "$oid": "5f699ec8b45b762e80de7960"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7961"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7962"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7963"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7964"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7965"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7966"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7967"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec9b45b762e80de7968"
+    }
+  ],
+  "title": "Ruben Brandt, Collector",
+  "trailer_video_url": "https://www.youtube.com/watch?v=5dOZpivfNxw",
+  "poster_url": "https://image.tmdb.org/t/p/w342/4WwBf5Lex1XUQfS1nREp2a2JZsc.jpg",
+  "overview": "Psychotherapist Ruben Brandt becomes the most wanted criminal in the world when he and four of his patients steal paintings from the world's most renowned museums and art collections.",
+  "released_date": {
+    "$date": "2020-10-06T06:49:24.035Z"
+  },
+  "duration": 96,
+  "original_language": "hu",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:49.076Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.246Z"
+  },
+  "__v": 0,
+  "rate_star": 3,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ec9b45b762e80de7975"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec9b45b762e80de796a"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de796b"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de796c"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de796d"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de796e"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de796f"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7970"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7971"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7972"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7973"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ec9b45b762e80de7974"
+    }
+  ],
+  "title": "A Good Woman Is Hard to Find",
+  "trailer_video_url": "https://www.youtube.com/watch?v=8OXHfMr9hqs",
+  "poster_url": "https://image.tmdb.org/t/p/w342/xW9lYcdbVvna9MSnj6e2C1AcRhk.jpg",
+  "overview": "The recently widowed mother of two, Sarah, is desperate to know who murdered her husband in front of her young son, rendering him mute. Coerced into helping a low-life drug dealer stash narcotics stolen from the local Mr. Big, she's forced into taking drastic action to protect her children, evolving from downtrodden submissive to take-charge vigilante.",
+  "released_date": {
+    "$date": "2020-10-07T06:49:24.036Z"
+  },
+  "duration": 97,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:49.577Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.264Z"
+  },
+  "__v": 0,
+  "rate_star": 3.197530864197531,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ecab45b762e80de7980"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ec9b45b762e80de7976"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7977"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7978"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de7979"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de797a"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de797b"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de797c"
+    },
+    {
+      "$oid": "5f699ec9b45b762e80de797d"
+    },
+    {
+      "$oid": "5f684f38e5f57c315cac428e"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de797e"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ecab45b762e80de797f"
+    }
+  ],
+  "title": "Chadwick Boseman:  A Tribute for a King",
+  "trailer_video_url": null,
+  "poster_url": "https://image.tmdb.org/t/p/w342/3TKR326AjEOtizPqfiKdEeb6IrR.jpg",
+  "overview": "A tribute to Chadwick Boseman, celebrating his life and legacy.",
+  "released_date": {
+    "$date": "2020-10-08T06:49:24.036Z"
+  },
+  "duration": 40,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:50.033Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.281Z"
+  },
+  "__v": 0,
+  "rate_star": 2.9382716049382718,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ecab45b762e80de798b"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ecab45b762e80de7981"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7982"
+    },
+    {
+      "$oid": "5f699ec5b45b762e80de791d"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7983"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7984"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7985"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7986"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7987"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7988"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7989"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ecab45b762e80de798a"
+    }
+  ],
+  "title": "A Killer Next Door",
+  "trailer_video_url": "https://www.youtube.com/watch?v=vIiEZV0O-eA",
+  "poster_url": "https://image.tmdb.org/t/p/w342/tGyWiFgBZEEHIgPUmzRh5S1poA0.jpg",
+  "overview": "The TRUE STORY of how a young girl begins to suspect that her neighbour on a quiet suburban street is fugitive family killer John List.",
+  "released_date": {
+    "$date": "2020-10-09T06:49:24.036Z"
+  },
+  "duration": 90,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:50.489Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.297Z"
+  },
+  "__v": 0,
+  "rate_star": 2.9382716049382718,
+  "total_favorite": 0,
+  "total_rate": 81
+},{
+  "_id": {
+    "$oid": "5f699ecab45b762e80de7997"
+  },
+  "is_active": true,
+  "age_type": "P",
+  "actors": [
+    {
+      "$oid": "5f699ecab45b762e80de798c"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de798d"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de798e"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de798f"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7990"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7991"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7992"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7993"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7994"
+    },
+    {
+      "$oid": "5f699ecab45b762e80de7995"
+    }
+  ],
+  "directors": [
+    {
+      "$oid": "5f699ecab45b762e80de7996"
+    }
+  ],
+  "title": "Strangers on a Train",
+  "trailer_video_url": "https://www.youtube.com/watch?v=IxGz_kh_C8E",
+  "poster_url": "https://image.tmdb.org/t/p/w342/ihC083U7ef56Ui4x0P0dobojrZ1.jpg",
+  "overview": "A psychotic socialite confronts a pro tennis star with a theory on how two complete strangers can get away with murder—a theory that he plans to implement.",
+  "released_date": {
+    "$date": "2020-10-10T06:49:24.036Z"
+  },
+  "duration": 101,
+  "original_language": "en",
+  "createdAt": {
+    "$date": "2020-09-22T06:50:50.949Z"
+  },
+  "updatedAt": {
+    "$date": "2020-10-09T07:06:58.314Z"
+  },
+  "__v": 0,
+  "rate_star": 3.1728395061728394,
+  "total_favorite": 0,
+  "total_rate": 81
 }]
