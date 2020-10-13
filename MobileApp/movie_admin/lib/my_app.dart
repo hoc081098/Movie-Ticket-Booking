@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:movie_admin/ui/users/manager_users_page.dart';
 
 import 'domain/repository/user_repository.dart';
 import 'ui/login/login_bloc.dart';
@@ -71,7 +72,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Movie ticket',
         theme: themeData,
-        home: SplashPage(),
+        home: UsersPage(),
         routes: routes,
         debugShowCheckedModeBanner: false,
       ),
