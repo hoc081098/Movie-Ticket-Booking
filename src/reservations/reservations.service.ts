@@ -80,9 +80,9 @@ export class ReservationsService {
       paymentIntent: Stripe.PaymentIntent,
       ticketIds: any[]
   ): Promise<Reservation> {
-    // const session = await this.ticketModel.db.startSession();
+    const session = await this.ticketModel.db.startSession();
     try {
-      // session.startTransaction();
+      session.startTransaction();
 
       const doc: Omit<CreateDocumentDefinition<Reservation>, '_id'> = {
         email: dto.email,
@@ -100,28 +100,28 @@ export class ReservationsService {
       };
       const reservation = await this.reservationModel.create(
           [doc],
-          // { session },
+          { session },
       ).then(v => v[0]);
 
       for (const id of ticketIds) {
         const updated = await this.ticketModel.findOneAndUpdate(
             { _id: id, reservation: null },
             { reservation: reservation._id },
-            // { session },
+            { session },
         );
         if (!updated) {
           throw new Error(`Ticket already reserved`);
         }
       }
 
-      // await session.commitTransaction();
-      // session.endSession();
+      await session.commitTransaction();
+      session.endSession();
 
       this.logger.debug(`[PASSED] done`);
       return reservation;
     } catch (e) {
-      // await session.abortTransaction();
-      // session.endSession();
+      await session.abortTransaction();
+      session.endSession();
 
       this.logger.debug(`[PASSED] error ${e}`);
       throw new UnprocessableEntityException(e.message ?? `Cannot create reservation`);
