@@ -75,6 +75,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
           EnvManager.shared.get(EnvKey.WS_URL),
           {
             'transports': ['websocket'],
+            'path': EnvManager.shared.get(EnvKey.WS_PATH),
             'query': {
               'token': 'Bearer $token',
             }

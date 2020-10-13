@@ -4,6 +4,7 @@ enum EnvKey {
   BASE_URL,
   PLACES_API_KEY,
   WS_URL,
+  WS_PATH,
 }
 
 class EnvManager {
