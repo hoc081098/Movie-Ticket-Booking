@@ -16,7 +16,11 @@ export class ConfigService {
   private readonly envConfig: Record<keyof ConfigKey, string>;
 
   constructor(filePath: string) {
-    this.envConfig = dotenv.parse(fs.readFileSync(filePath)) as Record<keyof ConfigKey, string>;
+    if (process.env.NODE_ENV === 'production') {
+      this.envConfig = process.env as any;
+    } else {
+      this.envConfig = dotenv.parse(fs.readFileSync(filePath)) as Record<keyof ConfigKey, string>;
+    }
     const stringify = JSON.stringify(this.envConfig);
     this.logger.log(`Load config: ${stringify}`)
   }
