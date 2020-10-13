@@ -60,17 +60,18 @@ export class ReservationsService {
         paymentIntent,
         ticketIds
     );
-    const data: Record<string, string> = ticketIds.reduce(
+    const data: Record<string, Reservation> = ticketIds.reduce(
         (acc, e) => ({
           ...acc,
-          [e.toHexString()]: reservation.id,
+          [e.toHexString()]: reservation,
         }),
         {},
     );
     this.appGateway.server
         .to(`reservation:${dto.show_time_id}`)
         .emit('reserved', data);
-    return reservation;
+
+    return await reservation.populate('user').execPopulate();
   }
 
   private async saveAndUpdate(
