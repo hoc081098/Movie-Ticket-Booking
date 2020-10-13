@@ -8,7 +8,7 @@ import * as mongoose from 'mongoose';
 import * as morgan from 'morgan';
 
 async function bootstrap() {
-  const port = 3000;
+  const port = process.env.PORT ?? 3000;
   const logger = new Logger('main');
 
   admin.initializeApp({
