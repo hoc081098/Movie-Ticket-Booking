@@ -3,11 +3,12 @@ import 'package:meta/meta.dart';
 import 'package:tuple/tuple.dart';
 
 import '../model/product.dart';
+import '../model/reservation.dart';
 
 abstract class ReservationRepository {
-  Stream<BuiltMap<String, String>> watchReservedTicket(String showTimeId);
+  Stream<BuiltMap<String, Reservation>> watchReservedTicket(String showTimeId);
 
-  Stream<void> createReservation({
+  Stream<Reservation> createReservation({
     @required String showTimeId,
     @required String phoneNumber,
     @required String email,

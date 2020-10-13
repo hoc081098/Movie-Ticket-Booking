@@ -110,6 +110,7 @@ void main() async {
   final reservationRepository = ReservationRepositoryImpl(
     authClient,
     userLocalSource,
+    mappers.reservationResponseToReservation,
   );
 
   final favoritesRepository = FavoritesRepositoryImpl(

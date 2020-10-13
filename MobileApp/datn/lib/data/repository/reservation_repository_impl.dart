@@ -6,21 +6,27 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:tuple/tuple.dart';
 
 import '../../domain/model/product.dart';
+import '../../domain/model/reservation.dart';
 import '../../domain/repository/reservation_repository.dart';
 import '../../env_manager.dart';
+import '../../utils/type_defs.dart';
 import '../local/user_local_source.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/reservation_response.dart';
+import '../serializers.dart';
 
 class ReservationRepositoryImpl implements ReservationRepository {
   final AuthClient _authClient;
   final UserLocalSource _userLocalSource;
+  final Function1<ReservationResponse, Reservation>
+      _reservationResponseToReservation;
 
-  ReservationRepositoryImpl(this._authClient, this._userLocalSource);
+  ReservationRepositoryImpl(this._authClient, this._userLocalSource,
+      this._reservationResponseToReservation);
 
   @override
-  Stream<void> createReservation({
+  Stream<Reservation> createReservation({
     String showTimeId,
     String phoneNumber,
     String email,
@@ -50,23 +56,25 @@ class ReservationRepositoryImpl implements ReservationRepository {
 
     final json =
         await _authClient.postBody(buildUrl('/reservations'), body: body);
-    print('createReservation: ${ReservationResponse.fromJson(json)}');
+    final response = ReservationResponse.fromJson(json);
+    print('createReservation: ${response}');
 
-    yield null;
+    yield _reservationResponseToReservation(response);
   }
 
   @override
-  Stream<BuiltMap<String, String>> watchReservedTicket(String showTimeId) =>
+  Stream<BuiltMap<String, Reservation>> watchReservedTicket(
+          String showTimeId) =>
       _userLocalSource.token$
           .take(1)
           .exhaustMap((token) => _connectSocket(token, showTimeId));
 
-  Stream<BuiltMap<String, String>> _connectSocket(
+  Stream<BuiltMap<String, Reservation>> _connectSocket(
       String token, String showTimeId) {
     final roomId = 'reservation:${showTimeId}';
 
     io.Socket socket;
-    StreamController<BuiltMap<String, String>> controller;
+    StreamController<BuiltMap<String, Reservation>> controller;
 
     controller = StreamController(
       sync: true,
@@ -92,7 +100,13 @@ class ReservationRepositoryImpl implements ReservationRepository {
           socket.on('reserved', (data) {
             print('[ReservationRepositoryImpl] reserved $data');
 
-            final map = BuiltMap<String, String>.from(data as Map<String, dynamic>);
+            final response = serializers.deserialize(
+              data,
+              specifiedType: builtMapStringReservationResponse,
+            ) as BuiltMap<String, ReservationResponse>;
+            final map = response.map(
+                (k, v) => MapEntry(k, _reservationResponseToReservation(v)));
+
             assert(controller != null);
             controller.add(map);
           });

@@ -23,24 +23,32 @@ import 'remote/response/user_response.dart';
 
 part 'serializers.g.dart';
 
-final builtListMovieResponse = FullType(
+const builtListMovieResponse = FullType(
   BuiltList,
   [FullType(MovieResponse)],
 );
 
-final builtListShowTimeAndTheatreResponse = FullType(
+const builtListShowTimeAndTheatreResponse = FullType(
   BuiltList,
   [FullType(ShowTimeAndTheatreResponse)],
 );
 
-final builtListTicketResponse = FullType(
+const builtListTicketResponse = FullType(
   BuiltList,
   [FullType(TicketResponse)],
 );
 
-final builtListProductResponse = FullType(
+const builtListProductResponse = FullType(
   BuiltList,
   [FullType(ProductResponse)],
+);
+
+const builtMapStringReservationResponse = FullType(
+  BuiltMap,
+  [
+    FullType(String),
+    FullType(ReservationResponse),
+  ],
 );
 
 @SerializersFor([
@@ -84,6 +92,10 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListProductResponse,
         () => ListBuilder<ProductResponse>(),
+      )
+      ..addBuilderFactory(
+        builtMapStringReservationResponse,
+        () => MapBuilder<String, ReservationResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))

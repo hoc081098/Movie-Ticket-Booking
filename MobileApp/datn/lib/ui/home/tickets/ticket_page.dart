@@ -15,8 +15,10 @@ import '../../../domain/model/seat.dart';
 import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
+import '../../../domain/model/user.dart';
 import '../../../domain/repository/reservation_repository.dart';
 import '../../../domain/repository/ticket_repository.dart';
+import '../../../domain/repository/user_repository.dart';
 import '../../../utils/error.dart';
 import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
@@ -70,10 +72,14 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   (acc, value, _) => acc.rebuild(
                     (lb) => lb.map(
                       (ticket) {
-                        final id = value[ticket.id];
-                        return id == null
+                        final reservation = value[ticket.id];
+                        return reservation == null
                             ? ticket
-                            : ticket.rebuild((b) => b.reservation = id);
+                            : ticket.rebuild(
+                                (b) => b
+                                  ..reservation.replace(reservation)
+                                  ..reservationId = reservation.id,
+                              );
                       },
                     ),
                   ),
@@ -86,9 +92,15 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
         enableLogger: true,
       );
 
+      final userRepo = Provider.of<UserRepository>(context);
+
       loaderBloc.state$
           .distinct()
-          .map((state) => conflict(state, selectedTicketIdsS.value))
+          .map((state) => conflict(
+                state,
+                selectedTicketIdsS.value,
+                userRepo.user$.value,
+              ))
           .where((tickets) => tickets.isNotEmpty)
           .doOnData(handleConflictSelection)
           .exhaustMap(showConflictDialog)
@@ -161,7 +173,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                       tickets: state.content,
                       selectedTicketIds$: selectedTicketIdsS,
                       tapTicket: (ticket) {
-                        if (ticket == null || ticket.reservation != null) {
+                        if (ticket == null || ticket.reservationId != null) {
                           throw Exception('Something was wrong');
                         }
 
@@ -285,10 +297,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
     );
   }
 
-  BuiltSet<Ticket> conflict(
+  static BuiltSet<Ticket> conflict(
     LoaderState<BuiltList<Ticket>> state,
     BuiltList<String> selectedIds,
+    Optional<User> userOptional,
   ) {
+    final uid = userOptional?.fold(() => null, (u) => u.uid);
+
     final map = BuiltMap.of(
       Map.fromEntries(
         state.content.map((t) => MapEntry(t.id, t)),
@@ -296,7 +311,9 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
     );
     return selectedIds
         .map((id) => map[id])
-        .where((ticket) => ticket.reservation != null)
+        .where((ticket) => ticket.reservation == null
+            ? ticket.reservationId != null
+            : ticket.reservation.user.uid != uid)
         .toBuiltSet();
   }
 
@@ -572,7 +589,7 @@ class SeatWidget extends StatelessWidget {
     final seat = ticket.seat;
     final width = widthPerSeat * seat.count + (seat.count - 1) * 1;
 
-    if (ticket.reservation != null) {
+    if (ticket.reservationId != null) {
       return Container(
         margin: const EdgeInsets.all(0.5),
         width: width,

@@ -9,6 +9,7 @@ import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/person.dart';
 import '../domain/model/product.dart';
+import '../domain/model/reservation.dart';
 import '../domain/model/seat.dart';
 import '../domain/model/show_time.dart';
 import '../domain/model/theatre.dart';
@@ -26,6 +27,7 @@ import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
 import 'remote/response/product_response.dart';
+import 'remote/response/reservation_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
 import 'remote/response/theatre_response.dart';
@@ -331,7 +333,7 @@ Ticket ticketResponseToTicket(TicketResponse response) {
     id: response.id,
     is_active: response.is_active ?? true,
     price: response.price,
-    reservation: response.reservation,
+    reservationId: response.reservation,
     seat: Seat.from(
       is_active: seat.is_active ?? true,
       coordinates: SeatCoordinates.from(
@@ -350,6 +352,7 @@ Ticket ticketResponseToTicket(TicketResponse response) {
     show_time: response.show_time,
     createdAt: response.createdAt,
     updatedAt: response.updatedAt,
+    reservation: null,
   );
 }
 
@@ -378,4 +381,28 @@ Card cardResponseToCard(CardResponse response) {
       ..id = response.id
       ..last4 = response.last4,
   );
+}
+
+Reservation reservationResponseToReservation(ReservationResponse response) {
+  return Reservation((b) {
+    final productIds = response.products.map((p) => Tuple2(p.id, p.quantity));
+    final productIdWithCountsBuilder = b.productIdWithCounts
+      ..safeReplace(productIds);
+    final user = userResponseToUser(response.user);
+    final userBuilder = b.user..replace(user);
+
+    return b
+      ..id = response.id
+      ..createdAt = response.createdAt
+      ..email = response.email
+      ..isActive = response.is_active ?? true
+      ..originalPrice = response.original_price
+      ..paymentIntentId = response.payment_intent_id
+      ..phoneNumber = response.phone_number
+      ..productIdWithCounts = productIdWithCountsBuilder
+      ..showTimeId = response.show_time
+      ..totalPrice = response.total_price
+      ..updatedAt = response.updatedAt
+      ..user = userBuilder;
+  });
 }

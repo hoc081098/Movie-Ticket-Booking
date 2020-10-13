@@ -14,7 +14,7 @@ class _$Ticket extends Ticket {
   @override
   final int price;
   @override
-  final String reservation;
+  final String reservationId;
   @override
   final Seat seat;
   @override
@@ -23,6 +23,8 @@ class _$Ticket extends Ticket {
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
+  @override
+  final Reservation reservation;
 
   factory _$Ticket([void Function(TicketBuilder) updates]) =>
       (new TicketBuilder()..update(updates)).build();
@@ -31,11 +33,12 @@ class _$Ticket extends Ticket {
       {this.id,
       this.is_active,
       this.price,
-      this.reservation,
+      this.reservationId,
       this.seat,
       this.show_time,
       this.createdAt,
-      this.updatedAt})
+      this.updatedAt,
+      this.reservation})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Ticket', 'id');
@@ -74,11 +77,12 @@ class _$Ticket extends Ticket {
         id == other.id &&
         is_active == other.is_active &&
         price == other.price &&
-        reservation == other.reservation &&
+        reservationId == other.reservationId &&
         seat == other.seat &&
         show_time == other.show_time &&
         createdAt == other.createdAt &&
-        updatedAt == other.updatedAt;
+        updatedAt == other.updatedAt &&
+        reservation == other.reservation;
   }
 
   @override
@@ -88,13 +92,15 @@ class _$Ticket extends Ticket {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc($jc(0, id.hashCode), is_active.hashCode),
-                            price.hashCode),
-                        reservation.hashCode),
-                    seat.hashCode),
-                show_time.hashCode),
-            createdAt.hashCode),
-        updatedAt.hashCode));
+                        $jc(
+                            $jc($jc($jc(0, id.hashCode), is_active.hashCode),
+                                price.hashCode),
+                            reservationId.hashCode),
+                        seat.hashCode),
+                    show_time.hashCode),
+                createdAt.hashCode),
+            updatedAt.hashCode),
+        reservation.hashCode));
   }
 
   @override
@@ -103,11 +109,12 @@ class _$Ticket extends Ticket {
           ..add('id', id)
           ..add('is_active', is_active)
           ..add('price', price)
-          ..add('reservation', reservation)
+          ..add('reservationId', reservationId)
           ..add('seat', seat)
           ..add('show_time', show_time)
           ..add('createdAt', createdAt)
-          ..add('updatedAt', updatedAt))
+          ..add('updatedAt', updatedAt)
+          ..add('reservation', reservation))
         .toString();
   }
 }
@@ -127,9 +134,10 @@ class TicketBuilder implements Builder<Ticket, TicketBuilder> {
   int get price => _$this._price;
   set price(int price) => _$this._price = price;
 
-  String _reservation;
-  String get reservation => _$this._reservation;
-  set reservation(String reservation) => _$this._reservation = reservation;
+  String _reservationId;
+  String get reservationId => _$this._reservationId;
+  set reservationId(String reservationId) =>
+      _$this._reservationId = reservationId;
 
   SeatBuilder _seat;
   SeatBuilder get seat => _$this._seat ??= new SeatBuilder();
@@ -147,6 +155,12 @@ class TicketBuilder implements Builder<Ticket, TicketBuilder> {
   DateTime get updatedAt => _$this._updatedAt;
   set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
 
+  ReservationBuilder _reservation;
+  ReservationBuilder get reservation =>
+      _$this._reservation ??= new ReservationBuilder();
+  set reservation(ReservationBuilder reservation) =>
+      _$this._reservation = reservation;
+
   TicketBuilder();
 
   TicketBuilder get _$this {
@@ -154,11 +168,12 @@ class TicketBuilder implements Builder<Ticket, TicketBuilder> {
       _id = _$v.id;
       _is_active = _$v.is_active;
       _price = _$v.price;
-      _reservation = _$v.reservation;
+      _reservationId = _$v.reservationId;
       _seat = _$v.seat?.toBuilder();
       _show_time = _$v.show_time;
       _createdAt = _$v.createdAt;
       _updatedAt = _$v.updatedAt;
+      _reservation = _$v.reservation?.toBuilder();
       _$v = null;
     }
     return this;
@@ -186,16 +201,20 @@ class TicketBuilder implements Builder<Ticket, TicketBuilder> {
               id: id,
               is_active: is_active,
               price: price,
-              reservation: reservation,
+              reservationId: reservationId,
               seat: seat.build(),
               show_time: show_time,
               createdAt: createdAt,
-              updatedAt: updatedAt);
+              updatedAt: updatedAt,
+              reservation: _reservation?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'seat';
         seat.build();
+
+        _$failedField = 'reservation';
+        _reservation?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Ticket', _$failedField, e.toString());
