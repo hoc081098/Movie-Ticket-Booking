@@ -144,7 +144,7 @@ export class UsersService {
     return 'SUCCESS';
   }
 
-  async delete(uid: string) {
+  async delete(uid: string): Promise<User> {
     const result = await this.userModel.findOneAndDelete({ uid });
 
     if (result == null) {
@@ -190,5 +190,13 @@ export class UsersService {
         .skip(skip)
         .limit(limit)
         .exec();
+  }
+
+  async blockUser(uid: string): Promise<User> {
+    return await this.userModel.findOneAndUpdate(
+        { uid },
+        { is_active: false },
+        { new: true },
+    ).exec();
   }
 }

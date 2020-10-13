@@ -3,6 +3,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers.dart';
+import 'user_response.dart';
 
 part 'reservation_response.g.dart';
 
@@ -32,7 +33,7 @@ abstract class ReservationResponse
 
   DateTime get updatedAt;
 
-  String get user;
+  UserResponse get user;
 
   ReservationResponse._();
 
