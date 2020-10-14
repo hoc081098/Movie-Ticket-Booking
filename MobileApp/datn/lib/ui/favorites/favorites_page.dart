@@ -106,6 +106,8 @@ class _FavoritesListState extends State<FavoritesList> with DisposeBagMixin {
               movie$.exhaustMap((movie) => repo.toggleFavorite(movie.id)))
           .listen(null)
           .disposedBy(bag);
+
+      return const Object();
     }();
   }
 
