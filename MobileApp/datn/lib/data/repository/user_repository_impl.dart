@@ -129,6 +129,7 @@ class UserRepositoryImpl implements UserRepository {
 
       if (!currentUser.emailVerified) {
         unawaited(currentUser.sendEmailVerification());
+        await logout();
         throw const NotVerifiedEmail();
       }
     }

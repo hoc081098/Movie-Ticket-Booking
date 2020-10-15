@@ -37,12 +37,6 @@ class _CommentsPageState extends State<CommentsPage>
   final commentDateFormat = DateFormat('dd/MM/yy');
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 

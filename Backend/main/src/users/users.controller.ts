@@ -56,7 +56,7 @@ export class UsersController {
   @Delete(':uid')
   delete(
       @Param('uid') uid: string,
-  ) {
+  ): Promise<User> {
     return this.usersService.delete(uid);
   }
 
@@ -68,5 +68,16 @@ export class UsersController {
       @Query() dto: PaginationDto,
   ): Promise<User[]> {
     return this.usersService.getAllUsers(dto);
+  }
+
+
+  @ForAdmin()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @Put(':uid/block')
+  blockUser(
+      @Param('uid') uid: string,
+  ): Promise<User> {
+    return this.usersService.blockUser(uid);
   }
 }

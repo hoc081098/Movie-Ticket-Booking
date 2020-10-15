@@ -144,7 +144,7 @@ export class UsersService {
     return 'SUCCESS';
   }
 
-  async delete(uid: string) {
+  async delete(uid: string): Promise<User> {
     const result = await this.userModel.findOneAndDelete({ uid });
 
     if (result == null) {
@@ -176,6 +176,10 @@ export class UsersService {
           payment_method: card.id,
           customer: typeof card.customer === 'string' ? card.customer : card.customer.id,
         })
+        .then(v => {
+          this.logger.debug(`Charge ${amount}${currency} success`);
+          return v;
+        })
         .catch(error => {
           this.logger.debug(`Charge ${amount}${currency} failed: ${JSON.stringify(error)}`);
           return Promise.reject(new HttpException('Charge failed. Please try again', HttpStatus.PAYMENT_REQUIRED));
@@ -190,5 +194,13 @@ export class UsersService {
         .skip(skip)
         .limit(limit)
         .exec();
+  }
+
+  async blockUser(uid: string): Promise<User> {
+    return await this.userModel.findOneAndUpdate(
+        { uid },
+        { is_active: false },
+        { new: true },
+    ).exec();
   }
 }

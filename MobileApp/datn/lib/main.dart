@@ -40,7 +40,7 @@ void main() async {
   //
   // Env
   //
-  await EnvManager.shared.config();
+  await EnvManager.shared.config(EnvPath.DEV);
 
   //
   // Firebase, Google, Facebook
@@ -107,7 +107,11 @@ void main() async {
     mappers.ticketResponseToTicket,
   );
 
-  final reservationRepository = ReservationRepositoryImpl(authClient);
+  final reservationRepository = ReservationRepositoryImpl(
+    authClient,
+    userLocalSource,
+    mappers.reservationResponseToReservation,
+  );
 
   final favoritesRepository = FavoritesRepositoryImpl(
     authClient,

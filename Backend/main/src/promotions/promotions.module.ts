@@ -6,6 +6,7 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '../config/config.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Promotion, PromotionSchema } from './promotion.schema';
+import { ShowTime, ShowTimeSchema } from '../show-times/show-time.schema';
 
 @Module({
   imports: [
@@ -13,6 +14,10 @@ import { Promotion, PromotionSchema } from './promotion.schema';
       {
         name: Promotion.name,
         schema: PromotionSchema,
+      },
+      {
+        name: ShowTime.name,
+        schema: ShowTimeSchema,
       }
     ]),
     AuthModule,
@@ -20,6 +25,7 @@ import { Promotion, PromotionSchema } from './promotion.schema';
     ConfigModule,
   ],
   controllers: [PromotionsController],
-  providers: [PromotionsService]
+  providers: [PromotionsService],
+  exports: [PromotionsService],
 })
 export class PromotionsModule {}

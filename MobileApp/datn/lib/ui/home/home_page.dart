@@ -95,6 +95,8 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           enableLogger: true,
         )..fetch();
       }();
+
+      return const Object();
     }();
   }
 

@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/utils/type_defs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -13,6 +12,7 @@ import 'package:stream_loader/stream_loader.dart';
 import '../../domain/model/movie.dart';
 import '../../domain/repository/favorites_repository.dart';
 import '../../utils/error.dart';
+import '../../utils/type_defs.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
@@ -106,6 +106,8 @@ class _FavoritesListState extends State<FavoritesList> with DisposeBagMixin {
               movie$.exhaustMap((movie) => repo.toggleFavorite(movie.id)))
           .listen(null)
           .disposedBy(bag);
+
+      return const Object();
     }();
   }
 

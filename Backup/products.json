@@ -1,0 +1,81 @@
+[{
+  "_id": {
+    "$oid": "5f72355fc721d31f4c2fd7bb"
+  },
+  "description": "1 Corn + 1 Drink (PEPSI/7UP/MIRINDA CAM/MIRINDA SARSI)",
+  "image": "https://s3img.vcdn.vn/123phim/2019/11/028da9b5ccfd9bfedca34b2c1614f324.png",
+  "is_active": true,
+  "name": "iCombo 1 Big",
+  "price": 62000,
+  "createdAt": {
+    "$date": "2020-09-28T19:11:27.361Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-28T19:11:27.361Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f72355fc721d31f4c2fd7bd"
+  },
+  "description": "1 Corn + 3 Drinks 22 Oz(PEPSI/7UP/MIRINDA CAM/MIRINDA SARSI/LIPTON/Water) + 1 SNACK",
+  "image": "https://s3img.vcdn.vn/123phim/2018/09/12c175c92d4c9fc879afb044299abb74.jpg",
+  "is_active": true,
+  "name": "iCombo Family 1",
+  "price": 107000,
+  "createdAt": {
+    "$date": "2020-09-28T19:11:27.363Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-28T19:11:27.363Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f72355fc721d31f4c2fd7bc"
+  },
+  "description": "1 Corn + 2 Drinks (PEPSI/7UP/MIRINDA CAM/MIRINDA SARSI)",
+  "image": "https://s3img.vcdn.vn/123phim/2018/09/12c175c92d4c9fc879afb044299abb74.jpg",
+  "is_active": true,
+  "name": "iCombo 2",
+  "price": 72000,
+  "createdAt": {
+    "$date": "2020-09-28T19:11:27.362Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-28T19:11:27.362Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f72355fc721d31f4c2fd7bf"
+  },
+  "description": "1 Corn + 1 (PEPSI/7UP/MIRINDA CAM/MIRINDA SARSI)",
+  "image": "https://s3img.vcdn.vn/123phim/2019/11/028da9b5ccfd9bfedca34b2c1614f324.png",
+  "is_active": true,
+  "name": "iWe Bare Bears Combo 1",
+  "price": 154000,
+  "createdAt": {
+    "$date": "2020-09-28T19:11:27.363Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-28T19:11:27.363Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f72355fc721d31f4c2fd7be"
+  },
+  "description": "2 Corns + 4 Drinks (PEPSI/7UP/MIRINDA CAM/MIRINDA SARSI/LIPTON) + 1 SNACK",
+  "image": "https://s3img.vcdn.vn/123phim/2018/09/12c175c92d4c9fc879afb044299abb74.jpg",
+  "is_active": true,
+  "name": "iCombo Family 2",
+  "price": 152000,
+  "createdAt": {
+    "$date": "2020-09-28T19:11:27.363Z"
+  },
+  "updatedAt": {
+    "$date": "2020-09-28T19:11:27.363Z"
+  },
+  "__v": 0
+}]

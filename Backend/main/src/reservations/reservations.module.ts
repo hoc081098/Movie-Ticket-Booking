@@ -8,9 +8,12 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '../config/config.module';
 import { Product, ProductSchema } from '../products/product.schema';
 import { Ticket, TicketSchema } from '../seats/ticket.schema';
+import { SocketModule } from '../socket/socket.module';
+import { PromotionsModule } from '../promotions/promotions.module';
 
 @Module({
   imports: [
+    SocketModule,
     MongooseModule.forFeature([
       {
         name: Reservation.name,
@@ -28,6 +31,7 @@ import { Ticket, TicketSchema } from '../seats/ticket.schema';
     AuthModule,
     UsersModule,
     ConfigModule,
+    PromotionsModule,
   ],
   controllers: [ReservationsController],
   providers: [ReservationsService]

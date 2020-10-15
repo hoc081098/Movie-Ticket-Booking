@@ -13,6 +13,7 @@ import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
 import 'remote/response/product_response.dart';
+import 'remote/response/promotion_response.dart';
 import 'remote/response/reservation_response.dart';
 import 'remote/response/seat_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
@@ -23,24 +24,37 @@ import 'remote/response/user_response.dart';
 
 part 'serializers.g.dart';
 
-final builtListMovieResponse = FullType(
+const builtListMovieResponse = FullType(
   BuiltList,
   [FullType(MovieResponse)],
 );
 
-final builtListShowTimeAndTheatreResponse = FullType(
+const builtListShowTimeAndTheatreResponse = FullType(
   BuiltList,
   [FullType(ShowTimeAndTheatreResponse)],
 );
 
-final builtListTicketResponse = FullType(
+const builtListTicketResponse = FullType(
   BuiltList,
   [FullType(TicketResponse)],
 );
 
-final builtListProductResponse = FullType(
+const builtListProductResponse = FullType(
   BuiltList,
   [FullType(ProductResponse)],
+);
+
+const builtMapStringReservationResponse = FullType(
+  BuiltMap,
+  [
+    FullType(String),
+    FullType(ReservationResponse),
+  ],
+);
+
+const builtListPromotionResponses = FullType(
+  BuiltList,
+  [FullType(PromotionResponse)],
 );
 
 @SerializersFor([
@@ -65,6 +79,7 @@ final builtListProductResponse = FullType(
   ReservationResponse,
   ProductAndCountResponse,
   FavoriteResponse,
+  PromotionResponse,
 ])
 final Serializers _serializers = _$_serializers;
 
@@ -84,6 +99,14 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListProductResponse,
         () => ListBuilder<ProductResponse>(),
+      )
+      ..addBuilderFactory(
+        builtMapStringReservationResponse,
+        () => MapBuilder<String, ReservationResponse>(),
+      )
+      ..addBuilderFactory(
+        builtListPromotionResponses,
+        () => ListBuilder<PromotionResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))

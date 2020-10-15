@@ -15,7 +15,10 @@ import '../../../domain/model/seat.dart';
 import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
+import '../../../domain/model/user.dart';
+import '../../../domain/repository/reservation_repository.dart';
 import '../../../domain/repository/ticket_repository.dart';
+import '../../../domain/repository/user_repository.dart';
 import '../../../utils/error.dart';
 import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
@@ -58,13 +61,53 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
 
     bloc ??= () {
       final ticketRepository = Provider.of<TicketRepository>(context);
-      final loaderFunction =
-          () => ticketRepository.getTicketsByShowTimeId(widget.showTime.id);
-      return LoaderBloc(
+      final reservationRepository = Provider.of<ReservationRepository>(context);
+
+      final loaderFunction = () => ticketRepository
+          .getTicketsByShowTimeId(widget.showTime.id)
+          .exhaustMap(
+            (tickets) => reservationRepository
+                .watchReservedTicket(widget.showTime.id)
+                .scan<BuiltList<Ticket>>(
+                  (acc, value, _) => acc.rebuild(
+                    (lb) => lb.map(
+                      (ticket) {
+                        final reservation = value[ticket.id];
+                        return reservation == null
+                            ? ticket
+                            : ticket.rebuild(
+                                (b) => b
+                                  ..reservation.replace(reservation)
+                                  ..reservationId = reservation.id,
+                              );
+                      },
+                    ),
+                  ),
+                  tickets,
+                )
+                .startWith(tickets),
+          );
+      final loaderBloc = LoaderBloc(
         loaderFunction: loaderFunction,
-        refresherFunction: loaderFunction,
         enableLogger: true,
-      )..fetch();
+      );
+
+      final userRepo = Provider.of<UserRepository>(context);
+
+      loaderBloc.state$
+          .distinct()
+          .map((state) => conflict(
+                state,
+                selectedTicketIdsS.value,
+                userRepo.user$.value,
+              ))
+          .where((tickets) => tickets.isNotEmpty)
+          .doOnData(handleConflictSelection)
+          .exhaustMap(showConflictDialog)
+          .listen(null)
+          .disposedBy(bag);
+
+      return loaderBloc..fetch();
     }();
   }
 
@@ -130,7 +173,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                       tickets: state.content,
                       selectedTicketIds$: selectedTicketIdsS,
                       tapTicket: (ticket) {
-                        if (ticket == null || ticket.reservation != null) {
+                        if (ticket == null || ticket.reservationId != null) {
                           throw Exception('Something was wrong');
                         }
 
@@ -245,6 +288,62 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       },
     );
   }
+
+  void handleConflictSelection(BuiltSet<Ticket> conflictTickets) {
+    selectedTicketIdsS.add(
+      BuiltSet.of(selectedTicketIdsS.value)
+          .difference(conflictTickets)
+          .toBuiltList(),
+    );
+  }
+
+  static BuiltSet<Ticket> conflict(
+    LoaderState<BuiltList<Ticket>> state,
+    BuiltList<String> selectedIds,
+    Optional<User> userOptional,
+  ) {
+    if (state.content == null) {
+      return const <Ticket>{}.build();
+    }
+
+    final uid = userOptional?.fold(() => null, (u) => u.uid);
+
+    final map = BuiltMap.of(
+      Map.fromEntries(
+        state.content.map((t) => MapEntry(t.id, t)),
+      ),
+    );
+    return selectedIds
+        .map((id) => map[id])
+        .where((ticket) => ticket.reservation == null
+            ? ticket.reservationId != null
+            : ticket.reservation.user.uid != uid)
+        .toBuiltSet();
+  }
+
+  Stream<void> showConflictDialog(BuiltSet<Ticket> _) => Rx.defer(
+        () => showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext dialogContext) {
+            return AlertDialog(
+              title: Text('Warning'),
+              content: Text(
+                  'Some seats you choose have been reserved. Please select other seats.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                    AppScaffold.of(context)
+                        .popUntil(ModalRoute.withName(TicketsPage.routeName));
+                  },
+                ),
+              ],
+            );
+          },
+        ).asStream(),
+      );
 }
 
 class ScreenWidget extends StatelessWidget {
@@ -343,12 +442,25 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
   void initState() {
     super.initState();
 
+    init();
+  }
+
+  void init() {
     final seats = widget.tickets.map((t) => t.seat);
     maxX = seats.map((s) => s.coordinates.x + s.count - 1).reduce(math.max);
     maxY = seats.map((s) => s.coordinates.y).reduce(math.max);
 
     ticketByCoordinates = Map.fromEntries(
         widget.tickets.map((t) => MapEntry(t.seat.coordinates, t)));
+  }
+
+  @override
+  void didUpdateWidget(SeatsGridWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.tickets != widget.tickets) {
+      init();
+    }
   }
 
   @override
@@ -481,7 +593,7 @@ class SeatWidget extends StatelessWidget {
     final seat = ticket.seat;
     final width = widthPerSeat * seat.count + (seat.count - 1) * 1;
 
-    if (ticket.reservation != null) {
+    if (ticket.reservationId != null) {
       return Container(
         margin: const EdgeInsets.all(0.5),
         width: width,

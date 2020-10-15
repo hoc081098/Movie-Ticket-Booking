@@ -19,6 +19,9 @@ import { PromotionsModule } from './promotions/promotions.module';
 import { ProductsModule } from './products/products.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import * as admin from 'firebase-admin';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -37,6 +40,9 @@ import * as admin from 'firebase-admin';
         credential: admin.credential.applicationDefault(),
       }),
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'static'),
+    }),
     ConfigModule,
     AuthModule,
     UsersModule,
@@ -52,6 +58,7 @@ import * as admin from 'firebase-admin';
     PromotionsModule,
     ProductsModule,
     FavoritesModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [

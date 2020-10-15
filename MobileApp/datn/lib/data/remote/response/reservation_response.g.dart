@@ -57,7 +57,8 @@ class _$ReservationResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
       'user',
-      serializers.serialize(object.user, specifiedType: const FullType(String)),
+      serializers.serialize(object.user,
+          specifiedType: const FullType(UserResponse)),
     ];
     if (object.is_active != null) {
       result
@@ -127,8 +128,8 @@ class _$ReservationResponseSerializer
               specifiedType: const FullType(DateTime)) as DateTime;
           break;
         case 'user':
-          result.user = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(UserResponse)) as UserResponse);
           break;
       }
     }
@@ -213,7 +214,7 @@ class _$ReservationResponse extends ReservationResponse {
   @override
   final DateTime updatedAt;
   @override
-  final String user;
+  final UserResponse user;
 
   factory _$ReservationResponse(
           [void Function(ReservationResponseBuilder) updates]) =>
@@ -394,9 +395,9 @@ class ReservationResponseBuilder
   DateTime get updatedAt => _$this._updatedAt;
   set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
 
-  String _user;
-  String get user => _$this._user;
-  set user(String user) => _$this._user = user;
+  UserResponseBuilder _user;
+  UserResponseBuilder get user => _$this._user ??= new UserResponseBuilder();
+  set user(UserResponseBuilder user) => _$this._user = user;
 
   ReservationResponseBuilder();
 
@@ -413,7 +414,7 @@ class ReservationResponseBuilder
       _show_time = _$v.show_time;
       _total_price = _$v.total_price;
       _updatedAt = _$v.updatedAt;
-      _user = _$v.user;
+      _user = _$v.user?.toBuilder();
       _$v = null;
     }
     return this;
@@ -449,12 +450,15 @@ class ReservationResponseBuilder
               show_time: show_time,
               total_price: total_price,
               updatedAt: updatedAt,
-              user: user);
+              user: user.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'products';
         products.build();
+
+        _$failedField = 'user';
+        user.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'ReservationResponse', _$failedField, e.toString());

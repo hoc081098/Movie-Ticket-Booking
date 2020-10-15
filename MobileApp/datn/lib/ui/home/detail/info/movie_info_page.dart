@@ -83,6 +83,8 @@ class _MovieInfoPageState extends State<MovieInfoPage>
           .exhaustMap((_) => repo.toggleFavorite(widget.movieId))
           .listen(null)
           .disposedBy(bag);
+
+      return const Object();
     }();
   }
 

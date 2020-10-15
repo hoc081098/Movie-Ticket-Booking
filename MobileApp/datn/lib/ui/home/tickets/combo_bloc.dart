@@ -9,6 +9,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../../domain/repository/product_repository.dart';
 import '../../../utils/iterable.dart';
+import '../../../utils/streams.dart';
 import 'combo_state.dart';
 
 class MaxComboCount {
@@ -37,29 +38,34 @@ class ComboBloc extends BaseBloc {
     );
 
     final fetchState$ = _fetchS.stream
-        .exhaustMap((_) => productRepository.getProducts())
-        .map(
-          (products) => products
-              .map((p) => ComboItem.from(product: p, count: 0))
-              .toBuiltList(),
+        .debug('FETCH')
+        .exhaustMap(
+          (_) => productRepository
+              .getProducts()
+              .map(
+                (products) => products
+                    .map((p) => ComboItem.from(product: p, count: 0))
+                    .toBuiltList(),
+              )
+              .map(
+                (items) => ComboState.from(
+                  error: null,
+                  isLoading: false,
+                  items: items,
+                  totalPrice: 0,
+                ),
+              )
+              .startWith(loadingState)
+              .onErrorReturnWith(
+                (error) => ComboState.from(
+                  error: error,
+                  isLoading: false,
+                  items: BuiltList.of(<ComboItem>[]),
+                  totalPrice: 0,
+                ),
+              ),
         )
-        .map(
-          (items) => ComboState.from(
-            error: null,
-            isLoading: false,
-            items: items,
-            totalPrice: 0,
-          ),
-        )
-        .startWith(loadingState)
-        .onErrorReturnWith(
-          (error) => ComboState.from(
-            error: error,
-            isLoading: false,
-            items: BuiltList.of(<ComboItem>[]),
-            totalPrice: 0,
-          ),
-        );
+        .debug('FETCH STATE');
 
     final stateS = BehaviorSubject.seeded(loadingState);
     final incDecState$ = Rx.merge([
@@ -124,5 +130,8 @@ class ComboBloc extends BaseBloc {
   void decrement(ComboItem item) => _decrementS.add(item);
 
   @override
-  void dispose() => _bag.dispose();
+  void dispose() {
+    print('$runtimeType disposed');
+    _bag.dispose();
+  }
 }

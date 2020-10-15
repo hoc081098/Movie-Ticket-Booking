@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
+            integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<button id="btn-leave">Leave</button>
+
+<script>
+    const socket = io('https://datn-081098.herokuapp.com/', {
+        path: '/socket',
+        query: {
+            token: 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNzA1ZmNmY2NjMTg4Njg2ZjhhZjkyYWJiZjAxYzRmMjZiZDVlODMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGV0cnVzIE5ndXnhu4VuIFRow6FpIEjhu41jIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdnTzJuOUxqRWZzSFFEYWdLdElSaTFYaUxEdDQ2OWFGOTIyVlNZYUtBPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2RhdG4tY2E5MjkiLCJhdWQiOiJkYXRuLWNhOTI5IiwiYXV0aF90aW1lIjoxNjAxMjY2NTM3LCJ1c2VyX2lkIjoibDlTdGd6UWxSMWgzWHBhV0NmM2p1eVlnRzc3MiIsInN1YiI6Imw5U3RnelFsUjFoM1hwYVdDZjNqdXlZZ0c3NzIiLCJpYXQiOjE2MDI0ODkyMjYsImV4cCI6MTYwMjQ5MjgyNiwiZW1haWwiOiJob2MwODEwOThAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMDkxOTMzMzgwMzQ3NTk1MzE0NjMiXSwiZW1haWwiOlsiaG9jMDgxMDk4QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.IBesmNHUBQ4kjrBBzXVv2Mh6nduBjBGbP5VKMb9XRuhfXhCwNmwYQMtVI0N3fTGgWyWsYbjeKgsXljDxwkY3nQRi549OZG9QRDNfwDm6ZDJe5wjtqtP_mKrJCTWUqi4SmXt9fi0tPQH6YVNZm2DN5qNRY1ijF2OoYzFfyL9_QiPzxOkpljrs4ndMTnPmP14Yj5cUuXioVENcEmh6DYrWDtlylTKJJuJDyARM4EIxG0tCKivqSF5_JvLhgMAauzFpe7oh5ROqOmOhwjrYI-F6UIJMZtl_kwAtpjEKx_ueRKYFXh9WnKpLsS07I3QJGr70JG-lvrLXntVtzaUp1Sg0JA',
+        }
+    });
+    console.log('Connection ', socket);
+
+    const room = 'reservation:' + 'hihi';
+    socket.emit('join', room);
+    socket.on('reserved', (data) => console.log({data}));
+
+    document.getElementById('btn-leave').addEventListener('click', e => {
+        socket.emit('leave', room);
+    });
+</script>
+
+</body>
+</html>
