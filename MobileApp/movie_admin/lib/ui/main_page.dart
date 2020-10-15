@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:movie_admin/domain/repository/manager_repository.dart';
+import 'package:movie_admin/ui/users/manager_users_bloc.dart';
+import 'package:movie_admin/ui/users/manager_users_page.dart';
 
 import '../domain/model/user.dart';
 import '../domain/repository/user_repository.dart';
@@ -21,6 +25,13 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> with DisposeBagMixin {
   static final homeRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) => HomePage(),
+    ManagerUsersPage.routeName: (context, setting) {
+      final managerRepository = Provider.of<ManagerRepository>(context);
+      return BlocProvider<ManagerUsersBloc>(
+        child: ManagerUsersPage(),
+        initBloc: () => ManagerUsersBloc(managerRepository),
+      );
+    }
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{
