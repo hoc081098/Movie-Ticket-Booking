@@ -32,7 +32,6 @@ class ReservationRepositoryImpl implements ReservationRepository {
     String phoneNumber,
     String email,
     BuiltList<Tuple2<Product, int>> products,
-    int originalPrice,
     String payCardId,
     BuiltList<String> ticketIds,
     Promotion promotion,
@@ -49,7 +48,6 @@ class ReservationRepositoryImpl implements ReservationRepository {
             },
           )
           .toList(growable: false),
-      'original_price': originalPrice,
       'pay_card_id': payCardId,
       'ticket_ids': ticketIds.toList(growable: false),
       'promotion_id': promotion?.id,

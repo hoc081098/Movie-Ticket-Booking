@@ -176,6 +176,10 @@ export class UsersService {
           payment_method: card.id,
           customer: typeof card.customer === 'string' ? card.customer : card.customer.id,
         })
+        .then(v => {
+          this.logger.debug(`Charge ${amount}${currency} success`);
+          return v;
+        })
         .catch(error => {
           this.logger.debug(`Charge ${amount}${currency} failed: ${JSON.stringify(error)}`);
           return Promise.reject(new HttpException('Charge failed. Please try again', HttpStatus.PAYMENT_REQUIRED));

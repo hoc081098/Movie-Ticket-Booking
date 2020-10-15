@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/app_scaffold.dart';
+import 'package:datn/ui/home/detail/movie_detail_page.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
@@ -142,13 +144,11 @@ class CheckoutBloc implements BaseBloc {
                   phoneNumber: emailPhoneCardPromotion.item2,
                   email: emailPhoneCardPromotion.item1,
                   products: products,
-                  originalPrice: tickets.fold(0, (acc, e) => acc + e.price) +
-                      products.fold(
-                          0, (acc, e) => acc + e.item1.price * e.item2),
                   payCardId: emailPhoneCardPromotion.item3.id,
                   ticketIds: [for (final t in tickets) t.id].build(),
                   promotion: emailPhoneCardPromotion.item4,
                 )
+                .debug('POST REQUEST')
                 .doOnListen(() => _isLoadingS.add(true))
                 .doOnCancel(() => _isLoadingS.add(false))
                 .mapTo<Message>(const CheckoutSuccess())
@@ -283,6 +283,9 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   void handleMessage(Message message) async {
     if (message is CheckoutSuccess) {
       scaffoldKey.showSnackBar('Checkout successfully');
+      await delay(700);
+      AppScaffold.of(context)
+          .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
     }
     if (message is CheckoutFailure) {
       scaffoldKey

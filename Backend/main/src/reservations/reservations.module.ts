@@ -9,6 +9,7 @@ import { ConfigModule } from '../config/config.module';
 import { Product, ProductSchema } from '../products/product.schema';
 import { Ticket, TicketSchema } from '../seats/ticket.schema';
 import { SocketModule } from '../socket/socket.module';
+import { PromotionsModule } from '../promotions/promotions.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SocketModule } from '../socket/socket.module';
     AuthModule,
     UsersModule,
     ConfigModule,
+    PromotionsModule,
   ],
   controllers: [ReservationsController],
   providers: [ReservationsService]

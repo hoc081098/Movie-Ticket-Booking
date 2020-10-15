@@ -13,11 +13,11 @@ extension NotificationExt<T> on Notification<T> {
   String get description {
     switch (kind) {
       case Kind.OnData:
-        return 'data(${value})';
+        return 'data($value)';
       case Kind.OnDone:
         return 'done';
       case Kind.OnError:
-        return 'error(${error})';
+        return 'error($error, $stackTrace)';
     }
     return '';
   }

@@ -14,7 +14,6 @@ abstract class ReservationRepository {
     @required String phoneNumber,
     @required String email,
     @required BuiltList<Tuple2<Product, int>> products,
-    @required int originalPrice,
     @required String payCardId,
     @required BuiltList<String> ticketIds,
     @required Promotion promotion,

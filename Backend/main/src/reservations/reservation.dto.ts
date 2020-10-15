@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPhoneNumber,
   IsString,
   Max,
@@ -42,9 +43,6 @@ export class CreateReservationDto {
   @Type(() => CreateReservationProductDto)
   readonly products: CreateReservationProductDto[];
 
-  @IsNumber()
-  original_price: number;
-
   @IsString()
   @IsNotEmpty()
   pay_card_id: string;
@@ -54,4 +52,9 @@ export class CreateReservationDto {
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
   ticket_ids: string[];
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  promotion_id?: string | null;
 }
