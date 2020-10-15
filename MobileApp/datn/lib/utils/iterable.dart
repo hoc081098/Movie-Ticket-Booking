@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:built_collection/built_collection.dart';
 
 import 'type_defs.dart';
@@ -29,4 +31,8 @@ extension SafeReplaceListBuilderExtension<T> on ListBuilder<T> {
 
 extension FirstOrNullIterableExtension<T> on Iterable<T> {
   T get firstOrNull => isEmpty ? null : first;
+}
+
+extension RandomIterableExtension<T> on Iterable<T> {
+  T random() => elementAt(Random().nextInt(length));
 }

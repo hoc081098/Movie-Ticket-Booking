@@ -55,14 +55,18 @@ class SelectDiscount extends StatelessWidget {
             child: Row(
               children: [
                 RxStreamBuilder<Promotion>(
-                    stream: bloc.selectedPromotion$,
-                    builder: (context, snapshot) {
-                      final pro = snapshot.data;
-                      return Expanded(
-                        child: Text(
-                            pro == null ? 'Select discount code' : pro.code),
-                      );
-                    }),
+                  stream: bloc.selectedPromotion$,
+                  builder: (context, snapshot) {
+                    final pro = snapshot.data;
+                    return Expanded(
+                      child: Text(
+                        pro == null ? 'Select discount code' : pro.code,
+                        maxLines: 1,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(width: 8),
                 FaIcon(
                   FontAwesomeIcons.tags,
                   color: Colors.grey.shade600,

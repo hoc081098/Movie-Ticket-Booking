@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:tuple/tuple.dart';
 
 import '../model/product.dart';
+import '../model/promotion.dart';
 import '../model/reservation.dart';
 
 abstract class ReservationRepository {
@@ -16,5 +17,6 @@ abstract class ReservationRepository {
     @required int originalPrice,
     @required String payCardId,
     @required BuiltList<String> ticketIds,
+    @required Promotion promotion,
   });
 }

@@ -6,6 +6,7 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:tuple/tuple.dart';
 
 import '../../domain/model/product.dart';
+import '../../domain/model/promotion.dart';
 import '../../domain/model/reservation.dart';
 import '../../domain/repository/reservation_repository.dart';
 import '../../env_manager.dart';
@@ -34,6 +35,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
     int originalPrice,
     String payCardId,
     BuiltList<String> ticketIds,
+    Promotion promotion,
   }) async* {
     final body = <String, dynamic>{
       'show_time_id': showTimeId,
@@ -50,6 +52,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
       'original_price': originalPrice,
       'pay_card_id': payCardId,
       'ticket_ids': ticketIds.toList(growable: false),
+      'promotion_id': promotion?.id,
     };
 
     print('createReservation: $body');

@@ -32,13 +32,17 @@ final phoneNumberRegex = RegExp(
 abstract class Message {}
 
 class CheckoutSuccess implements Message {
-  CheckoutSuccess();
+  const CheckoutSuccess();
 }
 
 class CheckoutFailure implements Message {
   final Object error;
 
-  CheckoutFailure(this.error);
+  const CheckoutFailure(this.error);
+}
+
+class MissingRequiredInfo implements Message {
+  const MissingRequiredInfo();
 }
 
 class CheckoutBloc implements BaseBloc {
@@ -106,42 +110,52 @@ class CheckoutBloc implements BaseBloc {
         .map((tuple) => tuple.item1)
         .publishValueSeededDistinct(seedValue: null);
 
-    _message$ = _submitS
-        .doOnData((event) => print('[DEBUG] submit...'))
-        .withLatestFrom3(
-          email$,
-          phone$,
+    final form$ = _submitS
+        .debug('SUBMIT')
+        .withLatestFrom4(
+          email$.startWith(null),
+          phone$.startWith(null),
           _cardS,
+          _promotionS,
           (
             _,
             Tuple2<String, String> email,
             Tuple2<String, String> phone,
             domain.Card card,
+            Promotion promotion,
           ) =>
-              email.item1 == null && phone.item1 == null && card != null
-                  ? Tuple3(email.item2, phone.item2, card)
+              email != null &&
+                      email.item1 == null &&
+                      phone != null &&
+                      phone.item1 == null &&
+                      card != null
+                  ? Tuple4(email.item2, phone.item2, card, promotion)
                   : null,
         )
         .debug('FORM')
-        .where((v) => v != null)
-        .exhaustMap(
-          (emailPhoneCard) => reservationRepository
-              .createReservation(
-                showTimeId: showTime.id,
-                phoneNumber: emailPhoneCard.item2,
-                email: emailPhoneCard.item1,
-                products: products,
-                originalPrice: tickets.fold(0, (acc, e) => acc + e.price) +
-                    products.fold(0, (acc, e) => acc + e.item1.price * e.item2),
-                payCardId: emailPhoneCard.item3.id,
-                ticketIds: [for (final t in tickets) t.id].build(),
-              )
-              .doOnListen(() => _isLoadingS.add(true))
-              .doOnCancel(() => _isLoadingS.add(false))
-              .map<Message>((_) => CheckoutSuccess())
-              .onErrorReturnWith((error) => CheckoutFailure(error)),
-        )
-        .publish();
+        .share();
+    _message$ = Rx.merge([
+      form$.where((v) => v != null).exhaustMap(
+            (emailPhoneCardPromotion) => reservationRepository
+                .createReservation(
+                  showTimeId: showTime.id,
+                  phoneNumber: emailPhoneCardPromotion.item2,
+                  email: emailPhoneCardPromotion.item1,
+                  products: products,
+                  originalPrice: tickets.fold(0, (acc, e) => acc + e.price) +
+                      products.fold(
+                          0, (acc, e) => acc + e.item1.price * e.item2),
+                  payCardId: emailPhoneCardPromotion.item3.id,
+                  ticketIds: [for (final t in tickets) t.id].build(),
+                  promotion: emailPhoneCardPromotion.item4,
+                )
+                .doOnListen(() => _isLoadingS.add(true))
+                .doOnCancel(() => _isLoadingS.add(false))
+                .mapTo<Message>(const CheckoutSuccess())
+                .onErrorReturnWith((error) => CheckoutFailure(error)),
+          ),
+      form$.where((v) => v == null).mapTo(const MissingRequiredInfo())
+    ]).publish();
 
     [
       _emailError$.connect(),
@@ -273,6 +287,9 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
     if (message is CheckoutFailure) {
       scaffoldKey
           .showSnackBar('Checkout failed: ${getErrorMessage(message.error)}');
+    }
+    if (message is MissingRequiredInfo) {
+      scaffoldKey.showSnackBar('Missing required fields');
     }
   }
 }
