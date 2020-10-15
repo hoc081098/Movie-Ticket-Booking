@@ -6,8 +6,15 @@ typedef Function2<P0, P1, R> = R Function(P0, P1);
 
 typedef Function3<P0, P1, P2, R> = R Function(P0, P1, P2);
 
-extension PipeFunction1Extension<T, R> on Function1<T, R> {
+extension Func1PipeFunc1Extension<T, R> on Function1<T, R> {
   Function1<T, S> pipe<S>(Function1<R, S> other) => (t) => other(this(t));
+}
+
+extension Func0PipeFunc0Extension<T> on Function0<T> {
+  Function0<void> pipe<S>(Function0<S> other) => () {
+        this();
+        other();
+      };
 }
 
 String trim(String s) => s.trim();

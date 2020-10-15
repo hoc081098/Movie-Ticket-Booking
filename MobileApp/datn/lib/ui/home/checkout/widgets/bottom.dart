@@ -6,8 +6,10 @@ import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../../domain/model/product.dart';
+import '../../../../domain/model/promotion.dart';
 import '../../../../domain/model/ticket.dart';
 import '../../../../utils/iterable.dart';
+import '../../../../utils/type_defs.dart';
 import '../checkout_page.dart';
 
 class BottomRow extends StatelessWidget {
@@ -16,11 +18,18 @@ class BottomRow extends StatelessWidget {
   final BuiltList<Tuple2<Product, int>> comboItems;
   final BuiltList<Ticket> tickets;
 
+  final int totalCount;
+  final int originalTotalPrice;
+
   BottomRow({
     Key key,
     @required this.comboItems,
     @required this.tickets,
-  }) : super(key: key);
+  })  : totalCount =
+            comboItems.fold<int>(0, (acc, e) => acc + e.item2) + tickets.length,
+        originalTotalPrice = tickets.fold<int>(0, (acc, e) => acc + e.price) +
+            comboItems.fold<int>(0, (acc, e) => acc + e.item1.price * e.item2),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,98 +41,105 @@ class BottomRow extends StatelessWidget {
       fontWeight: FontWeight.w500,
     );
 
-    final totalCount =
-        comboItems.fold(0, (acc, e) => acc + e.item2) + tickets.length;
+    return RxStreamBuilder<Promotion>(
+      stream: bloc.selectedPromotion$,
+      builder: (context, snapshot) {
+        final promotion = snapshot.data;
 
-    final totalPrice = tickets.fold(0, (acc, e) => acc + e.price) +
-        comboItems.fold(0, (acc, e) => acc + e.item1.price * e.item2);
+        final totalPrice = promotion != null
+            ? (originalTotalPrice * (1 - promotion.discount)).ceil()
+            : originalTotalPrice;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => showOrder(context),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(width: 4),
-                Container(
-                  height: 36,
-                  width: 36,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: FaIcon(
-                          FontAwesomeIcons.cartPlus,
-                          color: const Color(0xff687189),
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional.topEnd,
-                        child: Container(
-                          width: 18,
-                          height: 18,
-                          decoration: BoxDecoration(
-                            color: const Color(0xfffe4023),
-                            borderRadius: BorderRadius.circular(9),
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () => showOrder(context, promotion),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(width: 4),
+                    Container(
+                      height: 36,
+                      width: 36,
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: FaIcon(
+                              FontAwesomeIcons.cartPlus,
+                              color: const Color(0xff687189),
+                            ),
                           ),
-                          child: Center(
-                            child: Text(
-                              totalCount.toString(),
-                              style: textTheme.headline6.copyWith(
-                                fontSize: 14,
-                                color: Colors.white,
+                          Align(
+                            alignment: AlignmentDirectional.topEnd,
+                            child: Container(
+                              width: 18,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                color: const Color(0xfffe4023),
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  totalCount.toString(),
+                                  style: textTheme.headline6.copyWith(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          '${currencyFormat.format(totalPrice)} VND',
+                          style: priceStyle.copyWith(fontSize: 16),
                         ),
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      '${currencyFormat.format(totalPrice)} VND',
-                      style: priceStyle.copyWith(fontSize: 16),
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-        Expanded(
-          child: RxStreamBuilder<bool>(
-            stream: bloc.isLoading$,
-            builder: (context, snapshot) {
-              if (snapshot.data) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                  ),
-                );
-              }
+            Expanded(
+              child: RxStreamBuilder<bool>(
+                stream: bloc.isLoading$,
+                builder: (context, snapshot) {
+                  if (snapshot.data) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3,
+                      ),
+                    );
+                  }
 
-              return FlatButton(
-                color: Theme.of(context).primaryColor,
-                onPressed: bloc.submit,
-                child: Text(
-                  'FINISH',
-                  style: textTheme.headline6
-                      .copyWith(fontSize: 16, color: Colors.white),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+                  return FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    }.pipe(bloc.submit),
+                    child: Text(
+                      'FINISH',
+                      style: textTheme.headline6
+                          .copyWith(fontSize: 16, color: Colors.white),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
-  void showOrder(BuildContext context) {
+  void showOrder(BuildContext context, Promotion promotion) {
     final style = Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15);
     final style2 = style.copyWith(fontSize: 17);
     final titleStyle =
@@ -182,13 +198,29 @@ class BottomRow extends StatelessWidget {
             ),
           ),
       ],
+      if (promotion != null) ...[
+        const Divider(
+          height: 8,
+          thickness: 1,
+        ),
+        ListTile(
+          title: Text(
+            'Coupon code',
+            style: titleStyle,
+          ),
+          subtitle: Text(
+            '${(promotion.discount * 100).toInt()}% OFF',
+            style: style,
+          ),
+        ),
+      ]
     ];
 
     showModalBottomSheet(
       context: context,
       builder: (context) {
         return Container(
-          height: 72.0 * children.length,
+          height: 72.0 * children.length + (promotion == null ? 0 : -72 + 8),
           child: ListView(
             children: children,
           ),
