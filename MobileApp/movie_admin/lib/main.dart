@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'data/repository/mannager_repository_impl.dart';
+import 'domain/repository/manager_repository.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 import 'data/local/user_local_source_impl.dart';
@@ -66,6 +68,8 @@ void main() async {
     mappers.userLocalToUserDomain,
     googleSignIn,
   );
+  final managerUsersRepository = ManagerRepositoryImpl(authClient);
+
   _onSignOut = userRepository.logout;
 
   runApp(
@@ -73,6 +77,7 @@ void main() async {
       providers: [
         Provider<AuthClient>(value: authClient),
         Provider<UserRepository>(value: userRepository),
+        Provider<ManagerRepository>(value: managerUsersRepository),
       ],
       child: MyApp(),
     ),

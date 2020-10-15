@@ -54,3 +54,24 @@ Gender stringToGender(String s) {
   }
   throw Exception("Cannot convert string '$s' to gender");
 }
+
+User userResponseToUserDomain(UserResponse response) {
+  return User(
+    uid: response.uid,
+    email: response.email,
+    phoneNumber: response.phone_number,
+    fullName: response.full_name,
+    gender: stringToGender(response.gender),
+    avatar: response.avatar,
+    address: response.address,
+    birthday: response.birthday,
+    location: response.location == null
+        ? null
+        : Location(
+            latitude: response.location.latitude,
+            longitude: response.location.longitude,
+          ),
+    isCompleted: response.is_completed,
+    isActive: response.is_active ?? true,
+  );
+}
