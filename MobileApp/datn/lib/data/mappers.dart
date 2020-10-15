@@ -9,6 +9,7 @@ import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/person.dart';
 import '../domain/model/product.dart';
+import '../domain/model/promotion.dart';
 import '../domain/model/reservation.dart';
 import '../domain/model/seat.dart';
 import '../domain/model/show_time.dart';
@@ -27,6 +28,7 @@ import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
 import 'remote/response/product_response.dart';
+import 'remote/response/promotion_response.dart';
 import 'remote/response/reservation_response.dart';
 import 'remote/response/show_time_and_theatre_response.dart';
 import 'remote/response/show_time_response.dart';
@@ -405,4 +407,21 @@ Reservation reservationResponseToReservation(ReservationResponse response) {
       ..updatedAt = response.updatedAt
       ..user = userBuilder;
   });
+}
+
+Promotion promotionResponseToPromotion(PromotionResponse response) {
+  return Promotion(
+    (b) => b
+      ..id = response.id
+      ..code = response.code
+      ..discount = response.discount
+      ..endTime = response.end_time
+      ..isActive = response.is_active ?? true
+      ..name = response.name
+      ..startTime = response.start_time
+      ..creator = response.creator
+      ..showTime = response.show_time
+      ..createdAt = response.createdAt
+      ..updatedAt = response.updatedAt,
+  );
 }

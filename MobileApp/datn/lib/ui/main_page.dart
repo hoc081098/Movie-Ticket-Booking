@@ -3,13 +3,19 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
-import '../data/mappers.dart' show productResponseToProduct, cardResponseToCard;
+import '../data/mappers.dart'
+    show
+        productResponseToProduct,
+        cardResponseToCard,
+        promotionResponseToPromotion;
 import '../data/remote/auth_client.dart';
 import '../data/repository/card_repository_impl.dart';
 import '../data/repository/product_repository_impl.dart';
+import '../data/repository/promotion_repository_impl.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
+import '../domain/repository/promotion_repository.dart';
 import '../domain/repository/reservation_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
@@ -19,6 +25,7 @@ import 'home/checkout/cards/add_card/add_card_bloc.dart';
 import 'home/checkout/cards/add_card/add_card_page.dart';
 import 'home/checkout/cards/cards_page.dart';
 import 'home/checkout/checkout_page.dart';
+import 'home/checkout/discount/discounts_page.dart';
 import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
@@ -127,7 +134,18 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           ),
         ),
       );
-    }
+    },
+    DiscountsPage.routeName: (context, settings) {
+      final authClient = Provider.of<AuthClient>(context);
+
+      return Provider<PromotionRepository>(
+        value: PromotionRepositoryImpl(
+          authClient,
+          promotionResponseToPromotion,
+        ),
+        child: DiscountsPage(showTimeId: settings.arguments as String),
+      );
+    },
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

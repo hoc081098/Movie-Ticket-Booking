@@ -41,3 +41,4 @@ app.*.symbols
 app.*.map.json
 
 .env
+.prod.env

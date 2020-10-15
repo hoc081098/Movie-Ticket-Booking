@@ -302,6 +302,10 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
     BuiltList<String> selectedIds,
     Optional<User> userOptional,
   ) {
+    if (state.content == null) {
+      return const <Ticket>{}.build();
+    }
+
     final uid = userOptional?.fold(() => null, (u) => u.uid);
 
     final map = BuiltMap.of(

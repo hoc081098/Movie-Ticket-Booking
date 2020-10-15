@@ -11,6 +11,7 @@ import 'package:tuple/tuple.dart';
 import '../../../domain/model/card.dart' as domain;
 import '../../../domain/model/movie.dart';
 import '../../../domain/model/product.dart';
+import '../../../domain/model/promotion.dart';
 import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
@@ -19,6 +20,7 @@ import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
 import 'widgets/bottom.dart';
 import 'widgets/card.dart';
+import 'widgets/discount.dart';
 import 'widgets/header.dart';
 import 'widgets/phone_email_form.dart';
 
@@ -43,6 +45,7 @@ class CheckoutBloc implements BaseBloc {
   final _emailS = PublishSubject<String>(sync: true);
   final _phoneS = PublishSubject<String>(sync: true);
   final _cardS = BehaviorSubject<domain.Card>.seeded(null, sync: true);
+  final _promotionS = BehaviorSubject<Promotion>.seeded(null, sync: true);
 
   final _submitS = PublishSubject<void>();
   final _isLoadingS = BehaviorSubject.seeded(false);
@@ -61,6 +64,8 @@ class CheckoutBloc implements BaseBloc {
 
   Function1<domain.Card, void> get selectedCard => _cardS.add;
 
+  void selectPromotion(Promotion promotion) => _promotionS.add(promotion);
+
   Function0<void> get submit => () => _submitS.add(null);
 
   /// Outputs
@@ -69,6 +74,8 @@ class CheckoutBloc implements BaseBloc {
   ValueStream<String> get phoneError$ => _phoneError$;
 
   ValueStream<domain.Card> get selectedCard$ => _cardS;
+
+  ValueStream<Promotion> get selectedPromotion$ => _promotionS;
 
   ValueStream<bool> get isLoading$ => _isLoadingS;
 
@@ -148,6 +155,7 @@ class CheckoutBloc implements BaseBloc {
       _cardS,
       _submitS,
       _isLoadingS,
+      _promotionS,
     ].disposedBy(_bag);
   }
 
@@ -221,6 +229,11 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
                   ),
                 ),
                 SliverToBoxAdapter(child: const PhoneEmailForm()),
+                SliverToBoxAdapter(
+                  child: SelectDiscount(
+                    showTime: widget.showTime,
+                  ),
+                ),
                 SliverToBoxAdapter(child: const SelectedCard()),
               ],
             ),
