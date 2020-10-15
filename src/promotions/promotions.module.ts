@@ -25,6 +25,7 @@ import { ShowTime, ShowTimeSchema } from '../show-times/show-time.schema';
     ConfigModule,
   ],
   controllers: [PromotionsController],
-  providers: [PromotionsService]
+  providers: [PromotionsService],
+  exports: [PromotionsService],
 })
 export class PromotionsModule {}
