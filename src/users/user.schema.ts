@@ -72,6 +72,12 @@ export class User extends Document {
     default: {},
   })
   favorite_movie_ids?: Record<string, Date> | null;
+
+  @Prop({
+    type: [String],
+    default: [],
+  })
+  tokens: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

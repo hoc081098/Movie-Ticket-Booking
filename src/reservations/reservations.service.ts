@@ -20,6 +20,7 @@ import { AppGateway } from '../socket/app.gateway';
 import { PromotionsService } from '../promotions/promotions.service';
 import { Promotion } from '../promotions/promotion.schema';
 import { User } from '../users/user.schema';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class ReservationsService {
@@ -32,6 +33,7 @@ export class ReservationsService {
       private readonly usersService: UsersService,
       private readonly appGateway: AppGateway,
       private readonly promotionsService: PromotionsService,
+      private readonly notificationsService: NotificationsService,
   ) {}
 
   async createReservation(
@@ -83,6 +85,10 @@ export class ReservationsService {
     this.appGateway.server
         .to(`reservation:${dto.show_time_id}`)
         .emit('reserved', data);
+
+    this.notificationsService
+        .pushNotification(user, reservation._id)
+        .catch((e) => this.logger.debug(`Push notification error: ${e}`));
 
     this.logger.debug(`[8] returns...`);
     return reservation;
@@ -182,7 +188,7 @@ export class ReservationsService {
     //   ]
     // }).populate('seat');
 
-    const tickets = await this.ticketModel.find({ _id: { $in: ticketIds } }).populate('seat');;
+    const tickets = await this.ticketModel.find({ _id: { $in: ticketIds } }).populate('seat');
     const invalidTickets = tickets.filter(t => !!t.reservation);
 
     if (invalidTickets.length > 0) {
