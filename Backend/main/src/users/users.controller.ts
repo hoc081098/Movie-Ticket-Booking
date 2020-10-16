@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, NotFoundException, Param, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { UsersService } from './users.service';
-import { GetUser, UserPayload } from '../auth/get-user.decorator';
+import { GetFcmToken, GetUser, UserPayload } from '../auth/get-user.decorator';
 import { User } from './user.schema';
 import { UpdateUserDto } from './update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -20,12 +20,18 @@ export class UsersController {
 
   @Get('me')
   @UseGuards(AuthGuard)
-  async me(@GetUser('uid') uid: string): Promise<User> {
-    this.logger.debug(`Get my profile: ${uid}`);
+  async me(
+      @GetUser('uid') uid: string,
+      @GetFcmToken() fcmToken: string,
+  ): Promise<User> {
+    this.logger.debug(`Get my profile: ${uid} ${fcmToken}`);
 
-    const user = await this.usersService.findByUid(uid);
+    let user = await this.usersService.findByUid(uid);
     if (!user) {
       throw new NotFoundException(`User with uid: ${uid} not found`);
+    }
+    if (fcmToken) {
+      user = await this.usersService.updateFcmToken(user, fcmToken);
     }
     return user;
   }

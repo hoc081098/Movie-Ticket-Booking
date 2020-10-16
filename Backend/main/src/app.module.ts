@@ -22,6 +22,7 @@ import * as admin from 'firebase-admin';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SocketModule } from './socket/socket.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { SocketModule } from './socket/socket.module';
     ProductsModule,
     FavoritesModule,
     SocketModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [
