@@ -21,6 +21,8 @@ import { PromotionsService } from '../promotions/promotions.service';
 import { Promotion } from '../promotions/promotion.schema';
 import { User } from '../users/user.schema';
 import { NotificationsService } from '../notifications/notifications.service';
+import { MailerService } from '@nestjs-modules/mailer';
+import { join } from 'path';
 
 @Injectable()
 export class ReservationsService {
@@ -34,6 +36,7 @@ export class ReservationsService {
       private readonly appGateway: AppGateway,
       private readonly promotionsService: PromotionsService,
       private readonly notificationsService: NotificationsService,
+      private readonly mailerService: MailerService,
   ) {}
 
   async createReservation(
@@ -89,6 +92,16 @@ export class ReservationsService {
     this.notificationsService
         .pushNotification(user, reservation._id)
         .catch((e) => this.logger.debug(`Push notification error: ${e}`));
+    this.mailerService.sendMail(
+        {
+          to: dto.email,
+          subject: `Tickets for movie ${'TODO'}`,
+          template: 'mail',
+          context: {},
+        }
+    )
+        .then(() => this.logger.debug(`Send mail success`))
+        .catch((e) => this.logger.debug(`Send mail failed: ${e}`));
 
     this.logger.debug(`[8] returns...`);
     return reservation;

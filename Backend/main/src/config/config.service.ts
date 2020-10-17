@@ -9,6 +9,8 @@ export const enum ConfigKey {
   TEST_AUTH_GUARD = 'TEST_AUTH_GUARD', // USER, ADMIN OR otherwise
   WRITE_TOKEN_TO_FILE = 'WRITE_TOKEN_TO_FILE',
   STRIPE_SECRET_API = 'STRIPE_SECRET_API',
+  EMAIL = 'EMAIL',
+  EMAIL_PASSWORD = 'EMAIL_PASSWORD',
 }
 
 export class ConfigService {
