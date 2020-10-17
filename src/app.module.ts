@@ -23,9 +23,38 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SocketModule } from './socket/socket.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
   imports: [
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          transport: {
+            service: 'gmail',
+            auth: {
+              user: configService.get(ConfigKey.EMAIL),
+              pass: configService.get(ConfigKey.EMAIL_PASSWORD),
+            },
+            secure: false,
+            ignoreTLS: true,
+          },
+          defaults: {
+            from: '"Do Not Reply, Cinemas Company 👥" <no-replay@cinemas.com>',
+          },
+          template: {
+            dir: join(__dirname, '..', '..', 'template'),
+            adapter: new HandlebarsAdapter(),
+            options: {
+              strict: true,
+            },
+          },
+        };
+      },
+    }),
     MongooseModule.forRootAsync(
         {
           imports: [ConfigModule],
