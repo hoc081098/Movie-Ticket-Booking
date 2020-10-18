@@ -22,7 +22,7 @@ export class NotificationsService {
 
   async pushNotification(user: User, reservation: CreatedReservation): Promise<void> {
     const tokens = user.tokens;
-    this.logger.debug(`Tokens: ${JSON.stringify(tokens)}`);
+    this.logger.debug(`Tokens: ${tokens.length} ${JSON.stringify(tokens)}`);
 
     if (!tokens || tokens.length === 0) {
       return;
@@ -59,7 +59,10 @@ export class NotificationsService {
         clickAction: 'FLUTTER_NOTIFICATION_CLICK',
       }
     };
-    const response = await this.firebaseMessagingService.sendToDevice(tokens, payload);
+
+    const distinctToken = tokens.distinct();
+    this.logger.debug(`Distinct token: ${distinctToken.length} ${JSON.stringify(distinctToken)}`);
+    const response = await this.firebaseMessagingService.sendToDevice(distinctToken, payload);
 
     // For each message check if there was an error.
     const tokensToRemove = new Set<string>();
@@ -77,10 +80,34 @@ export class NotificationsService {
     });
 
     if (tokensToRemove.size > 0) {
-      user.tokens = user.tokens.filter(t => !tokensToRemove.has(t));
-      await user.save();
+      await this.userModel.updateOne(
+          { uid: user.uid },
+          { tokens: distinctToken.filter(t => !tokensToRemove.has(t)) }
+      );
+    } else {
+      await this.userModel.updateOne(
+          { uid: user.uid },
+          { tokens: distinctToken }
+      );
     }
 
     this.logger.debug(`Pushed payload: ${JSON.stringify(payload)}`);
   }
 }
+
+declare global {
+  interface Array<T> {
+    distinct(): T[]
+  }
+}
+
+Array.prototype.distinct = function <T>(this: T[]): T[] {
+  const seen = new Set<T>();
+  return this.filter(i => {
+    const added = seen.has(i);
+    if (!added) {
+      seen.add(i);
+    }
+    return !added;
+  });
+};

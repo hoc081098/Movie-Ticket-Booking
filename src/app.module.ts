@@ -51,7 +51,7 @@ const logger = new Logger('AppModule');
           defaults: {
             from: '"Do Not Reply, Cinemas Company 👥" <no-replay@cinemas.com>',
           },
-          preview: true,
+          preview: process.env.NODE_ENV !== 'production',
           template: {
             dir: join(__dirname, '..', '..', 'template'),
             adapter: new HandlebarsAdapter({

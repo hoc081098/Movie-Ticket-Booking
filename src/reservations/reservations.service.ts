@@ -110,6 +110,7 @@ export class ReservationsService {
       }
   ) {
     const { user, reservation, dto, tickets } = info;
+    this.logger.debug(`>>>>>>>>>>>>>> ${JSON.stringify(reservation)}`);
 
     this.notificationsService
         .pushNotification(user, reservation)
@@ -202,11 +203,10 @@ export class ReservationsService {
           .populate('user')
           .populate({
             path: 'show_time',
-            populate: { path: 'movie' },
-          })
-          .populate({
-            path: 'show_time',
-            populate: { path: 'theatre' },
+            populate: [
+              { path: 'movie' },
+              { path: 'theatre' },
+            ],
           })
           .execPopulate();
 
