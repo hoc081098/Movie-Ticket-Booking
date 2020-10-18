@@ -10,6 +10,8 @@ Serializer<ReservationResponse> _$reservationResponseSerializer =
     new _$ReservationResponseSerializer();
 Serializer<ProductAndCountResponse> _$productAndCountResponseSerializer =
     new _$ProductAndCountResponseSerializer();
+Serializer<ShowTimeFullResponse> _$showTimeFullResponseSerializer =
+    new _$ShowTimeFullResponseSerializer();
 
 class _$ReservationResponseSerializer
     implements StructuredSerializer<ReservationResponse> {
@@ -49,7 +51,7 @@ class _$ReservationResponseSerializer
               BuiltList, const [const FullType(ProductAndCountResponse)])),
       'show_time',
       serializers.serialize(object.show_time,
-          specifiedType: const FullType(String)),
+          specifiedType: const FullType(ShowTimeFullResponse)),
       'total_price',
       serializers.serialize(object.total_price,
           specifiedType: const FullType(int)),
@@ -116,8 +118,9 @@ class _$ReservationResponseSerializer
               ])) as BuiltList<Object>);
           break;
         case 'show_time':
-          result.show_time = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+          result.show_time.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(ShowTimeFullResponse))
+              as ShowTimeFullResponse);
           break;
         case 'total_price':
           result.total_price = serializers.deserialize(value,
@@ -190,6 +193,109 @@ class _$ProductAndCountResponseSerializer
   }
 }
 
+class _$ShowTimeFullResponseSerializer
+    implements StructuredSerializer<ShowTimeFullResponse> {
+  @override
+  final Iterable<Type> types = const [
+    ShowTimeFullResponse,
+    _$ShowTimeFullResponse
+  ];
+  @override
+  final String wireName = 'ShowTimeFullResponse';
+
+  @override
+  Iterable<Object> serialize(
+      Serializers serializers, ShowTimeFullResponse object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      '_id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+      'movie',
+      serializers.serialize(object.movie,
+          specifiedType: const FullType(MovieResponse)),
+      'theatre',
+      serializers.serialize(object.theatre,
+          specifiedType: const FullType(TheatreResponse)),
+      'room',
+      serializers.serialize(object.room, specifiedType: const FullType(String)),
+      'end_time',
+      serializers.serialize(object.end_time,
+          specifiedType: const FullType(DateTime)),
+      'start_time',
+      serializers.serialize(object.start_time,
+          specifiedType: const FullType(DateTime)),
+      'createdAt',
+      serializers.serialize(object.createdAt,
+          specifiedType: const FullType(DateTime)),
+      'updatedAt',
+      serializers.serialize(object.updatedAt,
+          specifiedType: const FullType(DateTime)),
+    ];
+    if (object.is_active != null) {
+      result
+        ..add('is_active')
+        ..add(serializers.serialize(object.is_active,
+            specifiedType: const FullType(bool)));
+    }
+    return result;
+  }
+
+  @override
+  ShowTimeFullResponse deserialize(
+      Serializers serializers, Iterable<Object> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new ShowTimeFullResponseBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case '_id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'is_active':
+          result.is_active = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'movie':
+          result.movie.replace(serializers.deserialize(value,
+              specifiedType: const FullType(MovieResponse)) as MovieResponse);
+          break;
+        case 'theatre':
+          result.theatre.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(TheatreResponse))
+              as TheatreResponse);
+          break;
+        case 'room':
+          result.room = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'end_time':
+          result.end_time = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
+        case 'start_time':
+          result.start_time = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
+        case 'createdAt':
+          result.createdAt = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
+        case 'updatedAt':
+          result.updatedAt = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$ReservationResponse extends ReservationResponse {
   @override
   final String id;
@@ -208,7 +314,7 @@ class _$ReservationResponse extends ReservationResponse {
   @override
   final BuiltList<ProductAndCountResponse> products;
   @override
-  final String show_time;
+  final ShowTimeFullResponse show_time;
   @override
   final int total_price;
   @override
@@ -383,9 +489,11 @@ class ReservationResponseBuilder
   set products(ListBuilder<ProductAndCountResponse> products) =>
       _$this._products = products;
 
-  String _show_time;
-  String get show_time => _$this._show_time;
-  set show_time(String show_time) => _$this._show_time = show_time;
+  ShowTimeFullResponseBuilder _show_time;
+  ShowTimeFullResponseBuilder get show_time =>
+      _$this._show_time ??= new ShowTimeFullResponseBuilder();
+  set show_time(ShowTimeFullResponseBuilder show_time) =>
+      _$this._show_time = show_time;
 
   int _total_price;
   int get total_price => _$this._total_price;
@@ -411,7 +519,7 @@ class ReservationResponseBuilder
       _payment_intent_id = _$v.payment_intent_id;
       _phone_number = _$v.phone_number;
       _products = _$v.products?.toBuilder();
-      _show_time = _$v.show_time;
+      _show_time = _$v.show_time?.toBuilder();
       _total_price = _$v.total_price;
       _updatedAt = _$v.updatedAt;
       _user = _$v.user?.toBuilder();
@@ -447,7 +555,7 @@ class ReservationResponseBuilder
               payment_intent_id: payment_intent_id,
               phone_number: phone_number,
               products: products.build(),
-              show_time: show_time,
+              show_time: show_time.build(),
               total_price: total_price,
               updatedAt: updatedAt,
               user: user.build());
@@ -456,6 +564,8 @@ class ReservationResponseBuilder
       try {
         _$failedField = 'products';
         products.build();
+        _$failedField = 'show_time';
+        show_time.build();
 
         _$failedField = 'user';
         user.build();
@@ -561,6 +671,231 @@ class ProductAndCountResponseBuilder
   _$ProductAndCountResponse build() {
     final _$result =
         _$v ?? new _$ProductAndCountResponse._(id: id, quantity: quantity);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$ShowTimeFullResponse extends ShowTimeFullResponse {
+  @override
+  final String id;
+  @override
+  final bool is_active;
+  @override
+  final MovieResponse movie;
+  @override
+  final TheatreResponse theatre;
+  @override
+  final String room;
+  @override
+  final DateTime end_time;
+  @override
+  final DateTime start_time;
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime updatedAt;
+
+  factory _$ShowTimeFullResponse(
+          [void Function(ShowTimeFullResponseBuilder) updates]) =>
+      (new ShowTimeFullResponseBuilder()..update(updates)).build();
+
+  _$ShowTimeFullResponse._(
+      {this.id,
+      this.is_active,
+      this.movie,
+      this.theatre,
+      this.room,
+      this.end_time,
+      this.start_time,
+      this.createdAt,
+      this.updatedAt})
+      : super._() {
+    if (id == null) {
+      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'id');
+    }
+    if (movie == null) {
+      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'movie');
+    }
+    if (theatre == null) {
+      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'theatre');
+    }
+    if (room == null) {
+      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'room');
+    }
+    if (end_time == null) {
+      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'end_time');
+    }
+    if (start_time == null) {
+      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'start_time');
+    }
+    if (createdAt == null) {
+      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'createdAt');
+    }
+    if (updatedAt == null) {
+      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'updatedAt');
+    }
+  }
+
+  @override
+  ShowTimeFullResponse rebuild(
+          void Function(ShowTimeFullResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  ShowTimeFullResponseBuilder toBuilder() =>
+      new ShowTimeFullResponseBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is ShowTimeFullResponse &&
+        id == other.id &&
+        is_active == other.is_active &&
+        movie == other.movie &&
+        theatre == other.theatre &&
+        room == other.room &&
+        end_time == other.end_time &&
+        start_time == other.start_time &&
+        createdAt == other.createdAt &&
+        updatedAt == other.updatedAt;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc(
+        $jc(
+            $jc(
+                $jc(
+                    $jc(
+                        $jc(
+                            $jc($jc($jc(0, id.hashCode), is_active.hashCode),
+                                movie.hashCode),
+                            theatre.hashCode),
+                        room.hashCode),
+                    end_time.hashCode),
+                start_time.hashCode),
+            createdAt.hashCode),
+        updatedAt.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('ShowTimeFullResponse')
+          ..add('id', id)
+          ..add('is_active', is_active)
+          ..add('movie', movie)
+          ..add('theatre', theatre)
+          ..add('room', room)
+          ..add('end_time', end_time)
+          ..add('start_time', start_time)
+          ..add('createdAt', createdAt)
+          ..add('updatedAt', updatedAt))
+        .toString();
+  }
+}
+
+class ShowTimeFullResponseBuilder
+    implements Builder<ShowTimeFullResponse, ShowTimeFullResponseBuilder> {
+  _$ShowTimeFullResponse _$v;
+
+  String _id;
+  String get id => _$this._id;
+  set id(String id) => _$this._id = id;
+
+  bool _is_active;
+  bool get is_active => _$this._is_active;
+  set is_active(bool is_active) => _$this._is_active = is_active;
+
+  MovieResponseBuilder _movie;
+  MovieResponseBuilder get movie =>
+      _$this._movie ??= new MovieResponseBuilder();
+  set movie(MovieResponseBuilder movie) => _$this._movie = movie;
+
+  TheatreResponseBuilder _theatre;
+  TheatreResponseBuilder get theatre =>
+      _$this._theatre ??= new TheatreResponseBuilder();
+  set theatre(TheatreResponseBuilder theatre) => _$this._theatre = theatre;
+
+  String _room;
+  String get room => _$this._room;
+  set room(String room) => _$this._room = room;
+
+  DateTime _end_time;
+  DateTime get end_time => _$this._end_time;
+  set end_time(DateTime end_time) => _$this._end_time = end_time;
+
+  DateTime _start_time;
+  DateTime get start_time => _$this._start_time;
+  set start_time(DateTime start_time) => _$this._start_time = start_time;
+
+  DateTime _createdAt;
+  DateTime get createdAt => _$this._createdAt;
+  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+
+  DateTime _updatedAt;
+  DateTime get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+
+  ShowTimeFullResponseBuilder();
+
+  ShowTimeFullResponseBuilder get _$this {
+    if (_$v != null) {
+      _id = _$v.id;
+      _is_active = _$v.is_active;
+      _movie = _$v.movie?.toBuilder();
+      _theatre = _$v.theatre?.toBuilder();
+      _room = _$v.room;
+      _end_time = _$v.end_time;
+      _start_time = _$v.start_time;
+      _createdAt = _$v.createdAt;
+      _updatedAt = _$v.updatedAt;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(ShowTimeFullResponse other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$ShowTimeFullResponse;
+  }
+
+  @override
+  void update(void Function(ShowTimeFullResponseBuilder) updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$ShowTimeFullResponse build() {
+    _$ShowTimeFullResponse _$result;
+    try {
+      _$result = _$v ??
+          new _$ShowTimeFullResponse._(
+              id: id,
+              is_active: is_active,
+              movie: movie.build(),
+              theatre: theatre.build(),
+              room: room,
+              end_time: end_time,
+              start_time: start_time,
+              createdAt: createdAt,
+              updatedAt: updatedAt);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'movie';
+        movie.build();
+        _$failedField = 'theatre';
+        theatre.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'ShowTimeFullResponse', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

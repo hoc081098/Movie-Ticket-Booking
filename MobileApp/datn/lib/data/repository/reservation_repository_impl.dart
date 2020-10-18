@@ -99,8 +99,6 @@ class ReservationRepositoryImpl implements ReservationRepository {
           socket.emit('join', roomId);
 
           socket.on('reserved', (data) {
-            print('[ReservationRepositoryImpl] reserved $data');
-
             final response = serializers.deserialize(
               data,
               specifiedType: builtMapStringReservationResponse,
@@ -109,6 +107,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
                 (k, v) => MapEntry(k, _reservationResponseToReservation(v)));
 
             assert(controller != null);
+            print('[ReservationRepositoryImpl] reserved $map');
             controller.add(map);
           });
         });

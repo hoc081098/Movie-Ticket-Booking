@@ -402,7 +402,7 @@ Reservation reservationResponseToReservation(ReservationResponse response) {
       ..paymentIntentId = response.payment_intent_id
       ..phoneNumber = response.phone_number
       ..productIdWithCounts = productIdWithCountsBuilder
-      ..showTimeId = response.show_time
+      ..showTimeId = response.show_time.id
       ..totalPrice = response.total_price
       ..updatedAt = response.updatedAt
       ..user = userBuilder;

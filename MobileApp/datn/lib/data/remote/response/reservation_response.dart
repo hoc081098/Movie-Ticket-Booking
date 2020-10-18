@@ -3,6 +3,8 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers.dart';
+import 'movie_response.dart';
+import 'theatre_response.dart';
 import 'user_response.dart';
 
 part 'reservation_response.g.dart';
@@ -27,7 +29,7 @@ abstract class ReservationResponse
 
   BuiltList<ProductAndCountResponse> get products;
 
-  String get show_time;
+  ShowTimeFullResponse get show_time;
 
   int get total_price;
 
@@ -67,6 +69,43 @@ abstract class ProductAndCountResponse
 
   factory ProductAndCountResponse.fromJson(Map<String, dynamic> json) =>
       serializers.deserializeWith<ProductAndCountResponse>(serializer, json);
+
+  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+}
+
+abstract class ShowTimeFullResponse
+    implements Built<ShowTimeFullResponse, ShowTimeFullResponseBuilder> {
+  @BuiltValueField(wireName: '_id')
+  String get id;
+
+  @nullable
+  bool get is_active;
+
+  MovieResponse get movie;
+
+  TheatreResponse get theatre;
+
+  String get room;
+
+  DateTime get end_time;
+
+  DateTime get start_time;
+
+  DateTime get createdAt;
+
+  DateTime get updatedAt;
+
+  ShowTimeFullResponse._();
+
+  factory ShowTimeFullResponse(
+          [void Function(ShowTimeFullResponseBuilder) updates]) =
+      _$ShowTimeFullResponse;
+
+  static Serializer<ShowTimeFullResponse> get serializer =>
+      _$showTimeFullResponseSerializer;
+
+  factory ShowTimeFullResponse.fromJson(Map<String, dynamic> json) =>
+      serializers.deserializeWith<ShowTimeFullResponse>(serializer, json);
 
   Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
 }
