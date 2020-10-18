@@ -1,4 +1,4 @@
-import { HttpModule, Module } from '@nestjs/common';
+import { HttpModule, Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
@@ -25,6 +25,12 @@ import { SocketModule } from './socket/socket.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import * as dayjs from 'dayjs';
+import * as localizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(localizedFormat);
+
+const logger = new Logger('AppModule');
 
 @Module({
   imports: [
@@ -45,9 +51,24 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
           defaults: {
             from: '"Do Not Reply, Cinemas Company 👥" <no-replay@cinemas.com>',
           },
+          preview: true,
           template: {
             dir: join(__dirname, '..', '..', 'template'),
-            adapter: new HandlebarsAdapter(),
+            adapter: new HandlebarsAdapter({
+              'formatDate': (date, format) => {
+                const formatted = dayjs(date).format(format);
+                logger.debug(`formatDate: date=${date} format=${format} -> ${formatted}`);
+                return formatted;
+              },
+              'formatCurrency': (currency: number) => {
+                const formatted = new Intl.NumberFormat('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND'
+                }).format(currency);
+                logger.debug(`formatCurrency: currency=${currency} -> ${formatted}`);
+                return formatted;
+              },
+            }),
             options: {
               strict: true,
             },

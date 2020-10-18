@@ -5,10 +5,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { CreateDocumentDefinition, Model } from 'mongoose';
 import { Notification } from './notification.schema';
-import { ShowTime } from '../show-times/show-time.schema';
-import { Movie } from '../movies/movie.schema';
 import { FirebaseMessagingService } from '@aginix/nestjs-firebase-admin';
 import * as admin from 'firebase-admin';
+import { CreatedReservation } from '../reservations/reservations.service';
 
 @Injectable()
 export class NotificationsService {
@@ -21,7 +20,7 @@ export class NotificationsService {
       private readonly firebaseMessagingService: FirebaseMessagingService,
   ) {}
 
-  async pushNotification(user: User, reservation_id: mongoose.Types.ObjectId): Promise<void> {
+  async pushNotification(user: User, reservation: CreatedReservation): Promise<void> {
     const tokens = user.tokens;
     this.logger.debug(`Tokens: ${JSON.stringify(tokens)}`);
 
@@ -29,11 +28,7 @@ export class NotificationsService {
       return;
     }
 
-    const reservation = await this.reservationModel.findById(reservation_id).populate({
-      path: 'show_time',
-      populate: { path: 'movie' },
-    });
-    const movie = (reservation.show_time as ShowTime).movie as Movie;
+    const movie = reservation.show_time.movie;
 
     const notificationDoc: Omit<CreateDocumentDefinition<Notification>, '_id'> = {
       title: `Ticket booking successfully: ${movie.title}`,
