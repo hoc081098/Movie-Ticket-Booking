@@ -27,11 +27,10 @@ class PromotionRepositoryImpl implements PromotionRepository {
             _promotionResponseToPromotion(response)
         ].build();
 
-    return Rx.defer(
+    return Rx.fromCallable(
       () => _authClient
           .getBody(buildUrl('/promotions/show-times/${showTimeId}'))
-          .then(jsonToResponses.pipe(toDomain))
-          .asStream(),
+          .then(jsonToResponses.pipe(toDomain)),
     );
   }
 }

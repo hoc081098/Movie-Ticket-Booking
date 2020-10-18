@@ -107,10 +107,10 @@ class CheckoutBloc implements BaseBloc {
 
     _emailError$ = email$
         .map((tuple) => tuple.item1)
-        .publishValueSeededDistinct(seedValue: null);
+        .publishValueDistinct(null);
     _phoneError$ = phone$
         .map((tuple) => tuple.item1)
-        .publishValueSeededDistinct(seedValue: null);
+        .publishValueDistinct(null);
 
     final form$ = _submitS
         .debug('SUBMIT')

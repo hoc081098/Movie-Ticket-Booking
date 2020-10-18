@@ -113,8 +113,7 @@ class CardsBloc extends DisposeCallbackBaseBloc {
         domain.Card card,
       ) =>
           Tuple2(state, card),
-    ).publishValueSeededDistinct(
-        seedValue: Tuple2(loader.state$.value, selectedCardS.value));
+    ).publishValueDistinct(Tuple2(loader.state$.value, selectedCardS.value));
 
     final bag = DisposeBag([
       state$.connect(),
@@ -185,7 +184,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
         },
       );
 
-      final stream = controller.publishValueSeededDistinct(seedValue: true);
+      final stream = controller.publishValueDistinct(true);
       stream.connect().disposedBy(bag);
       return stream;
     }();

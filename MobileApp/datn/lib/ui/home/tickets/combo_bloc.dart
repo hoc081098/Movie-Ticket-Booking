@@ -74,7 +74,7 @@ class ComboBloc extends BaseBloc {
     ]).withLatestFrom(stateS, _incDecCount);
 
     _state$ = Rx.merge([fetchState$, incDecState$])
-        .publishValueSeededDistinct(seedValue: loadingState);
+        .publishValueDistinct(loadingState);
     _state$.listen(stateS.add).disposedBy(_bag);
     _state$.listen(print).disposedBy(_bag);
     _state$.connect().disposedBy(_bag);

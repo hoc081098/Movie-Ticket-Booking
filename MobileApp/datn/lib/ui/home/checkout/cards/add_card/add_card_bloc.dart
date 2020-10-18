@@ -96,18 +96,14 @@ class AddCardBloc extends DisposeCallbackBaseBloc {
     final exp$ = expS.distinct().map(_parseExp).share();
 
     // Errors
-    final cardHolderNameError$ = cardHolderName$
-        .map((tuple) => tuple.item1)
-        .publishValueSeededDistinct(seedValue: null);
-    final numberError$ = number$
-        .map((tuple) => tuple.item1)
-        .publishValueSeededDistinct(seedValue: null);
-    final cvcError$ = cvc$
-        .map((tuple) => tuple.item1)
-        .publishValueSeededDistinct(seedValue: null);
-    final expError$ = exp$
-        .map((tuple) => tuple.item1)
-        .publishValueSeededDistinct(seedValue: null);
+    final cardHolderNameError$ =
+        cardHolderName$.map((tuple) => tuple.item1).publishValueDistinct(null);
+    final numberError$ =
+        number$.map((tuple) => tuple.item1).publishValueDistinct(null);
+    final cvcError$ =
+        cvc$.map((tuple) => tuple.item1).publishValueDistinct(null);
+    final expError$ =
+        exp$.map((tuple) => tuple.item1).publishValueDistinct(null);
 
     final message$ = submitS
         .withLatestFrom4(

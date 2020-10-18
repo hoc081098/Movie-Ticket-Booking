@@ -321,7 +321,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
         .toBuiltSet();
   }
 
-  Stream<void> showConflictDialog(BuiltSet<Ticket> _) => Rx.defer(
+  Stream<void> showConflictDialog(BuiltSet<Ticket> _) => Rx.fromCallable(
         () => showDialog<void>(
           context: context,
           barrierDismissible: false,
@@ -342,7 +342,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               ],
             );
           },
-        ).asStream(),
+        ),
       );
 }
 
