@@ -22,7 +22,13 @@ import { Promotion } from '../promotions/promotion.schema';
 import { User } from '../users/user.schema';
 import { NotificationsService } from '../notifications/notifications.service';
 import { MailerService } from '@nestjs-modules/mailer';
-import { join } from 'path';
+import { ShowTime } from '../show-times/show-time.schema';
+import { Movie } from '../movies/movie.schema';
+import { generateQRCode } from '../common/qrcode';
+
+export type CreatedReservation =
+    Omit<Reservation, 'show_time'>
+    & { show_time: Omit<ShowTime, 'movie'> & { movie: Movie } };
 
 @Injectable()
 export class ReservationsService {
@@ -89,22 +95,51 @@ export class ReservationsService {
         .to(`reservation:${dto.show_time_id}`)
         .emit('reserved', data);
 
-    this.notificationsService
-        .pushNotification(user, reservation._id)
-        .catch((e) => this.logger.debug(`Push notification error: ${e}`));
-    this.mailerService.sendMail(
-        {
-          to: dto.email,
-          subject: `Tickets for movie ${'TODO'}`,
-          template: 'mail',
-          context: {},
-        }
-    )
-        .then(() => this.logger.debug(`Send mail success`))
-        .catch((e) => this.logger.debug(`Send mail failed: ${e}`));
+    this.sendMailAndPushNotification({ user, reservation, dto, tickets });
 
     this.logger.debug(`[8] returns...`);
     return reservation;
+  }
+
+  private sendMailAndPushNotification(
+      info: {
+        user: User,
+        reservation: CreatedReservation,
+        dto: CreateReservationDto,
+        tickets: Ticket[],
+      }
+  ) {
+    const { user, reservation, dto, tickets } = info;
+
+    this.notificationsService
+        .pushNotification(user, reservation)
+        .catch((e) => this.logger.debug(`Push notification error: ${e}`));
+
+    generateQRCode(
+        {
+          reservation_id: reservation._id.toHexString(),
+          show_time_id: reservation.show_time._id.toHexString(),
+          ticket_ids: tickets.map(t => t._id.toHexString()),
+          user_id: reservation.user._id.toHexString(),
+        }
+    ).then(qrcode =>
+        this.mailerService.sendMail(
+            {
+              to: dto.email,
+              subject: `Tickets for movie: ${reservation.show_time.movie.title}`,
+              template: 'mail',
+              context: { reservation: reservation.toJSON(), tickets: tickets.map(t => t.toJSON()) },
+              attachments: [
+                {
+                  filename: 'qrcode.png',
+                  content: qrcode.split('base64,')[1],
+                  encoding: 'base64'
+                } as any,
+              ]
+            }
+        )
+    ).then(() => this.logger.debug(`Send mail success`))
+        .catch((e) => this.logger.debug(`Send mail failed: ${e}`));
   }
 
   private static calculateOriginalPrice(products: { product: Product; quantity: number }[], tickets: Ticket[]) {
@@ -122,7 +157,7 @@ export class ReservationsService {
         promotion: Promotion | null,
         original_price: number,
       }
-  ): Promise<Reservation> {
+  ): Promise<CreatedReservation> {
     const { dto, original_price, paymentIntent, user, total_price, ticketIds, promotion } = info;
 
     const session = await this.ticketModel.db.startSession();
@@ -163,7 +198,17 @@ export class ReservationsService {
         await this.promotionsService.markUsed(promotion, user);
       }
 
-      reservation = await reservation.populate('user').execPopulate();
+      reservation = await reservation
+          .populate('user')
+          .populate({
+            path: 'show_time',
+            populate: { path: 'movie' },
+          })
+          .populate({
+            path: 'show_time',
+            populate: { path: 'theatre' },
+          })
+          .execPopulate();
 
       await session.commitTransaction();
       session.endSession();
