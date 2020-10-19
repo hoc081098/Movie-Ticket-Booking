@@ -11,6 +11,10 @@ import { AddCardDto, Card } from './cards/card.dto';
 import { FirebaseAuthenticationService } from '@aginix/nestjs-firebase-admin/dist';
 import { checkCompletedLogin, getSkipLimit } from '../common/utils';
 import { PaginationDto } from '../common/pagination.dto';
+import * as faker from 'faker';
+import { defer, of, range } from 'rxjs';
+import { catchError, concatMap, exhaustMap, ignoreElements, tap } from 'rxjs/operators';
+import dayjs = require('dayjs');
 
 function paymentMethodToCardDto(paymentMethod: Stripe.PaymentMethod): Card {
   const card = paymentMethod.card;
@@ -145,7 +149,7 @@ export class UsersService {
   }
 
   async delete(uid: string): Promise<User> {
-    const result = await this.userModel.findOneAndDelete({ uid });
+    const result = await this.userModel.findOneAndDelete({ uid, role: { $ne: 'ADMIN' } });
 
     if (result == null) {
       throw new NotFoundException(`User with uid ${uid} not found`);
@@ -198,7 +202,7 @@ export class UsersService {
 
   async blockUser(uid: string): Promise<User> {
     return await this.userModel.findOneAndUpdate(
-        { uid },
+        { uid, role: { $ne: 'ADMIN' }, is_active: true },
         { is_active: false },
         { new: true },
     ).exec();
@@ -210,5 +214,40 @@ export class UsersService {
         { $addToSet: { tokens: fcmToken } },
         { new: true },
     ).exec();
+  }
+
+  seedUsers() {
+    return range(0, 300).pipe(
+        concatMap(() => {
+          return defer(() =>
+              this.firebaseAuthenticationService.createUser({
+                email: faker.internet.email(),
+                emailVerified: false,
+                password: 'secretPassword',
+                disabled: false,
+              })
+          ).pipe(
+              exhaustMap(userRecord => this.update(
+                  new UserPayload(
+                      { uid: userRecord.uid, email: userRecord.email }),
+                  {
+                    address: 'Đà Nẵng City',
+                    avatar: faker.internet.avatar(),
+                    birthday: dayjs().year(1998)
+                        .month(10)
+                        .day(8)
+                        .toDate(),
+                    full_name: faker.name.findName(),
+                    gender: 'MALE',
+                    location: null,
+                    phone_number: '0363438135',
+                  }),
+              ),
+              tap({ error: console.log, next: console.log }),
+              catchError((e) => of(e)),
+          )
+        }),
+        ignoreElements(),
+    );
   }
 }

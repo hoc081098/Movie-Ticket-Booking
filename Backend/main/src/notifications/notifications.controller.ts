@@ -1,5 +1,5 @@
 import { Controller, Logger, Post, UnprocessableEntityException, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Model } from 'mongoose';
@@ -20,6 +20,7 @@ export class NotificationsController {
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
   ) {}
 
+  @ApiOperation({ summary: 'PRIVATE' })
   @Post('test_send_mail')
   async testSendMail(): Promise<'SUCCESS'> {
     try {
