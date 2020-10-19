@@ -202,7 +202,7 @@ export class UsersService {
 
   async blockUser(uid: string): Promise<User> {
     return await this.userModel.findOneAndUpdate(
-        { uid, role: { $ne: 'ADMIN' }, is_active: true },
+        { uid, role: { $ne: 'ADMIN' } },
         { is_active: false },
         { new: true },
     ).exec();
@@ -249,5 +249,27 @@ export class UsersService {
         }),
         ignoreElements(),
     );
+  }
+
+  async unblockUser(uid: string): Promise<User> {
+    return await this.userModel.findOneAndUpdate(
+        { uid, role: { $ne: 'ADMIN' } },
+        { is_active: true },
+        { new: true },
+    ).exec();
+  }
+
+  async toStaffRole(uid: string): Promise<User> {
+    return await this.userModel.findOneAndUpdate(
+        {
+          uid, role: { $ne: 'ADMIN' },
+          $or: [
+            { is_active: null },
+            { is_active: true },
+          ]
+        },
+        { role: 'STAFF' },
+        { new: true },
+    ).exec();
   }
 }

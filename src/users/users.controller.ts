@@ -92,11 +92,31 @@ export class UsersController {
   @ForAdmin()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @Put(':uid/block')
+  @Put('block/:uid')
   blockUser(
       @Param('uid') uid: string,
   ): Promise<User> {
     return this.usersService.blockUser(uid);
+  }
+
+  @ForAdmin()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @Put('unblock/:uid')
+  unblockUser(
+      @Param('uid') uid: string,
+  ): Promise<User> {
+    return this.usersService.unblockUser(uid);
+  }
+
+  @ForAdmin()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @Put('to_staff_role/:uid')
+  toStaffRole(
+      @Param('uid') uid: string,
+  ): Promise<User> {
+    return this.usersService.toStaffRole(uid);
   }
 
   @ApiOperation({ summary: 'PRIVATE' })
