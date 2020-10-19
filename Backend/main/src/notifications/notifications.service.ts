@@ -48,14 +48,14 @@ export class NotificationsService {
                   : v?.toString();
           return { ...acc, [k]: newV };
         },
-        {} as Record<string, string>
+        { image: movie.poster_url ?? ''} as Record<string, string>
     );
     const payload: admin.messaging.MessagingPayload = {
       data,
       notification: {
         title: notificationDoc.title,
         body: notificationDoc.body,
-        image: movie.poster_url,
+        image: movie.poster_url ?? '',
         clickAction: 'FLUTTER_NOTIFICATION_CLICK',
       }
     };

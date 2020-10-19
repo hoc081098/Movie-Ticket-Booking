@@ -55,12 +55,12 @@ const logger = new Logger('AppModule');
           template: {
             dir: join(__dirname, '..', '..', 'template'),
             adapter: new HandlebarsAdapter({
-              'formatDate': (date, format) => {
+              formatDate: (date, format) => {
                 const formatted = dayjs(date).format(format);
                 logger.debug(`formatDate: date=${date} format=${format} -> ${formatted}`);
                 return formatted;
               },
-              'formatCurrency': (currency: number) => {
+              formatCurrency: (currency: number) => {
                 const formatted = new Intl.NumberFormat('vi-VN', {
                   style: 'currency',
                   currency: 'VND'
@@ -68,6 +68,7 @@ const logger = new Logger('AppModule');
                 logger.debug(`formatCurrency: currency=${currency} -> ${formatted}`);
                 return formatted;
               },
+              orEmpty: (s: string | undefined | null) => s ?? '',
             }),
             options: {
               strict: true,

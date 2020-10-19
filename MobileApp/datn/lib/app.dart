@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
 import 'domain/repository/user_repository.dart';
+import 'fcm_notification.dart';
 import 'ui/login/login_bloc.dart';
 import 'ui/login/login_page.dart';
 import 'ui/login_update_profile/login_update_profile_page.dart';
@@ -13,31 +13,6 @@ import 'ui/register/register_bloc.dart';
 import 'ui/register/register_page.dart';
 import 'ui/reset_password/reset_password_bloc.dart';
 import 'ui/reset_password/reset_password_page.dart';
-
-Future<void> setupNotification(BuildContext context) async {
-  const initializationSettingsAndroid =
-      AndroidInitializationSettings('app_icon');
-
-  final initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
-
-  await FlutterLocalNotificationsPlugin().initialize(
-    initializationSettings,
-    onSelectNotification: (payload) => onSelectNotification(context, payload),
-  );
-}
-
-Future<void> onSelectNotification(
-  BuildContext context,
-  String payload,
-) async {
-  print(
-      '<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-  print('tap $payload');
-  print(
-      '<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-}
 
 class MyApp extends StatefulWidget {
   @override
