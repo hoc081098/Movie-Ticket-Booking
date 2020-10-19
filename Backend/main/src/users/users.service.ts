@@ -203,4 +203,12 @@ export class UsersService {
         { new: true },
     ).exec();
   }
+
+  updateFcmToken(user: User, fcmToken: string): Promise<User> {
+    return this.userModel.findOneAndUpdate(
+        { uid: user.uid },
+        { $addToSet: { tokens: fcmToken } },
+        { new: true },
+    ).exec();
+  }
 }

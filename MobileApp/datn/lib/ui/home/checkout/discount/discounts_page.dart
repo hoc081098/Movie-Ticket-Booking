@@ -1,5 +1,7 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -73,10 +75,31 @@ class DiscountsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final loaderFunction = () =>
         Provider.of<PromotionRepository>(context).getPromotions(showTimeId);
+    final countDownStyle = Theme.of(context)
+        .textTheme
+        .subtitle2
+        .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Coupon code'),
+        actions: [
+          Center(
+            child: RxStreamBuilder<String>(
+              stream:
+                  TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? Text(
+                        snapshot.data,
+                        style: countDownStyle,
+                      )
+                    : const SizedBox();
+              },
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
       ),
       body: LoaderWidget<BuiltList<Promotion>>(
         blocProvider: () => LoaderBloc(
@@ -112,7 +135,7 @@ class DiscountsPage extends StatelessWidget {
           if (promotions.isEmpty) {
             return Center(
               child: EmptyWidget(
-                message: 'Empty promotions',
+                message: 'Empty coupon code',
               ),
             );
           }

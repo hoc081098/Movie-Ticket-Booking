@@ -1,4 +1,4 @@
-import { HttpModule, Module } from '@nestjs/common';
+import { HttpModule, Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
@@ -22,9 +22,61 @@ import * as admin from 'firebase-admin';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SocketModule } from './socket/socket.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import * as dayjs from 'dayjs';
+import * as localizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(localizedFormat);
+
+const logger = new Logger('AppModule');
 
 @Module({
   imports: [
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          transport: {
+            service: 'gmail',
+            auth: {
+              user: configService.get(ConfigKey.EMAIL),
+              pass: configService.get(ConfigKey.EMAIL_PASSWORD),
+            },
+            secure: false,
+            ignoreTLS: true,
+          },
+          defaults: {
+            from: '"Do Not Reply, Cinemas Company 👥" <no-replay@cinemas.com>',
+          },
+          preview: process.env.NODE_ENV !== 'production',
+          template: {
+            dir: join(__dirname, '..', '..', 'template'),
+            adapter: new HandlebarsAdapter({
+              formatDate: (date, format) => {
+                const formatted = dayjs(date).format(format);
+                logger.debug(`formatDate: date=${date} format=${format} -> ${formatted}`);
+                return formatted;
+              },
+              formatCurrency: (currency: number) => {
+                const formatted = new Intl.NumberFormat('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND'
+                }).format(currency);
+                logger.debug(`formatCurrency: currency=${currency} -> ${formatted}`);
+                return formatted;
+              },
+              orEmpty: (s: string | undefined | null) => s ?? '',
+            }),
+            options: {
+              strict: true,
+            },
+          },
+        };
+      },
+    }),
     MongooseModule.forRootAsync(
         {
           imports: [ConfigModule],
@@ -59,6 +111,7 @@ import { SocketModule } from './socket/socket.module';
     ProductsModule,
     FavoritesModule,
     SocketModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [

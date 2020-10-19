@@ -1,3 +1,4 @@
+import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -34,11 +35,32 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<AddCardBloc>(context);
+    final countDownStyle = Theme.of(context)
+        .textTheme
+        .subtitle2
+        .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('Add card'),
+        actions: [
+          Center(
+            child: RxStreamBuilder<String>(
+              stream:
+                  TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? Text(
+                        snapshot.data,
+                        style: countDownStyle,
+                      )
+                    : const SizedBox();
+              },
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
       ),
       body: Center(
         child: Padding(

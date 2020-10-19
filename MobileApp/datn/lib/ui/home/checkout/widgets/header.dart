@@ -158,6 +158,15 @@ class HeaderWidget extends StatelessWidget {
               ),
             ]),
           ),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(text: 'Address: ', style: textStyle, children: [
+              TextSpan(
+                text: theatre.address,
+                style: textStyle2,
+              ),
+            ]),
+          ),
           const SizedBox(height: 6),
           Wrap(
             alignment: WrapAlignment.start,

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:built_collection/built_collection.dart';
+import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -25,7 +26,89 @@ import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/age_type.dart';
 import '../../widgets/error_widget.dart';
+import '../detail/movie_detail_page.dart';
 import 'combo_page.dart';
+
+class TicketsCountDownTimerBlocProvider {
+  static TicketsCountDownTimerBlocProvider _instance;
+
+  TicketsCountDownTimerBloc _bloc;
+  var _destroyed = false;
+  var _initialized = false;
+
+  TicketsCountDownTimerBlocProvider._();
+
+  factory TicketsCountDownTimerBlocProvider.shared() =>
+      _instance ??= TicketsCountDownTimerBlocProvider._();
+
+  void _init(TicketsCountDownTimerBloc bloc) {
+    _bloc = bloc;
+    _initialized = true;
+  }
+
+  TicketsCountDownTimerBloc get bloc {
+    if (!_initialized) throw StateError('Not init');
+    if (_destroyed || _bloc == null) throw StateError('Destroyed');
+    return _bloc;
+  }
+
+  void _destroy() {
+    _bloc = null;
+    _destroyed = true;
+    _instance = null;
+  }
+}
+
+class TicketsCountDownTimerBloc extends BaseBloc {
+  static const maxDuration = Duration(minutes: 5);
+
+  ///
+  final bag = DisposeBag();
+  final _startS = PublishSubject<void>(sync: true);
+  final _timeoutS = PublishSubject<void>(sync: true);
+  DistinctValueConnectableStream<String> _countdown$;
+
+  ///
+  ValueStream<String> get countDown$ => _countdown$;
+
+  Stream<void> get timeout$ => _timeoutS;
+
+  void start() => _startS.add(null);
+
+  TicketsCountDownTimerBloc() {
+    _countdown$ = _startS
+        .map((_) => DateTime.now().add(maxDuration))
+        .take(1)
+        .switchMap(
+          (endTime) => Stream<void>.periodic(const Duration(seconds: 1))
+              .startWith(null)
+              .map((_) => DateTime.now())
+              .takeWhileInclusive((d) => d.isBefore(endTime))
+              .map(((time) => endTime.difference(time)).pipe(_formatDuration))
+              .concatWith(
+            [
+              Stream.value('00:00').doOnListen(() => _timeoutS.add(null)),
+            ],
+          ),
+        )
+        .publishValueDistinct(null);
+
+    _countdown$.connect().disposedBy(bag);
+  }
+
+  @override
+  void dispose() => bag.dispose();
+
+  static String _formatDuration(Duration d) {
+    final m = d.inMinutes.remainder(60).twoDigits();
+    final s = d.inSeconds.remainder(60).twoDigits();
+    return '$m:$s';
+  }
+}
+
+extension on num {
+  String twoDigits() => toString().padLeft(2, '0');
+}
 
 class TicketsPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets';
@@ -47,17 +130,23 @@ class TicketsPage extends StatefulWidget {
 
 class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Ticket>> bloc;
+  final countDownTimerBloc = TicketsCountDownTimerBloc();
   final selectedTicketIdsS = BehaviorSubject.seeded(BuiltList.of(<String>[]));
+  Object listenToken;
 
   @override
   void initState() {
     super.initState();
     selectedTicketIdsS.disposedBy(bag);
+    TicketsCountDownTimerBlocProvider.shared()._init(countDownTimerBloc);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    listenToken ??=
+        countDownTimerBloc.timeout$.listen(_showTimeoutDialog).disposedBy(bag);
 
     bloc ??= () {
       final ticketRepository = Provider.of<TicketRepository>(context);
@@ -107,12 +196,49 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           .listen(null)
           .disposedBy(bag);
 
+      loaderBloc.state$
+          .where((state) =>
+              state.content != null && !state.isLoading && state.error == null)
+          .take(1)
+          .listen((_) => countDownTimerBloc.start())
+          .disposedBy(bag);
+
       return loaderBloc..fetch();
     }();
   }
 
+  void _showTimeoutDialog(void _) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('Timeout'),
+          content: Text(
+              'Time out to hold the seat. Please make your reservation within 5 minutes!'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+
+                AppScaffold.of(context)
+                    .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final countDownStyle = Theme.of(context)
+        .textTheme
+        .subtitle2
+        .copyWith(color: Colors.white, fontSize: 16);
+
     return Scaffold(
       body: RxStreamBuilder<LoaderState<BuiltList<Ticket>>>(
         stream: bloc.state$,
@@ -158,7 +284,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Container(
-                        height: marginTop,
+                        height: marginTop + 32,
                         width: double.infinity,
                         color: const Color(0xffE9CBD1).withOpacity(0.2),
                       ),
@@ -239,7 +365,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.black.withOpacity(0.16),
+                    color: Colors.black.withOpacity(0.32),
                   ),
                   child: Material(
                     color: Colors.transparent,
@@ -257,6 +383,31 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                     ),
                   ),
                 ),
+              ),
+              Positioned(
+                top: marginTop,
+                right: 8,
+                child: Container(
+                  height: 24 + 32.0,
+                  width: 24 + 32.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black.withOpacity(0.32),
+                  ),
+                  child: Center(
+                    child: RxStreamBuilder<String>(
+                      stream: countDownTimerBloc.countDown$,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? Text(
+                                snapshot.data,
+                                style: countDownStyle,
+                              )
+                            : const SizedBox();
+                      },
+                    ),
+                  ),
+                ),
               )
             ],
           );
@@ -267,6 +418,8 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
 
   @override
   void dispose() {
+    TicketsCountDownTimerBlocProvider.shared()._destroy();
+    countDownTimerBloc.dispose();
     bloc.dispose();
     super.dispose();
   }
@@ -321,7 +474,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
         .toBuiltSet();
   }
 
-  Stream<void> showConflictDialog(BuiltSet<Ticket> _) => Rx.defer(
+  Stream<void> showConflictDialog(BuiltSet<Ticket> _) => Rx.fromCallable(
         () => showDialog<void>(
           context: context,
           barrierDismissible: false,
@@ -342,7 +495,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               ],
             );
           },
-        ).asStream(),
+        ),
       );
 }
 
@@ -846,6 +999,15 @@ class BottomWidget extends StatelessWidget {
                 ),
                 TextSpan(
                   text: showTime.room,
+                  style: textStyle2,
+                ),
+              ]),
+            ),
+            const SizedBox(height: 8),
+            RichText(
+              text: TextSpan(text: 'Address: ', style: textStyle, children: [
+                TextSpan(
+                  text: theatre.address,
                   style: textStyle2,
                 ),
               ]),

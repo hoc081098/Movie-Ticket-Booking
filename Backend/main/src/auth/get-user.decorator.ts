@@ -1,6 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { User } from '../users/user.schema';
+import { Request } from 'express';
 
 export type RawUserPayload = {
   uid: string,
@@ -34,3 +35,6 @@ export const GetUser = createParamDecorator(
     }
 );
 
+export const GetFcmToken = createParamDecorator(
+    (data: unknown, ctx: ExecutionContext) => ctx.switchToHttp().getRequest<Request>().header('fcm_token'),
+);

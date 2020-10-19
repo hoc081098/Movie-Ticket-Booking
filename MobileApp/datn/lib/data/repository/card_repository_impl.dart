@@ -24,9 +24,9 @@ class CardRepositoryImpl implements CardRepository {
   }
 
   @override
-  Stream<Card> removeCard(Card card) => Rx.defer(
-          () => _authClient.delete(buildUrl('/cards/${card.id}')).asStream())
-      .mapTo(card);
+  Stream<Card> removeCard(Card card) =>
+      Rx.fromCallable(() => _authClient.delete(buildUrl('/cards/${card.id}')))
+          .mapTo(card);
 
   @override
   Stream<Card> addCard({

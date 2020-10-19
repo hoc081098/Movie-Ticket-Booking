@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -25,6 +26,7 @@ import '../remote/response/user_response.dart';
 class UserRepositoryImpl implements UserRepository {
   final FirebaseStorage _storage;
   final FirebaseAuth _auth;
+  final FirebaseMessaging _firebaseMessaging;
   final UserLocalSource _userLocalSource;
 
   final AuthClient _authClient;
@@ -44,11 +46,15 @@ class UserRepositoryImpl implements UserRepository {
     Function1<UserLocal, User> userLocalToUserDomain,
     this._googleSignIn,
     this._facebookLogin,
+    this._firebaseMessaging,
   ) : _user$ = valueConnectableStream(
           _auth,
           _userLocalSource,
           userLocalToUserDomain,
         );
+
+  Future<Map<String, String>> get _fcmTokenHeaders =>
+      _firebaseMessaging.getToken().then((token) => {'fcm_token': token});
 
   static ValueConnectableStream<Optional<User>> valueConnectableStream(
     FirebaseAuth _auth,
@@ -84,7 +90,10 @@ class UserRepositoryImpl implements UserRepository {
     await _userLocalSource.saveToken(await _auth.currentUser.getIdToken(true));
 
     try {
-      final json = await _authClient.getBody(buildUrl('users/me'));
+      final json = await _authClient.getBody(
+        buildUrl('users/me'),
+        headers: await _fcmTokenHeaders,
+      );
       final userLocal = _userResponseToUserLocal(UserResponse.fromJson(json));
       await _userLocalSource.saveUser(userLocal);
 
@@ -139,7 +148,10 @@ class UserRepositoryImpl implements UserRepository {
 
     UserResponse userResponse;
     try {
-      final json = await _authClient.getBody(buildUrl('users/me'));
+      final json = await _authClient.getBody(
+        buildUrl('users/me'),
+        headers: await _fcmTokenHeaders,
+      );
       userResponse = UserResponse.fromJson(json);
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {

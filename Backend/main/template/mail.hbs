@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
+    <meta name="color-scheme" content="dark light">
+    <meta name="supported-color-schemes" content="dark light">
+    <title></title>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+
+
+    <style>
+
+        html,
+        body {
+            margin: 0 auto !important;
+            padding: 0 !important;
+            height: 100% !important;
+            width: 100% !important;
+        }
+
+        * {
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        div[style*="margin: 16px 0"] {
+            margin: 0 !important;
+        }
+
+        table,
+        th {
+            font-weight: normal;
+        }
+
+
+        table {
+            border-spacing: 0 !important;
+            border-collapse: collapse !important;
+            table-layout: fixed !important;
+            margin: 0 auto !important;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        img.g-img + div {
+            display: none !important;
+        }
+
+        @media only screen and (min-device-width: 320px) and (max-device-width: 374px) {
+            u ~ div .email-container {
+                min-width: 320px !important;
+            }
+        }
+
+        @media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
+            u ~ div .email-container {
+                min-width: 375px !important;
+            }
+        }
+
+        @media only screen and (min-device-width: 414px) {
+            u ~ div .email-container {
+                min-width: 414px !important;
+            }
+        }
+
+        hr.dashed {
+            border-top: 1px dashed #bbb;
+        }
+
+    </style>
+
+    <style>
+
+        /* Media Queries */
+        @media screen and (max-width: 600px) {
+
+            .email-container {
+                width: 100% !important;
+                margin: auto !important;
+            }
+
+            .email-container p {
+                font-size: 17px !important;
+            }
+        }
+    </style>
+</head>
+
+<body width="100%" style="margin: 0; padding: 0 !important; background-color: #ffffff;">
+<center role="article" aria-roledescription="email" lang="en" style="width: 100%;
+
+background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+
+">
+    <div style="max-height:0; overflow:hidden; " aria-hidden="true">
+        View your tickets
+    </div>
+
+    <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+        &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+    </div>
+
+    <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="600"
+           style="margin: auto;" class="email-container">
+
+        <tr>
+            <td style="padding: 20px 0; text-align: center">
+                <img src="https://i.ibb.co/RPPzScN/enjoy.png" alt="enjoy" border="0" width="" height="100"/>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background-color: #ffffff;">
+                <img src="https://i.imgur.com/XSQACIF.jpg" width="600" height="" alt="alt_text" border="0"
+                     style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-size: 15px; line-height: 15px; color: #555555; margin: auto; display: block;"
+                     class="g-img">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background-color: #ffffff;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                        <td style="padding: 20px; font-size: 15px; line-height: 20px; color: #555555;">
+                            <p style="margin: 0 0 10px; color: #333333;">Thank you for booking tickets.</p>
+
+                            <hr class="dashed">
+
+                            <p style="margin: 0 0 10px;">Buyer: <span
+                                    style="font-weight: bold">#{{ reservation.user._id }}</span></p>
+                            <p style="margin: 0 0 10px;">Full name: <span
+                                    style="font-weight: bold">{{ reservation.user.full_name }}</span></p>
+
+                            <p style="margin: 0 0 10px;">Your reservation id: <span
+                                    style="font-weight: bold">#{{ reservation._id }}</span></p>
+                            <p style="margin: 0 0 10px;">Total amount: <span
+                                    style="font-weight: bold">{{ formatCurrency reservation.total_price }}</span> VND
+                            </p>
+                            <p style="margin: 0 0 10px;">Booked when: <span
+                                    style="font-weight: bold">{{ formatDate reservation.createdAt 'llll' }}</span></p>
+
+                            <hr class="dashed">
+
+                            <p style="margin: 0 0 10px;">Show time information: </p>
+
+                            <table>
+                                <tr>
+                                    <td style="padding: 20px 0; text-align: center; align-content: center;">
+                                        <img src="{{ orEmpty reservation.show_time.movie.poster_url }}"
+                                             alt="Movie image" border="0" height="248"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <ul>
+
+                                <li style="margin: 0 0 10px;">
+                                    <span style="font-weight: bold">{{ reservation.show_time.movie.title }}</span>
+                                </li>
+
+                                <li style="margin: 0 0 10px;">
+                                    Age type: <span
+                                        style="font-weight: bold">{{ reservation.show_time.movie.age_type }}</span>
+                                </li>
+
+                                <li style="margin: 0 0 10px;">
+                                    Duration: <span
+                                        style="font-weight: bold">{{ reservation.show_time.movie.duration }}
+                                    minutes</span>
+                                </li>
+
+                                <li style="margin: 0 0 10px;">
+                                    Start at: <span style="font-weight: bold">{{ formatDate
+                                        reservation.show_time.start_time 'llll' }}</span>
+                                </li>
+
+                                <li style="margin: 0 0 10px;">
+                                    Theatre: <span
+                                        style="font-weight: bold">{{ reservation.show_time.theatre.name }}</span> Room:
+                                    <span style="font-weight: bold">{{ reservation.show_time.room }}</span>
+                                </li>
+
+                                <li style="margin: 0 0 10px;">
+                                    Address: <span
+                                        style="font-weight: bold">{{ reservation.show_time.theatre.address }}</span>
+                                </li>
+                            </ul>
+
+                            <p style="margin: 0 0 10px;">Number of tickets: <span
+                                    style="font-weight: bold">{{ tickets.length }}</span></p>
+                            <p style="margin: 0 0 10px;">Your tickets:</p>
+                            <ul>
+                                {{#each tickets}}
+                                    <li style="margin: 0 0 10px;">
+                                        Seat: <span
+                                            style="font-weight: bold">{{ this.seat.row }}{{ this.seat.column }}</span>
+                                    </li>
+                                {{/each}}
+                            </ul>
+
+                            <p style="margin: 0 0 10px; color: #333333;">Enjoy Watching. Thank you!
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background-color: #00000000; height:100px; width:100%;">
+            </td>
+        </tr>
+    </table>
+</center>
+</body>
+</html>

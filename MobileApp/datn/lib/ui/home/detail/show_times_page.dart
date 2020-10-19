@@ -333,7 +333,7 @@ class ShowTimeItem extends StatelessWidget {
                 child: Text(
                   theatre.address,
                   style: textTheme.caption.copyWith(fontSize: 14),
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

@@ -24,8 +24,8 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
     final change$ = _changes
         .mapNotNull((tuple) => tuple.item1.id == movieId ? tuple.item2 : null);
 
-    return Rx.defer(() =>
-            _authClient.getBody(buildUrl('/favorites/${movieId}')).asStream())
+    return Rx.fromCallable(
+            () => _authClient.getBody(buildUrl('/favorites/${movieId}')))
         .map((json) => FavoriteResponse.fromJson(json))
         .map((res) => res.is_favorite)
         .concatWith([change$]);
@@ -33,8 +33,8 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
 
   @override
   Stream<void> toggleFavorite(String movieId) {
-    return Rx.defer(() => _authClient.postBody(buildUrl('/favorites'),
-            body: {'movie_id': movieId}).asStream())
+    return Rx.fromCallable(() => _authClient
+            .postBody(buildUrl('/favorites'), body: {'movie_id': movieId}))
         .map((json) => FavoriteResponse.fromJson(json))
         .map(
           (res) => Tuple2(
@@ -56,8 +56,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
       return [for (final res in responses) _movieResponseToMovie(res)].build();
     };
 
-    return Rx.defer(
-            () => _authClient.getBody(buildUrl('/favorites')).asStream())
+    return Rx.fromCallable(() => _authClient.getBody(buildUrl('/favorites')))
         .map(jsonToMovies)
         .exhaustMap(
           (initial) => _changes

@@ -20,6 +20,15 @@ import { AppGateway } from '../socket/app.gateway';
 import { PromotionsService } from '../promotions/promotions.service';
 import { Promotion } from '../promotions/promotion.schema';
 import { User } from '../users/user.schema';
+import { NotificationsService } from '../notifications/notifications.service';
+import { MailerService } from '@nestjs-modules/mailer';
+import { ShowTime } from '../show-times/show-time.schema';
+import { Movie } from '../movies/movie.schema';
+import { generateQRCode } from '../common/qrcode';
+
+export type CreatedReservation =
+    Omit<Reservation, 'show_time'>
+    & { show_time: Omit<ShowTime, 'movie'> & { movie: Movie } };
 
 @Injectable()
 export class ReservationsService {
@@ -32,6 +41,8 @@ export class ReservationsService {
       private readonly usersService: UsersService,
       private readonly appGateway: AppGateway,
       private readonly promotionsService: PromotionsService,
+      private readonly notificationsService: NotificationsService,
+      private readonly mailerService: MailerService,
   ) {}
 
   async createReservation(
@@ -84,8 +95,52 @@ export class ReservationsService {
         .to(`reservation:${dto.show_time_id}`)
         .emit('reserved', data);
 
+    this.sendMailAndPushNotification({ user, reservation, dto, tickets });
+
     this.logger.debug(`[8] returns...`);
     return reservation;
+  }
+
+  private sendMailAndPushNotification(
+      info: {
+        user: User,
+        reservation: CreatedReservation,
+        dto: CreateReservationDto,
+        tickets: Ticket[],
+      }
+  ) {
+    const { user, reservation, dto, tickets } = info;
+    this.logger.debug(`>>>>>>>>>>>>>> ${JSON.stringify(reservation)}`);
+
+    this.notificationsService
+        .pushNotification(user, reservation)
+        .catch((e) => this.logger.debug(`Push notification error: ${e}`));
+
+    generateQRCode(
+        {
+          reservation_id: reservation._id.toHexString(),
+          show_time_id: reservation.show_time._id.toHexString(),
+          ticket_ids: tickets.map(t => t._id.toHexString()),
+          user_id: reservation.user._id.toHexString(),
+        }
+    ).then(qrcode =>
+        this.mailerService.sendMail(
+            {
+              to: dto.email,
+              subject: `Tickets for movie: ${reservation.show_time.movie.title}`,
+              template: 'mail',
+              context: { reservation: reservation.toJSON(), tickets: tickets.map(t => t.toJSON()) },
+              attachments: [
+                {
+                  filename: 'qrcode.png',
+                  content: qrcode.split('base64,')[1],
+                  encoding: 'base64'
+                } as any,
+              ]
+            }
+        )
+    ).then(() => this.logger.debug(`Send mail success`))
+        .catch((e) => this.logger.debug(`Send mail failed: ${e}`));
   }
 
   private static calculateOriginalPrice(products: { product: Product; quantity: number }[], tickets: Ticket[]) {
@@ -103,7 +158,7 @@ export class ReservationsService {
         promotion: Promotion | null,
         original_price: number,
       }
-  ): Promise<Reservation> {
+  ): Promise<CreatedReservation> {
     const { dto, original_price, paymentIntent, user, total_price, ticketIds, promotion } = info;
 
     const session = await this.ticketModel.db.startSession();
@@ -144,7 +199,16 @@ export class ReservationsService {
         await this.promotionsService.markUsed(promotion, user);
       }
 
-      reservation = await reservation.populate('user').execPopulate();
+      reservation = await reservation
+          .populate('user')
+          .populate({
+            path: 'show_time',
+            populate: [
+              { path: 'movie' },
+              { path: 'theatre' },
+            ],
+          })
+          .execPopulate();
 
       await session.commitTransaction();
       session.endSession();
@@ -182,7 +246,7 @@ export class ReservationsService {
     //   ]
     // }).populate('seat');
 
-    const tickets = await this.ticketModel.find({ _id: { $in: ticketIds } }).populate('seat');;
+    const tickets = await this.ticketModel.find({ _id: { $in: ticketIds } }).populate('seat');
     const invalidTickets = tickets.filter(t => !!t.reservation);
 
     if (invalidTickets.length > 0) {

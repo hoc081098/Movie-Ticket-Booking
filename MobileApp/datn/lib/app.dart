@@ -4,6 +4,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
 import 'domain/repository/user_repository.dart';
+import 'fcm_notification.dart';
 import 'ui/login/login_bloc.dart';
 import 'ui/login/login_page.dart';
 import 'ui/login_update_profile/login_update_profile_page.dart';
@@ -58,6 +59,8 @@ class _MyAppState extends State<MyApp> {
     fontFamily: 'Montserrat',
   );
 
+  Object setupLocalNotification;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -72,6 +75,8 @@ class _MyAppState extends State<MyApp> {
         context,
       ),
     ]);
+
+    setupLocalNotification ??= setupNotification(context);
   }
 
   @override

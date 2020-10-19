@@ -1,6 +1,7 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -28,6 +29,7 @@ import 'domain/repository/reservation_repository.dart';
 import 'domain/repository/ticket_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
+import 'fcm_notification.dart';
 import 'utils/custom_indenting_built_value_to_string_helper.dart';
 import 'utils/type_defs.dart';
 
@@ -48,6 +50,19 @@ void main() async {
   await Firebase.initializeApp();
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
+  final firebaseMessaging = FirebaseMessaging();
+  firebaseMessaging.configure(
+    onMessage: onMessage,
+    onBackgroundMessage: myBackgroundMessageHandler,
+    onLaunch: (Map<String, dynamic> message) async {
+      print('onLaunch: $message');
+      // _navigateToItemDetail(message);
+    },
+    onResume: (Map<String, dynamic> message) async {
+      print('onResume: $message');
+      // _navigateToItemDetail(message);
+    },
+  );
   final googleSignIn = GoogleSignIn();
   final facebookLogin = FacebookLogin();
 
@@ -84,6 +99,7 @@ void main() async {
     mappers.userLocalToUserDomain,
     googleSignIn,
     facebookLogin,
+    firebaseMessaging,
   );
   _onSignOut = userRepository.logout;
 
