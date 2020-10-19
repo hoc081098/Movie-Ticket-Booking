@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -76,10 +77,31 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<ComboBloc>(context);
+    final countDownStyle = Theme.of(context)
+        .textTheme
+        .subtitle2
+        .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Combo'),
+        actions: [
+          Center(
+            child: RxStreamBuilder<String>(
+              stream:
+                  TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? Text(
+                        snapshot.data,
+                        style: countDownStyle,
+                      )
+                    : const SizedBox();
+              },
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
       ),
       body: RxStreamBuilder<ComboState>(
         stream: bloc.state$,
@@ -368,6 +390,15 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
               ),
               TextSpan(
                 text: widget.showTime.room,
+                style: textStyle2,
+              ),
+            ]),
+          ),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(text: 'Address: ', style: textStyle, children: [
+              TextSpan(
+                text: widget.theatre.address,
                 style: textStyle2,
               ),
             ]),

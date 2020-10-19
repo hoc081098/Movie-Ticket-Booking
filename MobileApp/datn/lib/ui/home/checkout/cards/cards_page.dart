@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
@@ -203,6 +204,10 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<CardsBloc>(context);
+    final countDownStyle = Theme.of(context)
+        .textTheme
+        .subtitle2
+        .copyWith(color: Colors.white, fontSize: 16);
 
     return WillPopScope(
       onWillPop: () async {
@@ -217,6 +222,23 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
         key: scaffoldKey,
         appBar: AppBar(
           title: Text('Cards'),
+          actions: [
+            Center(
+              child: RxStreamBuilder<String>(
+                stream:
+                    TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? Text(
+                          snapshot.data,
+                          style: countDownStyle,
+                        )
+                      : const SizedBox();
+                },
+              ),
+            ),
+            const SizedBox(width: 12),
+          ],
         ),
         floatingActionButton: RxStreamBuilder<bool>(
           stream: fabVisible$,

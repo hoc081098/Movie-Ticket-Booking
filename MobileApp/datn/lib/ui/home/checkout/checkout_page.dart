@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
@@ -105,12 +106,10 @@ class CheckoutBloc implements BaseBloc {
             phoneNumberRegex.hasMatch(p) ? null : 'Invalid phone number', p))
         .share();
 
-    _emailError$ = email$
-        .map((tuple) => tuple.item1)
-        .publishValueDistinct(null);
-    _phoneError$ = phone$
-        .map((tuple) => tuple.item1)
-        .publishValueDistinct(null);
+    _emailError$ =
+        email$.map((tuple) => tuple.item1).publishValueDistinct(null);
+    _phoneError$ =
+        phone$.map((tuple) => tuple.item1).publishValueDistinct(null);
 
     final form$ = _submitS
         .debug('SUBMIT')
@@ -219,11 +218,32 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   @override
   Widget build(BuildContext context) {
     final buttonHeight = 54.0;
+    final countDownStyle = Theme.of(context)
+        .textTheme
+        .subtitle2
+        .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('Checkout'),
+        actions: [
+          Center(
+            child: RxStreamBuilder<String>(
+              stream:
+                  TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? Text(
+                        snapshot.data,
+                        style: countDownStyle,
+                      )
+                    : const SizedBox();
+              },
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
       ),
       body: Stack(
         children: [
