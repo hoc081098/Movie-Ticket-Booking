@@ -1,10 +1,22 @@
-import { Body, Controller, Delete, Get, Logger, NotFoundException, Param, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards
+} from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { UsersService } from './users.service';
 import { GetFcmToken, GetUser, UserPayload } from '../auth/get-user.decorator';
 import { User } from './user.schema';
 import { UpdateUserDto } from './update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles, RolesGuard } from '../auth/roles.guard';
 import { PaginationDto } from '../common/pagination.dto';
 import { ForAdmin } from '../common/swagger.decorator';
@@ -85,5 +97,12 @@ export class UsersController {
       @Param('uid') uid: string,
   ): Promise<User> {
     return this.usersService.blockUser(uid);
+  }
+
+  @ApiOperation({ summary: 'PRIVATE' })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Post('seed')
+  seedUsers() {
+    return this.usersService.seedUsers();
   }
 }
