@@ -8,6 +8,9 @@ import { Notification } from './notification.schema';
 import { FirebaseMessagingService } from '@aginix/nestjs-firebase-admin';
 import * as admin from 'firebase-admin';
 import { CreatedReservation } from '../reservations/reservations.service';
+import { PaginationDto } from "../common/pagination.dto";
+import { UserPayload } from "../auth/get-user.decorator";
+import { checkCompletedLogin, getSkipLimit } from "../common/utils";
 
 @Injectable()
 export class NotificationsService {
@@ -48,7 +51,7 @@ export class NotificationsService {
                   : v?.toString();
           return { ...acc, [k]: newV };
         },
-        { image: movie.poster_url ?? ''} as Record<string, string>
+        { image: movie.poster_url ?? '' } as Record<string, string>
     );
     const payload: admin.messaging.MessagingPayload = {
       data,
@@ -92,6 +95,31 @@ export class NotificationsService {
     }
 
     this.logger.debug(`Pushed payload: ${JSON.stringify(payload)}`);
+  }
+
+  async getNotifications(
+      userPayload: UserPayload,
+      dto: PaginationDto,
+  ): Promise<Notification[]> {
+    const user = checkCompletedLogin(userPayload);
+    const { limit, skip } = getSkipLimit(dto);
+
+    return await this.notificationModel
+        .find({ to_user: user._id })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate({
+          path: 'reservation',
+          populate: {
+            path: 'show_time',
+            populate: [
+              { path: 'theatre' },
+              { path: 'movie' },
+            ]
+          }
+        })
+        .exec();
   }
 }
 
