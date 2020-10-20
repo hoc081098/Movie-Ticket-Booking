@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:datn/data/remote/response/notification_response.dart';
 
 import '../utils/custom_iso_8601_date_time_serializer.dart';
 import 'local/user_local.dart';
@@ -57,6 +58,11 @@ const builtListPromotionResponses = FullType(
   [FullType(PromotionResponse)],
 );
 
+const builtListNotificationResponse = FullType(
+  BuiltList,
+  [FullType(NotificationResponse)],
+);
+
 @SerializersFor([
   UserLocal,
   LocationLocal,
@@ -80,6 +86,9 @@ const builtListPromotionResponses = FullType(
   ProductAndCountResponse,
   FavoriteResponse,
   PromotionResponse,
+  NotificationResponse,
+  NotificationResponse_ReservationResponse,
+  ShowTimeFullResponse,
 ])
 final Serializers _serializers = _$_serializers;
 
@@ -107,6 +116,10 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListPromotionResponses,
         () => ListBuilder<PromotionResponse>(),
+      )
+      ..addBuilderFactory(
+        builtListNotificationResponse,
+        () => ListBuilder<NotificationResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))

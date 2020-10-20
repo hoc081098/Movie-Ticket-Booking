@@ -1,4 +1,6 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
+import 'package:datn/data/repository/notification_repository_impl.dart';
+import 'package:datn/domain/repository/notification_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -134,6 +136,8 @@ void main() async {
     mappers.movieResponseToMovie,
   );
 
+  final notificationRepository = NotificationRepositoryImpl(authClient);
+
   runApp(
     Providers(
       providers: [
@@ -145,6 +149,7 @@ void main() async {
         Provider<TicketRepository>(value: ticketRepository),
         Provider<ReservationRepository>(value: reservationRepository),
         Provider<FavoritesRepository>(value: favoritesRepository),
+        Provider<NotificationRepository>(value: notificationRepository),
       ],
       child: MyApp(),
     ),

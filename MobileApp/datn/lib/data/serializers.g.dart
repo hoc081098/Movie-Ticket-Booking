@@ -16,6 +16,8 @@ Serializers _$_serializers = (new Serializers().toBuilder()
       ..add(MovieDetailResponse.serializer)
       ..add(MovieResponse.serializer)
       ..add(MultipleMessagesErrorResponse.serializer)
+      ..add(NotificationResponse.serializer)
+      ..add(NotificationResponse_ReservationResponse.serializer)
       ..add(PersonResponse.serializer)
       ..add(ProductAndCountResponse.serializer)
       ..add(ProductResponse.serializer)
@@ -42,6 +44,10 @@ Serializers _$_serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(CategoryResponse)]),
           () => new ListBuilder<CategoryResponse>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(ProductAndCountResponse)]),
+          () => new ListBuilder<ProductAndCountResponse>())
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(ProductAndCountResponse)]),
