@@ -39,3 +39,12 @@ ký tốt nghiệp hoặc cần hỗ trợ tốt nghiệp
 thì em xử dụng email cá nhân
 
 mail vào admin@foxcode.org nhé
+
+///
+///
+///
+
+git subtree push --prefix Backend/main heroku master
+
+git subtree split --prefix Backend/main  master
+git push heroku c27d727321b0189e692e4a1d74d8867ee3f758da:master --force

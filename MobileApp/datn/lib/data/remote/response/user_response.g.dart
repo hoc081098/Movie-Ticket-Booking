@@ -21,13 +21,14 @@ class _$LocationResponseSerializer
   @override
   Iterable<Object> serialize(Serializers serializers, LocationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'coordinates',
-      serializers.serialize(object.coordinates,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(double)])),
-    ];
-
+    final result = <Object>[];
+    if (object.coordinates != null) {
+      result
+        ..add('coordinates')
+        ..add(serializers.serialize(object.coordinates,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(double)])));
+    }
     return result;
   }
 
@@ -191,11 +192,7 @@ class _$LocationResponse extends LocationResponse {
           [void Function(LocationResponseBuilder) updates]) =>
       (new LocationResponseBuilder()..update(updates)).build();
 
-  _$LocationResponse._({this.coordinates}) : super._() {
-    if (coordinates == null) {
-      throw new BuiltValueNullFieldError('LocationResponse', 'coordinates');
-    }
-  }
+  _$LocationResponse._({this.coordinates}) : super._();
 
   @override
   LocationResponse rebuild(void Function(LocationResponseBuilder) updates) =>
@@ -262,12 +259,12 @@ class LocationResponseBuilder
     _$LocationResponse _$result;
     try {
       _$result =
-          _$v ?? new _$LocationResponse._(coordinates: coordinates.build());
+          _$v ?? new _$LocationResponse._(coordinates: _coordinates?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'coordinates';
-        coordinates.build();
+        _coordinates?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'LocationResponse', _$failedField, e.toString());

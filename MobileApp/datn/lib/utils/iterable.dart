@@ -36,3 +36,7 @@ extension FirstOrNullIterableExtension<T> on Iterable<T> {
 extension RandomIterableExtension<T> on Iterable<T> {
   T random() => elementAt(Random().nextInt(length));
 }
+
+extension IsNullOrEmptyIterableExtension<T> on Iterable<T> {
+  bool get isNullOrEmpty => this == null || isEmpty;
+}

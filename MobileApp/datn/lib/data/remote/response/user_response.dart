@@ -2,18 +2,20 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import '../../../utils/iterable.dart';
 import '../../serializers.dart';
 
 part 'user_response.g.dart';
 
 abstract class LocationResponse
     implements Built<LocationResponse, LocationResponseBuilder> {
+  @nullable
   @BuiltValueField(wireName: 'coordinates')
   BuiltList<double> get coordinates;
 
-  double get longitude => coordinates.isEmpty ? null : coordinates[0];
+  double get longitude => coordinates.isNullOrEmpty ? null : coordinates[0];
 
-  double get latitude => coordinates.isEmpty ? null : coordinates[1];
+  double get latitude => coordinates.isNullOrEmpty ? null : coordinates[1];
 
   LocationResponse._();
 
