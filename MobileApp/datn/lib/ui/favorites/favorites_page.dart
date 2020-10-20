@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -13,28 +14,61 @@ import '../../domain/model/movie.dart';
 import '../../domain/repository/favorites_repository.dart';
 import '../../utils/error.dart';
 import '../../utils/type_defs.dart';
+import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 
-class FavoritesPage extends StatelessWidget {
+class FavoritesPage extends StatefulWidget {
+  @override
+  _FavoritesPageState createState() => _FavoritesPageState();
+}
+
+class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
+  LoaderBloc<BuiltList<Movie>> bloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    bloc ??= () {
+      final repo = Provider.of<FavoritesRepository>(context);
+      final loaderBloc = LoaderBloc<BuiltList<Movie>>(
+        loaderFunction: repo.favoritesMovie,
+        initialContent: BuiltList.of(<Movie>[]),
+        enableLogger: true,
+      );
+
+      AppScaffold.tapStream(context)
+          .where((i) => i == 1)
+          .take(1)
+          .listen((event) => bloc.fetch())
+          .disposedBy(bag);
+
+      return loaderBloc;
+    }();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final repo = Provider.of<FavoritesRepository>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Favorites'),
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
-        child: LoaderWidget<BuiltList<Movie>>(
-          blocProvider: () => LoaderBloc(
-            loaderFunction: repo.favoritesMovie,
-            initialContent: BuiltList.of(<Movie>[]),
-            enableLogger: true,
-          ),
-          builder: (context, state, bloc) {
+        child: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
+          stream: bloc.state$,
+          builder: (context, snapshot) {
+            final state = snapshot.data;
+
             if (state.isLoading) {
               return Center(
                 child: SizedBox(

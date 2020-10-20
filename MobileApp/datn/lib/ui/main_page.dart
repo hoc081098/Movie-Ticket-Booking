@@ -183,6 +183,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         (context, settings) => homeRoutes[settings.name](context, settings),
         (context, settings) =>
             favoritesRoutes[settings.name](context, settings),
+        (context, settings) => Container(),
         (context, settings) => profileRoutes[settings.name](context, settings),
       ],
       items: const [
@@ -193,6 +194,10 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_rounded),
           title: Text('Favorites'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications),
+          title: Text('Notification'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_rounded),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_disposebag/flutter_disposebag.dart';
+import 'package:rxdart/subjects.dart';
 
 typedef AppScaffoldWidgetBuilder = Widget Function(BuildContext, RouteSettings);
 
@@ -30,19 +32,28 @@ class AppScaffold extends StatefulWidget {
 
     return navigatorKeys[currentIndex].currentState;
   }
+
+  static Stream<int> tapStream(BuildContext context) {
+    final appScaffoldState =
+        context.findAncestorStateOfType<_AppScaffoldState>();
+    return appScaffoldState.tapS;
+  }
 }
 
-class _AppScaffoldState extends State<AppScaffold> {
+class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
   var index = 0;
   var navigatorKeys = <GlobalKey<NavigatorState>>[];
+  final tapS = PublishSubject<int>(sync: true);
 
   @override
   void initState() {
     super.initState();
+
     navigatorKeys = List.generate(
       widget.builders.length,
       (_) => GlobalKey<NavigatorState>(),
     );
+    tapS.disposedBy(bag);
   }
 
   @override
@@ -81,6 +92,8 @@ class _AppScaffoldState extends State<AppScaffold> {
     } else {
       setState(() => index = newIndex);
     }
+
+    tapS.add(newIndex);
   }
 
   Widget buildBody() {
