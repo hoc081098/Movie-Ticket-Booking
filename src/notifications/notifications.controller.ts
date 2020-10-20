@@ -1,4 +1,4 @@
-import { Controller, Logger, Post, UnprocessableEntityException, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Post, Query, UnprocessableEntityException, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -7,6 +7,9 @@ import { Reservation } from '../reservations/reservation.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Ticket } from '../seats/ticket.schema';
 import { generateQRCode } from '../common/qrcode';
+import { PaginationDto } from "../common/pagination.dto";
+import { NotificationsService } from "./notifications.service";
+import { GetUser, UserPayload } from "../auth/get-user.decorator";
 
 @UseGuards(AuthGuard)
 @ApiTags('notifications')
@@ -18,6 +21,7 @@ export class NotificationsController {
       private readonly mailerService: MailerService,
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
+      private readonly notificationsService: NotificationsService
   ) {}
 
   @ApiOperation({ summary: 'PRIVATE' })
@@ -72,5 +76,13 @@ export class NotificationsController {
     } catch (e) {
       throw new UnprocessableEntityException(e.message ?? `Cannot send mail: ${e}`);
     }
+  }
+
+  @Get()
+  getNotifications(
+      @GetUser() userPayload: UserPayload,
+      @Query() dto: PaginationDto,
+  ) {
+    return this.notificationsService.getNotifications(userPayload, dto);
   }
 }
