@@ -10,6 +10,7 @@ import { generateQRCode } from '../common/qrcode';
 import { PaginationDto } from "../common/pagination.dto";
 import { NotificationsService } from "./notifications.service";
 import { GetUser, UserPayload } from "../auth/get-user.decorator";
+import { Notification } from "./notification.schema";
 
 @UseGuards(AuthGuard)
 @ApiTags('notifications')
@@ -82,7 +83,7 @@ export class NotificationsController {
   getNotifications(
       @GetUser() userPayload: UserPayload,
       @Query() dto: PaginationDto,
-  ) {
+  ): Promise<Notification[]> {
     return this.notificationsService.getNotifications(userPayload, dto);
   }
 }
