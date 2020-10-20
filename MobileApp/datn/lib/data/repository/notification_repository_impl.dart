@@ -1,10 +1,10 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/data/remote/auth_client.dart';
-import 'package:datn/data/remote/base_url.dart';
-import 'package:datn/data/remote/response/notification_response.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/notification_repository.dart';
+import '../remote/auth_client.dart';
+import '../remote/base_url.dart';
+import '../remote/response/notification_response.dart';
 import '../serializers.dart';
 
 class NotificationRepositoryImpl implements NotificationRepository {

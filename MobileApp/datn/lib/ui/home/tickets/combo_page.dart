@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -22,6 +21,7 @@ import '../../widgets/error_widget.dart';
 import '../checkout/checkout_page.dart';
 import 'combo_bloc.dart';
 import 'combo_state.dart';
+import 'ticket_page.dart';
 
 class ComboPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets/combo';

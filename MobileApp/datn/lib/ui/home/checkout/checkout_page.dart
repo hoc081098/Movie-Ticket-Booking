@@ -1,5 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,7 @@ import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../detail/movie_detail_page.dart';
+import '../tickets/ticket_page.dart';
 import 'widgets/bottom.dart';
 import 'widgets/card.dart';
 import 'widgets/discount.dart';
