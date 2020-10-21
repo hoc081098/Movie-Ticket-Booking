@@ -1,4 +1,6 @@
 import 'package:built_value/built_value.dart';
+import 'movie.dart';
+import 'theatre.dart';
 
 part 'show_time.g.dart';
 
@@ -7,9 +9,15 @@ abstract class ShowTime implements Built<ShowTime, ShowTimeBuilder> {
 
   bool get is_active;
 
-  String get movie;
+  String get movieId;
 
-  String get theatre;
+  @nullable
+  Movie get movie;
+
+  String get theatreId;
+
+  @nullable
+  Theatre get theatre;
 
   String get room;
 

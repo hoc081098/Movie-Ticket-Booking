@@ -136,7 +136,10 @@ void main() async {
     mappers.movieResponseToMovie,
   );
 
-  final notificationRepository = NotificationRepositoryImpl(authClient);
+  final notificationRepository = NotificationRepositoryImpl(
+    authClient,
+    mappers.notificationResponseToNotification,
+  );
 
   runApp(
     Providers(
