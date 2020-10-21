@@ -13,7 +13,7 @@ typedef GetNotifications = Stream<BuiltList<Notification>> Function({
   @required int perPage,
 });
 
-const perPage = 32;
+const perPage = 16;
 
 RxReduxStore<Action, State> createStore(
   GetNotifications getNotifications,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Notification, Action;
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
 
@@ -13,6 +14,7 @@ import '../widgets/error_widget.dart';
 import 'action.dart';
 import 'state.dart' as st;
 import 'store.dart';
+import 'widgets.dart';
 
 class NotificationsPage extends StatefulWidget {
   @override
@@ -21,6 +23,8 @@ class NotificationsPage extends StatefulWidget {
 
 class _NotificationsPageState extends State<NotificationsPage>
     with DisposeBagMixin {
+  final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
+
   RxReduxStore<Action, st.State> store;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -107,14 +111,13 @@ class _NotificationsPageState extends State<NotificationsPage>
 
           final items = state.items;
 
-          return ListView.separated(
+          return ListView.builder(
             itemCount: items.length + (state.isFirstPage ? 0 : 1),
             itemBuilder: (context, index) {
               if (index < items.length) {
-                final item = items[index];
-
-                return ListTile(
-                  title: Text(item.reservation.showTime.movie.title),
+                return NotificationItemWidget(
+                  items[index],
+                  dateFormat,
                 );
               }
 
@@ -147,7 +150,10 @@ class _NotificationsPageState extends State<NotificationsPage>
               }
 
               return Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.only(
+                  bottom: 12,
+                  top: 12,
+                ),
                 child: Center(
                   child: SizedBox(
                     width: 128,
@@ -170,7 +176,6 @@ class _NotificationsPageState extends State<NotificationsPage>
                 ),
               );
             },
-            separatorBuilder: (context, index) => const Divider(),
           );
         },
       ),
