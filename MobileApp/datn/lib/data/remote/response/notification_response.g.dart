@@ -130,7 +130,7 @@ class _$NotificationResponse_ReservationResponseSerializer
       'products',
       serializers.serialize(object.products,
           specifiedType: const FullType(
-              BuiltList, const [const FullType(ProductAndCountResponse)])),
+              BuiltList, const [const FullType(ProductIdAndQuantity)])),
       'total_price',
       serializers.serialize(object.total_price,
           specifiedType: const FullType(int)),
@@ -192,9 +192,9 @@ class _$NotificationResponse_ReservationResponseSerializer
           break;
         case 'products':
           result.products.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [
-                const FullType(ProductAndCountResponse)
-              ])) as BuiltList<Object>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(ProductIdAndQuantity)]))
+              as BuiltList<Object>);
           break;
         case 'total_price':
           result.total_price = serializers.deserialize(value,
@@ -437,7 +437,7 @@ class _$NotificationResponse_ReservationResponse
   @override
   final String phone_number;
   @override
-  final BuiltList<ProductAndCountResponse> products;
+  final BuiltList<ProductIdAndQuantity> products;
   @override
   final int total_price;
   @override
@@ -618,10 +618,10 @@ class NotificationResponse_ReservationResponseBuilder
   String get phone_number => _$this._phone_number;
   set phone_number(String phone_number) => _$this._phone_number = phone_number;
 
-  ListBuilder<ProductAndCountResponse> _products;
-  ListBuilder<ProductAndCountResponse> get products =>
-      _$this._products ??= new ListBuilder<ProductAndCountResponse>();
-  set products(ListBuilder<ProductAndCountResponse> products) =>
+  ListBuilder<ProductIdAndQuantity> _products;
+  ListBuilder<ProductIdAndQuantity> get products =>
+      _$this._products ??= new ListBuilder<ProductIdAndQuantity>();
+  set products(ListBuilder<ProductIdAndQuantity> products) =>
       _$this._products = products;
 
   int _total_price;

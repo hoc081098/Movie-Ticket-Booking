@@ -9,6 +9,7 @@ import 'remote/response/comment_response.dart';
 import 'remote/response/comments_response.dart';
 import 'remote/response/error_response.dart';
 import 'remote/response/favorite_response.dart';
+import 'remote/response/full_reservation_response.dart';
 import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/notification_response.dart';
@@ -63,6 +64,11 @@ const builtListNotificationResponse = FullType(
   [FullType(NotificationResponse)],
 );
 
+const builtListFullReservationResponse = FullType(
+  BuiltList,
+  [FullType(FullReservationResponse)],
+);
+
 @SerializersFor([
   UserLocal,
   LocationLocal,
@@ -83,12 +89,14 @@ const builtListNotificationResponse = FullType(
   SeatResponse,
   ProductResponse,
   ReservationResponse,
-  ProductAndCountResponse,
+  ProductIdAndQuantity,
   FavoriteResponse,
   PromotionResponse,
   NotificationResponse,
   NotificationResponse_ReservationResponse,
   ShowTimeFullResponse,
+  FullReservationResponse,
+  ProductAndQuantityResponse,
 ])
 final Serializers _serializers = _$_serializers;
 
@@ -120,6 +128,10 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListNotificationResponse,
         () => ListBuilder<NotificationResponse>(),
+      )
+      ..addBuilderFactory(
+        builtListFullReservationResponse,
+        () => ListBuilder<FullReservationResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))

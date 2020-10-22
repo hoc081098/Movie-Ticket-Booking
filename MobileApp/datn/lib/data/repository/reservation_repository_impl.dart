@@ -21,7 +21,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
   final AuthClient _authClient;
   final UserLocalSource _userLocalSource;
   final Function1<ReservationResponse, Reservation>
-      _reservationResponseToReservation;
+  _reservationResponseToReservation;
 
   ReservationRepositoryImpl(this._authClient, this._userLocalSource,
       this._reservationResponseToReservation);
@@ -42,11 +42,12 @@ class ReservationRepositoryImpl implements ReservationRepository {
       'email': email,
       'products': products
           .map(
-            (p) => {
-              'product_id': p.item1.id,
-              'quantity': p.item2,
-            },
-          )
+            (p) =>
+        {
+          'product_id': p.item1.id,
+          'quantity': p.item2,
+        },
+      )
           .toList(growable: false),
       'pay_card_id': payCardId,
       'ticket_ids': ticketIds.toList(growable: false),
@@ -56,7 +57,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
     print('createReservation: $body');
 
     final json =
-        await _authClient.postBody(buildUrl('/reservations'), body: body);
+    await _authClient.postBody(buildUrl('/reservations'), body: body);
     final response = ReservationResponse.fromJson(json);
     print('createReservation: ${response}');
 
@@ -65,13 +66,13 @@ class ReservationRepositoryImpl implements ReservationRepository {
 
   @override
   Stream<BuiltMap<String, Reservation>> watchReservedTicket(
-          String showTimeId) =>
+      String showTimeId) =>
       _userLocalSource.token$
           .take(1)
           .exhaustMap((token) => _connectSocket(token, showTimeId));
 
-  Stream<BuiltMap<String, Reservation>> _connectSocket(
-      String token, String showTimeId) {
+  Stream<BuiltMap<String, Reservation>> _connectSocket(String token,
+      String showTimeId) {
     final roomId = 'reservation:${showTimeId}';
 
     io.Socket socket;
@@ -104,7 +105,8 @@ class ReservationRepositoryImpl implements ReservationRepository {
               specifiedType: builtMapStringReservationResponse,
             ) as BuiltMap<String, ReservationResponse>;
             final map = response.map(
-                (k, v) => MapEntry(k, _reservationResponseToReservation(v)));
+                    (k, v) =>
+                    MapEntry(k, _reservationResponseToReservation(v)));
 
             assert(controller != null);
             print('[ReservationRepositoryImpl] reserved $map');
@@ -113,17 +115,19 @@ class ReservationRepositoryImpl implements ReservationRepository {
         });
 
         socket.on('connecting',
-            (data) => print('[ReservationRepositoryImpl] connecting'));
+                (data) => print('[ReservationRepositoryImpl] connecting'));
         socket.on('reconnect',
-            (data) => print('[ReservationRepositoryImpl] reconnect'));
+                (data) => print('[ReservationRepositoryImpl] reconnect'));
         socket.on('reconnect_attempt',
-            (data) => print('[ReservationRepositoryImpl] reconnect_attempt'));
+                (data) =>
+                print('[ReservationRepositoryImpl] reconnect_attempt'));
         socket.on('reconnect_failed',
-            (data) => print('[ReservationRepositoryImpl] reconnect_failed'));
+                (data) =>
+                print('[ReservationRepositoryImpl] reconnect_failed'));
         socket.on('reconnect_error',
-            (data) => print('[ReservationRepositoryImpl] reconnect_error'));
+                (data) => print('[ReservationRepositoryImpl] reconnect_error'));
         socket.on('reconnecting',
-            (data) => print('[ReservationRepositoryImpl] reconnecting'));
+                (data) => print('[ReservationRepositoryImpl] reconnecting'));
 
         socket.on('disconnect', (_) {
           controller?.close();
@@ -142,5 +146,16 @@ class ReservationRepositoryImpl implements ReservationRepository {
 
     assert(controller != null);
     return controller.stream;
+  }
+
+  @override
+  Stream<BuiltList<Reservation>> getReservation({int page, int perPage}) {
+    final mapResult = (dynamic json) {
+
+    };
+
+    return Rx.fromCallable(
+            () => _authClient.getBody(buildUrl('/notifications'))).map(
+        mapResult);
   }
 }

@@ -18,4 +18,9 @@ abstract class ReservationRepository {
     @required BuiltList<String> ticketIds,
     @required Promotion promotion,
   });
+
+  Stream<BuiltList<Reservation>> getReservation({
+    @required int page,
+    @required int perPage,
+  });
 }

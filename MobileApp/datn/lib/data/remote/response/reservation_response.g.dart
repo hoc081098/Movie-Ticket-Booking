@@ -8,8 +8,8 @@ part of 'reservation_response.dart';
 
 Serializer<ReservationResponse> _$reservationResponseSerializer =
     new _$ReservationResponseSerializer();
-Serializer<ProductAndCountResponse> _$productAndCountResponseSerializer =
-    new _$ProductAndCountResponseSerializer();
+Serializer<ProductIdAndQuantity> _$productIdAndQuantitySerializer =
+    new _$ProductIdAndQuantitySerializer();
 Serializer<ShowTimeFullResponse> _$showTimeFullResponseSerializer =
     new _$ShowTimeFullResponseSerializer();
 
@@ -48,7 +48,7 @@ class _$ReservationResponseSerializer
       'products',
       serializers.serialize(object.products,
           specifiedType: const FullType(
-              BuiltList, const [const FullType(ProductAndCountResponse)])),
+              BuiltList, const [const FullType(ProductIdAndQuantity)])),
       'show_time',
       serializers.serialize(object.show_time,
           specifiedType: const FullType(ShowTimeFullResponse)),
@@ -113,9 +113,9 @@ class _$ReservationResponseSerializer
           break;
         case 'products':
           result.products.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [
-                const FullType(ProductAndCountResponse)
-              ])) as BuiltList<Object>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(ProductIdAndQuantity)]))
+              as BuiltList<Object>);
           break;
         case 'show_time':
           result.show_time.replace(serializers.deserialize(value,
@@ -141,19 +141,19 @@ class _$ReservationResponseSerializer
   }
 }
 
-class _$ProductAndCountResponseSerializer
-    implements StructuredSerializer<ProductAndCountResponse> {
+class _$ProductIdAndQuantitySerializer
+    implements StructuredSerializer<ProductIdAndQuantity> {
   @override
   final Iterable<Type> types = const [
-    ProductAndCountResponse,
-    _$ProductAndCountResponse
+    ProductIdAndQuantity,
+    _$ProductIdAndQuantity
   ];
   @override
-  final String wireName = 'ProductAndCountResponse';
+  final String wireName = 'ProductIdAndQuantity';
 
   @override
   Iterable<Object> serialize(
-      Serializers serializers, ProductAndCountResponse object,
+      Serializers serializers, ProductIdAndQuantity object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -167,10 +167,10 @@ class _$ProductAndCountResponseSerializer
   }
 
   @override
-  ProductAndCountResponse deserialize(
+  ProductIdAndQuantity deserialize(
       Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new ProductAndCountResponseBuilder();
+    final result = new ProductIdAndQuantityBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -312,7 +312,7 @@ class _$ReservationResponse extends ReservationResponse {
   @override
   final String phone_number;
   @override
-  final BuiltList<ProductAndCountResponse> products;
+  final BuiltList<ProductIdAndQuantity> products;
   @override
   final ShowTimeFullResponse show_time;
   @override
@@ -483,10 +483,10 @@ class ReservationResponseBuilder
   String get phone_number => _$this._phone_number;
   set phone_number(String phone_number) => _$this._phone_number = phone_number;
 
-  ListBuilder<ProductAndCountResponse> _products;
-  ListBuilder<ProductAndCountResponse> get products =>
-      _$this._products ??= new ListBuilder<ProductAndCountResponse>();
-  set products(ListBuilder<ProductAndCountResponse> products) =>
+  ListBuilder<ProductIdAndQuantity> _products;
+  ListBuilder<ProductIdAndQuantity> get products =>
+      _$this._products ??= new ListBuilder<ProductIdAndQuantity>();
+  set products(ListBuilder<ProductIdAndQuantity> products) =>
       _$this._products = products;
 
   ShowTimeFullResponseBuilder _show_time;
@@ -580,38 +580,38 @@ class ReservationResponseBuilder
   }
 }
 
-class _$ProductAndCountResponse extends ProductAndCountResponse {
+class _$ProductIdAndQuantity extends ProductIdAndQuantity {
   @override
   final String id;
   @override
   final int quantity;
 
-  factory _$ProductAndCountResponse(
-          [void Function(ProductAndCountResponseBuilder) updates]) =>
-      (new ProductAndCountResponseBuilder()..update(updates)).build();
+  factory _$ProductIdAndQuantity(
+          [void Function(ProductIdAndQuantityBuilder) updates]) =>
+      (new ProductIdAndQuantityBuilder()..update(updates)).build();
 
-  _$ProductAndCountResponse._({this.id, this.quantity}) : super._() {
+  _$ProductIdAndQuantity._({this.id, this.quantity}) : super._() {
     if (id == null) {
-      throw new BuiltValueNullFieldError('ProductAndCountResponse', 'id');
+      throw new BuiltValueNullFieldError('ProductIdAndQuantity', 'id');
     }
     if (quantity == null) {
-      throw new BuiltValueNullFieldError('ProductAndCountResponse', 'quantity');
+      throw new BuiltValueNullFieldError('ProductIdAndQuantity', 'quantity');
     }
   }
 
   @override
-  ProductAndCountResponse rebuild(
-          void Function(ProductAndCountResponseBuilder) updates) =>
+  ProductIdAndQuantity rebuild(
+          void Function(ProductIdAndQuantityBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  ProductAndCountResponseBuilder toBuilder() =>
-      new ProductAndCountResponseBuilder()..replace(this);
+  ProductIdAndQuantityBuilder toBuilder() =>
+      new ProductIdAndQuantityBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is ProductAndCountResponse &&
+    return other is ProductIdAndQuantity &&
         id == other.id &&
         quantity == other.quantity;
   }
@@ -623,17 +623,16 @@ class _$ProductAndCountResponse extends ProductAndCountResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('ProductAndCountResponse')
+    return (newBuiltValueToStringHelper('ProductIdAndQuantity')
           ..add('id', id)
           ..add('quantity', quantity))
         .toString();
   }
 }
 
-class ProductAndCountResponseBuilder
-    implements
-        Builder<ProductAndCountResponse, ProductAndCountResponseBuilder> {
-  _$ProductAndCountResponse _$v;
+class ProductIdAndQuantityBuilder
+    implements Builder<ProductIdAndQuantity, ProductIdAndQuantityBuilder> {
+  _$ProductIdAndQuantity _$v;
 
   String _id;
   String get id => _$this._id;
@@ -643,9 +642,9 @@ class ProductAndCountResponseBuilder
   int get quantity => _$this._quantity;
   set quantity(int quantity) => _$this._quantity = quantity;
 
-  ProductAndCountResponseBuilder();
+  ProductIdAndQuantityBuilder();
 
-  ProductAndCountResponseBuilder get _$this {
+  ProductIdAndQuantityBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
       _quantity = _$v.quantity;
@@ -655,22 +654,22 @@ class ProductAndCountResponseBuilder
   }
 
   @override
-  void replace(ProductAndCountResponse other) {
+  void replace(ProductIdAndQuantity other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$ProductAndCountResponse;
+    _$v = other as _$ProductIdAndQuantity;
   }
 
   @override
-  void update(void Function(ProductAndCountResponseBuilder) updates) {
+  void update(void Function(ProductIdAndQuantityBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$ProductAndCountResponse build() {
+  _$ProductIdAndQuantity build() {
     final _$result =
-        _$v ?? new _$ProductAndCountResponse._(id: id, quantity: quantity);
+        _$v ?? new _$ProductIdAndQuantity._(id: id, quantity: quantity);
     replace(_$result);
     return _$result;
   }

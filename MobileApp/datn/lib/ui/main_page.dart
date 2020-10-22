@@ -1,4 +1,3 @@
-import 'package:datn/ui/profile/reservations/reservations_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -38,6 +37,7 @@ import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
 import 'notifications/notifications_page.dart';
 import 'profile/profile_page.dart';
+import 'profile/reservations/reservations_page.dart';
 
 class MainPage extends StatefulWidget {
   static const routeName = '/main';
