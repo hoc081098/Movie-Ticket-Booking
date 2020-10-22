@@ -60,7 +60,8 @@ class _NotificationsPageState extends State<NotificationsPage>
           .doOnData((event) => s.dispatch(const LoadFirstPageAction()))
           .exhaustMap((_) => notificationManager.notification$)
           .map((event) => AddedNotificationAction(event))
-          .listen(onNewNotification);
+          .listen(onNewNotification)
+          .disposedBy(bag);
 
       return s;
     }();
