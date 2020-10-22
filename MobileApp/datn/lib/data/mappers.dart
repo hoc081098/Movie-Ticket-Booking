@@ -25,6 +25,7 @@ import 'remote/response/card_response.dart';
 import 'remote/response/category_response.dart';
 import 'remote/response/comment_response.dart';
 import 'remote/response/comments_response.dart';
+import 'remote/response/full_reservation_response.dart';
 import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/notification_response.dart';
@@ -389,7 +390,8 @@ Card cardResponseToCard(CardResponse response) {
 
 Reservation reservationResponseToReservation(ReservationResponse response) {
   return Reservation((b) {
-    final productIds = response.products.map((p) => Tuple2(p.id, p.quantity));
+    final productIds = response.products
+        .map((p) => ProductAndQuantity.from(id: p.id, quantity: p.quantity));
     final productIdWithCountsBuilder = b.productIdWithCounts
       ..safeReplace(productIds);
     final user = userResponseToUser(response.user);
@@ -473,7 +475,39 @@ ShowTime showTimeFullResponseToShowTime(ShowTimeFullResponse response) {
 Reservation notificationResponse_ReservationResponseToReservation(
     NotificationResponse_ReservationResponse response) {
   return Reservation((b) {
-    final productIds = response.products.map((p) => Tuple2(p.id, p.quantity));
+    final productIds = response.products
+        .map((p) => ProductAndQuantity.from(id: p.id, quantity: p.quantity));
+    final productIdWithCountsBuilder = b.productIdWithCounts
+      ..safeReplace(productIds);
+    final showTimeBuilder = b.showTime
+      ..replace(showTimeFullResponseToShowTime(response.show_time));
+
+    return b
+      ..id = response.id
+      ..createdAt = response.createdAt
+      ..email = response.email
+      ..isActive = response.is_active ?? true
+      ..originalPrice = response.original_price
+      ..paymentIntentId = response.payment_intent_id
+      ..phoneNumber = response.phone_number
+      ..productIdWithCounts = productIdWithCountsBuilder
+      ..showTimeId = response.show_time.id
+      ..showTime = showTimeBuilder
+      ..totalPrice = response.total_price
+      ..updatedAt = response.updatedAt;
+  });
+}
+
+Reservation fullReservationResponseToReservation(
+    FullReservationResponse response) {
+  return Reservation((b) {
+    final productIds = response.products.map(
+      (p) => ProductAndQuantity.from(
+        id: p.product.id,
+        quantity: p.quantity,
+        product: productResponseToProduct(p.product),
+      ),
+    );
     final productIdWithCountsBuilder = b.productIdWithCounts
       ..safeReplace(productIds);
     final showTimeBuilder = b.showTime

@@ -1,11 +1,34 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:tuple/tuple.dart';
+import 'package:meta/meta.dart';
 
+import 'product.dart';
 import 'show_time.dart';
 import 'user.dart';
 
 part 'reservation.g.dart';
+
+abstract class ProductAndQuantity
+    implements Built<ProductAndQuantity, ProductAndQuantityBuilder> {
+  String get id;
+
+  @nullable
+  Product get product;
+
+  int get quantity;
+
+  ProductAndQuantity._();
+
+  factory ProductAndQuantity(
+          [void Function(ProductAndQuantityBuilder) updates]) =
+      _$ProductAndQuantity;
+
+  factory ProductAndQuantity.from({
+    @required String id,
+    @required int quantity,
+    Product product,
+  }) = _$ProductAndQuantity._;
+}
 
 abstract class Reservation implements Built<Reservation, ReservationBuilder> {
   String get id;
@@ -22,7 +45,7 @@ abstract class Reservation implements Built<Reservation, ReservationBuilder> {
 
   String get phoneNumber;
 
-  BuiltList<Tuple2<String, int>> get productIdWithCounts;
+  BuiltList<ProductAndQuantity> get productIdWithCounts;
 
   String get showTimeId;
 

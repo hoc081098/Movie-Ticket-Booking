@@ -6,6 +6,125 @@ part of 'reservation.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+class _$ProductAndQuantity extends ProductAndQuantity {
+  @override
+  final String id;
+  @override
+  final Product product;
+  @override
+  final int quantity;
+
+  factory _$ProductAndQuantity(
+          [void Function(ProductAndQuantityBuilder) updates]) =>
+      (new ProductAndQuantityBuilder()..update(updates)).build();
+
+  _$ProductAndQuantity._({this.id, this.product, this.quantity}) : super._() {
+    if (id == null) {
+      throw new BuiltValueNullFieldError('ProductAndQuantity', 'id');
+    }
+    if (quantity == null) {
+      throw new BuiltValueNullFieldError('ProductAndQuantity', 'quantity');
+    }
+  }
+
+  @override
+  ProductAndQuantity rebuild(
+          void Function(ProductAndQuantityBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  ProductAndQuantityBuilder toBuilder() =>
+      new ProductAndQuantityBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is ProductAndQuantity &&
+        id == other.id &&
+        product == other.product &&
+        quantity == other.quantity;
+  }
+
+  @override
+  int get hashCode {
+    return $jf(
+        $jc($jc($jc(0, id.hashCode), product.hashCode), quantity.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('ProductAndQuantity')
+          ..add('id', id)
+          ..add('product', product)
+          ..add('quantity', quantity))
+        .toString();
+  }
+}
+
+class ProductAndQuantityBuilder
+    implements Builder<ProductAndQuantity, ProductAndQuantityBuilder> {
+  _$ProductAndQuantity _$v;
+
+  String _id;
+  String get id => _$this._id;
+  set id(String id) => _$this._id = id;
+
+  ProductBuilder _product;
+  ProductBuilder get product => _$this._product ??= new ProductBuilder();
+  set product(ProductBuilder product) => _$this._product = product;
+
+  int _quantity;
+  int get quantity => _$this._quantity;
+  set quantity(int quantity) => _$this._quantity = quantity;
+
+  ProductAndQuantityBuilder();
+
+  ProductAndQuantityBuilder get _$this {
+    if (_$v != null) {
+      _id = _$v.id;
+      _product = _$v.product?.toBuilder();
+      _quantity = _$v.quantity;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(ProductAndQuantity other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$ProductAndQuantity;
+  }
+
+  @override
+  void update(void Function(ProductAndQuantityBuilder) updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$ProductAndQuantity build() {
+    _$ProductAndQuantity _$result;
+    try {
+      _$result = _$v ??
+          new _$ProductAndQuantity._(
+              id: id, product: _product?.build(), quantity: quantity);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'product';
+        _product?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'ProductAndQuantity', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
 class _$Reservation extends Reservation {
   @override
   final String id;
@@ -22,7 +141,7 @@ class _$Reservation extends Reservation {
   @override
   final String phoneNumber;
   @override
-  final BuiltList<Tuple2<String, int>> productIdWithCounts;
+  final BuiltList<ProductAndQuantity> productIdWithCounts;
   @override
   final String showTimeId;
   @override
@@ -193,11 +312,11 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
   String get phoneNumber => _$this._phoneNumber;
   set phoneNumber(String phoneNumber) => _$this._phoneNumber = phoneNumber;
 
-  ListBuilder<Tuple2<String, int>> _productIdWithCounts;
-  ListBuilder<Tuple2<String, int>> get productIdWithCounts =>
-      _$this._productIdWithCounts ??= new ListBuilder<Tuple2<String, int>>();
+  ListBuilder<ProductAndQuantity> _productIdWithCounts;
+  ListBuilder<ProductAndQuantity> get productIdWithCounts =>
+      _$this._productIdWithCounts ??= new ListBuilder<ProductAndQuantity>();
   set productIdWithCounts(
-          ListBuilder<Tuple2<String, int>> productIdWithCounts) =>
+          ListBuilder<ProductAndQuantity> productIdWithCounts) =>
       _$this._productIdWithCounts = productIdWithCounts;
 
   String _showTimeId;
