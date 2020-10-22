@@ -13,7 +13,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Product } from '../products/product.schema';
 import { Ticket } from '../seats/ticket.schema';
-import { checkCompletedLogin } from '../common/utils';
+import { checkCompletedLogin, getSkipLimit } from '../common/utils';
 import { Seat } from '../seats/seat.schema';
 import { Stripe } from 'stripe';
 import { AppGateway } from '../socket/app.gateway';
@@ -25,6 +25,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { ShowTime } from '../show-times/show-time.schema';
 import { Movie } from '../movies/movie.schema';
 import { generateQRCode } from '../common/qrcode';
+import { PaginationDto } from '../common/pagination.dto';
 
 export type CreatedReservation =
     Omit<Reservation, 'show_time'>
@@ -280,5 +281,29 @@ export class ReservationsService {
     }
 
     return { total_price: Math.ceil(total_price), promotion };
+  }
+
+  async getReservations(userPayload: UserPayload, dto: PaginationDto) {
+    const { _id } = checkCompletedLogin(userPayload);
+    const { skip, limit } = getSkipLimit(dto);
+
+    return await this.reservationModel
+        .find({ user: _id })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate({
+          path: 'show_time',
+          populate: [
+            { path: 'movie' },
+            { path: 'theatre' },
+          ],
+        })
+        .populate({
+          path: 'products',
+          populate: 'id'
+        })
+        .populate('promotion_id')
+        .exec();
   }
 }
