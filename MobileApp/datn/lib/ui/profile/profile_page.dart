@@ -14,6 +14,7 @@ import '../../utils/optional.dart';
 import '../../utils/snackbar.dart';
 import '../app_scaffold.dart';
 import '../login_update_profile/login_update_profile_page.dart';
+import 'reservations/reservations_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -50,6 +51,12 @@ class _ProfilePageState extends State<ProfilePage> {
             (user) => LoggedIn(user),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () =>
+            AppScaffold.of(context).pushNamed(ReservationsPage.routeName),
+        label: Text('Tickets'),
+        icon: FaIcon(FontAwesomeIcons.ticketAlt),
       ),
     );
   }

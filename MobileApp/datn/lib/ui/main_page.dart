@@ -1,3 +1,4 @@
+import 'package:datn/ui/profile/reservations/reservations_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -156,6 +157,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       assert(args != null && args is User);
       return UpdateProfilePage(user: args);
     },
+    ReservationsPage.routeName: (context, settings) => ReservationsPage(),
   };
 
   static final favoritesRoutes = <String, AppScaffoldWidgetBuilder>{
