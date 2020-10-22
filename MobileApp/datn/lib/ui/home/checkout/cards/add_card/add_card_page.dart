@@ -1,10 +1,10 @@
-import 'package:datn/ui/home/tickets/ticket_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 import '../../../../../utils/utils.dart';
+import '../../../tickets/ticket_page.dart';
 import 'add_card_bloc.dart';
 
 class AddCardPage extends StatefulWidget {

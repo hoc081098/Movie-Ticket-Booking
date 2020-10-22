@@ -1,8 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:datn/domain/model/show_time.dart';
 import 'package:tuple/tuple.dart';
 
+import 'show_time.dart';
 import 'user.dart';
 
 part 'reservation.g.dart';

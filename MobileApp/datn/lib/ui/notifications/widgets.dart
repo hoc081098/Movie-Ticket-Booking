@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/ui/widgets/age_type.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:intl/intl.dart';
 
 import '../../domain/model/notification.dart';
+import '../widgets/age_type.dart';
 
 class NotificationItemWidget extends StatelessWidget {
   final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');

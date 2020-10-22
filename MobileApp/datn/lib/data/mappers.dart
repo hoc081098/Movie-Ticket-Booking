@@ -1,6 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/data/remote/response/notification_response.dart';
-import 'package:datn/domain/model/notification.dart';
 import 'package:tuple/tuple.dart';
 
 import '../domain/model/card.dart';
@@ -9,6 +7,7 @@ import '../domain/model/comment.dart';
 import '../domain/model/comments.dart';
 import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
+import '../domain/model/notification.dart';
 import '../domain/model/person.dart';
 import '../domain/model/product.dart';
 import '../domain/model/promotion.dart';
@@ -28,6 +27,7 @@ import 'remote/response/comment_response.dart';
 import 'remote/response/comments_response.dart';
 import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
+import 'remote/response/notification_response.dart';
 import 'remote/response/person_response.dart';
 import 'remote/response/product_response.dart';
 import 'remote/response/promotion_response.dart';
