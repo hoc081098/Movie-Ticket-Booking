@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/data/remote/response/notification_response.dart';
+import 'package:datn/domain/model/notification.dart';
 import 'package:tuple/tuple.dart';
 
 import '../domain/model/card.dart';
@@ -152,8 +154,8 @@ ShowTime showTimeResponseToShowTime(ShowTimeResponse response) {
   return ShowTime((b) => b
     ..id = response.id
     ..is_active = response.is_active ?? true
-    ..movie = response.movie
-    ..theatre = response.theatre
+    ..movieId = response.movie
+    ..theatreId = response.theatre
     ..room = response.room
     ..end_time = response.end_time
     ..start_time = response.start_time
@@ -424,4 +426,71 @@ Promotion promotionResponseToPromotion(PromotionResponse response) {
       ..createdAt = response.createdAt
       ..updatedAt = response.updatedAt,
   );
+}
+
+Notification notificationResponseToNotification(NotificationResponse res) {
+  return Notification(
+    (b) {
+      final reservationBuilder = b.reservation
+        ..replace(notificationResponse_ReservationResponseToReservation(
+            res.reservation));
+
+      return b
+        ..id = res.id
+        ..title = res.title
+        ..body = res.body
+        ..to_user = res.to_user
+        ..createdAt = res.createdAt
+        ..updatedAt = res.updatedAt
+        ..reservation = reservationBuilder;
+    },
+  );
+}
+
+ShowTime showTimeFullResponseToShowTime(ShowTimeFullResponse response) {
+  final movie = movieResponseToMovie(response.movie);
+  final theatre = theatreResponseToTheatre(response.theatre);
+
+  return ShowTime((b) {
+    final movieBuilder = b.movie..replace(movie);
+    final theatreBuilder = b.theatre..replace(theatre);
+
+    return b
+      ..id = response.id
+      ..is_active = response.is_active ?? true
+      ..movieId = movie.id
+      ..theatreId = theatre.id
+      ..room = response.room
+      ..end_time = response.end_time
+      ..start_time = response.start_time
+      ..createdAt = response.createdAt
+      ..updatedAt = response.updatedAt
+      ..movie = movieBuilder
+      ..theatre = theatreBuilder;
+  });
+}
+
+Reservation notificationResponse_ReservationResponseToReservation(
+    NotificationResponse_ReservationResponse response) {
+  return Reservation((b) {
+    final productIds = response.products.map((p) => Tuple2(p.id, p.quantity));
+    final productIdWithCountsBuilder = b.productIdWithCounts
+      ..safeReplace(productIds);
+    final showTimeBuilder = b.showTime
+      ..replace(showTimeFullResponseToShowTime(response.show_time));
+
+    return b
+      ..id = response.id
+      ..createdAt = response.createdAt
+      ..email = response.email
+      ..isActive = response.is_active ?? true
+      ..originalPrice = response.original_price
+      ..paymentIntentId = response.payment_intent_id
+      ..phoneNumber = response.phone_number
+      ..productIdWithCounts = productIdWithCountsBuilder
+      ..showTimeId = response.show_time.id
+      ..showTime = showTimeBuilder
+      ..totalPrice = response.total_price
+      ..updatedAt = response.updatedAt;
+  });
 }
