@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:datn/ui/widgets/age_type.dart';
 import 'package:flutter/material.dart' hide Notification;
@@ -6,6 +8,8 @@ import 'package:intl/intl.dart';
 import '../../domain/model/notification.dart';
 
 class NotificationItemWidget extends StatelessWidget {
+  final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
+
   final Notification item;
   final DateFormat dateFormat;
 
@@ -13,20 +17,36 @@ class NotificationItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showTime = item.reservation.showTime;
     final movie = item.reservation.showTime.movie;
-
-    const imageHeight = 128.0;
-    const imageWidth = imageHeight * 0.7;
+    final theatre = item.reservation.showTime.theatre;
 
     final textTheme = Theme.of(context).textTheme;
     final titleStyle = textTheme.headline6.copyWith(
-      fontSize: 17,
+      fontSize: 15,
       color: Colors.white,
+      fontWeight: FontWeight.w600,
     );
     final timeStyle = textTheme.subtitle1.copyWith(
       color: Colors.white,
-      fontSize: 12,
+      fontSize: 10,
       fontStyle: FontStyle.italic,
+    );
+    final bodyTitle = textTheme.subtitle2.copyWith(
+      color: Colors.white,
+      fontSize: 13,
+      fontWeight: FontWeight.w500,
+    );
+    final textStyle = textTheme.subtitle1.copyWith(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: Colors.white.withOpacity(0.9),
+    );
+
+    final textStyle2 = textTheme.subtitle1.copyWith(
+      fontSize: 14,
+      color: Colors.white.withOpacity(0.9),
+      fontWeight: FontWeight.w600,
     );
 
     return Container(
@@ -40,7 +60,7 @@ class NotificationItemWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.shade300,
+            color: Colors.grey.shade400,
             offset: Offset(2, 4),
             blurRadius: 10,
             spreadRadius: 2,
@@ -51,8 +71,7 @@ class NotificationItemWidget extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          width: imageWidth,
-          height: imageHeight,
+          height: 186,
           child: Stack(
             children: [
               Positioned.fill(
@@ -68,8 +87,11 @@ class NotificationItemWidget extends StatelessWidget {
                 ),
               ),
               Positioned.fill(
-                child: Container(
-                  color: Colors.black54,
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                  child: Container(
+                    color: Colors.black45,
+                  ),
                 ),
               ),
               Positioned(
@@ -77,15 +99,54 @@ class NotificationItemWidget extends StatelessWidget {
                 right: 8,
                 left: 8,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
                       item.title,
                       style: titleStyle,
-                      maxLines: 5,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Text(item.body),
+                    const SizedBox(height: 12),
+                    Text(
+                      item.body,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: bodyTitle,
+                    ),
+                    const SizedBox(height: 8),
+                    RichText(
+                      text: TextSpan(
+                          text: 'Start at: ',
+                          style: textStyle,
+                          children: [
+                            TextSpan(
+                              text: startTimeFormat.format(showTime.start_time),
+                              style: textStyle2,
+                            ),
+                          ]),
+                    ),
+                    const SizedBox(height: 8),
+                    RichText(
+                      text: TextSpan(
+                          text: 'Theatre: ',
+                          style: textStyle,
+                          children: [
+                            TextSpan(
+                              text: theatre.name,
+                              style: textStyle2,
+                            ),
+                            TextSpan(
+                              text: ' Room: ',
+                              style: textStyle,
+                            ),
+                            TextSpan(
+                              text: showTime.room,
+                              style: textStyle2,
+                            ),
+                          ]),
+                    ),
                   ],
                 ),
               ),
