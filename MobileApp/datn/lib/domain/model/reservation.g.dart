@@ -26,6 +26,8 @@ class _$Reservation extends Reservation {
   @override
   final String showTimeId;
   @override
+  final ShowTime showTime;
+  @override
   final int totalPrice;
   @override
   final DateTime updatedAt;
@@ -45,6 +47,7 @@ class _$Reservation extends Reservation {
       this.phoneNumber,
       this.productIdWithCounts,
       this.showTimeId,
+      this.showTime,
       this.totalPrice,
       this.updatedAt,
       this.user})
@@ -82,9 +85,6 @@ class _$Reservation extends Reservation {
     if (updatedAt == null) {
       throw new BuiltValueNullFieldError('Reservation', 'updatedAt');
     }
-    if (user == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'user');
-    }
   }
 
   @override
@@ -107,6 +107,7 @@ class _$Reservation extends Reservation {
         phoneNumber == other.phoneNumber &&
         productIdWithCounts == other.productIdWithCounts &&
         showTimeId == other.showTimeId &&
+        showTime == other.showTime &&
         totalPrice == other.totalPrice &&
         updatedAt == other.updatedAt &&
         user == other.user;
@@ -124,15 +125,17 @@ class _$Reservation extends Reservation {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, id.hashCode),
-                                                createdAt.hashCode),
-                                            email.hashCode),
-                                        isActive.hashCode),
-                                    originalPrice.hashCode),
-                                paymentIntentId.hashCode),
-                            phoneNumber.hashCode),
-                        productIdWithCounts.hashCode),
-                    showTimeId.hashCode),
+                                            $jc(
+                                                $jc($jc(0, id.hashCode),
+                                                    createdAt.hashCode),
+                                                email.hashCode),
+                                            isActive.hashCode),
+                                        originalPrice.hashCode),
+                                    paymentIntentId.hashCode),
+                                phoneNumber.hashCode),
+                            productIdWithCounts.hashCode),
+                        showTimeId.hashCode),
+                    showTime.hashCode),
                 totalPrice.hashCode),
             updatedAt.hashCode),
         user.hashCode));
@@ -150,6 +153,7 @@ class _$Reservation extends Reservation {
           ..add('phoneNumber', phoneNumber)
           ..add('productIdWithCounts', productIdWithCounts)
           ..add('showTimeId', showTimeId)
+          ..add('showTime', showTime)
           ..add('totalPrice', totalPrice)
           ..add('updatedAt', updatedAt)
           ..add('user', user))
@@ -200,6 +204,10 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
   String get showTimeId => _$this._showTimeId;
   set showTimeId(String showTimeId) => _$this._showTimeId = showTimeId;
 
+  ShowTimeBuilder _showTime;
+  ShowTimeBuilder get showTime => _$this._showTime ??= new ShowTimeBuilder();
+  set showTime(ShowTimeBuilder showTime) => _$this._showTime = showTime;
+
   int _totalPrice;
   int get totalPrice => _$this._totalPrice;
   set totalPrice(int totalPrice) => _$this._totalPrice = totalPrice;
@@ -225,6 +233,7 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
       _phoneNumber = _$v.phoneNumber;
       _productIdWithCounts = _$v.productIdWithCounts?.toBuilder();
       _showTimeId = _$v.showTimeId;
+      _showTime = _$v.showTime?.toBuilder();
       _totalPrice = _$v.totalPrice;
       _updatedAt = _$v.updatedAt;
       _user = _$v.user?.toBuilder();
@@ -261,17 +270,21 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
               phoneNumber: phoneNumber,
               productIdWithCounts: productIdWithCounts.build(),
               showTimeId: showTimeId,
+              showTime: _showTime?.build(),
               totalPrice: totalPrice,
               updatedAt: updatedAt,
-              user: user.build());
+              user: _user?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'productIdWithCounts';
         productIdWithCounts.build();
 
+        _$failedField = 'showTime';
+        _showTime?.build();
+
         _$failedField = 'user';
-        user.build();
+        _user?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Reservation', _$failedField, e.toString());

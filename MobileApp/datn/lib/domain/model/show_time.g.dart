@@ -12,9 +12,13 @@ class _$ShowTime extends ShowTime {
   @override
   final bool is_active;
   @override
-  final String movie;
+  final String movieId;
   @override
-  final String theatre;
+  final Movie movie;
+  @override
+  final String theatreId;
+  @override
+  final Theatre theatre;
   @override
   final String room;
   @override
@@ -32,7 +36,9 @@ class _$ShowTime extends ShowTime {
   _$ShowTime._(
       {this.id,
       this.is_active,
+      this.movieId,
       this.movie,
+      this.theatreId,
       this.theatre,
       this.room,
       this.end_time,
@@ -46,11 +52,11 @@ class _$ShowTime extends ShowTime {
     if (is_active == null) {
       throw new BuiltValueNullFieldError('ShowTime', 'is_active');
     }
-    if (movie == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'movie');
+    if (movieId == null) {
+      throw new BuiltValueNullFieldError('ShowTime', 'movieId');
     }
-    if (theatre == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'theatre');
+    if (theatreId == null) {
+      throw new BuiltValueNullFieldError('ShowTime', 'theatreId');
     }
     if (room == null) {
       throw new BuiltValueNullFieldError('ShowTime', 'room');
@@ -82,7 +88,9 @@ class _$ShowTime extends ShowTime {
     return other is ShowTime &&
         id == other.id &&
         is_active == other.is_active &&
+        movieId == other.movieId &&
         movie == other.movie &&
+        theatreId == other.theatreId &&
         theatre == other.theatre &&
         room == other.room &&
         end_time == other.end_time &&
@@ -99,8 +107,14 @@ class _$ShowTime extends ShowTime {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc($jc(0, id.hashCode), is_active.hashCode),
-                                movie.hashCode),
+                            $jc(
+                                $jc(
+                                    $jc(
+                                        $jc($jc(0, id.hashCode),
+                                            is_active.hashCode),
+                                        movieId.hashCode),
+                                    movie.hashCode),
+                                theatreId.hashCode),
                             theatre.hashCode),
                         room.hashCode),
                     end_time.hashCode),
@@ -114,7 +128,9 @@ class _$ShowTime extends ShowTime {
     return (newBuiltValueToStringHelper('ShowTime')
           ..add('id', id)
           ..add('is_active', is_active)
+          ..add('movieId', movieId)
           ..add('movie', movie)
+          ..add('theatreId', theatreId)
           ..add('theatre', theatre)
           ..add('room', room)
           ..add('end_time', end_time)
@@ -136,13 +152,21 @@ class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
   bool get is_active => _$this._is_active;
   set is_active(bool is_active) => _$this._is_active = is_active;
 
-  String _movie;
-  String get movie => _$this._movie;
-  set movie(String movie) => _$this._movie = movie;
+  String _movieId;
+  String get movieId => _$this._movieId;
+  set movieId(String movieId) => _$this._movieId = movieId;
 
-  String _theatre;
-  String get theatre => _$this._theatre;
-  set theatre(String theatre) => _$this._theatre = theatre;
+  MovieBuilder _movie;
+  MovieBuilder get movie => _$this._movie ??= new MovieBuilder();
+  set movie(MovieBuilder movie) => _$this._movie = movie;
+
+  String _theatreId;
+  String get theatreId => _$this._theatreId;
+  set theatreId(String theatreId) => _$this._theatreId = theatreId;
+
+  TheatreBuilder _theatre;
+  TheatreBuilder get theatre => _$this._theatre ??= new TheatreBuilder();
+  set theatre(TheatreBuilder theatre) => _$this._theatre = theatre;
 
   String _room;
   String get room => _$this._room;
@@ -170,8 +194,10 @@ class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
     if (_$v != null) {
       _id = _$v.id;
       _is_active = _$v.is_active;
-      _movie = _$v.movie;
-      _theatre = _$v.theatre;
+      _movieId = _$v.movieId;
+      _movie = _$v.movie?.toBuilder();
+      _theatreId = _$v.theatreId;
+      _theatre = _$v.theatre?.toBuilder();
       _room = _$v.room;
       _end_time = _$v.end_time;
       _start_time = _$v.start_time;
@@ -197,17 +223,35 @@ class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
 
   @override
   _$ShowTime build() {
-    final _$result = _$v ??
-        new _$ShowTime._(
-            id: id,
-            is_active: is_active,
-            movie: movie,
-            theatre: theatre,
-            room: room,
-            end_time: end_time,
-            start_time: start_time,
-            createdAt: createdAt,
-            updatedAt: updatedAt);
+    _$ShowTime _$result;
+    try {
+      _$result = _$v ??
+          new _$ShowTime._(
+              id: id,
+              is_active: is_active,
+              movieId: movieId,
+              movie: _movie?.build(),
+              theatreId: theatreId,
+              theatre: _theatre?.build(),
+              room: room,
+              end_time: end_time,
+              start_time: start_time,
+              createdAt: createdAt,
+              updatedAt: updatedAt);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'movie';
+        _movie?.build();
+
+        _$failedField = 'theatre';
+        _theatre?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'ShowTime', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

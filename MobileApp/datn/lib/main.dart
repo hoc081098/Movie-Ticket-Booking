@@ -44,7 +44,7 @@ void main() async {
   //
   // Env
   //
-  await EnvManager.shared.config(EnvPath.PROD);
+  await EnvManager.shared.config(EnvPath.DEV);
 
   //
   // Firebase, Google, Facebook
@@ -52,9 +52,11 @@ void main() async {
   await Firebase.initializeApp();
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
+
+  FcmNotificationManager fcmNotificationManager;
   final firebaseMessaging = FirebaseMessaging();
   firebaseMessaging.configure(
-    onMessage: onMessage,
+    onMessage: (msg) => fcmNotificationManager.onMessage(msg),
     onBackgroundMessage: myBackgroundMessageHandler,
     onLaunch: (Map<String, dynamic> message) async {
       print('onLaunch: $message');
@@ -92,6 +94,8 @@ void main() async {
   //
   // Repositories
   //
+  fcmNotificationManager = FcmNotificationManager(authClient);
+
   final userRepository = UserRepositoryImpl(
     auth,
     userLocalSource,
@@ -136,7 +140,10 @@ void main() async {
     mappers.movieResponseToMovie,
   );
 
-  final notificationRepository = NotificationRepositoryImpl(authClient);
+  final notificationRepository = NotificationRepositoryImpl(
+    authClient,
+    mappers.notificationResponseToNotification,
+  );
 
   runApp(
     Providers(
@@ -150,6 +157,7 @@ void main() async {
         Provider<ReservationRepository>(value: reservationRepository),
         Provider<FavoritesRepository>(value: favoritesRepository),
         Provider<NotificationRepository>(value: notificationRepository),
+        Provider<FcmNotificationManager>(value: fcmNotificationManager),
       ],
       child: MyApp(),
     ),
