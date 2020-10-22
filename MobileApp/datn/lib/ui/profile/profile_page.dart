@@ -99,6 +99,8 @@ class LoggedIn extends StatelessWidget {
     TextStyle detailInfoStyle,
     Color accentColor,
   ) {
+    final density = VisualDensity.compact;
+
     return Positioned.fill(
       top: height + imageSize / 2 - 16,
       left: 0,
@@ -117,6 +119,7 @@ class LoggedIn extends StatelessWidget {
               style: detailInfoStyle,
             ),
             dense: true,
+            visualDensity: density,
             leading: Icon(
               Icons.email,
               color: accentColor,
@@ -133,6 +136,7 @@ class LoggedIn extends StatelessWidget {
               style: detailInfoStyle,
             ),
             dense: true,
+            visualDensity: density,
             leading: Icon(
               Icons.person,
               color: accentColor,
@@ -150,6 +154,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailInfoStyle,
               ),
               dense: true,
+              visualDensity: density,
               leading: Icon(
                 Icons.phone,
                 color: accentColor,
@@ -167,6 +172,7 @@ class LoggedIn extends StatelessWidget {
               style: detailInfoStyle,
             ),
             dense: true,
+            visualDensity: density,
             leading: FaIcon(
               () {
                 switch (user.gender) {
@@ -191,6 +197,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailInfoStyle,
               ),
               dense: true,
+              visualDensity: density,
               leading: FaIcon(
                 FontAwesomeIcons.addressCard,
                 color: accentColor,
@@ -209,6 +216,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailInfoStyle,
               ),
               dense: true,
+              visualDensity: density,
               leading: FaIcon(
                 FontAwesomeIcons.birthdayCake,
                 color: accentColor,
