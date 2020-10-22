@@ -35,10 +35,10 @@ class RetryAction implements Action {
   State reduce(State state) => state;
 }
 
-class AddedCommentAction implements Action {
+class AddedNotificationAction implements Action {
   final Notification notification;
 
-  AddedCommentAction(this.notification);
+  AddedNotificationAction(this.notification);
 
   @override
   State reduce(State state) =>

@@ -32,14 +32,9 @@ class NotificationItemWidget extends StatelessWidget {
       fontSize: 10,
       fontStyle: FontStyle.italic,
     );
-    final bodyTitle = textTheme.subtitle2.copyWith(
-      color: Colors.white,
-      fontSize: 13,
-      fontWeight: FontWeight.w500,
-    );
     final textStyle = textTheme.subtitle1.copyWith(
       fontSize: 12,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w300,
       color: Colors.white.withOpacity(0.9),
     );
 
@@ -113,7 +108,7 @@ class NotificationItemWidget extends StatelessWidget {
                       item.body,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: bodyTitle,
+                      style: textStyle,
                     ),
                     const SizedBox(height: 8),
                     RichText(

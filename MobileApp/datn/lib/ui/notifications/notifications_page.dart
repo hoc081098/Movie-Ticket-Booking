@@ -1,9 +1,11 @@
+import 'package:datn/fcm_notification.dart';
 import 'package:flutter/material.dart' hide Notification, Action;
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/notification_repository.dart';
 import '../../utils/error.dart';
@@ -27,6 +29,7 @@ class _NotificationsPageState extends State<NotificationsPage>
 
   RxReduxStore<Action, st.State> store;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final listController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -35,16 +38,39 @@ class _NotificationsPageState extends State<NotificationsPage>
     store ??= () {
       final s = createStore(
           Provider.of<NotificationRepository>(context).getNotification);
+      final notificationManager = Provider.of<FcmNotificationManager>(context);
 
       subscribe(s);
+
+      void onNewNotification(AddedNotificationAction action) {
+        s.dispatch(action);
+
+        if (listController.hasClients) {
+          listController.animateTo(
+            0.0,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300),
+          );
+        }
+      }
 
       AppScaffold.tapStream(context)
           .where((event) => event == 2)
           .take(1)
-          .listen((_) => s.dispatch(const LoadFirstPageAction()));
+          .doOnData((event) => s.dispatch(const LoadFirstPageAction()))
+          .exhaustMap((_) => notificationManager.notification$)
+          .map((event) => AddedNotificationAction(event))
+          .listen(onNewNotification);
 
       return s;
     }();
+  }
+
+  @override
+  void dispose() {
+    store.dispose();
+    listController.dispose();
+    super.dispose();
   }
 
   void subscribe(RxReduxStore<Action, st.State> store) {
@@ -112,6 +138,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           final items = state.items;
 
           return ListView.builder(
+            controller: listController,
             itemCount: items.length + (state.isFirstPage ? 0 : 1),
             itemBuilder: (context, index) {
               if (index < items.length) {
