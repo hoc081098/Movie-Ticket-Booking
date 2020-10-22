@@ -44,7 +44,7 @@ export class ShowTimesService {
       this.logger.debug(`Hours for ${theatre.name} are ${JSON.stringify(hours)} -- ${startH}:${startM} -> ${endH}:${endM}`);
 
       for (const room of theatre.rooms) {
-        for (let dDate = -1; dDate <= 20; dDate++) {
+        for (let dDate = -1; dDate <= 10; dDate++) {
           const day = current.startOf('day').add(dDate, 'day');
 
           const thStartTime = day.set('hour', startH).set('minute', startM);

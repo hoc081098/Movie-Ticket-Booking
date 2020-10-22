@@ -173,7 +173,7 @@ export class MovieDbService {
       poster_url: v.poster_path ? `https://image.tmdb.org/t/p/w342${v.poster_path}` : null,
       overview: v.overview,
       released_date: this.days[this.dayCount],
-      duration: v.runtime,
+      duration: v.runtime ?? 100,
       directors: directors.map(d => d._id),
       actors: actors.map(d => d._id),
       is_active: true,
