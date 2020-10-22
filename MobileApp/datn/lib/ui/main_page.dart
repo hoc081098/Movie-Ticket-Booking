@@ -35,6 +35,7 @@ import 'home/tickets/combo_page.dart';
 import 'home/tickets/ticket_page.dart';
 import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
+import 'notifications/notifications_page.dart';
 import 'profile/profile_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -161,6 +162,10 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     Navigator.defaultRouteName: (context, settings) => FavoritesPage(),
   };
 
+  static final notificationsRoutes = <String, AppScaffoldWidgetBuilder>{
+    Navigator.defaultRouteName: (context, settings) => NotificationsPage(),
+  };
+
   dynamic listenToken;
 
   @override
@@ -183,6 +188,8 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         (context, settings) => homeRoutes[settings.name](context, settings),
         (context, settings) =>
             favoritesRoutes[settings.name](context, settings),
+        (context, settings) =>
+            notificationsRoutes[settings.name](context, settings),
         (context, settings) => profileRoutes[settings.name](context, settings),
       ],
       items: const [
@@ -193,6 +200,10 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_rounded),
           title: Text('Favorites'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications),
+          title: Text('Notification'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_rounded),

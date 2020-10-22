@@ -1,4 +1,6 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
+import 'package:datn/data/repository/notification_repository_impl.dart';
+import 'package:datn/domain/repository/notification_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -42,7 +44,7 @@ void main() async {
   //
   // Env
   //
-  await EnvManager.shared.config(EnvPath.PROD);
+  await EnvManager.shared.config(EnvPath.DEV);
 
   //
   // Firebase, Google, Facebook
@@ -50,9 +52,11 @@ void main() async {
   await Firebase.initializeApp();
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
+
+  FcmNotificationManager fcmNotificationManager;
   final firebaseMessaging = FirebaseMessaging();
   firebaseMessaging.configure(
-    onMessage: onMessage,
+    onMessage: (msg) => fcmNotificationManager.onMessage(msg),
     onBackgroundMessage: myBackgroundMessageHandler,
     onLaunch: (Map<String, dynamic> message) async {
       print('onLaunch: $message');
@@ -90,6 +94,8 @@ void main() async {
   //
   // Repositories
   //
+  fcmNotificationManager = FcmNotificationManager(authClient);
+
   final userRepository = UserRepositoryImpl(
     auth,
     userLocalSource,
@@ -134,6 +140,11 @@ void main() async {
     mappers.movieResponseToMovie,
   );
 
+  final notificationRepository = NotificationRepositoryImpl(
+    authClient,
+    mappers.notificationResponseToNotification,
+  );
+
   runApp(
     Providers(
       providers: [
@@ -145,6 +156,8 @@ void main() async {
         Provider<TicketRepository>(value: ticketRepository),
         Provider<ReservationRepository>(value: reservationRepository),
         Provider<FavoritesRepository>(value: favoritesRepository),
+        Provider<NotificationRepository>(value: notificationRepository),
+        Provider<FcmNotificationManager>(value: fcmNotificationManager),
       ],
       child: MyApp(),
     ),

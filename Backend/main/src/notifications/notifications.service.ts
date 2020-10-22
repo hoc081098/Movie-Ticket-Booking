@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { User } from '../users/user.schema';
 import { Reservation } from '../reservations/reservation.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -120,6 +120,28 @@ export class NotificationsService {
           }
         })
         .exec();
+  }
+
+  async getNotificationById(id: string): Promise<Notification> {
+    const notification = await this.notificationModel
+        .findById(id)
+        .populate({
+          path: 'reservation',
+          populate: {
+            path: 'show_time',
+            populate: [
+              { path: 'theatre' },
+              { path: 'movie' },
+            ]
+          }
+        })
+        .exec();
+
+    if (notification === null) {
+      throw new NotFoundException();
+    }
+
+    return notification;
   }
 }
 

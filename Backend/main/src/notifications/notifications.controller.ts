@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Post, Query, UnprocessableEntityException, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Param, Post, Query, UnprocessableEntityException, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -10,6 +10,7 @@ import { generateQRCode } from '../common/qrcode';
 import { PaginationDto } from "../common/pagination.dto";
 import { NotificationsService } from "./notifications.service";
 import { GetUser, UserPayload } from "../auth/get-user.decorator";
+import { Notification } from "./notification.schema";
 
 @UseGuards(AuthGuard)
 @ApiTags('notifications')
@@ -82,7 +83,14 @@ export class NotificationsController {
   getNotifications(
       @GetUser() userPayload: UserPayload,
       @Query() dto: PaginationDto,
-  ) {
+  ): Promise<Notification[]> {
     return this.notificationsService.getNotifications(userPayload, dto);
+  }
+
+  @Get(':id')
+  getNotificationById(
+      @Param('id') id: string
+  ) {
+    return this.notificationsService.getNotificationById(id);
   }
 }
