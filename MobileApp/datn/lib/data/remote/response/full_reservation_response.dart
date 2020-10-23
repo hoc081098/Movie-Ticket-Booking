@@ -35,7 +35,7 @@ abstract class FullReservationResponse
 
   DateTime get updatedAt;
 
-  UserResponse get user;
+  String get user;
 
   FullReservationResponse._();
 

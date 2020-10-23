@@ -165,7 +165,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
       ].build();
     };
 
-    return Rx.fromCallable(
-        () => _authClient.getBody(buildUrl('/notifications'))).map(mapResult);
+    return Rx.fromCallable(() => _authClient.getBody(buildUrl('/reservations')))
+        .map(mapResult);
   }
 }
