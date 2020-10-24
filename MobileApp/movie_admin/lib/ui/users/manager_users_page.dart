@@ -72,9 +72,9 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
       floatingActionButton: _isOpeningSlide == true
           ? null
           : FloatingActionButton(
-        onPressed: null,
-        child: Icon(Icons.add),
-      ),
+              onPressed: null,
+              child: Icon(Icons.add),
+            ),
     );
   }
 
@@ -90,7 +90,7 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
             final data = snapShort.data as LoadUserSuccess;
             _listUsers.addAll(
               data.users.where(
-                    (user) => !_isHasUserInList(user, _listUsers),
+                (user) => !_isHasUserInList(user, _listUsers),
               ),
             );
             print(data.users.map((e) => e.uid).toString());
@@ -100,9 +100,9 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
               controller: _listUserController,
               itemBuilder: (context, index) => index == _listUsers.length
                   ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [CircularProgressIndicator()],
-              )
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [CircularProgressIndicator()],
+                    )
                   : _buildItemUserByIndex(_listUsers[index]),
               itemCount: snapShort.data is LoadingUsersState
                   ? _listUsers.length + 1
@@ -138,45 +138,45 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     return user.uid == null
         ? Text('Error')
         : Slidable.builder(
-      key: Key(user.uid),
-      controller: _slidableController,
-      dismissal: SlidableDismissal(
-        child: SlidableDrawerDismissal(),
-        closeOnCanceled: true,
-        onWillDismiss: (action) async {
-          final isDismiss = await _showDialogConfirm();
-          if (isDismiss) _bloc.removeUser(user);
-          return isDismiss;
-        },
-        onDismissed: (actionType) {
-          if (actionType == SlideActionType.primary) return;
-          _showSnackBar(context, 'Delete user ${user.fullName}');
-          _bloc.removeUser(user);
-        },
-      ),
-      actionPane: SlidableScrollActionPane(),
-      actionExtentRatio: 0.2,
-      child: UserItemWidget(user),
-      secondaryActionDelegate: SlideActionBuilderDelegate(
-        actionCount: 1,
-        builder: (context, index, animation, renderingMode) {
-          return StreamBuilder<List<String>>(
-              stream: _bloc.renderItemRemove$,
-              builder: (context, snapShort) {
-                return snapShort.data?.contains(user.uid) ?? false
-                    ? CircularProgressIndicator()
-                    : IconSlideAction(
-                  caption: 'Delete',
-                  color: Colors.red,
-                  icon: Icons.delete,
-                  onTap: () {
-                    _bloc.removeUser(user);
-                  },
-                );
-              });
-        },
-      ),
-    );
+            key: Key(user.uid),
+            controller: _slidableController,
+            dismissal: SlidableDismissal(
+              child: SlidableDrawerDismissal(),
+              closeOnCanceled: true,
+              onWillDismiss: (action) async {
+                final isDismiss = await _showDialogConfirm();
+                if (isDismiss) _bloc.removeUser(user);
+                return isDismiss;
+              },
+              onDismissed: (actionType) {
+                if (actionType == SlideActionType.primary) return;
+                _showSnackBar(context, 'Delete user ${user.fullName}');
+                _bloc.removeUser(user);
+              },
+            ),
+            actionPane: SlidableScrollActionPane(),
+            actionExtentRatio: 0.2,
+            child: UserItemWidget(user),
+            secondaryActionDelegate: SlideActionBuilderDelegate(
+              actionCount: 1,
+              builder: (context, index, animation, renderingMode) {
+                return StreamBuilder<List<String>>(
+                    stream: _bloc.renderItemRemove$,
+                    builder: (context, snapShort) {
+                      return snapShort.data?.contains(user.uid) ?? false
+                          ? CircularProgressIndicator()
+                          : IconSlideAction(
+                              caption: 'Delete',
+                              color: Colors.red,
+                              icon: Icons.delete,
+                              onTap: () {
+                                _bloc.removeUser(user);
+                              },
+                            );
+                    });
+              },
+            ),
+          );
   }
 
   void _showSnackBar(BuildContext context, String text) {
@@ -235,44 +235,44 @@ class UserItemWidget extends StatelessWidget {
       child: ClipOval(
         child: user.avatar == null
             ? Center(
-          child: Icon(
-            Icons.person,
-            color: Colors.white,
-            size: imageSize * 0.7,
-          ),
-        )
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: imageSize * 0.7,
+                ),
+              )
             : CachedNetworkImage(
-          imageUrl: user.avatar,
-          fit: BoxFit.cover,
-          width: imageSize,
-          height: imageSize,
-          progressIndicatorBuilder: (
-              BuildContext context,
-              String url,
-              progress,
-              ) {
-            return Center(
-              child: CircularProgressIndicator(
-                value: progress.progress,
-                strokeWidth: 2.0,
-                valueColor: AlwaysStoppedAnimation(Colors.white),
+                imageUrl: user.avatar,
+                fit: BoxFit.cover,
+                width: imageSize,
+                height: imageSize,
+                progressIndicatorBuilder: (
+                  BuildContext context,
+                  String url,
+                  progress,
+                ) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: progress.progress,
+                      strokeWidth: 2.0,
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ),
+                  );
+                },
+                errorWidget: (
+                  BuildContext context,
+                  String url,
+                  dynamic error,
+                ) {
+                  return Center(
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: imageSize * 0.7,
+                    ),
+                  );
+                },
               ),
-            );
-          },
-          errorWidget: (
-              BuildContext context,
-              String url,
-              dynamic error,
-              ) {
-            return Center(
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-                size: imageSize * 0.7,
-              ),
-            );
-          },
-        ),
       ),
     );
   }

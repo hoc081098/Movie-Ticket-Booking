@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-
 import '../../domain/model/exception.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repository/manager_repository.dart';
