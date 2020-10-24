@@ -58,12 +58,22 @@ class _$FullReservationResponseSerializer
           specifiedType: const FullType(DateTime)),
       'user',
       serializers.serialize(object.user, specifiedType: const FullType(String)),
+      'tickets',
+      serializers.serialize(object.tickets,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(TicketResponse)])),
     ];
     if (object.is_active != null) {
       result
         ..add('is_active')
         ..add(serializers.serialize(object.is_active,
             specifiedType: const FullType(bool)));
+    }
+    if (object.promotion_id != null) {
+      result
+        ..add('promotion_id')
+        ..add(serializers.serialize(object.promotion_id,
+            specifiedType: const FullType(PromotionResponse)));
     }
     return result;
   }
@@ -131,6 +141,17 @@ class _$FullReservationResponseSerializer
           result.user = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'tickets':
+          result.tickets.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(TicketResponse)]))
+              as BuiltList<Object>);
+          break;
+        case 'promotion_id':
+          result.promotion_id.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PromotionResponse))
+              as PromotionResponse);
+          break;
       }
     }
 
@@ -153,7 +174,7 @@ class _$ProductAndQuantityResponseSerializer
       Serializers serializers, ProductAndQuantityResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'id',
+      'product_id',
       serializers.serialize(object.product,
           specifiedType: const FullType(ProductResponse)),
       'quantity',
@@ -176,7 +197,7 @@ class _$ProductAndQuantityResponseSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'id':
+        case 'product_id':
           result.product.replace(serializers.deserialize(value,
                   specifiedType: const FullType(ProductResponse))
               as ProductResponse);
@@ -217,6 +238,10 @@ class _$FullReservationResponse extends FullReservationResponse {
   final DateTime updatedAt;
   @override
   final String user;
+  @override
+  final BuiltList<TicketResponse> tickets;
+  @override
+  final PromotionResponse promotion_id;
 
   factory _$FullReservationResponse(
           [void Function(FullReservationResponseBuilder) updates]) =>
@@ -234,7 +259,9 @@ class _$FullReservationResponse extends FullReservationResponse {
       this.show_time,
       this.total_price,
       this.updatedAt,
-      this.user})
+      this.user,
+      this.tickets,
+      this.promotion_id})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('FullReservationResponse', 'id');
@@ -276,6 +303,9 @@ class _$FullReservationResponse extends FullReservationResponse {
     if (user == null) {
       throw new BuiltValueNullFieldError('FullReservationResponse', 'user');
     }
+    if (tickets == null) {
+      throw new BuiltValueNullFieldError('FullReservationResponse', 'tickets');
+    }
   }
 
   @override
@@ -302,7 +332,9 @@ class _$FullReservationResponse extends FullReservationResponse {
         show_time == other.show_time &&
         total_price == other.total_price &&
         updatedAt == other.updatedAt &&
-        user == other.user;
+        user == other.user &&
+        tickets == other.tickets &&
+        promotion_id == other.promotion_id;
   }
 
   @override
@@ -317,18 +349,22 @@ class _$FullReservationResponse extends FullReservationResponse {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, id.hashCode),
-                                                createdAt.hashCode),
-                                            email.hashCode),
-                                        is_active.hashCode),
-                                    original_price.hashCode),
-                                payment_intent_id.hashCode),
-                            phone_number.hashCode),
-                        products.hashCode),
-                    show_time.hashCode),
-                total_price.hashCode),
-            updatedAt.hashCode),
-        user.hashCode));
+                                            $jc(
+                                                $jc(
+                                                    $jc($jc(0, id.hashCode),
+                                                        createdAt.hashCode),
+                                                    email.hashCode),
+                                                is_active.hashCode),
+                                            original_price.hashCode),
+                                        payment_intent_id.hashCode),
+                                    phone_number.hashCode),
+                                products.hashCode),
+                            show_time.hashCode),
+                        total_price.hashCode),
+                    updatedAt.hashCode),
+                user.hashCode),
+            tickets.hashCode),
+        promotion_id.hashCode));
   }
 
   @override
@@ -345,7 +381,9 @@ class _$FullReservationResponse extends FullReservationResponse {
           ..add('show_time', show_time)
           ..add('total_price', total_price)
           ..add('updatedAt', updatedAt)
-          ..add('user', user))
+          ..add('user', user)
+          ..add('tickets', tickets)
+          ..add('promotion_id', promotion_id))
         .toString();
   }
 }
@@ -409,6 +447,17 @@ class FullReservationResponseBuilder
   String get user => _$this._user;
   set user(String user) => _$this._user = user;
 
+  ListBuilder<TicketResponse> _tickets;
+  ListBuilder<TicketResponse> get tickets =>
+      _$this._tickets ??= new ListBuilder<TicketResponse>();
+  set tickets(ListBuilder<TicketResponse> tickets) => _$this._tickets = tickets;
+
+  PromotionResponseBuilder _promotion_id;
+  PromotionResponseBuilder get promotion_id =>
+      _$this._promotion_id ??= new PromotionResponseBuilder();
+  set promotion_id(PromotionResponseBuilder promotion_id) =>
+      _$this._promotion_id = promotion_id;
+
   FullReservationResponseBuilder();
 
   FullReservationResponseBuilder get _$this {
@@ -425,6 +474,8 @@ class FullReservationResponseBuilder
       _total_price = _$v.total_price;
       _updatedAt = _$v.updatedAt;
       _user = _$v.user;
+      _tickets = _$v.tickets?.toBuilder();
+      _promotion_id = _$v.promotion_id?.toBuilder();
       _$v = null;
     }
     return this;
@@ -460,7 +511,9 @@ class FullReservationResponseBuilder
               show_time: show_time.build(),
               total_price: total_price,
               updatedAt: updatedAt,
-              user: user);
+              user: user,
+              tickets: tickets.build(),
+              promotion_id: _promotion_id?.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -468,6 +521,11 @@ class FullReservationResponseBuilder
         products.build();
         _$failedField = 'show_time';
         show_time.build();
+
+        _$failedField = 'tickets';
+        tickets.build();
+        _$failedField = 'promotion_id';
+        _promotion_id?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'FullReservationResponse', _$failedField, e.toString());

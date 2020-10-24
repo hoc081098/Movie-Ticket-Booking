@@ -24,6 +24,7 @@ class ReservationsPage extends StatefulWidget {
 
 class _ReservationsPageState extends State<ReservationsPage>
     with DisposeBagMixin {
+  final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
   final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
 
   RxReduxStore<ReservationsAction, ReservationsState> store;
@@ -125,6 +126,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                   return ReservationListItem(
                     item: items[index],
                     dateFormat: dateFormat,
+                    currencyFormat: currencyFormat,
                   );
                 }
 

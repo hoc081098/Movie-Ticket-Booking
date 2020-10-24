@@ -1,6 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:datn/data/remote/response/promotion_response.dart';
+import 'package:datn/data/remote/response/ticket_response.dart';
 import 'product_response.dart';
 
 import '../../serializers.dart';
@@ -37,6 +39,11 @@ abstract class FullReservationResponse
 
   String get user;
 
+  BuiltList<TicketResponse> get tickets;
+
+  @nullable
+  PromotionResponse get promotion_id;
+
   FullReservationResponse._();
 
   factory FullReservationResponse(
@@ -55,7 +62,7 @@ abstract class FullReservationResponse
 abstract class ProductAndQuantityResponse
     implements
         Built<ProductAndQuantityResponse, ProductAndQuantityResponseBuilder> {
-  @BuiltValueField(wireName: 'id')
+  @BuiltValueField(wireName: 'product_id')
   ProductResponse get product;
 
   int get quantity;

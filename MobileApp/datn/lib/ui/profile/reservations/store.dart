@@ -4,6 +4,7 @@ import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/model/reservation.dart';
+import '../../../utils/streams.dart';
 import 'reservations_state.dart';
 
 typedef GetReservations = Stream<BuiltList<Reservation>> Function({
@@ -11,7 +12,7 @@ typedef GetReservations = Stream<BuiltList<Reservation>> Function({
   @required int perPage,
 });
 
-const perPage = 16;
+const perPage = 6;
 
 RxReduxStore<ReservationsAction, ReservationsState> createStore(
   GetReservations getReservations,
@@ -78,6 +79,7 @@ class SideEffects {
     return getReservations(page: nextPage, perPage: perPage)
         .map<ReservationsAction>((items) => SuccessAction(items))
         .startWith(loadingAction)
+        .debug(toString())
         .onErrorReturnWith((error) => FailureAction(error));
   }
 
@@ -85,5 +87,6 @@ class SideEffects {
       getReservations(page: 1, perPage: perPage)
           .map<ReservationsAction>((items) => RefreshSuccessAction(items))
           .onErrorReturnWith((error) => RefreshFailureAction(error))
+          .debug(toString())
           .doOnCancel(() => action.completer.complete());
 }

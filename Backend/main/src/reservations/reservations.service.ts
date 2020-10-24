@@ -180,6 +180,10 @@ export class ReservationsService {
         user: user._id,
         payment_intent_id: paymentIntent.id,
       };
+      if (promotion) {
+        doc.promotion_id = promotion._id;
+      }
+
       let reservation = await this.reservationModel.create(
           [doc],
           { session },
@@ -287,23 +291,114 @@ export class ReservationsService {
     const { _id } = checkCompletedLogin(userPayload);
     const { skip, limit } = getSkipLimit(dto);
 
-    return await this.reservationModel
-        .find({ user: _id })
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .populate({
-          path: 'show_time',
-          populate: [
-            { path: 'movie' },
-            { path: 'theatre' },
-          ],
-        })
-        .populate({
-          path: 'products',
-          populate: 'id'
-        })
-        .populate('promotion_id')
-        .exec();
+    const results = await this.reservationModel.aggregate([
+      { $match: { user: new Types.ObjectId(_id) } },
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: 'show_times',
+          localField: 'show_time',
+          foreignField: '_id',
+          as: 'show_time',
+        }
+      },
+      { $unwind: '$show_time' },
+      {
+        $lookup: {
+          from: 'movies',
+          localField: 'show_time.movie',
+          foreignField: '_id',
+          as: 'show_time.movie',
+        }
+      },
+      { $unwind: '$show_time.movie' },
+      {
+        $lookup: {
+          from: 'theatres',
+          localField: 'show_time.theatre',
+          foreignField: '_id',
+          as: 'show_time.theatre',
+        }
+      },
+      { $unwind: '$show_time.theatre' },
+      {
+        $lookup: {
+          from: 'promotions',
+          localField: 'promotion_id',
+          foreignField: '_id',
+          as: 'promotion_id',
+        }
+      },
+      {
+        $unwind: {
+          path: '$promotion_id',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'products.id',
+          foreignField: '_id',
+          as: 'product_objects',
+        }
+      },
+      {
+        $lookup: {
+          from: 'tickets',
+          localField: '_id',
+          foreignField: 'reservation',
+          as: 'tickets',
+        }
+      },
+      {
+        $lookup: {
+          from: 'seats',
+          localField: 'tickets.seat',
+          foreignField: '_id',
+          as: 'seats',
+        },
+      },
+    ]).exec();
+
+    return results.map(item => {
+
+      item.products = item.product_objects?.map(prodObj => {
+        return {
+          product_id: prodObj,
+          quantity: item.products.find(p => p.id.toHexString() === prodObj._id.toHexString()).quantity,
+        };
+      }) ?? [];
+      delete item.product_objects;
+
+      item.tickets = item.tickets?.map(ticket => {
+        ticket.seat = item.seats.find(s => s._id.toHexString() === ticket.seat.toHexString());
+        return ticket;
+      }) ?? [];
+      delete item.seats;
+
+      return item;
+    });
+
+    // return await this.reservationModel
+    //     .find({ user: _id })
+    //     .sort({ createdAt: -1 })
+    //     .skip(skip)
+    //     .limit(limit)
+    //     .populate({
+    //       path: 'show_time',
+    //       populate: [
+    //         { path: 'movie' },
+    //         { path: 'theatre' },
+    //       ],
+    //     })
+    //     .populate({
+    //       path: 'products',
+    //       populate: 'id'
+    //     })
+    //     .populate('promotion_id')
+    //     .exec();
   }
 }

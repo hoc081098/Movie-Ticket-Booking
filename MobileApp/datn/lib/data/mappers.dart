@@ -512,6 +512,13 @@ Reservation fullReservationResponseToReservation(
       ..safeReplace(productIds);
     final showTimeBuilder = b.showTime
       ..replace(showTimeFullResponseToShowTime(response.show_time));
+    final ticketsBuilder = b.tickets
+      ..safeReplace(response.tickets.map((t) => ticketResponseToTicket(t)));
+
+    final promotion = response.promotion_id;
+    final promotionBuilder = promotion == null
+        ? null
+        : (b.promotion..replace(promotionResponseToPromotion(promotion)));
 
     return b
       ..id = response.id
@@ -525,6 +532,9 @@ Reservation fullReservationResponseToReservation(
       ..showTimeId = response.show_time.id
       ..showTime = showTimeBuilder
       ..totalPrice = response.total_price
-      ..updatedAt = response.updatedAt;
+      ..updatedAt = response.updatedAt
+      ..tickets = ticketsBuilder
+      ..promotionId = promotion?.id
+      ..promotion = promotionBuilder;
   });
 }
