@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="83d80a25-42b1-49d9-9b2a-3e861a6a01e3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/DATN.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MobileApp/movie_admin/lib/ui/users/manage_user_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MobileApp/movie_admin/lib/data/repository/mannager_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/MobileApp/movie_admin/lib/data/repository/mannager_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MobileApp/movie_admin/lib/ui/users/manager_users_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/MobileApp/movie_admin/lib/ui/users/manager_users_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MobileApp/movie_admin/lib/ui/users/manager_users_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/MobileApp/movie_admin/lib/ui/users/manager_users_page.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="ProjectId" id="1jJzqFphfyCSHKEK7CkEmFEuW4d" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.CommitDialog" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="83d80a25-42b1-49d9-9b2a-3e861a6a01e3" name="Default Changelist" comment="" />
+      <created>1603537171892</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1603537171892</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir:C:/Users/Admin/Flutter Project/DATN/MobileApp/MobileApp" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="admin" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="128" y="55" key="MergeDialog" timestamp="1603537924489">
+      <screen x="0" y="0" width="1360" height="728" />
+    </state>
+    <state x="128" y="55" key="MergeDialog/0.0.1360.728@0.0.1360.728" timestamp="1603537924489" />
+    <state x="318" y="125" key="MultipleFileMergeDialog" timestamp="1603537928039">
+      <screen x="0" y="0" width="1360" height="728" />
+    </state>
+    <state x="318" y="125" key="MultipleFileMergeDialog/0.0.1360.728@0.0.1360.728" timestamp="1603537928039" />
+    <state x="181" y="8" key="SettingsEditor" timestamp="1603537560090">
+      <screen x="0" y="0" width="1360" height="728" />
+    </state>
+    <state x="181" y="8" key="SettingsEditor/0.0.1360.728@0.0.1360.728" timestamp="1603537560090" />
+    <state x="92" y="92" width="1176" height="544" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1603537950224">
+      <screen x="0" y="0" width="1360" height="728" />
+    </state>
+    <state x="92" y="92" width="1176" height="544" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1360.728@0.0.1360.728" timestamp="1603537950224" />
+    <state x="92" y="92" width="1176" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1603537950225">
+      <screen x="0" y="0" width="1360" height="728" />
+    </state>
+    <state x="92" y="92" width="1176" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1360.728@0.0.1360.728" timestamp="1603537950225" />
+  </component>
+</project>

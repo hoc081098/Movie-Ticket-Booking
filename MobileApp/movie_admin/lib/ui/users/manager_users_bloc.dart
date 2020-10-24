@@ -1,6 +1,7 @@
 import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
+import 'package:movie_admin/ui/users/manage_user_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/user.dart';
@@ -10,62 +11,72 @@ import '../../utils/utils.dart';
 class ManagerUsersBloc extends DisposeCallbackBaseBloc {
   /// Input functions
   final Function1<int, void> loadUsers;
-  final Function1<bool, void> userRemoving;
-  final Function1<User, bool> removeUser;
+  final Function1<User, void> removeUser;
 
   /// Streams
-  final Stream<List<User>> getUsersStream$;
-  final Stream<User> removeUserStream$;
-  final Stream<bool> isLoading$;
-  final Stream<bool> isRemoving$;
+  final Stream<ManageUserState> renderListStream$;
+  final Stream<List<String>> renderItemRemove$;
 
-  ManagerUsersBloc._(
-      {@required Function0<void> dispose,
-      @required this.loadUsers,
-      @required this.userRemoving,
-      @required this.removeUser,
-      @required this.getUsersStream$,
-      @required this.removeUserStream$,
-      @required this.isLoading$,
-      @required this.isRemoving$})
-      : super(dispose);
+  ManagerUsersBloc._({
+    @required Function0<void> dispose,
+    @required this.loadUsers,
+    @required this.removeUser,
+    @required this.renderListStream$,
+    @required this.renderItemRemove$,
+  }) : super(dispose);
 
   factory ManagerUsersBloc(final ManagerRepository managerRepository) {
     assert(managerRepository != null);
     final getUsersController = BehaviorSubject<int>();
     final removeUserController = PublishSubject<User>();
     final isLoadingController = BehaviorSubject<bool>.seeded(false);
-    final isRemovingController = BehaviorSubject<bool>.seeded(false);
+    final removingUserIds = BehaviorSubject<List<String>>.seeded([]);
 
     final controllers = [
       getUsersController,
       removeUserController,
       isLoadingController,
-      isRemovingController
+      removingUserIds
     ];
 
-    final getUsersStream = Rx.combineLatest2(
-            getUsersController.stream,
-            isLoadingController.stream.where((isLoad) => isLoad == false),
-            (number, _) => number)
-        .flatMap((numberUser) => Rx.defer(() async* {
-              isLoadingController.add(true);
-              final result = await managerRepository.getAllUser();
-              yield result;
-              isLoadingController.add(false);
-            }).doOnError(() => isLoadingController.add(false)))
-        .share();
+    final renderListStream = Rx.merge<ManageUserState>([
+      getUsersController.stream
+          .where((_) => isLoadingController.value == false)
+          .flatMap((currentLength) => Rx.defer(
+            () async* {
+          isLoadingController.add(true);
+          final page = currentLength ~/ 10 + 1;
+          final result = await managerRepository.loadUser(page);
+          yield result;
+          isLoadingController.add(false);
+        },
+      ).doOnError(() => isLoadingController.add(false)))
+          .map((users) => LoadUserSuccess(users: users)),
+      isLoadingController.stream
+          .where((event) => event)
+          .map((_) => LoadingUsersState())
+    ]).share();
 
-    final subscriptions = [getUsersStream];
+    final removeUserStream = removeUserController.stream
+        .where((user) => !removingUserIds.value.contains(user.uid))
+        .flatMap((user) => Rx.defer(() async* {
+      removingUserIds.add([...removingUserIds.value, user.uid]);
+      final result = await managerRepository.deleteUser(user);
+      yield result;
+      removingUserIds.add(removingUserIds.value..remove(user.uid));
+    }).doOnError(() =>
+        removingUserIds.add(removingUserIds.value..remove(user.uid))))
+        .share();
+    removeUserStream.listen((event) {});
+
+    final subscriptions = [renderListStream, removeUserStream];
 
     return ManagerUsersBloc._(
-        dispose: DisposeBag([...controllers, ...subscriptions]).dispose,
-        loadUsers: getUsersController.add,
-        userRemoving: isRemovingController.add,
-        removeUser: null,
-        getUsersStream$: getUsersStream,
-        removeUserStream$: null,
-        isLoading$: isLoadingController.stream,
-        isRemoving$: isRemovingController.stream);
+      dispose: DisposeBag([...controllers, ...subscriptions]).dispose,
+      loadUsers: getUsersController.add,
+      removeUser: removeUserController.add,
+      renderListStream$: renderListStream,
+      renderItemRemove$: removingUserIds,
+    );
   }
 }

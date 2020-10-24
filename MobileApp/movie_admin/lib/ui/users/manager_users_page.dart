@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
-import 'package:flutter_provider/flutter_provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'manager_users_bloc.dart';
+import 'package:movie_admin/ui/users/manage_user_state.dart';
 
 import '../../domain/model/user.dart';
+import 'manager_users_bloc.dart';
 
 class ManagerUsersPage extends StatefulWidget {
   static const routeName = '/manager_users';
@@ -19,30 +19,45 @@ class ManagerUsersPage extends StatefulWidget {
 class _ManagerUsersPageState extends State<ManagerUsersPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isOpeningSlide = false;
+  ScrollController _listUserController;
 
   SlidableController _slidableController;
+
+  ManagerUsersBloc _bloc;
+
+  final _listUsers = <User>[];
 
   @override
   @protected
   void initState() {
+    super.initState();
     _slidableController = SlidableController(
       onSlideAnimationChanged: (_) {},
       onSlideIsOpenChanged: (isOpen) {
         setState(() => _isOpeningSlide = isOpen);
       },
     );
-    super.initState();
+    _listUserController = ScrollController()
+      ..addListener(() {
+        if (_listUserController.position.pixels ==
+            _listUserController.position.maxScrollExtent) {
+          _bloc.loadUsers(_listUsers.length);
+          print("12345");
+        }
+      });
   }
 
   Widget _buildSearchUser() {
-    return SizedBox(width: 0, height: 0);
+    return SizedBox(width: 10, height: 10);
   }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<ManagerUsersBloc>(context);
+    _bloc = BlocProvider.of<ManagerUsersBloc>(context);
+    _bloc.loadUsers(_listUsers.length);
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Users'),
       ),
@@ -51,28 +66,48 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           _buildSearchUser(),
-          _buildListUsers(bloc),
+          _buildListUsers(_bloc),
         ],
       ),
       floatingActionButton: _isOpeningSlide == true
           ? null
           : FloatingActionButton(
-              onPressed: null,
-              child: Icon(Icons.add),
-            ),
+        onPressed: null,
+        child: Icon(Icons.add),
+      ),
     );
   }
 
+  bool _isHasUserInList(User user, List<User> listUser) =>
+      listUser.map((e) => e.uid).contains(user.uid);
+
   Widget _buildListUsers(ManagerUsersBloc bloc) {
-    var itemCount = 0;
-    return StreamBuilder<List<User>>(
-        stream: bloc.getUsersStream$,
+    return StreamBuilder<ManageUserState>(
+        stream: bloc.renderListStream$,
         builder: (context, snapShort) {
-          itemCount += snapShort.data?.length ?? 0;
-          return ListView.builder(
-            itemBuilder: (context, index) =>
-                _buildItemUserByIndex(snapShort.data[index], bloc),
-            itemCount: itemCount,
+          print(snapShort.data.toString());
+          if (snapShort.data is LoadUserSuccess) {
+            final data = snapShort.data as LoadUserSuccess;
+            _listUsers.addAll(
+              data.users.where(
+                    (user) => !_isHasUserInList(user, _listUsers),
+              ),
+            );
+            print(data.users.map((e) => e.uid).toString());
+          }
+          return Expanded(
+            child: ListView.builder(
+              controller: _listUserController,
+              itemBuilder: (context, index) => index == _listUsers.length
+                  ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [CircularProgressIndicator()],
+              )
+                  : _buildItemUserByIndex(_listUsers[index]),
+              itemCount: snapShort.data is LoadingUsersState
+                  ? _listUsers.length + 1
+                  : _listUsers.length,
+            ),
           );
         });
   }
@@ -99,45 +134,49 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     );
   }
 
-  Widget _buildItemUserByIndex(User user, ManagerUsersBloc bloc) {
-    return StreamBuilder<bool>(
-        stream: bloc.isRemoving$,
-        builder: (context, snapShort) {
-          return Slidable.builder(
-            key: Key(user.uid),
-            controller: _slidableController,
-            dismissal: SlidableDismissal(
-              child: SlidableDrawerDismissal(),
-              closeOnCanceled: true,
-              onWillDismiss: (action) async {
-                return await _showDialogConfirm()
-                    ? bloc.removeUser(user)
-                    : false;
-              },
-              onDismissed: (actionType) {
-                if (actionType == SlideActionType.primary) return;
-                _showSnackBar(context, 'Delete user ${user.fullName}');
-                bloc.removeUser(user);
-              },
-            ),
-            actionPane: SlidableScrollActionPane(),
-            actionExtentRatio: 0.2,
-            child: UserItemWidget(user),
-            secondaryActionDelegate: SlideActionBuilderDelegate(
-              actionCount: 1,
-              builder: (context, index, animation, renderingMode) {
-                return snapShort.data == true
+  Widget _buildItemUserByIndex(User user) {
+    return user.uid == null
+        ? Text('Error')
+        : Slidable.builder(
+      key: Key(user.uid),
+      controller: _slidableController,
+      dismissal: SlidableDismissal(
+        child: SlidableDrawerDismissal(),
+        closeOnCanceled: true,
+        onWillDismiss: (action) async {
+          final isDismiss = await _showDialogConfirm();
+          if (isDismiss) _bloc.removeUser(user);
+          return isDismiss;
+        },
+        onDismissed: (actionType) {
+          if (actionType == SlideActionType.primary) return;
+          _showSnackBar(context, 'Delete user ${user.fullName}');
+          _bloc.removeUser(user);
+        },
+      ),
+      actionPane: SlidableScrollActionPane(),
+      actionExtentRatio: 0.2,
+      child: UserItemWidget(user),
+      secondaryActionDelegate: SlideActionBuilderDelegate(
+        actionCount: 1,
+        builder: (context, index, animation, renderingMode) {
+          return StreamBuilder<List<String>>(
+              stream: _bloc.renderItemRemove$,
+              builder: (context, snapShort) {
+                return snapShort.data?.contains(user.uid) ?? false
                     ? CircularProgressIndicator()
                     : IconSlideAction(
-                        caption: 'Delete',
-                        color: Colors.red,
-                        icon: Icons.delete,
-                        onTap: () => Slidable.of(context).dismiss(),
-                      );
-              },
-            ),
-          );
-        });
+                  caption: 'Delete',
+                  color: Colors.red,
+                  icon: Icons.delete,
+                  onTap: () {
+                    _bloc.removeUser(user);
+                  },
+                );
+              });
+        },
+      ),
+    );
   }
 
   void _showSnackBar(BuildContext context, String text) {
@@ -158,13 +197,21 @@ class UserItemWidget extends StatelessWidget {
           ? slide?.open()
           : slide?.close(),
       child: Container(
-        color: Colors.white,
-        child: ListTile(
-          leading: _buildAvatar(70, context),
-          title: Text(user.fullName),
-          subtitle: Text(user.email),
-        ),
-      ),
+          color: Colors.white,
+          child: Row(
+            children: [
+              _buildAvatar(70, context),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user.fullName),
+                  SizedBox(height: 5),
+                  Text(user.email)
+                ],
+              )
+            ],
+          )),
     );
   }
 
@@ -172,13 +219,13 @@ class UserItemWidget extends StatelessWidget {
     return Container(
       width: imageSize,
       height: imageSize,
-      padding: EdgeInsets.all(3),
+      margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            blurRadius: 5,
+            blurRadius: 4,
             offset: Offset(0.0, 1.0),
             color: Colors.grey.shade500,
             spreadRadius: 1,
@@ -188,44 +235,44 @@ class UserItemWidget extends StatelessWidget {
       child: ClipOval(
         child: user.avatar == null
             ? Center(
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: imageSize * 0.7,
-                ),
-              )
+          child: Icon(
+            Icons.person,
+            color: Colors.white,
+            size: imageSize * 0.7,
+          ),
+        )
             : CachedNetworkImage(
-                imageUrl: user.avatar,
-                fit: BoxFit.cover,
-                width: imageSize,
-                height: imageSize,
-                progressIndicatorBuilder: (
-                  BuildContext context,
-                  String url,
-                  progress,
-                ) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: progress.progress,
-                      strokeWidth: 2.0,
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
-                    ),
-                  );
-                },
-                errorWidget: (
-                  BuildContext context,
-                  String url,
-                  dynamic error,
-                ) {
-                  return Center(
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: imageSize * 0.7,
-                    ),
-                  );
-                },
+          imageUrl: user.avatar,
+          fit: BoxFit.cover,
+          width: imageSize,
+          height: imageSize,
+          progressIndicatorBuilder: (
+              BuildContext context,
+              String url,
+              progress,
+              ) {
+            return Center(
+              child: CircularProgressIndicator(
+                value: progress.progress,
+                strokeWidth: 2.0,
+                valueColor: AlwaysStoppedAnimation(Colors.white),
               ),
+            );
+          },
+          errorWidget: (
+              BuildContext context,
+              String url,
+              dynamic error,
+              ) {
+            return Center(
+              child: Icon(
+                Icons.person,
+                color: Colors.white,
+                size: imageSize * 0.7,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
