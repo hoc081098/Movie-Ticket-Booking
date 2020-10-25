@@ -49,7 +49,7 @@ class ReservationListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Divider(),
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
             if (promotion != null) ...[
               RichText(
                 text: TextSpan(
@@ -80,6 +80,7 @@ class ReservationListItem extends StatelessWidget {
                 ),
                 maxLines: 3,
               ),
+              const SizedBox(height: 8),
             ],
             RichText(
               text: TextSpan(
