@@ -42,7 +42,7 @@ abstract class AppClient extends BaseClient {
               ...?headers,
               HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
             },
-            body: jsonEncode(body),
+            body: body != null ? jsonEncode(body) : null,
           )
           .then(_parseResult);
 
@@ -51,6 +51,7 @@ abstract class AppClient extends BaseClient {
 
   static dynamic _parseResult(Response response) {
     final statusCode = response.statusCode;
+    print(statusCode);
     final json = jsonDecode(response.body);
 
     if (HttpStatus.ok <= statusCode &&

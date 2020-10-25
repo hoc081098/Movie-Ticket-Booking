@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:movie_admin/ui/users/manage_user_state.dart';
+import 'manage_user_state.dart';
 
 import '../../domain/model/user.dart';
 import 'manager_users_bloc.dart';
@@ -42,9 +42,17 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
         if (_listUserController.position.pixels ==
             _listUserController.position.maxScrollExtent) {
           _bloc.loadUsers(_listUsers.length);
-          print("12345");
         }
       });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_bloc == null) {
+      _bloc = BlocProvider.of<ManagerUsersBloc>(context);
+      _bloc.loadUsers(_listUsers.length);
+    }
   }
 
   Widget _buildSearchUser() {
@@ -53,8 +61,6 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
 
   @override
   Widget build(BuildContext context) {
-    _bloc = BlocProvider.of<ManagerUsersBloc>(context);
-    _bloc.loadUsers(_listUsers.length);
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
@@ -85,7 +91,7 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     return StreamBuilder<ManageUserState>(
         stream: bloc.renderListStream$,
         builder: (context, snapShort) {
-          print(snapShort.data.toString());
+          print(snapShort.data.toString() + '>>>>>>>>');
           if (snapShort.data is LoadUserSuccess) {
             final data = snapShort.data as LoadUserSuccess;
             _listUsers.addAll(
@@ -93,11 +99,28 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
                 (user) => !_isHasUserInList(user, _listUsers),
               ),
             );
-            print(data.users.map((e) => e.uid).toString());
           }
           if (snapShort.data is DeleteUserSuccess) {
             final data = snapShort.data as DeleteUserSuccess;
             _listUsers.removeWhere((e) => e.uid == data.idUserDelete);
+          }
+          if (snapShort.data is BlockUserSuccess) {
+            final data = snapShort.data as BlockUserSuccess;
+            final index = _listUsers
+                .indexWhere((element) => element.uid == data.user.uid);
+            if (index != -1) {
+              _listUsers.removeAt(index);
+              _listUsers.insert(index, data.user);
+            }
+          }
+          if (snapShort.data is UnblockUserSuccess) {
+            final data = snapShort.data as UnblockUserSuccess;
+            final index = _listUsers
+                .indexWhere((element) => element.uid == data.user.uid);
+            if (index != -1) {
+              _listUsers.removeAt(index);
+              _listUsers.insert(index, data.user);
+            }
           }
           return Expanded(
             child: ListView.builder(
@@ -116,13 +139,13 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
         });
   }
 
-  Future<bool> _showDialogConfirm() {
+  Future<bool> _showDialogConfirm(String text, String description) {
     return showDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Delete this user'),
-          content: Text('User will be deleted '),
+          title: Text(text),
+          content: Text(description),
           actions: <Widget>[
             FlatButton(
               child: Text('Cancel'),
@@ -141,42 +164,64 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
   Widget _buildItemUserByIndex(User user) {
     return user.uid == null
         ? Text('Error')
-        : StreamBuilder<List<String>>(
+        : StreamBuilder<Map<String, DestroyUserType>>(
             stream: _bloc.renderItemRemove$,
             builder: (context, snapShort) {
               return Slidable.builder(
                 key: Key(user.uid),
                 controller: _slidableController,
-                dismissal: SlidableDismissal(
-                  child: SlidableDrawerDismissal(),
-                  closeOnCanceled: true,
-                  onWillDismiss: (action) async {
-                    final isDismiss = await _showDialogConfirm();
-                    if (isDismiss) _bloc.removeUser(user);
-                    return isDismiss;
-                  },
-                  onDismissed: (actionType) {
-                    if (actionType == SlideActionType.primary) return;
-                    _showSnackBar(context, 'Delete user ${user.fullName}');
-                    _bloc.removeUser(user);
-                  },
-                ),
                 actionPane: SlidableScrollActionPane(),
                 actionExtentRatio: 0.2,
                 child: UserItemWidget(user),
                 secondaryActionDelegate: SlideActionBuilderDelegate(
-                  actionCount: 1,
+                  actionCount: 2,
                   builder: (context, index, animation, renderingMode) {
-                    return snapShort.data?.contains(user.uid) ?? false
-                        ? CircularProgressIndicator()
+                    final isContainsUser =
+                        snapShort.data?.containsKey(user.uid) ?? false;
+                    final data = snapShort.data ?? {};
+                    final iconBlock = isContainsUser &&
+                            (data[user.uid] == DestroyUserType.BLOCK ||
+                                data[user.uid] == DestroyUserType.UNBLOCK)
+                        ? Center(child: CircularProgressIndicator())
+                        : IconSlideAction(
+                            caption: user.isActive ? 'Block' : 'Unblock',
+                            color:
+                                user.isActive ? Colors.limeAccent : Colors.grey,
+                            icon: Icons.block,
+                            onTap: () async {
+                              final isDismiss = await _showDialogConfirm(
+                                user.isActive
+                                    ? 'Block this user'
+                                    : 'Unblock this user',
+                                user.isActive
+                                    ? 'User will be block '
+                                    : 'User will be unblock ',
+                              );
+                              if (isDismiss) {
+                                _bloc.destroyUser(
+                                    MapEntry(user, user.isActive ? DestroyUserType.BLOCK : DestroyUserType.UNBLOCK));
+                              }
+                            },
+                          );
+                    final iconRemove = isContainsUser &&
+                            data[user.uid] == DestroyUserType.REMOVE
+                        ? Center(child: CircularProgressIndicator())
                         : IconSlideAction(
                             caption: 'Delete',
                             color: Colors.red,
                             icon: Icons.delete,
-                            onTap: () {
-                              _bloc.removeUser(user);
+                            onTap: () async {
+                              final isDismiss = await _showDialogConfirm(
+                                'Delete this user',
+                                'User will be deleted ',
+                              );
+                              if (isDismiss) {
+                                _bloc.destroyUser(
+                                    MapEntry(user, DestroyUserType.REMOVE));
+                              }
                             },
                           );
+                    return index == 0 ? iconBlock : iconRemove;
                   },
                 ),
               );
@@ -210,9 +255,17 @@ class UserItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(user.fullName),
+                  Text(
+                    user.fullName,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text(user.email),
                   SizedBox(height: 5),
-                  Text(user.email)
+                  _buildStatusUser(user.isActive),
                 ],
               )
             ],
@@ -279,6 +332,26 @@ class UserItemWidget extends StatelessWidget {
                 },
               ),
       ),
+    );
+  }
+
+  Widget _buildStatusUser(bool isActive) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'status: ',
+          style: TextStyle(fontSize: 8),
+        ),
+        Container(
+          width: 6,
+          height: 6,
+          decoration: BoxDecoration(
+              color: isActive ? Colors.green : Colors.red,
+              borderRadius: BorderRadius.circular(3)),
+        )
+      ],
     );
   }
 }
