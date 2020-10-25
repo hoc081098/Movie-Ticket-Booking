@@ -13,33 +13,26 @@ import '../../../domain/model/reservation.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/reservation_repository.dart';
 
-class ReservationDetailPage extends StatefulWidget {
+class ReservationDetailPage extends StatelessWidget {
   static const routeName = '/profile/reservations/detail';
 
   final Reservation reservation;
 
-  const ReservationDetailPage({Key key, @required this.reservation})
+  ReservationDetailPage({Key key, @required this.reservation})
       : super(key: key);
 
-  @override
-  _ReservationDetailPageState createState() => _ReservationDetailPageState();
-}
-
-class _ReservationDetailPageState extends State<ReservationDetailPage> {
   final dateFormat = DateFormat('dd MMM, yyyy');
   final timeFormat = DateFormat('hh:mm a');
 
   @override
   Widget build(BuildContext context) {
-    final reservation = widget.reservation;
-
     final showTime = reservation.showTime;
     final movie = showTime.movie;
     final theatre = showTime.theatre;
     final tickets = reservation.tickets ?? BuiltList.of(<Ticket>[]);
 
-    final seatSize =
-        (MediaQuery.of(context).size.width - 24 * 2 - 16 * 2 - 7 * 4) / 8;
+    final size = MediaQuery.of(context).size.width - 16 * 2 - 8 * 2;
+    final seatSize = (size - 7 * 4) / 8;
     final accentColor = Theme.of(context).accentColor;
     final seatStyle = Theme.of(context).textTheme.caption.copyWith(
           fontSize: 14,
@@ -54,7 +47,7 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
         title: Text('My ticket'),
       ),
       body: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             colors: [
@@ -66,7 +59,7 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
           ),
         ),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(6),
@@ -153,7 +146,7 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
                 Row(
                   children: [
                     Expanded(
@@ -173,7 +166,7 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
                 Row(
                   children: [
                     Expanded(
@@ -185,7 +178,7 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
                 Wrap(
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -249,9 +242,6 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
                       );
                     }
 
-                    final size =
-                        MediaQuery.of(context).size.width - 24 * 2 - 16 * 2;
-
                     return Center(
                       child: Image.memory(
                         state.content,
@@ -260,7 +250,33 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
                       ),
                     );
                   },
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Check your mail: ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xff687189),
+                        ),
+                        children: [
+                          TextSpan(
+                            text: reservation.email,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xffFF0120),
+                            ),
+                          ),
+                        ],
+                      ),
+                      maxLines: 3,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
