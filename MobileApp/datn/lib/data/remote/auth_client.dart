@@ -42,7 +42,7 @@ abstract class AppClient extends BaseClient {
               ...?headers,
               HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
             },
-            body: jsonEncode(body),
+            body: body != null ? jsonEncode(body) : null,
           )
           .then(_parseResult);
 
