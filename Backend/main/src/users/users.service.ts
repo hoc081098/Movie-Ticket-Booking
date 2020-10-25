@@ -272,4 +272,15 @@ export class UsersService {
         { new: true },
     ).exec();
   }
+
+  async toUserRole(uid: string): Promise<User> {
+    return await this.userModel.findOneAndUpdate(
+        {
+          uid,
+          role: { $ne: 'ADMIN' },
+        },
+        { role: 'USER' },
+        { new: true },
+    ).exec();
+  }
 }
