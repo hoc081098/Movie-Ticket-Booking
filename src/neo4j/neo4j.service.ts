@@ -44,9 +44,43 @@ export class Neo4jService {
     const users = await this.userModel.find({}).lean();
     await this.runTransaction(
         async txc => {
-          for (const user of users) {
+          const result = [];
 
+          for (const user of users) {
+            const r = await txc.run(
+                `
+                    MERGE(user: USER { _id: $_id })
+                    ON CREATE SET
+                        user.uid = $uid,
+                        user.email = $email,
+                        user.full_name = $full_name,
+                        user.gender = $gender,
+                        user.address = $address,
+                        user.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) })
+                    ON MATCH SET
+                        user.uid = $uid,
+                        user.email = $email,
+                        user.full_name = $full_name,
+                        user.gender = $gender,
+                        user.address = $address,
+                        user.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) })
+                    RETURN user.email as email
+                `,
+                {
+                  _id: user._id.toString(),
+                  uid: user.uid,
+                  email: user.email ?? '',
+                  full_name: user.full_name ?? '',
+                  gender: user.gender ?? 'MALE',
+                  address: user.address ?? '',
+                  longitude: user.location?.coordinates?.[0] ?? -1,
+                  latitude: user.location?.coordinates?.[1] ?? -1,
+                }
+            );
+            result.push(r);
           }
+
+          return result;
         },
         '[USERS]',
     );
@@ -57,9 +91,9 @@ export class Neo4jService {
     const transaction = session.beginTransaction();
 
     try {
-      await operation(transaction);
+      const result = await operation(transaction);
       await transaction.commit();
-      this.logger.debug(`${tag} success`);
+      this.logger.debug(`${tag} success ${JSON.stringify(result)}`);
     } catch (e) {
       await transaction.rollback();
       this.logger.debug(`${tag} error ${e}`);
