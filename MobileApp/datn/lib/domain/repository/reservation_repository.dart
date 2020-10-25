@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 import 'package:tuple/tuple.dart';
@@ -18,4 +20,11 @@ abstract class ReservationRepository {
     @required BuiltList<String> ticketIds,
     @required Promotion promotion,
   });
+
+  Stream<BuiltList<Reservation>> getReservation({
+    @required int page,
+    @required int perPage,
+  });
+
+  Stream<Uint8List> getQrCode(String id);
 }

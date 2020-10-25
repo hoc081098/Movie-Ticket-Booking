@@ -55,7 +55,7 @@ abstract class NotificationResponse_ReservationResponse
 
   String get phone_number;
 
-  BuiltList<ProductAndCountResponse> get products;
+  BuiltList<ProductIdAndQuantity> get products;
 
   int get total_price;
 

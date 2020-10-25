@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:rxdart/rxdart.dart';
@@ -14,17 +16,25 @@ import '../../utils/type_defs.dart';
 import '../local/user_local_source.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
+import '../remote/response/full_reservation_response.dart';
 import '../remote/response/reservation_response.dart';
 import '../serializers.dart';
 
 class ReservationRepositoryImpl implements ReservationRepository {
   final AuthClient _authClient;
   final UserLocalSource _userLocalSource;
+
   final Function1<ReservationResponse, Reservation>
       _reservationResponseToReservation;
+  final Function1<FullReservationResponse, Reservation>
+      _fullReservationResponseToReservation;
 
-  ReservationRepositoryImpl(this._authClient, this._userLocalSource,
-      this._reservationResponseToReservation);
+  ReservationRepositoryImpl(
+    this._authClient,
+    this._userLocalSource,
+    this._reservationResponseToReservation,
+    this._fullReservationResponseToReservation,
+  );
 
   @override
   Stream<Reservation> createReservation({
@@ -143,4 +153,38 @@ class ReservationRepositoryImpl implements ReservationRepository {
     assert(controller != null);
     return controller.stream;
   }
+
+  @override
+  Stream<BuiltList<Reservation>> getReservation({int page, int perPage}) {
+    final mapResult = (dynamic json) {
+      final responses = serializers.deserialize(
+        json,
+        specifiedType: builtListFullReservationResponse,
+      ) as BuiltList<FullReservationResponse>;
+
+      return [
+        for (final r in responses) _fullReservationResponseToReservation(r)
+      ].build();
+    };
+
+    return Rx.fromCallable(
+      () => _authClient.getBody(
+        buildUrl(
+          '/reservations',
+          {
+            'page': page.toString(),
+            'per_page': perPage.toString(),
+          },
+        ),
+      ),
+    ).map(mapResult);
+  }
+
+  @override
+  Stream<Uint8List> getQrCode(String id) => Rx.fromCallable(
+        () => _authClient
+            .get(buildUrl('/reservations/qrcode/$id'))
+            .then((value) => value.body.split('base64,')[1])
+            .then((value) => base64Decode(value)),
+      );
 }

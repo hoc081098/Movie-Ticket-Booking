@@ -37,6 +37,8 @@ import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
 import 'notifications/notifications_page.dart';
 import 'profile/profile_page.dart';
+import 'profile/reservation_detail/reservation_detail_page.dart';
+import 'profile/reservations/reservations_page.dart';
 
 class MainPage extends StatefulWidget {
   static const routeName = '/main';
@@ -155,6 +157,12 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       final args = settings.arguments;
       assert(args != null && args is User);
       return UpdateProfilePage(user: args);
+    },
+    ReservationsPage.routeName: (context, settings) => ReservationsPage(),
+    ReservationDetailPage.routeName: (context, settings) {
+      return ReservationDetailPage(
+        reservation: settings.arguments,
+      );
     },
   };
 

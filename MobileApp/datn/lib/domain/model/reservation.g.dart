@@ -6,6 +6,125 @@ part of 'reservation.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+class _$ProductAndQuantity extends ProductAndQuantity {
+  @override
+  final String id;
+  @override
+  final Product product;
+  @override
+  final int quantity;
+
+  factory _$ProductAndQuantity(
+          [void Function(ProductAndQuantityBuilder) updates]) =>
+      (new ProductAndQuantityBuilder()..update(updates)).build();
+
+  _$ProductAndQuantity._({this.id, this.product, this.quantity}) : super._() {
+    if (id == null) {
+      throw new BuiltValueNullFieldError('ProductAndQuantity', 'id');
+    }
+    if (quantity == null) {
+      throw new BuiltValueNullFieldError('ProductAndQuantity', 'quantity');
+    }
+  }
+
+  @override
+  ProductAndQuantity rebuild(
+          void Function(ProductAndQuantityBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  ProductAndQuantityBuilder toBuilder() =>
+      new ProductAndQuantityBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is ProductAndQuantity &&
+        id == other.id &&
+        product == other.product &&
+        quantity == other.quantity;
+  }
+
+  @override
+  int get hashCode {
+    return $jf(
+        $jc($jc($jc(0, id.hashCode), product.hashCode), quantity.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('ProductAndQuantity')
+          ..add('id', id)
+          ..add('product', product)
+          ..add('quantity', quantity))
+        .toString();
+  }
+}
+
+class ProductAndQuantityBuilder
+    implements Builder<ProductAndQuantity, ProductAndQuantityBuilder> {
+  _$ProductAndQuantity _$v;
+
+  String _id;
+  String get id => _$this._id;
+  set id(String id) => _$this._id = id;
+
+  ProductBuilder _product;
+  ProductBuilder get product => _$this._product ??= new ProductBuilder();
+  set product(ProductBuilder product) => _$this._product = product;
+
+  int _quantity;
+  int get quantity => _$this._quantity;
+  set quantity(int quantity) => _$this._quantity = quantity;
+
+  ProductAndQuantityBuilder();
+
+  ProductAndQuantityBuilder get _$this {
+    if (_$v != null) {
+      _id = _$v.id;
+      _product = _$v.product?.toBuilder();
+      _quantity = _$v.quantity;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(ProductAndQuantity other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$ProductAndQuantity;
+  }
+
+  @override
+  void update(void Function(ProductAndQuantityBuilder) updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$ProductAndQuantity build() {
+    _$ProductAndQuantity _$result;
+    try {
+      _$result = _$v ??
+          new _$ProductAndQuantity._(
+              id: id, product: _product?.build(), quantity: quantity);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'product';
+        _product?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'ProductAndQuantity', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
 class _$Reservation extends Reservation {
   @override
   final String id;
@@ -22,7 +141,7 @@ class _$Reservation extends Reservation {
   @override
   final String phoneNumber;
   @override
-  final BuiltList<Tuple2<String, int>> productIdWithCounts;
+  final BuiltList<ProductAndQuantity> productIdWithCounts;
   @override
   final String showTimeId;
   @override
@@ -33,6 +152,12 @@ class _$Reservation extends Reservation {
   final DateTime updatedAt;
   @override
   final User user;
+  @override
+  final BuiltList<Ticket> tickets;
+  @override
+  final String promotionId;
+  @override
+  final Promotion promotion;
 
   factory _$Reservation([void Function(ReservationBuilder) updates]) =>
       (new ReservationBuilder()..update(updates)).build();
@@ -50,7 +175,10 @@ class _$Reservation extends Reservation {
       this.showTime,
       this.totalPrice,
       this.updatedAt,
-      this.user})
+      this.user,
+      this.tickets,
+      this.promotionId,
+      this.promotion})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Reservation', 'id');
@@ -110,7 +238,10 @@ class _$Reservation extends Reservation {
         showTime == other.showTime &&
         totalPrice == other.totalPrice &&
         updatedAt == other.updatedAt &&
-        user == other.user;
+        user == other.user &&
+        tickets == other.tickets &&
+        promotionId == other.promotionId &&
+        promotion == other.promotion;
   }
 
   @override
@@ -126,19 +257,30 @@ class _$Reservation extends Reservation {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    createdAt.hashCode),
-                                                email.hashCode),
-                                            isActive.hashCode),
-                                        originalPrice.hashCode),
-                                    paymentIntentId.hashCode),
-                                phoneNumber.hashCode),
-                            productIdWithCounts.hashCode),
-                        showTimeId.hashCode),
-                    showTime.hashCode),
-                totalPrice.hashCode),
-            updatedAt.hashCode),
-        user.hashCode));
+                                                $jc(
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    0,
+                                                                    id
+                                                                        .hashCode),
+                                                                createdAt
+                                                                    .hashCode),
+                                                            email.hashCode),
+                                                        isActive.hashCode),
+                                                    originalPrice.hashCode),
+                                                paymentIntentId.hashCode),
+                                            phoneNumber.hashCode),
+                                        productIdWithCounts.hashCode),
+                                    showTimeId.hashCode),
+                                showTime.hashCode),
+                            totalPrice.hashCode),
+                        updatedAt.hashCode),
+                    user.hashCode),
+                tickets.hashCode),
+            promotionId.hashCode),
+        promotion.hashCode));
   }
 
   @override
@@ -156,7 +298,10 @@ class _$Reservation extends Reservation {
           ..add('showTime', showTime)
           ..add('totalPrice', totalPrice)
           ..add('updatedAt', updatedAt)
-          ..add('user', user))
+          ..add('user', user)
+          ..add('tickets', tickets)
+          ..add('promotionId', promotionId)
+          ..add('promotion', promotion))
         .toString();
   }
 }
@@ -193,11 +338,11 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
   String get phoneNumber => _$this._phoneNumber;
   set phoneNumber(String phoneNumber) => _$this._phoneNumber = phoneNumber;
 
-  ListBuilder<Tuple2<String, int>> _productIdWithCounts;
-  ListBuilder<Tuple2<String, int>> get productIdWithCounts =>
-      _$this._productIdWithCounts ??= new ListBuilder<Tuple2<String, int>>();
+  ListBuilder<ProductAndQuantity> _productIdWithCounts;
+  ListBuilder<ProductAndQuantity> get productIdWithCounts =>
+      _$this._productIdWithCounts ??= new ListBuilder<ProductAndQuantity>();
   set productIdWithCounts(
-          ListBuilder<Tuple2<String, int>> productIdWithCounts) =>
+          ListBuilder<ProductAndQuantity> productIdWithCounts) =>
       _$this._productIdWithCounts = productIdWithCounts;
 
   String _showTimeId;
@@ -220,6 +365,20 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
   UserBuilder get user => _$this._user ??= new UserBuilder();
   set user(UserBuilder user) => _$this._user = user;
 
+  ListBuilder<Ticket> _tickets;
+  ListBuilder<Ticket> get tickets =>
+      _$this._tickets ??= new ListBuilder<Ticket>();
+  set tickets(ListBuilder<Ticket> tickets) => _$this._tickets = tickets;
+
+  String _promotionId;
+  String get promotionId => _$this._promotionId;
+  set promotionId(String promotionId) => _$this._promotionId = promotionId;
+
+  PromotionBuilder _promotion;
+  PromotionBuilder get promotion =>
+      _$this._promotion ??= new PromotionBuilder();
+  set promotion(PromotionBuilder promotion) => _$this._promotion = promotion;
+
   ReservationBuilder();
 
   ReservationBuilder get _$this {
@@ -237,6 +396,9 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
       _totalPrice = _$v.totalPrice;
       _updatedAt = _$v.updatedAt;
       _user = _$v.user?.toBuilder();
+      _tickets = _$v.tickets?.toBuilder();
+      _promotionId = _$v.promotionId;
+      _promotion = _$v.promotion?.toBuilder();
       _$v = null;
     }
     return this;
@@ -273,7 +435,10 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
               showTime: _showTime?.build(),
               totalPrice: totalPrice,
               updatedAt: updatedAt,
-              user: _user?.build());
+              user: _user?.build(),
+              tickets: _tickets?.build(),
+              promotionId: promotionId,
+              promotion: _promotion?.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -285,6 +450,11 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
 
         _$failedField = 'user';
         _user?.build();
+        _$failedField = 'tickets';
+        _tickets?.build();
+
+        _$failedField = 'promotion';
+        _promotion?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Reservation', _$failedField, e.toString());

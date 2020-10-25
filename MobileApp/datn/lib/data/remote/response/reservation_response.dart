@@ -27,7 +27,7 @@ abstract class ReservationResponse
 
   String get phone_number;
 
-  BuiltList<ProductAndCountResponse> get products;
+  BuiltList<ProductIdAndQuantity> get products;
 
   ShowTimeFullResponse get show_time;
 
@@ -52,23 +52,23 @@ abstract class ReservationResponse
   Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
 }
 
-abstract class ProductAndCountResponse
-    implements Built<ProductAndCountResponse, ProductAndCountResponseBuilder> {
+abstract class ProductIdAndQuantity
+    implements Built<ProductIdAndQuantity, ProductIdAndQuantityBuilder> {
   String get id;
 
   int get quantity;
 
-  ProductAndCountResponse._();
+  ProductIdAndQuantity._();
 
-  factory ProductAndCountResponse(
-          [void Function(ProductAndCountResponseBuilder) updates]) =
-      _$ProductAndCountResponse;
+  factory ProductIdAndQuantity(
+          [void Function(ProductIdAndQuantityBuilder) updates]) =
+      _$ProductIdAndQuantity;
 
-  static Serializer<ProductAndCountResponse> get serializer =>
-      _$productAndCountResponseSerializer;
+  static Serializer<ProductIdAndQuantity> get serializer =>
+      _$productIdAndQuantitySerializer;
 
-  factory ProductAndCountResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<ProductAndCountResponse>(serializer, json);
+  factory ProductIdAndQuantity.fromJson(Map<String, dynamic> json) =>
+      serializers.deserializeWith<ProductIdAndQuantity>(serializer, json);
 
   Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
 }

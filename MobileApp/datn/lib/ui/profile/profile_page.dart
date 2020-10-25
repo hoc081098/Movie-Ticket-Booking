@@ -14,6 +14,7 @@ import '../../utils/optional.dart';
 import '../../utils/snackbar.dart';
 import '../app_scaffold.dart';
 import '../login_update_profile/login_update_profile_page.dart';
+import 'reservations/reservations_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -50,6 +51,12 @@ class _ProfilePageState extends State<ProfilePage> {
             (user) => LoggedIn(user),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () =>
+            AppScaffold.of(context).pushNamed(ReservationsPage.routeName),
+        label: Text('Tickets'),
+        icon: FaIcon(FontAwesomeIcons.ticketAlt),
       ),
     );
   }
@@ -99,6 +106,8 @@ class LoggedIn extends StatelessWidget {
     TextStyle detailInfoStyle,
     Color accentColor,
   ) {
+    final density = VisualDensity.compact;
+
     return Positioned.fill(
       top: height + imageSize / 2 - 16,
       left: 0,
@@ -117,6 +126,7 @@ class LoggedIn extends StatelessWidget {
               style: detailInfoStyle,
             ),
             dense: true,
+            visualDensity: density,
             leading: Icon(
               Icons.email,
               color: accentColor,
@@ -133,6 +143,7 @@ class LoggedIn extends StatelessWidget {
               style: detailInfoStyle,
             ),
             dense: true,
+            visualDensity: density,
             leading: Icon(
               Icons.person,
               color: accentColor,
@@ -150,6 +161,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailInfoStyle,
               ),
               dense: true,
+              visualDensity: density,
               leading: Icon(
                 Icons.phone,
                 color: accentColor,
@@ -167,6 +179,7 @@ class LoggedIn extends StatelessWidget {
               style: detailInfoStyle,
             ),
             dense: true,
+            visualDensity: density,
             leading: FaIcon(
               () {
                 switch (user.gender) {
@@ -191,6 +204,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailInfoStyle,
               ),
               dense: true,
+              visualDensity: density,
               leading: FaIcon(
                 FontAwesomeIcons.addressCard,
                 color: accentColor,
@@ -209,6 +223,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailInfoStyle,
               ),
               dense: true,
+              visualDensity: density,
               leading: FaIcon(
                 FontAwesomeIcons.birthdayCake,
                 color: accentColor,

@@ -13,7 +13,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Product } from '../products/product.schema';
 import { Ticket } from '../seats/ticket.schema';
-import { checkCompletedLogin } from '../common/utils';
+import { checkCompletedLogin, getSkipLimit } from '../common/utils';
 import { Seat } from '../seats/seat.schema';
 import { Stripe } from 'stripe';
 import { AppGateway } from '../socket/app.gateway';
@@ -25,6 +25,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { ShowTime } from '../show-times/show-time.schema';
 import { Movie } from '../movies/movie.schema';
 import { generateQRCode } from '../common/qrcode';
+import { PaginationDto } from '../common/pagination.dto';
 
 export type CreatedReservation =
     Omit<Reservation, 'show_time'>
@@ -179,6 +180,10 @@ export class ReservationsService {
         user: user._id,
         payment_intent_id: paymentIntent.id,
       };
+      if (promotion) {
+        doc.promotion_id = promotion._id;
+      }
+
       let reservation = await this.reservationModel.create(
           [doc],
           { session },
@@ -280,5 +285,134 @@ export class ReservationsService {
     }
 
     return { total_price: Math.ceil(total_price), promotion };
+  }
+
+  async getReservations(userPayload: UserPayload, dto: PaginationDto) {
+    const { _id } = checkCompletedLogin(userPayload);
+    const { skip, limit } = getSkipLimit(dto);
+
+    const results = await this.reservationModel.aggregate([
+      { $match: { user: new Types.ObjectId(_id) } },
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: 'show_times',
+          localField: 'show_time',
+          foreignField: '_id',
+          as: 'show_time',
+        }
+      },
+      { $unwind: '$show_time' },
+      {
+        $lookup: {
+          from: 'movies',
+          localField: 'show_time.movie',
+          foreignField: '_id',
+          as: 'show_time.movie',
+        }
+      },
+      { $unwind: '$show_time.movie' },
+      {
+        $lookup: {
+          from: 'theatres',
+          localField: 'show_time.theatre',
+          foreignField: '_id',
+          as: 'show_time.theatre',
+        }
+      },
+      { $unwind: '$show_time.theatre' },
+      {
+        $lookup: {
+          from: 'promotions',
+          localField: 'promotion_id',
+          foreignField: '_id',
+          as: 'promotion_id',
+        }
+      },
+      {
+        $unwind: {
+          path: '$promotion_id',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'products.id',
+          foreignField: '_id',
+          as: 'product_objects',
+        }
+      },
+      {
+        $lookup: {
+          from: 'tickets',
+          localField: '_id',
+          foreignField: 'reservation',
+          as: 'tickets',
+        }
+      },
+      {
+        $lookup: {
+          from: 'seats',
+          localField: 'tickets.seat',
+          foreignField: '_id',
+          as: 'seats',
+        },
+      },
+    ]).exec();
+
+    return results.map(item => {
+
+      item.products = item.product_objects?.map(prodObj => {
+        return {
+          product_id: prodObj,
+          quantity: item.products.find(p => p.id.toHexString() === prodObj._id.toHexString()).quantity,
+        };
+      }) ?? [];
+      delete item.product_objects;
+
+      item.tickets = item.tickets?.map(ticket => {
+        ticket.seat = item.seats.find(s => s._id.toHexString() === ticket.seat.toHexString());
+        return ticket;
+      }) ?? [];
+      delete item.seats;
+
+      return item;
+    });
+
+    // return await this.reservationModel
+    //     .find({ user: _id })
+    //     .sort({ createdAt: -1 })
+    //     .skip(skip)
+    //     .limit(limit)
+    //     .populate({
+    //       path: 'show_time',
+    //       populate: [
+    //         { path: 'movie' },
+    //         { path: 'theatre' },
+    //       ],
+    //     })
+    //     .populate({
+    //       path: 'products',
+    //       populate: 'id'
+    //     })
+    //     .populate('promotion_id')
+    //     .exec();
+  }
+
+  async getQrCode(id: string, userPayload: UserPayload): Promise<string> {
+    const reservation = await this.reservationModel.findById(id).populate('show_time');
+    const tickets = await this.ticketModel.find({ reservation: reservation._id });
+
+    return generateQRCode(
+        {
+          reservation_id: reservation._id.toHexString(),
+          show_time_id: reservation.show_time._id.toHexString(),
+          ticket_ids: tickets.map(t => t._id.toHexString()),
+          user_id: checkCompletedLogin(userPayload)._id.toHexString(),
+        }
+    )
   }
 }

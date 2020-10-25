@@ -11,6 +11,7 @@ Serializers _$_serializers = (new Serializers().toBuilder()
       ..add(CommentResponse.serializer)
       ..add(CommentsResponse.serializer)
       ..add(FavoriteResponse.serializer)
+      ..add(FullReservationResponse.serializer)
       ..add(LocationLocal.serializer)
       ..add(LocationResponse.serializer)
       ..add(MovieDetailResponse.serializer)
@@ -19,7 +20,8 @@ Serializers _$_serializers = (new Serializers().toBuilder()
       ..add(NotificationResponse.serializer)
       ..add(NotificationResponse_ReservationResponse.serializer)
       ..add(PersonResponse.serializer)
-      ..add(ProductAndCountResponse.serializer)
+      ..add(ProductAndQuantityResponse.serializer)
+      ..add(ProductIdAndQuantity.serializer)
       ..add(ProductResponse.serializer)
       ..add(PromotionResponse.serializer)
       ..add(ReservationResponse.serializer)
@@ -46,12 +48,19 @@ Serializers _$_serializers = (new Serializers().toBuilder()
           () => new ListBuilder<CategoryResponse>())
       ..addBuilderFactory(
           const FullType(
-              BuiltList, const [const FullType(ProductAndCountResponse)]),
-          () => new ListBuilder<ProductAndCountResponse>())
+              BuiltList, const [const FullType(ProductAndQuantityResponse)]),
+          () => new ListBuilder<ProductAndQuantityResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(TicketResponse)]),
+          () => new ListBuilder<TicketResponse>())
       ..addBuilderFactory(
           const FullType(
-              BuiltList, const [const FullType(ProductAndCountResponse)]),
-          () => new ListBuilder<ProductAndCountResponse>())
+              BuiltList, const [const FullType(ProductIdAndQuantity)]),
+          () => new ListBuilder<ProductIdAndQuantity>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(ProductIdAndQuantity)]),
+          () => new ListBuilder<ProductIdAndQuantity>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

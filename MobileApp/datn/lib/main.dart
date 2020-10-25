@@ -44,7 +44,7 @@ void main() async {
   //
   // Env
   //
-  await EnvManager.shared.config(EnvPath.DEV);
+  await EnvManager.shared.config(EnvPath.PROD);
 
   //
   // Firebase, Google, Facebook
@@ -133,6 +133,7 @@ void main() async {
     authClient,
     userLocalSource,
     mappers.reservationResponseToReservation,
+    mappers.fullReservationResponseToReservation,
   );
 
   final favoritesRepository = FavoritesRepositoryImpl(
