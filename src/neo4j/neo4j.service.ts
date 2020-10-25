@@ -44,10 +44,8 @@ export class Neo4jService {
     const users = await this.userModel.find({}).lean();
     await this.runTransaction(
         async txc => {
-          const result = [];
-
           for (const user of users) {
-            const r = await txc.run(
+            await txc.run(
                 `
                     MERGE(user: USER { _id: $_id })
                     ON CREATE SET
@@ -77,10 +75,7 @@ export class Neo4jService {
                   latitude: user.location?.coordinates?.[1] ?? -1,
                 }
             );
-            result.push(r);
           }
-
-          return result;
         },
         '[USERS]',
     );
