@@ -14,14 +14,18 @@ export class Neo4jService {
       configService: ConfigService,
       @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {
-    this.driver = driver(
-        configService.get(ConfigKey.NEO4J_URL),
-        auth.basic(
-            configService.get(ConfigKey.NEO4J_USER),
-            configService.get(ConfigKey.NEO4J_PASSWORD),
-        )
-    );
-    this.logger.debug(`Done ${this.driver}`);
+    try {
+      this.driver = driver(
+          configService.get(ConfigKey.NEO4J_URL),
+          auth.basic(
+              configService.get(ConfigKey.NEO4J_USER),
+              configService.get(ConfigKey.NEO4J_PASSWORD),
+          )
+      );
+      this.logger.debug(`Done ${this.driver}`);
+    } catch (e) {
+      this.logger.debug(`Error ${e}`);
+    }
   }
 
   async transferData(): Promise<void> {
