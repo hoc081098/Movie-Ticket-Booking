@@ -401,4 +401,18 @@ export class ReservationsService {
     //     .populate('promotion_id')
     //     .exec();
   }
+
+  async getQrCode(id: string, userPayload: UserPayload): Promise<string> {
+    const reservation = await this.reservationModel.findById(id).populate('show_time');
+    const tickets = await this.ticketModel.find({ reservation: reservation._id });
+
+    return generateQRCode(
+        {
+          reservation_id: reservation._id.toHexString(),
+          show_time_id: reservation.show_time._id.toHexString(),
+          ticket_ids: tickets.map(t => t._id.toHexString()),
+          user_id: checkCompletedLogin(userPayload)._id.toHexString(),
+        }
+    )
+  }
 }

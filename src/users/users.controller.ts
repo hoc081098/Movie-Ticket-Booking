@@ -96,7 +96,12 @@ export class UsersController {
   blockUser(
       @Param('uid') uid: string,
   ): Promise<User> {
-    return this.usersService.blockUser(uid);
+    try {
+      this.logger.debug(`Block ${uid}`);
+      return this.usersService.blockUser(uid);
+    } catch (e) {
+      this.logger.debug(`Error: ${e}`);
+    }
   }
 
   @ForAdmin()
