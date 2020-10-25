@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:rxdart/rxdart.dart';
@@ -179,9 +181,10 @@ class ReservationRepositoryImpl implements ReservationRepository {
   }
 
   @override
-  Stream<String> getQrCode(String id) => Rx.fromCallable(
+  Stream<Uint8List> getQrCode(String id) => Rx.fromCallable(
         () => _authClient
-            .get(buildUrl('/reservations/qrcode/$id}'))
-            .then((value) => value.body),
+            .get(buildUrl('/reservations/qrcode/$id'))
+            .then((value) => value.body.split('base64,')[1])
+            .then((value) => base64Decode(value)),
       );
 }

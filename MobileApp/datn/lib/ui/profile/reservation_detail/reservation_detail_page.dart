@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:datn/ui/widgets/error_widget.dart';
 import 'package:datn/utils/error.dart';
@@ -211,8 +213,8 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
                 const SizedBox(height: 16),
                 const MySeparator(),
                 const SizedBox(height: 16),
-                LoaderWidget<String>(
-                  blocProvider: () => LoaderBloc<String>(
+                LoaderWidget<Uint8List>(
+                  blocProvider: () => LoaderBloc<Uint8List>(
                     loaderFunction: () => repo.getQrCode(reservation.id),
                     enableLogger: true,
                   ),
@@ -231,7 +233,7 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
                       );
                     }
 
-                    if (state.error) {
+                    if (state.error != null) {
                       return Center(
                         child: Container(
                           width: 200,
@@ -247,11 +249,14 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
                       );
                     }
 
+                    final size =
+                        MediaQuery.of(context).size.width - 24 * 2 - 16 * 2;
+
                     return Center(
-                      child: Container(
-                        width: 200,
-                        height: 200,
-                        child: Text(state.content),
+                      child: Image.memory(
+                        state.content,
+                        width: size,
+                        height: size,
                       ),
                     );
                   },
