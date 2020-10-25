@@ -1,7 +1,7 @@
 import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_admin/ui/users/manage_user_state.dart';
+import 'manage_user_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/user.dart';
@@ -39,35 +39,36 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
       removingUserIds
     ];
 
+    final removeUserStream = removeUserController.stream
+        .where((user) => !removingUserIds.value.contains(user.uid))
+        .flatMap((user) => Rx.defer(() async* {
+              removingUserIds.add([...removingUserIds.value, user.uid]);
+              final result = await managerRepository.deleteUser(user);
+              yield result;
+              removingUserIds.add(removingUserIds.value..remove(user.uid));
+            }).doOnError(() =>
+                removingUserIds.add(removingUserIds.value..remove(user.uid))))
+        .share();
+
     final renderListStream = Rx.merge<ManageUserState>([
       getUsersController.stream
           .where((_) => isLoadingController.value == false)
           .flatMap((currentLength) => Rx.defer(
-            () async* {
-          isLoadingController.add(true);
-          final page = currentLength ~/ 10 + 1;
-          final result = await managerRepository.loadUser(page);
-          yield result;
-          isLoadingController.add(false);
-        },
-      ).doOnError(() => isLoadingController.add(false)))
+                () async* {
+                  isLoadingController.add(true);
+                  final page = currentLength ~/ 10 + 1;
+                  final result = await managerRepository.loadUser(page);
+                  yield result;
+                  isLoadingController.add(false);
+                },
+              ).doOnError(() => isLoadingController.add(false)))
           .map((users) => LoadUserSuccess(users: users)),
       isLoadingController.stream
           .where((event) => event)
-          .map((_) => LoadingUsersState())
+          .map((_) => LoadingUsersState()),
+      removeUserStream.map((_) => DeleteUserSuccess())
     ]).share();
 
-    final removeUserStream = removeUserController.stream
-        .where((user) => !removingUserIds.value.contains(user.uid))
-        .flatMap((user) => Rx.defer(() async* {
-      removingUserIds.add([...removingUserIds.value, user.uid]);
-      final result = await managerRepository.deleteUser(user);
-      yield result;
-      removingUserIds.add(removingUserIds.value..remove(user.uid));
-    }).doOnError(() =>
-        removingUserIds.add(removingUserIds.value..remove(user.uid))))
-        .share();
-    removeUserStream.listen((event) {});
 
     final subscriptions = [renderListStream, removeUserStream];
 

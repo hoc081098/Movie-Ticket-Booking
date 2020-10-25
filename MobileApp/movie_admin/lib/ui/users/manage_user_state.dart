@@ -15,6 +15,14 @@ class LoadUserSuccess extends ManageUserState {
 
 class LoadingUsersState extends ManageUserState {}
 
-class DeleteUserSuccess extends ManageUserState {}
+class DeleteUserSuccess extends ManageUserState {
+  final String idUserDelete;
+
+  DeleteUserSuccess._(this.idUserDelete);
+
+  factory DeleteUserSuccess({@required String idUserDelete}){
+    return DeleteUserSuccess._(idUserDelete);
+  }
+}
 
 class DeletingUserState extends ManageUserState {}

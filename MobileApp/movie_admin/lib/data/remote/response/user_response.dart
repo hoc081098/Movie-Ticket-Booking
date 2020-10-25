@@ -7,7 +7,7 @@ class LocationResponse {
 
   factory LocationResponse.fromJson(Map map) {
     final list = map['coordinates'] as List;
-    if (list == null) {
+    if (list == null || list.isEmpty) {
       return LocationResponse._([]);
     }
 
@@ -72,7 +72,9 @@ class UserResponse {
       birthday: map['birthday'] != null
           ? DateTime.parse(map['birthday']).toLocal()
           : null,
-      location: LocationResponse.fromJson(map['location']),
+      location: map['location'] != null
+          ? LocationResponse.fromJson(map['location'])
+          : null,
       is_completed: map['is_completed'],
       is_active: map['is_active'],
     );

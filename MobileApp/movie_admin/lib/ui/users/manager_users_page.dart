@@ -95,6 +95,10 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
             );
             print(data.users.map((e) => e.uid).toString());
           }
+          if (snapShort.data is DeleteUserSuccess) {
+            final data = snapShort.data as DeleteUserSuccess;
+            _listUsers.removeWhere((e) => e.uid == data.idUserDelete);
+          }
           return Expanded(
             child: ListView.builder(
               controller: _listUserController,
@@ -137,45 +141,46 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
   Widget _buildItemUserByIndex(User user) {
     return user.uid == null
         ? Text('Error')
-        : Slidable.builder(
-            key: Key(user.uid),
-            controller: _slidableController,
-            dismissal: SlidableDismissal(
-              child: SlidableDrawerDismissal(),
-              closeOnCanceled: true,
-              onWillDismiss: (action) async {
-                final isDismiss = await _showDialogConfirm();
-                if (isDismiss) _bloc.removeUser(user);
-                return isDismiss;
-              },
-              onDismissed: (actionType) {
-                if (actionType == SlideActionType.primary) return;
-                _showSnackBar(context, 'Delete user ${user.fullName}');
-                _bloc.removeUser(user);
-              },
-            ),
-            actionPane: SlidableScrollActionPane(),
-            actionExtentRatio: 0.2,
-            child: UserItemWidget(user),
-            secondaryActionDelegate: SlideActionBuilderDelegate(
-              actionCount: 1,
-              builder: (context, index, animation, renderingMode) {
-                return StreamBuilder<List<String>>(
-                    stream: _bloc.renderItemRemove$,
-                    builder: (context, snapShort) {
-                      return snapShort.data?.contains(user.uid) ?? false
-                          ? CircularProgressIndicator()
-                          : IconSlideAction(
-                              caption: 'Delete',
-                              color: Colors.red,
-                              icon: Icons.delete,
-                              onTap: () {
-                                _bloc.removeUser(user);
-                              },
-                            );
-                    });
-              },
-            ),
+        : StreamBuilder<List<String>>(
+            stream: _bloc.renderItemRemove$,
+            builder: (context, snapShort) {
+              return Slidable.builder(
+                key: Key(user.uid),
+                controller: _slidableController,
+                dismissal: SlidableDismissal(
+                  child: SlidableDrawerDismissal(),
+                  closeOnCanceled: true,
+                  onWillDismiss: (action) async {
+                    final isDismiss = await _showDialogConfirm();
+                    if (isDismiss) _bloc.removeUser(user);
+                    return isDismiss;
+                  },
+                  onDismissed: (actionType) {
+                    if (actionType == SlideActionType.primary) return;
+                    _showSnackBar(context, 'Delete user ${user.fullName}');
+                    _bloc.removeUser(user);
+                  },
+                ),
+                actionPane: SlidableScrollActionPane(),
+                actionExtentRatio: 0.2,
+                child: UserItemWidget(user),
+                secondaryActionDelegate: SlideActionBuilderDelegate(
+                  actionCount: 1,
+                  builder: (context, index, animation, renderingMode) {
+                    return snapShort.data?.contains(user.uid) ?? false
+                        ? CircularProgressIndicator()
+                        : IconSlideAction(
+                            caption: 'Delete',
+                            color: Colors.red,
+                            icon: Icons.delete,
+                            onTap: () {
+                              _bloc.removeUser(user);
+                            },
+                          );
+                  },
+                ),
+              );
+            },
           );
   }
 
