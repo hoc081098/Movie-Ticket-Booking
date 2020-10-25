@@ -137,6 +137,16 @@ export class AdminUsersController {
   @ForAdmin()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
+  @Put('to_user_role/:uid')
+  toUserRole(
+      @Param('uid') uid: string,
+  ): Promise<User> {
+    return this.usersService.toUserRole(uid);
+  }
+
+  @ForAdmin()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN')
   @Put('to_staff_role/:uid')
   toStaffRole(
       @Param('uid') uid: string,
