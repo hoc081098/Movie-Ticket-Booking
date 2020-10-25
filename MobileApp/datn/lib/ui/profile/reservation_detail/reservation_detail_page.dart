@@ -1,10 +1,15 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/domain/model/ticket.dart';
+import 'package:datn/ui/widgets/error_widget.dart';
+import 'package:datn/utils/error.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:stream_loader/stream_loader.dart';
 
 import '../../../domain/model/reservation.dart';
+import '../../../domain/model/ticket.dart';
+import '../../../domain/repository/reservation_repository.dart';
 
 class ReservationDetailPage extends StatefulWidget {
   static const routeName = '/profile/reservations/detail';
@@ -40,6 +45,8 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
           color: Colors.white,
         );
 
+    final repo = Provider.of<ReservationRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('My ticket'),
@@ -62,145 +69,195 @@ class _ReservationDetailPageState extends State<ReservationDetailPage> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(6),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  Spacer(),
-                  Text(
-                    'Tickets',
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Spacer(),
+                    Text(
+                      'Tickets',
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            color: const Color(0xff687189),
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        border: Border.all(
                           color: const Color(0xff687189),
-                          fontWeight: FontWeight.w500,
+                          width: 1.5,
                         ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    width: 28,
-                    height: 28,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3),
-                      border: Border.all(
+                      ),
+                      child: Center(
+                        child: Text(
+                          (reservation.tickets?.length ?? 0).toString(),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                color: const Color(0xff687189),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  'Title',
+                  style: Theme.of(context).textTheme.subtitle1.copyWith(
+                        fontSize: 15,
                         color: const Color(0xff687189),
-                        width: 1.5,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        (reservation.tickets?.length ?? 0).toString(),
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: const Color(0xff687189),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
+                ),
+                Text(
+                  movie.title,
+                  style: Theme.of(context).textTheme.headline4.copyWith(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff687189),
                       ),
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: InfoWidget(
+                        title: 'Date',
+                        subtitle: dateFormat.format(showTime.start_time),
+                      ),
+                      flex: 3,
                     ),
-                  ),
-                ],
-              ),
-              Text(
-                'Title',
-                style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontSize: 15,
-                      color: const Color(0xff687189),
-                      fontWeight: FontWeight.w500,
+                    const SizedBox(width: 2),
+                    Expanded(
+                      child: InfoWidget(
+                        title: 'Time',
+                        subtitle: timeFormat.format(showTime.start_time),
+                      ),
+                      flex: 3,
                     ),
-              ),
-              Text(
-                movie.title,
-                style: Theme.of(context).textTheme.headline4.copyWith(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xff687189),
+                    const SizedBox(width: 2),
+                    Expanded(
+                      child: InfoWidget(
+                        title: 'Room',
+                        subtitle: showTime.room,
+                      ),
+                      flex: 2,
                     ),
-              ),
-              const Divider(),
-              Row(
-                children: [
-                  Expanded(
-                    child: InfoWidget(
-                      title: 'Date',
-                      subtitle: dateFormat.format(showTime.start_time),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: InfoWidget(
+                        title: 'Theatre',
+                        subtitle: theatre.name,
+                      ),
+                      flex: 3,
                     ),
-                    flex: 3,
-                  ),
-                  const SizedBox(width: 2),
-                  Expanded(
-                    child: InfoWidget(
-                      title: 'Time',
-                      subtitle: timeFormat.format(showTime.start_time),
+                    const SizedBox(width: 2),
+                    Expanded(
+                      child: InfoWidget(
+                        title: 'Address',
+                        subtitle: theatre.address,
+                      ),
+                      flex: 5,
                     ),
-                    flex: 3,
-                  ),
-                  const SizedBox(width: 2),
-                  Expanded(
-                    child: InfoWidget(
-                      title: 'Room',
-                      subtitle: showTime.room,
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: InfoWidget(
+                        title: 'Order ID',
+                        subtitle: '#${reservation.id}',
+                      ),
+                      flex: 1,
                     ),
-                    flex: 2,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: InfoWidget(
-                      title: 'Theatre',
-                      subtitle: theatre.name,
-                    ),
-                    flex: 3,
-                  ),
-                  const SizedBox(width: 2),
-                  Expanded(
-                    child: InfoWidget(
-                      title: 'Address',
-                      subtitle: theatre.address,
-                    ),
-                    flex: 5,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: InfoWidget(
-                      title: 'Order ID',
-                      subtitle: '#${reservation.id}',
-                    ),
-                    flex: 1,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Wrap(
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 4,
-                runSpacing: 4,
-                children: tickets.map((t) {
-                  final seat = t.seat;
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: tickets.map((t) {
+                    final seat = t.seat;
 
-                  return Container(
-                    width: seatSize,
-                    height: seatSize,
-                    decoration: BoxDecoration(
-                      color: accentColor,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '${seat.row}${seat.column}',
-                        style: seatStyle,
+                    return Container(
+                      width: seatSize,
+                      height: seatSize,
+                      decoration: BoxDecoration(
+                        color: accentColor,
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    ),
-                  );
-                }).toList(growable: false),
-              ),
-            ],
+                      child: Center(
+                        child: Text(
+                          '${seat.row}${seat.column}',
+                          style: seatStyle,
+                        ),
+                      ),
+                    );
+                  }).toList(growable: false),
+                ),
+                const SizedBox(height: 16),
+                const MySeparator(),
+                const SizedBox(height: 16),
+                LoaderWidget<String>(
+                  blocProvider: () => LoaderBloc<String>(
+                    loaderFunction: () => repo.getQrCode(reservation.id),
+                    enableLogger: true,
+                  ),
+                  builder: (context, state, bloc) {
+                    if (state.isLoading) {
+                      return Center(
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+
+                    if (state.error) {
+                      return Center(
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          child: Center(
+                            child: MyErrorWidget(
+                              errorText:
+                                  'Error: ${getErrorMessage(state.error)}',
+                              onPressed: bloc.fetch,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+
+                    return Center(
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        child: Text(state.content),
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -243,6 +300,38 @@ class InfoWidget extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
       ],
+    );
+  }
+}
+
+class MySeparator extends StatelessWidget {
+  final double height;
+  final Color color;
+
+  const MySeparator({this.height = 1, this.color = const Color(0xff695DCC)});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final boxWidth = constraints.constrainWidth();
+        final dashWidth = 4.0;
+        final dashHeight = height;
+        final dashCount = (boxWidth / (2 * dashWidth)).floor();
+        return Flex(
+          children: List.generate(dashCount, (_) {
+            return SizedBox(
+              width: dashWidth,
+              height: dashHeight,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: color),
+              ),
+            );
+          }),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          direction: Axis.horizontal,
+        );
+      },
     );
   }
 }

@@ -23,4 +23,6 @@ abstract class ReservationRepository {
     @required int page,
     @required int perPage,
   });
+
+  Stream<String> getQrCode(String id);
 }

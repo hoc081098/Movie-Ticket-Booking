@@ -177,4 +177,11 @@ class ReservationRepositoryImpl implements ReservationRepository {
       ),
     ).map(mapResult);
   }
+
+  @override
+  Stream<String> getQrCode(String id) => Rx.fromCallable(
+        () => _authClient
+            .get(buildUrl('/reservations/qrcode/$id}'))
+            .then((value) => value.body),
+      );
 }
