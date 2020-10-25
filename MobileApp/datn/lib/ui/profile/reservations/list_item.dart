@@ -1,5 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/ui/profile/reservation_detail/reservation_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -7,6 +6,7 @@ import '../../../domain/model/reservation.dart';
 import '../../../domain/model/ticket.dart';
 import '../../app_scaffold.dart';
 import '../../home/checkout/widgets/header.dart';
+import '../reservation_detail/reservation_detail_page.dart';
 
 class ReservationListItem extends StatelessWidget {
   final Reservation item;

@@ -306,10 +306,8 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
           'Checkout successfully. Please check email to get ticket');
       await delay(700);
 
-      if (AppScaffold.index(context) == 0) {
-        AppScaffold.of(context)
-            .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
-      }
+      AppScaffold.ofIndex(context, 0)
+          .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
     }
     if (message is CheckoutFailure) {
       scaffoldKey

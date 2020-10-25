@@ -222,10 +222,8 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               onPressed: () {
                 Navigator.of(dialogContext).pop();
 
-                if (AppScaffold.index(context) == 0) {
-                  AppScaffold.of(context)
-                      .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
-                }
+                AppScaffold.ofIndex(context, 0)
+                    .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
               },
             ),
           ],
@@ -491,10 +489,8 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
 
-                    if (AppScaffold.index(context) == 0) {
-                      AppScaffold.of(context)
-                          .popUntil(ModalRoute.withName(TicketsPage.routeName));
-                    }
+                    AppScaffold.ofIndex(context, 0)
+                        .popUntil(ModalRoute.withName(TicketsPage.routeName));
                   },
                 ),
               ],
