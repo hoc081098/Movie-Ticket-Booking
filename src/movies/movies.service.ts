@@ -19,17 +19,29 @@ export class MoviesService {
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
   ) {}
 
-  getAll(dto: PaginationDto): Promise<Movie[]> {
+  async getAll(dto: PaginationDto): Promise<Movie[]> {
     const { skip, limit } = getSkipLimit(dto);
 
-    return this.movieModel
-        .find({})
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .populate('actors')
-        .populate('directors')
-        .exec();
+    const movies: (Movie & { categories: { category_id: Category }[] })[] = (
+        await this.movieModel
+            .find({})
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .populate({
+              path: 'categories',
+              populate: { path: 'category_id' },
+            })
+            .populate('actors')
+            .populate('directors')
+    ).map(m => m.toJSON()) as any;
+
+    return movies.map(m => {
+      return {
+        ...m,
+        categories: m.categories.map(c => c.category_id),
+      } as any;
+    });
   }
 
   getNowShowingMovies(center: [number, number] | null, paginationDto: PaginationDto): Promise<Movie[]> {
