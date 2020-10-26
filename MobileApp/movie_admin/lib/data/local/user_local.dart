@@ -46,6 +46,8 @@ class UserLocal {
 
   final bool is_active;
 
+  final String role;
+
   UserLocal({
     @required this.uid,
     @required this.email,
@@ -58,26 +60,27 @@ class UserLocal {
     @required this.location,
     @required this.is_completed,
     @required this.is_active,
+    @required this.role,
   });
 
   factory UserLocal.fromJson(Map<String, dynamic> map) {
     return UserLocal(
-      uid: map['uid'],
-      email: map['email'],
-      phone_number: map['phone_number'],
-      full_name: map['full_name'],
-      gender: map['gender'],
-      avatar: map['avatar'],
-      address: map['address'],
-      birthday: map['birthday'] == null
-          ? null
-          : DateTime.parse(map['birthday']).toLocal(),
-      location: map['location'] == null
-          ? null
-          : LocationLocal.fromJson(map['location']),
-      is_completed: map['is_completed'],
-      is_active: map['is_active'],
-    );
+        uid: map['uid'],
+        email: map['email'],
+        phone_number: map['phone_number'],
+        full_name: map['full_name'],
+        gender: map['gender'],
+        avatar: map['avatar'],
+        address: map['address'],
+        birthday: map['birthday'] == null
+            ? null
+            : DateTime.parse(map['birthday']).toLocal(),
+        location: map['location'] == null
+            ? null
+            : LocationLocal.fromJson(map['location']),
+        is_completed: map['is_completed'],
+        is_active: map['is_active'],
+        role: map['role']);
   }
 
   Map<String, dynamic> toJson() {
@@ -93,6 +96,7 @@ class UserLocal {
       'location': location?.toJson(),
       'is_completed': is_completed,
       'is_active': is_active,
+      'role': role
     };
   }
 }

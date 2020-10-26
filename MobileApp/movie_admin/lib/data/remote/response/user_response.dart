@@ -46,6 +46,8 @@ class UserResponse {
 
   final bool is_active;
 
+  final String role;
+
   UserResponse({
     @required this.uid,
     @required this.email,
@@ -58,6 +60,7 @@ class UserResponse {
     @required this.location,
     @required this.is_completed,
     @required this.is_active,
+    @required this.role,
   });
 
   factory UserResponse.fromJson(Map map) {
@@ -77,6 +80,7 @@ class UserResponse {
           : null,
       is_completed: map['is_completed'],
       is_active: map['is_active'],
+      role: map['role'],
     );
   }
 }

@@ -8,4 +8,6 @@ abstract class ManagerRepository {
   Future<User> blockUser(User user);
 
   Future<User> unblockUser(User user);
+
+  Future<User> changeRoleUser(User user);
 }

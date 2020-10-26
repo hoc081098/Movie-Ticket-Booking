@@ -43,32 +43,50 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
 
     final removeUserStream = removeUserController.stream
         .where((entry) => !removingUserIds.value.containsKey(entry.key.uid))
-        .flatMap((entry) => Rx.defer(
-              () async* {
-                final user = entry.key;
-                final type = entry.value;
-                User result;
-                if (type == DestroyUserType.REMOVE) {
-                  removingUserIds.add(removingUserIds.value
-                    ..addAll({user.uid: DestroyUserType.REMOVE}));
-                  result = await managerRepository.deleteUser(user);
-                } else if (type == DestroyUserType.BLOCK) {
-                  removingUserIds.add(removingUserIds.value
-                    ..addAll({user.uid: DestroyUserType.BLOCK}));
-                  result = await managerRepository.blockUser(user);
-                } else if (type == DestroyUserType.UNBLOCK) {
-                  removingUserIds.add(removingUserIds.value
-                    ..addAll({user.uid: DestroyUserType.UNBLOCK}));
-                  result = await managerRepository.unblockUser(user);
-                }
-                print(result.toString() + type.toString());
-                yield MapEntry(result, type);
-                removingUserIds.add(removingUserIds.value..remove(user.uid));
-              },
-            ).doOnError(
-              () => removingUserIds
-                  .add(removingUserIds.value..remove(entry.key.uid)),
-            ));
+        .flatMap(
+          (entry) => Rx.defer(
+            () async* {
+              final user = entry.key;
+              final type = entry.value;
+              User result;
+              switch (type) {
+                case DestroyUserType.REMOVE:
+                  {
+                    removingUserIds.add(removingUserIds.value
+                      ..addAll({user.uid: DestroyUserType.REMOVE}));
+                    result = await managerRepository.deleteUser(user);
+                    break;
+                  }
+                case DestroyUserType.BLOCK:
+                  {
+                    removingUserIds.add(removingUserIds.value
+                      ..addAll({user.uid: DestroyUserType.BLOCK}));
+                    result = await managerRepository.blockUser(user);
+                    break;
+                  }
+                case DestroyUserType.UNBLOCK:
+                  {
+                    removingUserIds.add(removingUserIds.value
+                      ..addAll({user.uid: DestroyUserType.UNBLOCK}));
+                    result = await managerRepository.unblockUser(user);
+                    break;
+                  }
+                case DestroyUserType.CHANGE_ROLE:
+                  {
+                    removingUserIds.add(removingUserIds.value
+                      ..addAll({user.uid: DestroyUserType.CHANGE_ROLE}));
+                    result = await managerRepository.changeRoleUser(user);
+                    break;
+                  }
+              }
+              yield MapEntry(result, type);
+            },
+          )
+              .doOnError(() => removingUserIds
+                  .add(removingUserIds.value..remove(entry.key.uid)))
+              .doOnData((data) => removingUserIds
+                  .add(removingUserIds.value..remove(data.key.uid))),
+        );
 
     final renderListStream = Rx.merge<ManageUserState>([
       getUsersController.stream
@@ -90,7 +108,9 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
           ? DeleteUserSuccess(idUserDelete: entry.key.uid)
           : entry.value == DestroyUserType.BLOCK
               ? BlockUserSuccess(user: entry.key)
-              : UnblockUserSuccess(user: entry.key))
+              : entry.value == DestroyUserType.UNBLOCK
+                  ? UnblockUserSuccess(user: entry.key)
+                  : ChangeRoleSuccess(user: entry.key))
     ]).publish();
 
     final subscriptions = [renderListStream.connect()];
