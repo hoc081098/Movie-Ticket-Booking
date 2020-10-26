@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
-import 'package:flutter_provider/flutter_provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'manager_users_bloc.dart';
+import 'manage_user_state.dart';
 
 import '../../domain/model/user.dart';
+import 'manager_users_bloc.dart';
 
 class ManagerUsersPage extends StatefulWidget {
   static const routeName = '/manager_users';
@@ -19,30 +19,51 @@ class ManagerUsersPage extends StatefulWidget {
 class _ManagerUsersPageState extends State<ManagerUsersPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isOpeningSlide = false;
+  ScrollController _listUserController;
 
   SlidableController _slidableController;
+
+  ManagerUsersBloc _bloc;
+
+  final _listUsers = <User>[];
 
   @override
   @protected
   void initState() {
+    super.initState();
     _slidableController = SlidableController(
       onSlideAnimationChanged: (_) {},
       onSlideIsOpenChanged: (isOpen) {
         setState(() => _isOpeningSlide = isOpen);
       },
     );
-    super.initState();
+    _listUserController = ScrollController()
+      ..addListener(() {
+        if (_listUserController.position.pixels ==
+            _listUserController.position.maxScrollExtent) {
+          _bloc.loadUsers(_listUsers.length);
+        }
+      });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_bloc == null) {
+      _bloc = BlocProvider.of<ManagerUsersBloc>(context);
+      _bloc.loadUsers(_listUsers.length);
+    }
   }
 
   Widget _buildSearchUser() {
-    return SizedBox(width: 0, height: 0);
+    return SizedBox(width: 10, height: 10);
   }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<ManagerUsersBloc>(context);
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Users'),
       ),
@@ -51,7 +72,7 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           _buildSearchUser(),
-          _buildListUsers(bloc),
+          _buildListUsers(_bloc),
         ],
       ),
       floatingActionButton: _isOpeningSlide == true
@@ -63,27 +84,38 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     );
   }
 
+  bool _isHasUserInList(User user, List<User> listUser) =>
+      listUser.map((e) => e.uid).contains(user.uid);
+
   Widget _buildListUsers(ManagerUsersBloc bloc) {
-    var itemCount = 0;
-    return StreamBuilder<List<User>>(
-        stream: bloc.getUsersStream$,
+    return StreamBuilder<ManageUserState>(
+        stream: bloc.renderListStream$,
         builder: (context, snapShort) {
-          itemCount += snapShort.data?.length ?? 0;
-          return ListView.builder(
-            itemBuilder: (context, index) =>
-                _buildItemUserByIndex(snapShort.data[index], bloc),
-            itemCount: itemCount,
+          _listenStateChange(context, snapShort);
+          return Expanded(
+            child: ListView.builder(
+              controller: _listUserController,
+              itemBuilder: (context, index) => index == _listUsers.length
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [CircularProgressIndicator()],
+                    )
+                  : _buildItemUserByIndex(_listUsers[index]),
+              itemCount: snapShort.data is LoadingUsersState
+                  ? _listUsers.length + 1
+                  : _listUsers.length,
+            ),
           );
         });
   }
 
-  Future<bool> _showDialogConfirm() {
+  Future<bool> _showDialogConfirm(String text, String description) {
     return showDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Delete this user'),
-          content: Text('User will be deleted '),
+          title: Text(text),
+          content: Text(description),
           actions: <Widget>[
             FlatButton(
               child: Text('Cancel'),
@@ -99,49 +131,132 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     );
   }
 
-  Widget _buildItemUserByIndex(User user, ManagerUsersBloc bloc) {
-    return StreamBuilder<bool>(
-        stream: bloc.isRemoving$,
-        builder: (context, snapShort) {
-          return Slidable.builder(
-            key: Key(user.uid),
-            controller: _slidableController,
-            dismissal: SlidableDismissal(
-              child: SlidableDrawerDismissal(),
-              closeOnCanceled: true,
-              onWillDismiss: (action) async {
-                return await _showDialogConfirm()
-                    ? bloc.removeUser(user)
-                    : false;
-              },
-              onDismissed: (actionType) {
-                if (actionType == SlideActionType.primary) return;
-                _showSnackBar(context, 'Delete user ${user.fullName}');
-                bloc.removeUser(user);
-              },
-            ),
-            actionPane: SlidableScrollActionPane(),
-            actionExtentRatio: 0.2,
-            child: UserItemWidget(user),
-            secondaryActionDelegate: SlideActionBuilderDelegate(
-              actionCount: 1,
-              builder: (context, index, animation, renderingMode) {
-                return snapShort.data == true
-                    ? CircularProgressIndicator()
-                    : IconSlideAction(
-                        caption: 'Delete',
-                        color: Colors.red,
-                        icon: Icons.delete,
-                        onTap: () => Slidable.of(context).dismiss(),
-                      );
-              },
-            ),
+  Widget _buildItemUserByIndex(User user) {
+    return user.uid == null
+        ? Text('Error')
+        : StreamBuilder<Map<String, DestroyUserType>>(
+            stream: _bloc.renderItemRemove$,
+            builder: (context, snapShort) {
+              return Slidable.builder(
+                key: Key(user.uid),
+                controller: _slidableController,
+                actionPane: SlidableScrollActionPane(),
+                actionExtentRatio: 0.2,
+                child: UserItemWidget(user),
+                actionDelegate: SlideActionBuilderDelegate(
+                  actionCount: 1,
+                  builder: (context, index, animation, renderingMode) {
+                    final data = snapShort.data ?? {};
+                    return data[user.uid] == DestroyUserType.CHANGE_ROLE
+                        ? Center(child: CircularProgressIndicator())
+                        : IconSlideAction(
+                            caption:
+                                user.role == Role.USER ? 'To staff' : 'To user',
+                            color: Colors.blue,
+                            icon: user.role == Role.USER
+                                ? Icons.arrow_circle_up
+                                : Icons.arrow_circle_down,
+                            onTap: () async {
+                              _bloc.destroyUser(
+                                MapEntry(user, DestroyUserType.CHANGE_ROLE),
+                              );
+                            },
+                          );
+                  },
+                ),
+                secondaryActionDelegate: SlideActionBuilderDelegate(
+                  actionCount: 2,
+                  builder: (context, index, animation, renderingMode) {
+                    final data = snapShort.data ?? {};
+                    final iconBlock = data[user.uid] == DestroyUserType.BLOCK ||
+                            data[user.uid] == DestroyUserType.UNBLOCK
+                        ? Center(child: CircularProgressIndicator())
+                        : IconSlideAction(
+                            caption: user.isActive ? 'Block' : 'Unblock',
+                            color:
+                                user.isActive ? Colors.limeAccent : Colors.grey,
+                            icon: Icons.block,
+                            onTap: () async {
+                              final isDismiss = await _showDialogConfirm(
+                                user.isActive
+                                    ? 'Block this user'
+                                    : 'Unblock this user',
+                                user.isActive
+                                    ? 'User will be block '
+                                    : 'User will be unblock ',
+                              );
+                              if (isDismiss) {
+                                _bloc.destroyUser(MapEntry(
+                                    user,
+                                    user.isActive
+                                        ? DestroyUserType.BLOCK
+                                        : DestroyUserType.UNBLOCK));
+                              }
+                            },
+                          );
+                    final iconRemove = data[user.uid] == DestroyUserType.REMOVE
+                        ? Center(child: CircularProgressIndicator())
+                        : IconSlideAction(
+                            caption: 'Delete',
+                            color: Colors.red,
+                            icon: Icons.delete,
+                            onTap: () async {
+                              final isDismiss = await _showDialogConfirm(
+                                'Delete this user',
+                                'User will be deleted ',
+                              );
+                              if (isDismiss) {
+                                _bloc.destroyUser(
+                                    MapEntry(user, DestroyUserType.REMOVE));
+                              }
+                            },
+                          );
+                    return index == 0 ? iconBlock : iconRemove;
+                  },
+                ),
+              );
+            },
           );
-        });
   }
 
-  void _showSnackBar(BuildContext context, String text) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(text)));
+  void _listenStateChange(
+      BuildContext context, AsyncSnapshot<ManageUserState> snapshot) {
+    if (snapshot.data is LoadUserSuccess) {
+      final data = snapshot.data as LoadUserSuccess;
+      _listUsers.addAll(
+        data.users.where(
+          (user) => !_isHasUserInList(user, _listUsers),
+        ),
+      );
+    }
+    if (snapshot.data is DeleteUserSuccess) {
+      final data = snapshot.data as DeleteUserSuccess;
+      _listUsers.removeWhere((e) => e.uid == data.idUserDelete);
+    }
+    if (snapshot.data is BlockUserSuccess) {
+      final data = snapshot.data as BlockUserSuccess;
+      final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
+      if (index != -1) {
+        _listUsers.removeAt(index);
+        _listUsers.insert(index, data.user);
+      }
+    }
+    if (snapshot.data is UnblockUserSuccess) {
+      final data = snapshot.data as UnblockUserSuccess;
+      final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
+      if (index != -1) {
+        _listUsers.removeAt(index);
+        _listUsers.insert(index, data.user);
+      }
+    }
+    if (snapshot.data is ChangeRoleSuccess) {
+      final data = snapshot.data as ChangeRoleSuccess;
+      final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
+      if (index != -1) {
+        _listUsers.removeAt(index);
+        _listUsers.insert(index, data.user);
+      }
+    }
   }
 }
 
@@ -158,13 +273,29 @@ class UserItemWidget extends StatelessWidget {
           ? slide?.open()
           : slide?.close(),
       child: Container(
-        color: Colors.white,
-        child: ListTile(
-          leading: _buildAvatar(70, context),
-          title: Text(user.fullName),
-          subtitle: Text(user.email),
-        ),
-      ),
+          color: Colors.white,
+          child: Row(
+            children: [
+              _buildAvatar(70, context),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user.fullName,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text(user.email),
+                  SizedBox(height: 5),
+                  _buildStatusRoleUser(user.isActive),
+                ],
+              )
+            ],
+          )),
     );
   }
 
@@ -172,13 +303,13 @@ class UserItemWidget extends StatelessWidget {
     return Container(
       width: imageSize,
       height: imageSize,
-      padding: EdgeInsets.all(3),
+      margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            blurRadius: 5,
+            blurRadius: 4,
             offset: Offset(0.0, 1.0),
             color: Colors.grey.shade500,
             spreadRadius: 1,
@@ -227,6 +358,47 @@ class UserItemWidget extends StatelessWidget {
                 },
               ),
       ),
+    );
+  }
+
+  Widget _buildStatusRoleUser(bool isActive) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'status: ',
+          style: TextStyle(fontSize: 8),
+        ),
+        Container(
+          width: 6,
+          height: 6,
+          decoration: BoxDecoration(
+              color: isActive ? Colors.green : Colors.red,
+              borderRadius: BorderRadius.circular(3)),
+        ),
+        SizedBox(width: 10),
+        Text(
+          'role: ',
+          style: TextStyle(fontSize: 8),
+        ),
+        SizedBox(width: 3),
+        Container(
+          padding: EdgeInsets.all(3),
+          decoration: BoxDecoration(
+              color: user.role == Role.ADMIN
+                  ? Colors.lightBlueAccent
+                  : user.role == Role.STAFF
+                      ? Colors.cyanAccent
+                      : Colors.lightGreenAccent,
+              borderRadius: BorderRadius.circular(2)),
+          child: Text(user.role.string().toLowerCase(),
+              style: TextStyle(
+                fontSize: 8,
+                fontWeight: FontWeight.w800,
+              )),
+        )
+      ],
     );
   }
 }

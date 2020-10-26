@@ -51,6 +51,9 @@ Serializers _$_serializers = (new Serializers().toBuilder()
               BuiltList, const [const FullType(ProductAndQuantityResponse)]),
           () => new ListBuilder<ProductAndQuantityResponse>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(TicketResponse)]),
+          () => new ListBuilder<TicketResponse>())
+      ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(ProductIdAndQuantity)]),
           () => new ListBuilder<ProductIdAndQuantity>())

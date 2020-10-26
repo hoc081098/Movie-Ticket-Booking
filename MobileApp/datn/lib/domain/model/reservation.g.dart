@@ -152,6 +152,12 @@ class _$Reservation extends Reservation {
   final DateTime updatedAt;
   @override
   final User user;
+  @override
+  final BuiltList<Ticket> tickets;
+  @override
+  final String promotionId;
+  @override
+  final Promotion promotion;
 
   factory _$Reservation([void Function(ReservationBuilder) updates]) =>
       (new ReservationBuilder()..update(updates)).build();
@@ -169,7 +175,10 @@ class _$Reservation extends Reservation {
       this.showTime,
       this.totalPrice,
       this.updatedAt,
-      this.user})
+      this.user,
+      this.tickets,
+      this.promotionId,
+      this.promotion})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Reservation', 'id');
@@ -229,7 +238,10 @@ class _$Reservation extends Reservation {
         showTime == other.showTime &&
         totalPrice == other.totalPrice &&
         updatedAt == other.updatedAt &&
-        user == other.user;
+        user == other.user &&
+        tickets == other.tickets &&
+        promotionId == other.promotionId &&
+        promotion == other.promotion;
   }
 
   @override
@@ -245,19 +257,30 @@ class _$Reservation extends Reservation {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    createdAt.hashCode),
-                                                email.hashCode),
-                                            isActive.hashCode),
-                                        originalPrice.hashCode),
-                                    paymentIntentId.hashCode),
-                                phoneNumber.hashCode),
-                            productIdWithCounts.hashCode),
-                        showTimeId.hashCode),
-                    showTime.hashCode),
-                totalPrice.hashCode),
-            updatedAt.hashCode),
-        user.hashCode));
+                                                $jc(
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    0,
+                                                                    id
+                                                                        .hashCode),
+                                                                createdAt
+                                                                    .hashCode),
+                                                            email.hashCode),
+                                                        isActive.hashCode),
+                                                    originalPrice.hashCode),
+                                                paymentIntentId.hashCode),
+                                            phoneNumber.hashCode),
+                                        productIdWithCounts.hashCode),
+                                    showTimeId.hashCode),
+                                showTime.hashCode),
+                            totalPrice.hashCode),
+                        updatedAt.hashCode),
+                    user.hashCode),
+                tickets.hashCode),
+            promotionId.hashCode),
+        promotion.hashCode));
   }
 
   @override
@@ -275,7 +298,10 @@ class _$Reservation extends Reservation {
           ..add('showTime', showTime)
           ..add('totalPrice', totalPrice)
           ..add('updatedAt', updatedAt)
-          ..add('user', user))
+          ..add('user', user)
+          ..add('tickets', tickets)
+          ..add('promotionId', promotionId)
+          ..add('promotion', promotion))
         .toString();
   }
 }
@@ -339,6 +365,20 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
   UserBuilder get user => _$this._user ??= new UserBuilder();
   set user(UserBuilder user) => _$this._user = user;
 
+  ListBuilder<Ticket> _tickets;
+  ListBuilder<Ticket> get tickets =>
+      _$this._tickets ??= new ListBuilder<Ticket>();
+  set tickets(ListBuilder<Ticket> tickets) => _$this._tickets = tickets;
+
+  String _promotionId;
+  String get promotionId => _$this._promotionId;
+  set promotionId(String promotionId) => _$this._promotionId = promotionId;
+
+  PromotionBuilder _promotion;
+  PromotionBuilder get promotion =>
+      _$this._promotion ??= new PromotionBuilder();
+  set promotion(PromotionBuilder promotion) => _$this._promotion = promotion;
+
   ReservationBuilder();
 
   ReservationBuilder get _$this {
@@ -356,6 +396,9 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
       _totalPrice = _$v.totalPrice;
       _updatedAt = _$v.updatedAt;
       _user = _$v.user?.toBuilder();
+      _tickets = _$v.tickets?.toBuilder();
+      _promotionId = _$v.promotionId;
+      _promotion = _$v.promotion?.toBuilder();
       _$v = null;
     }
     return this;
@@ -392,7 +435,10 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
               showTime: _showTime?.build(),
               totalPrice: totalPrice,
               updatedAt: updatedAt,
-              user: _user?.build());
+              user: _user?.build(),
+              tickets: _tickets?.build(),
+              promotionId: promotionId,
+              promotion: _promotion?.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -404,6 +450,11 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
 
         _$failedField = 'user';
         _user?.build();
+        _$failedField = 'tickets';
+        _tickets?.build();
+
+        _$failedField = 'promotion';
+        _promotion?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Reservation', _$failedField, e.toString());

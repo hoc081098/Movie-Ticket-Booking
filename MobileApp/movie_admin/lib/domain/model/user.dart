@@ -3,6 +3,15 @@ import 'package:meta/meta.dart';
 import 'location.dart';
 
 enum Gender { MALE, FEMALE }
+enum Role { ADMIN, STAFF, USER }
+
+extension ToString on Role {
+  String string() => this == Role.ADMIN
+      ? 'ADMIN'
+      : this == Role.STAFF
+          ? 'STAFF'
+          : 'USER';
+}
 
 class User {
   final String uid;
@@ -27,6 +36,8 @@ class User {
 
   final bool isActive;
 
+  final Role role;
+
   User({
     @required this.uid,
     @required this.email,
@@ -39,5 +50,6 @@ class User {
     @required this.location,
     @required this.isCompleted,
     @required this.isActive,
+    @required this.role,
   });
 }

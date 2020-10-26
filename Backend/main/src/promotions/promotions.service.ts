@@ -36,7 +36,7 @@ export class PromotionsService {
     const user = checkCompletedLogin(userPayload);
 
     const now = new Date();
-    const end = dayjs().startOf('day').add(2, 'day').toDate();
+    const end = dayjs().startOf('day').add(7, 'day').toDate();
 
     const showTimes = await this.showTimeModel.find({ start_time: { $gte: now } });
 

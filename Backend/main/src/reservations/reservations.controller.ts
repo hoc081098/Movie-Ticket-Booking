@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { GetUser, UserPayload } from '../auth/get-user.decorator';
@@ -35,5 +35,16 @@ export class ReservationsController {
         userPayload,
         dto,
     );
+  }
+
+  @Get('qrcode/:id')
+  getQrCode(
+      @Param('id')  id: string,
+      @GetUser() userPayload: UserPayload,
+  ): Promise<string> {
+    return this.reservationsService.getQrCode(
+        id,
+        userPayload,
+    )
   }
 }

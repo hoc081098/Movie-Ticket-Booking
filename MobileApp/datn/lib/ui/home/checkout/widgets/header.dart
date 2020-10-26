@@ -16,6 +16,7 @@ class HeaderWidget extends StatelessWidget {
   final ShowTime showTime;
   final Theatre theatre;
   final BuiltList<Ticket> tickets;
+  final Widget child;
 
   HeaderWidget({
     Key key,
@@ -23,6 +24,7 @@ class HeaderWidget extends StatelessWidget {
     this.showTime,
     this.theatre,
     this.tickets,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -191,7 +193,11 @@ class HeaderWidget extends StatelessWidget {
                 ),
               );
             }).toList(growable: false),
-          )
+          ),
+          if (child != null) ...[
+            const SizedBox(height: 6),
+            child,
+          ],
         ],
       ),
     );

@@ -3,7 +3,9 @@ import 'package:built_value/built_value.dart';
 import 'package:meta/meta.dart';
 
 import 'product.dart';
+import 'promotion.dart';
 import 'show_time.dart';
+import 'ticket.dart';
 import 'user.dart';
 
 part 'reservation.g.dart';
@@ -58,6 +60,15 @@ abstract class Reservation implements Built<Reservation, ReservationBuilder> {
 
   @nullable
   User get user;
+
+  @nullable
+  BuiltList<Ticket> get tickets;
+
+  @nullable
+  String get promotionId;
+
+  @nullable
+  Promotion get promotion;
 
   Reservation._();
 

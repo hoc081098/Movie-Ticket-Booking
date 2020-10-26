@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:rxdart/rxdart.dart';
@@ -166,6 +168,23 @@ class ReservationRepositoryImpl implements ReservationRepository {
     };
 
     return Rx.fromCallable(
-        () => _authClient.getBody(buildUrl('/notifications'))).map(mapResult);
+      () => _authClient.getBody(
+        buildUrl(
+          '/reservations',
+          {
+            'page': page.toString(),
+            'per_page': perPage.toString(),
+          },
+        ),
+      ),
+    ).map(mapResult);
   }
+
+  @override
+  Stream<Uint8List> getQrCode(String id) => Rx.fromCallable(
+        () => _authClient
+            .get(buildUrl('/reservations/qrcode/$id'))
+            .then((value) => value.body.split('base64,')[1])
+            .then((value) => base64Decode(value)),
+      );
 }

@@ -19,6 +19,11 @@ class SingleMessageErrorResponse implements ErrorResponse {
     return SingleMessageErrorResponse(
         map['error'], map['statusCode'], map['message']);
   }
+
+  @override
+  String toString() {
+    return 'SingleMessageErrorResponse{error: $error, statusCode: $statusCode, message: $message}';
+  }
 }
 
 class MultipleMessagesErrorResponse implements ErrorResponse {
@@ -35,6 +40,11 @@ class MultipleMessagesErrorResponse implements ErrorResponse {
   factory MultipleMessagesErrorResponse.fromJson(Map<String, dynamic> map) {
     return MultipleMessagesErrorResponse(
         map['error'], map['statusCode'], map['message']);
+  }
+
+  @override
+  String toString() {
+    return 'MultipleMessagesErrorResponse{error: $error, statusCode: $statusCode, messages: $messages}';
   }
 }
 

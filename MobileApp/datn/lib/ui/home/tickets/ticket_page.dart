@@ -222,7 +222,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               onPressed: () {
                 Navigator.of(dialogContext).pop();
 
-                AppScaffold.of(context)
+                AppScaffold.ofIndex(context, 0)
                     .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
               },
             ),
@@ -488,7 +488,8 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   child: Text('OK'),
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
-                    AppScaffold.of(context)
+
+                    AppScaffold.ofIndex(context, 0)
                         .popUntil(ModalRoute.withName(TicketsPage.routeName));
                   },
                 ),

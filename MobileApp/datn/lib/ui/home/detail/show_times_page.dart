@@ -222,7 +222,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
       );
     }
 
-    return ListView.builder(
+    return ListView.separated(
       physics: const BouncingScrollPhysics(),
       itemCount: list.length,
       itemBuilder: (context, index) => ShowTimeItem(
@@ -231,6 +231,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
         showTimeDateFormat: showTimeDateFormat,
         movie: widget.movie,
       ),
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
     );
   }
 

@@ -38,6 +38,12 @@ class AppScaffold extends StatefulWidget {
         context.findAncestorStateOfType<_AppScaffoldState>();
     return appScaffoldState.tapS;
   }
+
+  static NavigatorState ofIndex(BuildContext context, int index) {
+    final appScaffoldState =
+        context.findAncestorStateOfType<_AppScaffoldState>();
+    return appScaffoldState.navigatorKeys[index].currentState;
+  }
 }
 
 class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
