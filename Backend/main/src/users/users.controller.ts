@@ -111,17 +111,11 @@ export class AdminUsersController {
   @ForAdmin()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @Put(':uid')
+  @Put('block/:uid')
   blockUser(
       @Param('uid') uid: string,
-      @Body() body: any,
   ): Promise<User> {
-    try {
-      this.logger.debug(`Block ${uid} ${body}`);
-      return this.usersService.blockUser(uid);
-    } catch (e) {
-      this.logger.debug(`Error: ${e}`);
-    }
+    return this.usersService.blockUser(uid);
   }
 
   @ForAdmin()
