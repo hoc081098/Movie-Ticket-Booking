@@ -67,28 +67,24 @@ export class UsersController {
 
     return this.usersService.update(user, updateUserDto);
   }
-
-
-  @ApiOperation({ summary: 'PRIVATE' })
-  @UseGuards(AuthGuard, RolesGuard)
-  @Post('seed')
-  seedUsers() {
-    return this.usersService.seedUsers();
-  }
 }
 
+@UseGuards(AuthGuard, RolesGuard)
 @ApiTags('admin_users')
 @Controller('admin_users')
 export class AdminUsersController {
-  private readonly logger = new Logger('AdminUsersController');
-
   constructor(
       private readonly usersService: UsersService,
   ) {}
 
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Roles('ADMIN')
+  @Post('seed')
+  seedUsers() {
+    return this.usersService.seedUsers();
+  }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Delete(':uid')
   delete(
@@ -98,7 +94,6 @@ export class AdminUsersController {
   }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Get()
   getAllUsers(
@@ -109,23 +104,15 @@ export class AdminUsersController {
 
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @Put(':uid')
+  @Put('block/:uid')
   blockUser(
       @Param('uid') uid: string,
-      @Body() body: any,
   ): Promise<User> {
-    try {
-      this.logger.debug(`Block ${uid} ${body}`);
-      return this.usersService.blockUser(uid);
-    } catch (e) {
-      this.logger.debug(`Error: ${e}`);
-    }
+    return this.usersService.blockUser(uid);
   }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Put('unblock/:uid')
   unblockUser(
@@ -135,7 +122,6 @@ export class AdminUsersController {
   }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Put('to_user_role/:uid')
   toUserRole(
@@ -145,7 +131,6 @@ export class AdminUsersController {
   }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Put('to_staff_role/:uid')
   toStaffRole(

@@ -48,7 +48,7 @@ class ManagerRepositoryImpl implements ManagerRepository {
   @override
   Future<User> blockUser(User user) async {
     try {
-      final url = buildUrl('admin_users/${user.uid}');
+      final url = buildUrl('admin_users/block/${user.uid}');
       final userRes = await _authClient.putBody(url);
       return userResponseToUserDomain(UserResponse.fromJson(userRes));
     } on ErrorResponse catch (e) {
