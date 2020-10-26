@@ -7,6 +7,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../common/pagination.dto';
 import { GetNowShowingMoviesDto } from './movie.dto';
 import { AuthGuard } from '../auth/auth.guard';
+import { Roles, RolesGuard } from '../auth/roles.guard';
+import { ForAdmin } from '../common/swagger.decorator';
 
 @ApiTags('movies')
 @UseGuards(AuthGuard)
@@ -53,5 +55,23 @@ export class MoviesController {
       @Param('id') id: string,
   ): Promise<Movie> {
     return this.moviesService.getDetail(id);
+  }
+}
+
+@UseGuards(AuthGuard, RolesGuard)
+@ApiTags('admin_movies')
+@Controller('admin_movies')
+export class AdminMoviesController {
+  constructor(
+      private readonly moviesService: MoviesService,
+  ) {}
+
+  @ForAdmin()
+  @Roles('ADMIN')
+  @Get()
+  getAllMovies(
+      @Query() dto: PaginationDto,
+  ): Promise<Movie[]> {
+    return this.moviesService.getAll(dto);
   }
 }
