@@ -25,6 +25,7 @@ import { SocketModule } from './socket/socket.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { Neo4jModule } from './neo4j/neo4j.module';
 import * as dayjs from 'dayjs';
 import * as localizedFormat from 'dayjs/plugin/localizedFormat';
 
@@ -112,6 +113,7 @@ const logger = new Logger('AppModule');
     FavoritesModule,
     SocketModule,
     NotificationsModule,
+    Neo4jModule,
   ],
   controllers: [AppController],
   providers: [

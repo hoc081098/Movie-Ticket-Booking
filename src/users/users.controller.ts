@@ -68,6 +68,25 @@ export class UsersController {
     return this.usersService.update(user, updateUserDto);
   }
 
+
+  @ApiOperation({ summary: 'PRIVATE' })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Post('seed')
+  seedUsers() {
+    return this.usersService.seedUsers();
+  }
+}
+
+@ApiTags('admin_users')
+@Controller('admin_users')
+export class AdminUsersController {
+  private readonly logger = new Logger('AdminUsersController');
+
+  constructor(
+      private readonly usersService: UsersService,
+  ) {}
+
+
   @ForAdmin()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
@@ -92,11 +111,17 @@ export class UsersController {
   @ForAdmin()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @Put('block/:uid')
+  @Put(':uid')
   blockUser(
       @Param('uid') uid: string,
+      @Body() body: any,
   ): Promise<User> {
-    return this.usersService.blockUser(uid);
+    try {
+      this.logger.debug(`Block ${uid} ${body}`);
+      return this.usersService.blockUser(uid);
+    } catch (e) {
+      this.logger.debug(`Error: ${e}`);
+    }
   }
 
   @ForAdmin()
@@ -112,17 +137,20 @@ export class UsersController {
   @ForAdmin()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
+  @Put('to_user_role/:uid')
+  toUserRole(
+      @Param('uid') uid: string,
+  ): Promise<User> {
+    return this.usersService.toUserRole(uid);
+  }
+
+  @ForAdmin()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN')
   @Put('to_staff_role/:uid')
   toStaffRole(
       @Param('uid') uid: string,
   ): Promise<User> {
     return this.usersService.toStaffRole(uid);
-  }
-
-  @ApiOperation({ summary: 'PRIVATE' })
-  @UseGuards(AuthGuard, RolesGuard)
-  @Post('seed')
-  seedUsers() {
-    return this.usersService.seedUsers();
   }
 }

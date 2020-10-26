@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './user.schema';
-import { UsersController } from './users.controller';
+import { AdminUsersController, UsersController } from './users.controller';
 import { ConfigModule } from '../config/config.module';
 import { CardsController } from './cards/cards.controller';
 
@@ -18,6 +18,6 @@ import { CardsController } from './cards/cards.controller';
   ],
   providers: [UsersService],
   exports: [UsersService],
-  controllers: [UsersController, CardsController],
+  controllers: [UsersController, CardsController, AdminUsersController],
 })
 export class UsersModule {}

@@ -39,6 +39,7 @@
     "handlebars": "^4.7.6",
     "mongoose": "^5.10.5",
     "morgan": "^1.10.0",
+    "neo4j-driver": "^4.1.2",
     "nodemailer": "^6.4.14",
     "qrcode": "^1.4.4",
     "reflect-metadata": "^0.1.13",
