@@ -73,8 +73,6 @@ export class UsersController {
 @ApiTags('admin_users')
 @Controller('admin_users')
 export class AdminUsersController {
-  private readonly logger = new Logger('AdminUsersController');
-
   constructor(
       private readonly usersService: UsersService,
   ) {}
