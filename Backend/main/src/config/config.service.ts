@@ -11,6 +11,9 @@ export const enum ConfigKey {
   STRIPE_SECRET_API = 'STRIPE_SECRET_API',
   EMAIL = 'EMAIL',
   EMAIL_PASSWORD = 'EMAIL_PASSWORD',
+  NEO4J_URL = 'NEO4J_URL',
+  NEO4J_USER = 'NEO4J_USER',
+  NEO4J_PASSWORD = 'NEO4J_PASSWORD',
 }
 
 export class ConfigService {
@@ -24,7 +27,7 @@ export class ConfigService {
       this.envConfig = dotenv.parse(fs.readFileSync(filePath)) as Record<keyof ConfigKey, string>;
     }
     const stringify = JSON.stringify(this.envConfig);
-    this.logger.log(`Load config: ${stringify}`)
+    this.logger.log(`Load config: ${stringify}`);
   }
 
   get(key: ConfigKey): string {

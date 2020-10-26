@@ -260,7 +260,7 @@ export class UsersService {
   }
 
   async toStaffRole(uid: string): Promise<User> {
-    return await this.userModel.findOneAndUpdate(
+    const updatedUser = await this.userModel.findOneAndUpdate(
         {
           uid, role: { $ne: 'ADMIN' },
           $or: [
@@ -270,7 +270,11 @@ export class UsersService {
         },
         { role: 'STAFF' },
         { new: true },
-    ).exec();
+    );
+    if (!updatedUser) {
+      throw new BadRequestException(`User is not found or user is blocked!`);
+    }
+    return updatedUser;
   }
 
   async toUserRole(uid: string): Promise<User> {
