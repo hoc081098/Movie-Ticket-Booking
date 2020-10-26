@@ -52,6 +52,11 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     if (_bloc == null) {
       _bloc = BlocProvider.of<ManagerUsersBloc>(context);
       _bloc.loadUsers(_listUsers.length);
+      _bloc.showSnackBar$.listen((text) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(text),
+        ));
+      });
     }
   }
 

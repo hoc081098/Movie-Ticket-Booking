@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+
 import '../../domain/model/exception.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repository/manager_repository.dart';
@@ -65,7 +67,6 @@ class ManagerRepositoryImpl implements ManagerRepository {
       final path = user.role == Role.USER ? 'to_staff_role' : 'to_user_role';
       final url = buildUrl('admin_users/$path/${user.uid}');
       final userRes = await _authClient.putBody(url);
-      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
       if (userRes == null) return Future.error(null);
       return userResponseToUserDomain(UserResponse.fromJson(userRes));
     } on ErrorResponse catch (e) {
