@@ -6,6 +6,8 @@ import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../users/user.schema';
+import { Category, CategorySchema } from '../categories/category.schema';
+import { Movie, MovieSchema } from '../movies/movie.schema';
 
 @Module({
   imports: [
@@ -13,6 +15,14 @@ import { User, UserSchema } from '../users/user.schema';
       {
         name: User.name,
         schema: UserSchema,
+      },
+      {
+        name: Category.name,
+        schema: CategorySchema,
+      },
+      {
+        name: Movie.name,
+        schema: MovieSchema,
       }
     ]),
     ConfigModule,
