@@ -39,10 +39,10 @@ class AppScaffold extends StatefulWidget {
     return appScaffoldState.tapS;
   }
 
-  static int index(BuildContext context) {
+  static NavigatorState ofIndex(BuildContext context, int index) {
     final appScaffoldState =
         context.findAncestorStateOfType<_AppScaffoldState>();
-    return appScaffoldState.index;
+    return appScaffoldState.navigatorKeys[index].currentState;
   }
 }
 

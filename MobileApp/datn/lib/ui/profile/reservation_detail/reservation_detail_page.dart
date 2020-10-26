@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/ui/widgets/error_widget.dart';
-import 'package:datn/utils/error.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -12,6 +10,8 @@ import 'package:stream_loader/stream_loader.dart';
 import '../../../domain/model/reservation.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/reservation_repository.dart';
+import '../../../utils/error.dart';
+import '../../widgets/error_widget.dart';
 
 class ReservationDetailPage extends StatelessWidget {
   static const routeName = '/profile/reservations/detail';
