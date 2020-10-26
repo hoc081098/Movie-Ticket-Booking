@@ -3,7 +3,7 @@ import '../../domain/model/user.dart';
 
 abstract class ManageUserState {}
 
-enum DestroyUserType { REMOVE, BLOCK , UNBLOCK}
+enum DestroyUserType { REMOVE, BLOCK, UNBLOCK, CHANGE_ROLE }
 
 class LoadUserSuccess extends ManageUserState {
   final List<User> users;
@@ -44,6 +44,16 @@ class UnblockUserSuccess extends ManageUserState {
 
   factory UnblockUserSuccess({@required User user}) {
     return UnblockUserSuccess._(user);
+  }
+}
+
+class ChangeRoleSuccess extends ManageUserState {
+  final User user;
+
+  ChangeRoleSuccess._(this.user);
+
+  factory ChangeRoleSuccess({@required User user}) {
+    return ChangeRoleSuccess._(user);
   }
 }
 

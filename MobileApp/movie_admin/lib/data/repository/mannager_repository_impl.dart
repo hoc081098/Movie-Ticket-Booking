@@ -18,13 +18,14 @@ class ManagerRepositoryImpl implements ManagerRepository {
   Future<List<User>> loadUser(int page) async {
     try {
       final usersRes = await _authClient.getBody(
-          buildUrl('admin_users/', {'page': '$page', 'per_page': '10'})) as List;
+              buildUrl('admin_users/', {'page': '$page', 'per_page': '10'}))
+          as List;
       return usersRes
           .map((json) => userResponseToUserDomain(UserResponse.fromJson(json)))
           .toList();
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
-        throw const NotCompletedLoginException();
+        throw const NotCompletedManagerUserException();
       }
       rethrow;
     }
@@ -38,7 +39,7 @@ class ManagerRepositoryImpl implements ManagerRepository {
       return userResponseToUserDomain(UserResponse.fromJson(userRes));
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
-        throw const NotCompletedLoginException();
+        throw const NotCompletedManagerUserException();
       }
       rethrow;
     }
@@ -52,7 +53,24 @@ class ManagerRepositoryImpl implements ManagerRepository {
       return userResponseToUserDomain(UserResponse.fromJson(userRes));
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
-        throw const NotCompletedLoginException();
+        throw const NotCompletedManagerUserException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<User> changeRoleUser(User user) async {
+    try {
+      final path = user.role == Role.USER ? 'to_staff_role' : 'to_user_role';
+      final url = buildUrl('admin_users/$path/${user.uid}');
+      final userRes = await _authClient.putBody(url);
+      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      if (userRes == null) return Future.error(null);
+      return userResponseToUserDomain(UserResponse.fromJson(userRes));
+    } on ErrorResponse catch (e) {
+      if (e.statusCode == HttpStatus.notFound) {
+        throw const NotCompletedManagerUserException();
       }
       rethrow;
     }
@@ -66,7 +84,7 @@ class ManagerRepositoryImpl implements ManagerRepository {
       return userResponseToUserDomain(UserResponse.fromJson(userRes));
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
-        throw const NotCompletedLoginException();
+        throw const NotCompletedManagerUserException();
       }
       rethrow;
     }

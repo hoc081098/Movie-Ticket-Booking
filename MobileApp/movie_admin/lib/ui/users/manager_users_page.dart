@@ -91,37 +91,7 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     return StreamBuilder<ManageUserState>(
         stream: bloc.renderListStream$,
         builder: (context, snapShort) {
-          print(snapShort.data.toString() + '>>>>>>>>');
-          if (snapShort.data is LoadUserSuccess) {
-            final data = snapShort.data as LoadUserSuccess;
-            _listUsers.addAll(
-              data.users.where(
-                (user) => !_isHasUserInList(user, _listUsers),
-              ),
-            );
-          }
-          if (snapShort.data is DeleteUserSuccess) {
-            final data = snapShort.data as DeleteUserSuccess;
-            _listUsers.removeWhere((e) => e.uid == data.idUserDelete);
-          }
-          if (snapShort.data is BlockUserSuccess) {
-            final data = snapShort.data as BlockUserSuccess;
-            final index = _listUsers
-                .indexWhere((element) => element.uid == data.user.uid);
-            if (index != -1) {
-              _listUsers.removeAt(index);
-              _listUsers.insert(index, data.user);
-            }
-          }
-          if (snapShort.data is UnblockUserSuccess) {
-            final data = snapShort.data as UnblockUserSuccess;
-            final index = _listUsers
-                .indexWhere((element) => element.uid == data.user.uid);
-            if (index != -1) {
-              _listUsers.removeAt(index);
-              _listUsers.insert(index, data.user);
-            }
-          }
+          _listenStateChange(context, snapShort);
           return Expanded(
             child: ListView.builder(
               controller: _listUserController,
@@ -173,15 +143,33 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
                 actionPane: SlidableScrollActionPane(),
                 actionExtentRatio: 0.2,
                 child: UserItemWidget(user),
+                actionDelegate: SlideActionBuilderDelegate(
+                  actionCount: 1,
+                  builder: (context, index, animation, renderingMode) {
+                    final data = snapShort.data ?? {};
+                    return data[user.uid] == DestroyUserType.CHANGE_ROLE
+                        ? Center(child: CircularProgressIndicator())
+                        : IconSlideAction(
+                            caption:
+                                user.role == Role.USER ? 'To staff' : 'To user',
+                            color: Colors.blue,
+                            icon: user.role == Role.USER
+                                ? Icons.arrow_circle_up
+                                : Icons.arrow_circle_down,
+                            onTap: () async {
+                              _bloc.destroyUser(
+                                MapEntry(user, DestroyUserType.CHANGE_ROLE),
+                              );
+                            },
+                          );
+                  },
+                ),
                 secondaryActionDelegate: SlideActionBuilderDelegate(
                   actionCount: 2,
                   builder: (context, index, animation, renderingMode) {
-                    final isContainsUser =
-                        snapShort.data?.containsKey(user.uid) ?? false;
                     final data = snapShort.data ?? {};
-                    final iconBlock = isContainsUser &&
-                            (data[user.uid] == DestroyUserType.BLOCK ||
-                                data[user.uid] == DestroyUserType.UNBLOCK)
+                    final iconBlock = data[user.uid] == DestroyUserType.BLOCK ||
+                            data[user.uid] == DestroyUserType.UNBLOCK
                         ? Center(child: CircularProgressIndicator())
                         : IconSlideAction(
                             caption: user.isActive ? 'Block' : 'Unblock',
@@ -198,13 +186,15 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
                                     : 'User will be unblock ',
                               );
                               if (isDismiss) {
-                                _bloc.destroyUser(
-                                    MapEntry(user, user.isActive ? DestroyUserType.BLOCK : DestroyUserType.UNBLOCK));
+                                _bloc.destroyUser(MapEntry(
+                                    user,
+                                    user.isActive
+                                        ? DestroyUserType.BLOCK
+                                        : DestroyUserType.UNBLOCK));
                               }
                             },
                           );
-                    final iconRemove = isContainsUser &&
-                            data[user.uid] == DestroyUserType.REMOVE
+                    final iconRemove = data[user.uid] == DestroyUserType.REMOVE
                         ? Center(child: CircularProgressIndicator())
                         : IconSlideAction(
                             caption: 'Delete',
@@ -229,8 +219,44 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
           );
   }
 
-  void _showSnackBar(BuildContext context, String text) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(text)));
+  void _listenStateChange(
+      BuildContext context, AsyncSnapshot<ManageUserState> snapshot) {
+    if (snapshot.data is LoadUserSuccess) {
+      final data = snapshot.data as LoadUserSuccess;
+      _listUsers.addAll(
+        data.users.where(
+          (user) => !_isHasUserInList(user, _listUsers),
+        ),
+      );
+    }
+    if (snapshot.data is DeleteUserSuccess) {
+      final data = snapshot.data as DeleteUserSuccess;
+      _listUsers.removeWhere((e) => e.uid == data.idUserDelete);
+    }
+    if (snapshot.data is BlockUserSuccess) {
+      final data = snapshot.data as BlockUserSuccess;
+      final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
+      if (index != -1) {
+        _listUsers.removeAt(index);
+        _listUsers.insert(index, data.user);
+      }
+    }
+    if (snapshot.data is UnblockUserSuccess) {
+      final data = snapshot.data as UnblockUserSuccess;
+      final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
+      if (index != -1) {
+        _listUsers.removeAt(index);
+        _listUsers.insert(index, data.user);
+      }
+    }
+    if (snapshot.data is ChangeRoleSuccess) {
+      final data = snapshot.data as ChangeRoleSuccess;
+      final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
+      if (index != -1) {
+        _listUsers.removeAt(index);
+        _listUsers.insert(index, data.user);
+      }
+    }
   }
 }
 
@@ -265,7 +291,7 @@ class UserItemWidget extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(user.email),
                   SizedBox(height: 5),
-                  _buildStatusUser(user.isActive),
+                  _buildStatusRoleUser(user.isActive),
                 ],
               )
             ],
@@ -335,7 +361,7 @@ class UserItemWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusUser(bool isActive) {
+  Widget _buildStatusRoleUser(bool isActive) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -350,6 +376,27 @@ class UserItemWidget extends StatelessWidget {
           decoration: BoxDecoration(
               color: isActive ? Colors.green : Colors.red,
               borderRadius: BorderRadius.circular(3)),
+        ),
+        SizedBox(width: 10),
+        Text(
+          'role: ',
+          style: TextStyle(fontSize: 8),
+        ),
+        SizedBox(width: 3),
+        Container(
+          padding: EdgeInsets.all(3),
+          decoration: BoxDecoration(
+              color: user.role == Role.ADMIN
+                  ? Colors.lightBlueAccent
+                  : user.role == Role.STAFF
+                      ? Colors.cyanAccent
+                      : Colors.lightGreenAccent,
+              borderRadius: BorderRadius.circular(2)),
+          child: Text(user.role.string().toLowerCase(),
+              style: TextStyle(
+                fontSize: 8,
+                fontWeight: FontWeight.w800,
+              )),
         )
       ],
     );
