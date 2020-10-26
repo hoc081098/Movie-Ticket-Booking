@@ -1,6 +1,6 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { MoviesService } from './movies.service';
-import { MoviesController } from './movies.controller';
+import { AdminMoviesController, MoviesController } from './movies.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Movie, MovieSchema } from './movie.schema';
 import { MovieCategory, MovieCategorySchema } from './movie-category.schema';
@@ -48,6 +48,6 @@ import { UsersModule } from '../users/users.module';
     ConfigModule,
   ],
   providers: [MoviesService, MovieDbService],
-  controllers: [MoviesController]
+  controllers: [MoviesController, AdminMoviesController],
 })
 export class MoviesModule {}

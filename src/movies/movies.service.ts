@@ -19,9 +19,14 @@ export class MoviesService {
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
   ) {}
 
-  all() {
+  getAll(dto: PaginationDto): Promise<Movie[]> {
+    const { skip, limit } = getSkipLimit(dto);
+
     return this.movieModel
         .find({})
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
         .populate('actors')
         .populate('directors')
         .exec();
