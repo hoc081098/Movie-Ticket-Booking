@@ -1,6 +1,7 @@
 import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
+import 'package:movie_admin/data/remote/response/error_response.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/user.dart';
@@ -16,6 +17,7 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
   /// Streams
   final Stream<ManageUserState> renderListStream$;
   final Stream<Map<String, DestroyUserType>> renderItemRemove$;
+  final Stream<String> showSnackBar$;
 
   ManagerUsersBloc._({
     @required Function0<void> dispose,
@@ -23,6 +25,7 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
     @required this.destroyUser,
     @required this.renderListStream$,
     @required this.renderItemRemove$,
+    @required this.showSnackBar$,
   }) : super(dispose);
 
   factory ManagerUsersBloc(final ManagerRepository managerRepository) {
@@ -33,6 +36,7 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
     final isLoadingController = BehaviorSubject<bool>.seeded(false);
     final removingUserIds =
         BehaviorSubject<Map<String, DestroyUserType>>.seeded({});
+    final showSnackBarController = PublishSubject<String>();
 
     final controllers = [
       getUsersController,
@@ -46,46 +50,55 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
         .flatMap(
           (entry) => Rx.defer(
             () async* {
-              final user = entry.key;
-              final type = entry.value;
-              User result;
-              switch (type) {
-                case DestroyUserType.REMOVE:
-                  {
-                    removingUserIds.add(removingUserIds.value
-                      ..addAll({user.uid: DestroyUserType.REMOVE}));
-                    result = await managerRepository.deleteUser(user);
-                    break;
-                  }
-                case DestroyUserType.BLOCK:
-                  {
-                    removingUserIds.add(removingUserIds.value
-                      ..addAll({user.uid: DestroyUserType.BLOCK}));
-                    result = await managerRepository.blockUser(user);
-                    break;
-                  }
-                case DestroyUserType.UNBLOCK:
-                  {
-                    removingUserIds.add(removingUserIds.value
-                      ..addAll({user.uid: DestroyUserType.UNBLOCK}));
-                    result = await managerRepository.unblockUser(user);
-                    break;
-                  }
-                case DestroyUserType.CHANGE_ROLE:
-                  {
-                    removingUserIds.add(removingUserIds.value
-                      ..addAll({user.uid: DestroyUserType.CHANGE_ROLE}));
-                    result = await managerRepository.changeRoleUser(user);
-                    break;
-                  }
+              try {
+                final user = entry.key;
+                final type = entry.value;
+                switch (type) {
+                  case DestroyUserType.REMOVE:
+                    {
+                      removingUserIds.add(removingUserIds.value
+                        ..addAll({user.uid: DestroyUserType.REMOVE}));
+                      yield await managerRepository.deleteUser(user);
+                      showSnackBarController
+                          .add('Remove user id ${user.uid} success');
+                      break;
+                    }
+                  case DestroyUserType.BLOCK:
+                    {
+                      removingUserIds.add(removingUserIds.value
+                        ..addAll({user.uid: DestroyUserType.BLOCK}));
+                      yield await managerRepository.blockUser(user);
+                      showSnackBarController
+                          .add('Block user id ${user.uid} success');
+                      break;
+                    }
+                  case DestroyUserType.UNBLOCK:
+                    {
+                      removingUserIds.add(removingUserIds.value
+                        ..addAll({user.uid: DestroyUserType.UNBLOCK}));
+                      yield await managerRepository.unblockUser(user);
+                      showSnackBarController
+                          .add('Unblock user id ${user.uid} success');
+                      break;
+                    }
+                  case DestroyUserType.CHANGE_ROLE:
+                    {
+                      removingUserIds.add(removingUserIds.value
+                        ..addAll({user.uid: DestroyUserType.CHANGE_ROLE}));
+                      yield await managerRepository.changeRoleUser(user);
+                      showSnackBarController
+                          .add('Change role user id ${user.uid} success');
+                      break;
+                    }
+                }
+              } on SingleMessageErrorResponse catch (e) {
+                showSnackBarController.add(e.message);
+                removingUserIds
+                    .add(removingUserIds.value..remove(entry.key.uid));
               }
-              yield MapEntry(result, type);
             },
-          )
-              .doOnError(() => removingUserIds
-                  .add(removingUserIds.value..remove(entry.key.uid)))
-              .doOnData((data) => removingUserIds
-                  .add(removingUserIds.value..remove(data.key.uid))),
+          ).map((user) => MapEntry(user, entry.value)).doOnData((data) =>
+              removingUserIds.add(removingUserIds.value..remove(data.key.uid))),
         );
 
     final renderListStream = Rx.merge<ManageUserState>([
@@ -116,11 +129,11 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
     final subscriptions = [renderListStream.connect()];
 
     return ManagerUsersBloc._(
-      dispose: DisposeBag([...controllers, ...subscriptions]).dispose,
-      loadUsers: getUsersController.add,
-      destroyUser: removeUserController.add,
-      renderListStream$: renderListStream,
-      renderItemRemove$: removingUserIds,
-    );
+        dispose: DisposeBag([...controllers, ...subscriptions]).dispose,
+        loadUsers: getUsersController.add,
+        destroyUser: removeUserController.add,
+        renderListStream$: renderListStream,
+        renderItemRemove$: removingUserIds,
+        showSnackBar$: showSnackBarController.stream);
   }
 }
