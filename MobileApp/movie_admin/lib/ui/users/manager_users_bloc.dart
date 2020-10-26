@@ -112,7 +112,7 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
                   yield result;
                   isLoadingController.add(false);
                 },
-              ).doOnError(() => isLoadingController.add(false)))
+              ).doOnError((e, s) => isLoadingController.add(false)))
           .map((users) => LoadUserSuccess(users: users)),
       isLoadingController.stream
           .where((event) => event)
