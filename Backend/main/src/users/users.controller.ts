@@ -67,16 +67,9 @@ export class UsersController {
 
     return this.usersService.update(user, updateUserDto);
   }
-
-
-  @ApiOperation({ summary: 'PRIVATE' })
-  @UseGuards(AuthGuard, RolesGuard)
-  @Post('seed')
-  seedUsers() {
-    return this.usersService.seedUsers();
-  }
 }
 
+@UseGuards(AuthGuard, RolesGuard)
 @ApiTags('admin_users')
 @Controller('admin_users')
 export class AdminUsersController {
@@ -86,9 +79,14 @@ export class AdminUsersController {
       private readonly usersService: UsersService,
   ) {}
 
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Roles('ADMIN')
+  @Post('seed')
+  seedUsers() {
+    return this.usersService.seedUsers();
+  }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Delete(':uid')
   delete(
@@ -98,7 +96,6 @@ export class AdminUsersController {
   }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Get()
   getAllUsers(
@@ -109,7 +106,6 @@ export class AdminUsersController {
 
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Put('block/:uid')
   blockUser(
@@ -119,7 +115,6 @@ export class AdminUsersController {
   }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Put('unblock/:uid')
   unblockUser(
@@ -129,7 +124,6 @@ export class AdminUsersController {
   }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Put('to_user_role/:uid')
   toUserRole(
@@ -139,7 +133,6 @@ export class AdminUsersController {
   }
 
   @ForAdmin()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Put('to_staff_role/:uid')
   toStaffRole(
