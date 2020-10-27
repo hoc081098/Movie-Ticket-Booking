@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { auth, driver, Driver, Transaction } from 'neo4j-driver';
 import { ConfigKey, ConfigService } from '../config/config.service';
-import { Model } from 'mongoose';
+import { DocumentDefinition, Model } from 'mongoose';
 import { User } from '../users/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from '../movies/movie.schema';
@@ -47,7 +47,7 @@ export class Neo4jService {
   }
 
   private async addUsers() {
-    const users = await this.userModel.find({}).lean();
+    const users: DocumentDefinition<User>[] = await this.userModel.find({}).lean();
     await this.runTransaction(
         async txc => {
           for (const user of users) {
@@ -81,6 +81,29 @@ export class Neo4jService {
                   latitude: user.location?.coordinates?.[1] ?? -1,
                 }
             );
+          }
+        },
+        `[USERS] ${users.length}`,
+    );
+
+    await this.runTransaction(
+        async txc => {
+          for (const user of users) {
+            const ids = Object.keys(user.favorite_movie_ids ?? {});
+            for (const mov_id of ids) {
+              await txc.run(
+                  `
+                    MATCH (user: USER { _id: $id  })
+                    MATCH (mov: MOVIE { _id: $mov_id })
+                    MERGE (user)-[r:FAVORITES]-(mov)
+                    RETURN mov.title, user.title
+                `,
+                  {
+                    id: user._id.toString(),
+                    mov_id,
+                  },
+              );
+            }
           }
         },
         `[USERS] ${users.length}`,
