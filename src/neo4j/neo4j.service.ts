@@ -6,6 +6,10 @@ import { User } from '../users/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from '../movies/movie.schema';
 import { Category } from '../categories/category.schema';
+import { Comment } from "../comments/comment.schema";
+
+const FAVORITE_SCORE = 1;
+const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
 
 @Injectable()
 export class Neo4jService {
@@ -17,6 +21,7 @@ export class Neo4jService {
       @InjectModel(User.name) private readonly userModel: Model<User>,
       @InjectModel(Movie.name) private readonly movieModel: Model<Movie>,
       @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
+      @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
   ) {
     try {
       this.driver = driver(
@@ -44,6 +49,7 @@ export class Neo4jService {
     await this.addCategories();
     await this.addMovies();
     await this.addUsers();
+    await this.addComments();
   }
 
   private async addUsers() {
@@ -95,12 +101,15 @@ export class Neo4jService {
                   `
                     MATCH (user: USER { _id: $id  })
                     MATCH (mov: MOVIE { _id: $mov_id })
-                    MERGE (user)-[r:FAVORITES]-(mov)
+                    MERGE (user)-[r:INTERACTIVE]->(mov)
+                    ON CREATE SET r.score = $score
+                    ON MATCH SET r.score = r.score + $score
                     RETURN mov.title, user.title
                 `,
                   {
                     id: user._id.toString(),
                     mov_id,
+                    score: FAVORITE_SCORE,
                   },
               );
             }
@@ -228,5 +237,36 @@ export class Neo4jService {
         );
       }
     }, `[CATEGORIES] ${categories.length}`);
+  }
+
+  private async addComments() {
+    const comments: DocumentDefinition<Comment>[] = await this.commentModel.find({}, {
+      movie: 1,
+      user: 1,
+      rate_star: 1
+    }).lean();
+
+    await this.runTransaction(
+        async txc => {
+          for (const comment of comments) {
+            await txc.run(
+                `
+                  MATCH (mov: MOVIE { _id: $movie_id })
+                  MATCH (user: USER { _id: $user_id })
+                  MERGE (user)-[r:INTERACTIVE]->(mov)
+                  ON CREATE SET r.score = $score
+                  ON MATCH SET r.score = r.score + $score
+                  RETURN mov.title, user.title, r
+                `,
+                {
+                  movie_id: comment.movie.toString(),
+                  user_id: comment.user.toString(),
+                  score: COMMENT_SCORE(comment),
+                },
+            );
+          }
+        },
+        `[COMMENTS] ${comments.length}`,
+    )
   }
 }
