@@ -8,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../users/user.schema';
 import { Category, CategorySchema } from '../categories/category.schema';
 import { Movie, MovieSchema } from '../movies/movie.schema';
+import { CommentSchema, Comment } from "../comments/comment.schema";
 
 @Module({
   imports: [
@@ -23,6 +24,10 @@ import { Movie, MovieSchema } from '../movies/movie.schema';
       {
         name: Movie.name,
         schema: MovieSchema,
+      },
+      {
+        name: Comment.name,
+        schema: CommentSchema,
       }
     ]),
     ConfigModule,
