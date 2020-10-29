@@ -10,6 +10,9 @@ import { Comment } from "../comments/comment.schema";
 import { ShowTime } from '../show-times/show-time.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import { Reservation } from '../reservations/reservation.schema';
+import { LocationDto } from '../common/location.dto';
+import { map, toArray } from 'rxjs/operators';
+import { concat } from 'rxjs';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
@@ -411,6 +414,21 @@ export class Neo4jService {
           }
         },
         `[RESERVATIONS] ${reservations.length}`,
+    );
+  }
+
+  async getRecommendedMovies(dto: LocationDto) {
+    const session = this.driver.rxSession();
+
+    return concat(
+        session
+            .run('MATCH (u: USER) RETURN u.full_name LIMIT 20')
+            .records()
+            .pipe(
+                map(record => record.get('u.full_name')),
+                toArray(),
+            ),
+        session.close(),
     );
   }
 }
