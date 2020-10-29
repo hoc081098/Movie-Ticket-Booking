@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
-import 'package:movie_admin/domain/repository/manager_repository.dart';
-import 'package:movie_admin/ui/users/manager_users_bloc.dart';
-import 'package:movie_admin/ui/users/manager_users_page.dart';
+import '../domain/repository/manager_repository.dart';
+import 'movies/movie_bloc.dart';
+import 'movies/movies_page.dart';
+import 'users/manager_users_bloc.dart';
+import 'users/manager_users_page.dart';
 
 import '../domain/model/user.dart';
 import '../domain/repository/user_repository.dart';
@@ -31,7 +33,13 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         child: ManagerUsersPage(),
         initBloc: () => ManagerUsersBloc(managerRepository),
       );
-    }
+    },
+    MoviePage.routeName: (context, setting) {
+      return BlocProvider<MovieBloc>(
+        child: MoviePage(),
+        initBloc: () => MovieBloc(),
+      );
+    },
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

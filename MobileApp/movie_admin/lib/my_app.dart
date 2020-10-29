@@ -102,7 +102,6 @@ class _SplashPageState extends State<SplashPage> {
       if (extraDelay > Duration.zero) {
         await Future.delayed(extraDelay);
       }
-
       return authState;
     }();
   }
@@ -182,11 +181,11 @@ class _SplashPageState extends State<SplashPage> {
           case AuthState.loggedIn:
             return routes[MainPage.routeName](context);
           case AuthState.notLoggedIn:
+          case AuthState.notForRole:
             return routes[LoginPage.routeName](context);
           case AuthState.notCompletedLogin:
             return routes[UpdateProfilePage.routeName](context);
         }
-
         throw '???';
       },
     );
