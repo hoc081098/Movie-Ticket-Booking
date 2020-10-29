@@ -9,9 +9,11 @@ import { Category } from '../categories/category.schema';
 import { Comment } from "../comments/comment.schema";
 import { ShowTime } from '../show-times/show-time.schema';
 import { Theatre } from '../theatres/theatre.schema';
+import { Reservation } from '../reservations/reservation.schema';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
+const RESERVED_SCORE = 2;
 
 @Injectable()
 export class Neo4jService {
@@ -26,6 +28,7 @@ export class Neo4jService {
       @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
+      @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
   ) {
     try {
       this.driver = driver(
@@ -56,6 +59,7 @@ export class Neo4jService {
     await this.addComments();
     await this.addTheatres();
     await this.addShowTimes();
+    await this.addReservations();
   }
 
   private async addUsers() {
@@ -363,6 +367,50 @@ export class Neo4jService {
           }
         },
         `[THEATRES] ${theatres.length}`,
+    );
+  }
+
+  private async addReservations() {
+    const reservations: DocumentDefinition<Reservation>[] = await this.reservationModel.find({})
+        .populate('show_time')
+        .lean();
+
+    await this.runTransaction(
+        async txc => {
+          for (const r of reservations) {
+            const showTime = r.show_time as ShowTime;
+
+            const r1 = await txc.run(
+                `
+                  MATCH (u: USER { _id: $uid })
+                  MATCH (s: SHOW_TIME { _id: $sid })
+                  MERGE (u)-[r:RESERVED]->(s)
+                  RETURN r
+              `,
+                {
+                  uid: r.user.toString(),
+                  sid: showTime._id.toString(),
+                }
+            );
+
+            const r2 = await txc.run(
+                `
+                  MATCH (mov: MOVIE { _id: $movie_id })
+                  MATCH (user: USER { _id: $user_id })
+                  MERGE (user)-[r:INTERACTIVE]->(mov)
+                  ON CREATE SET r.score = $score
+                  ON MATCH SET r.score = r.score + $score
+                  RETURN mov.title, user.title, r
+              `,
+                {
+                  movie_id: showTime.movie.toString(),
+                  user_id: r.user.toString(),
+                  score: RESERVED_SCORE,
+                },
+            );
+          }
+        },
+        `[RESERVATIONS] ${reservations.length}`,
     );
   }
 }
