@@ -9,6 +9,7 @@ import { User, UserSchema } from '../users/user.schema';
 import { Category, CategorySchema } from '../categories/category.schema';
 import { Movie, MovieSchema } from '../movies/movie.schema';
 import { CommentSchema, Comment } from "../comments/comment.schema";
+import { ShowTime, ShowTimeSchema } from 'src/show-times/show-time.schema';
 
 @Module({
   imports: [
@@ -28,7 +29,11 @@ import { CommentSchema, Comment } from "../comments/comment.schema";
       {
         name: Comment.name,
         schema: CommentSchema,
-      }
+      },
+      {
+        name: ShowTime.name,
+        schema: ShowTimeSchema,
+      },
     ]),
     ConfigModule,
     AuthModule,
