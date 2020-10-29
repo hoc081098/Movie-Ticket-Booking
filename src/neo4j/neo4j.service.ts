@@ -11,8 +11,11 @@ import { ShowTime } from '../show-times/show-time.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import { Reservation } from '../reservations/reservation.schema';
 import { LocationDto } from '../common/location.dto';
-import { map, toArray } from 'rxjs/operators';
-import { concat } from 'rxjs';
+import { exhaustMap, first, map, shareReplay, toArray } from 'rxjs/operators';
+import { concat, identity, merge, Observable, partition } from 'rxjs';
+import { UserPayload } from '../auth/get-user.decorator';
+import { checkCompletedLogin } from '../common/utils';
+import { Parameters } from 'neo4j-driver/types/query-runner';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
@@ -417,18 +420,72 @@ export class Neo4jService {
     );
   }
 
-  async getRecommendedMovies(dto: LocationDto) {
+  async getRecommendedMovies(
+      dto: LocationDto,
+      userPayload: UserPayload
+  ) {
+    const user = checkCompletedLogin(userPayload);
+    const isInteracted$ = this.userInteractedMovie(user).pipe(shareReplay(1));
+    const [interacted$, notInteracted$] = partition(isInteracted$, identity);
+
+    const queryInteracted: () => [string, Parameters] = () => [
+      `
+        
+      `,
+      {},
+    ];
+    const queryNotInteracted: () => [string, Parameters] = () => [
+      `
+        
+      `,
+      {},
+    ];
+
+    return merge(
+        interacted$.pipe(map(queryInteracted)),
+        notInteracted$.pipe(map(queryNotInteracted)),
+    ).pipe(
+        exhaustMap(([query, parameters]) => {
+          const session = this.driver.rxSession();
+
+          return concat(
+              session
+                  .run(query, parameters)
+                  .records()
+                  .pipe(
+                      map(record => record.get('u.full_name')),
+                      toArray(),
+                  ),
+              session.close(),
+          );
+        }),
+    );
+  }
+
+  private userInteractedMovie(user: User): Observable<boolean> {
     const session = this.driver.rxSession();
 
-    return concat(
-        session
-            .run('MATCH (u: USER) RETURN u.full_name LIMIT 20')
-            .records()
-            .pipe(
-                map(record => record.get('u.full_name')),
-                toArray(),
+    const result$ = session
+        .run(
+            `
+                RETURN exists( (:USER { _id: $id })-[:INTERACTIVE]->(:MOVIE) ) AS interacted
+            `,
+            {
+              id: user._id.toString(),
+            },
+        )
+        .records()
+        .pipe(
+            map(r => r.get('interacted') === true),
+            first(
+                identity,
+                false,
             ),
-        session.close(),
-    );
+        );
+
+    return concat(
+        result$,
+        session.close() as Observable<never>,
+    )
   }
 }
