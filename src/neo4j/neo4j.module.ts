@@ -11,6 +11,7 @@ import { Movie, MovieSchema } from '../movies/movie.schema';
 import { Comment, CommentSchema } from "../comments/comment.schema";
 import { ShowTime, ShowTimeSchema } from 'src/show-times/show-time.schema';
 import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
+import { Reservation, ReservationSchema } from '../reservations/reservation.schema';
 
 @Module({
   imports: [
@@ -38,6 +39,10 @@ import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
       {
         name: Theatre.name,
         schema: TheatreSchema,
+      },
+      {
+        name: Reservation.name,
+        schema: ReservationSchema,
       },
     ]),
     ConfigModule,
