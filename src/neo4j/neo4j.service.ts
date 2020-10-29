@@ -8,6 +8,7 @@ import { Movie } from '../movies/movie.schema';
 import { Category } from '../categories/category.schema';
 import { Comment } from "../comments/comment.schema";
 import { ShowTime } from '../show-times/show-time.schema';
+import { Theatre } from '../theatres/theatre.schema';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
@@ -24,6 +25,7 @@ export class Neo4jService {
       @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
       @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
+      @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
   ) {
     try {
       this.driver = driver(
@@ -52,6 +54,7 @@ export class Neo4jService {
     await this.addMovies();
     await this.addUsers();
     await this.addComments();
+    await this.addTheatres();
     await this.addShowTimes();
   }
 
@@ -248,9 +251,9 @@ export class Neo4jService {
       user: 1,
       rate_star: 1
     })
-      .sort({createdAt: -1})
-      .limit(2000)
-      .lean();
+        .sort({ createdAt: -1 })
+        .limit(1_000)
+        .lean();
 
     await this.runTransaction(
         async txc => {
@@ -277,9 +280,7 @@ export class Neo4jService {
   }
 
   private async addShowTimes() {
-    const showTimes = await this.showTimeModel.find({})
-        .lean()
-        .populate('theatre');
+    const showTimes = await this.showTimeModel.find({}).lean();
 
     await this.runTransaction(
         async txc => {
@@ -288,12 +289,10 @@ export class Neo4jService {
                 `
                   MERGE(st: SHOW_TIME { _id: $id })
                   ON CREATE SET
-                    st.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) }),
                     st.room = $room,
                     st.start_time = apoc.date.fromISO8601($start_time),
                     st.end_time = apoc.date.fromISO8601($end_time)
                   ON MATCH SET
-                    st.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) }),
                     st.room = $room,
                     st.start_time = apoc.date.fromISO8601($start_time),
                     st.end_time = apoc.date.fromISO8601($end_time)
@@ -301,8 +300,6 @@ export class Neo4jService {
                 {
                   id: st._id.toString(),
                   room: st.room ?? '',
-                  latitude: st.theatre.location.coordinates[1],
-                  longitude: st.theatre.location.coordinates[0],
                   start_time: st.start_time.toISOString(),
                   end_time: st.end_time.toISOString(),
                 },
@@ -313,23 +310,59 @@ export class Neo4jService {
     );
 
     await this.runTransaction(
-      async txc => {
-        for (const st of showTimes) {
-          await txc.run(
-            `
-              MATCH (st: SHOW_TIME { _id: $id })
-              MATCH (mov: MOVIE { _id: $mov_id })
-              MERGE (mov)-[r:SHOW_TIME]-(st)
-              RETURN r
-            `,
-            {
-              id: st._id.toString(),
-              mov_id: st.movie.toString(),
-            },
-          );
-        }
-      },
-      `[SHOW_TIMES] ${showTimes.length}`,
+        async txc => {
+          for (const st of showTimes) {
+            await txc.run(
+                `
+                      MATCH (st: SHOW_TIME { _id: $id })
+                      MATCH (mov: MOVIE { _id: $mov_id })
+                      MATCH (t: THEATRE { _id: $theatre_id })
+                      MERGE (mov)-[r1:HAS_SHOW_TIME]-(st)
+                      MERGE (t)-[r2:HAS_SHOW_TIME]-(st)
+                      RETURN r1, r2
+                `,
+                {
+                  id: st._id.toString(),
+                  mov_id: st.movie.toString(),
+                  theatre_id: st.theatre.toString(),
+                },
+            );
+          }
+        },
+        `[SHOW_TIMES] ${showTimes.length}`,
+    );
+  }
+
+  private async addTheatres() {
+    const theatres: DocumentDefinition<Theatre>[] = await this.theatreModel.find({}).lean();
+
+    await this.runTransaction(
+        async txc => {
+          for (const t of theatres) {
+            await txc.run(
+                `
+                    MERGE (t: THEATRE { _id: $id })
+                    ON CREATE SET
+                      t.name = $name,
+                      t.address = $address,
+                      t.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) })
+                    ON MATCH SET
+                      t.name = $name,
+                      t.address = $address,
+                      t.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) })
+                    RETURN t.name
+                `,
+                {
+                  id: t._id.toString(),
+                  name: t.name ?? '',
+                  address: t.address ?? '',
+                  latitude: t.location?.coordinates?.[1] ?? -1,
+                  longitude: t.location?.coordinates?.[0] ?? -1,
+                }
+            );
+          }
+        },
+        `[THEATRES] ${theatres.length}`,
     );
   }
 }

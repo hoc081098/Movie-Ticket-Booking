@@ -8,8 +8,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../users/user.schema';
 import { Category, CategorySchema } from '../categories/category.schema';
 import { Movie, MovieSchema } from '../movies/movie.schema';
-import { CommentSchema, Comment } from "../comments/comment.schema";
+import { Comment, CommentSchema } from "../comments/comment.schema";
 import { ShowTime, ShowTimeSchema } from 'src/show-times/show-time.schema';
+import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
 
 @Module({
   imports: [
@@ -33,6 +34,10 @@ import { ShowTime, ShowTimeSchema } from 'src/show-times/show-time.schema';
       {
         name: ShowTime.name,
         schema: ShowTimeSchema,
+      },
+      {
+        name: Theatre.name,
+        schema: TheatreSchema,
       },
     ]),
     ConfigModule,
