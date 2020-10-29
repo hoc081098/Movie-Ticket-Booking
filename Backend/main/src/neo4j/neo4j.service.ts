@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from '../movies/movie.schema';
 import { Category } from '../categories/category.schema';
 import { Comment } from "../comments/comment.schema";
+import { ShowTime } from '../show-times/show-time.schema';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
@@ -22,6 +23,7 @@ export class Neo4jService {
       @InjectModel(Movie.name) private readonly movieModel: Model<Movie>,
       @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
       @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
+      @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
   ) {
     try {
       this.driver = driver(
@@ -50,6 +52,7 @@ export class Neo4jService {
     await this.addMovies();
     await this.addUsers();
     await this.addComments();
+    await this.addShowTimes();
   }
 
   private async addUsers() {
@@ -244,7 +247,10 @@ export class Neo4jService {
       movie: 1,
       user: 1,
       rate_star: 1
-    }).lean();
+    })
+      .sort({createdAt: -1})
+      .limit(2000)
+      .lean();
 
     await this.runTransaction(
         async txc => {
@@ -268,5 +274,62 @@ export class Neo4jService {
         },
         `[COMMENTS] ${comments.length}`,
     )
+  }
+
+  private async addShowTimes() {
+    const showTimes = await this.showTimeModel.find({})
+        .lean()
+        .populate('theatre');
+
+    await this.runTransaction(
+        async txc => {
+          for (const st of showTimes) {
+            await txc.run(
+                `
+                  MERGE(st: SHOW_TIME { _id: $id })
+                  ON CREATE SET
+                    st.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) }),
+                    st.room = $room,
+                    st.start_time = apoc.date.fromISO8601($start_time),
+                    st.end_time = apoc.date.fromISO8601($end_time)
+                  ON MATCH SET
+                    st.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) }),
+                    st.room = $room,
+                    st.start_time = apoc.date.fromISO8601($start_time),
+                    st.end_time = apoc.date.fromISO8601($end_time)
+                `,
+                {
+                  id: st._id.toString(),
+                  room: st.room ?? '',
+                  latitude: st.theatre.location.coordinates[1],
+                  longitude: st.theatre.location.coordinates[0],
+                  start_time: st.start_time.toISOString(),
+                  end_time: st.end_time.toISOString(),
+                },
+            );
+          }
+        },
+        `[SHOW_TIMES] ${showTimes.length}`,
+    );
+
+    await this.runTransaction(
+      async txc => {
+        for (const st of showTimes) {
+          await txc.run(
+            `
+              MATCH (st: SHOW_TIME { _id: $id })
+              MATCH (mov: MOVIE { _id: $mov_id })
+              MERGE (mov)-[r:SHOW_TIME]-(st)
+              RETURN r
+            `,
+            {
+              id: st._id.toString(),
+              mov_id: st.movie.toString(),
+            },
+          );
+        }
+      },
+      `[SHOW_TIMES] ${showTimes.length}`,
+    );
   }
 }
