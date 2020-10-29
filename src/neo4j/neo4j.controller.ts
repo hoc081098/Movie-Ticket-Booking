@@ -1,8 +1,9 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { Neo4jService } from './neo4j.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { Roles, RolesGuard } from '../auth/roles.guard';
+import { LocationDto } from '../common/location.dto';
 
 @UseGuards(AuthGuard, RolesGuard)
 @ApiTags('neo4j')
@@ -17,5 +18,12 @@ export class Neo4jController {
   @Post('transfer')
   transfer() {
     return this.neo4jService.transferData();
+  }
+
+  @Get()
+  getRecommendedMovies(
+      @Query() dto: LocationDto,
+  ) {
+    return this.neo4jService.getRecommendedMovies(dto);
   }
 }
