@@ -486,8 +486,8 @@ export class Neo4jService {
           WITH u1, u2, nom / denom AS pearson
           ORDER BY pearson DESC LIMIT 15
           
-          OPTIONAL MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
-          MATCH (m)-[:HAS_SHOW_TIME]-(st:SHOW_TIME)-[:HAS_SHOW_TIME]-(t:THEATRE)
+          MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE), (m)-[:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[:HAS_SHOW_TIME]-(t:THEATRE)
+          WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
           WITH m, pearson, r, datetime({ epochMillis: st.start_time }) as startTime,
               datetime({ epochMillis: st.end_time }) as endTime,
               datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) as startOfDay
@@ -497,7 +497,7 @@ export class Neo4jService {
               AND endTime <= startOfDay + duration({ days: 4 })
           
           RETURN m._id AS _id, pearson, r.score as score, sum(pearson * r.score) AS recommendation
-          ORDER BY score DESC LIMIT 24
+          ORDER BY recommendation DESC LIMIT 24
           `,
           {
             id: user._id.toString(),
@@ -527,8 +527,8 @@ export class Neo4jService {
           WITH u1, u2, nom / denom AS pearson
           ORDER BY pearson DESC LIMIT 15
           
-          OPTIONAL MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
-          MATCH (m)-[:HAS_SHOW_TIME]-(st:SHOW_TIME)-[:HAS_SHOW_TIME]-(t:THEATRE)
+          MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE), (m)-[:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[:HAS_SHOW_TIME]-(t:THEATRE)
+          WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
           WITH m, pearson, r,
               datetime({ epochMillis: st.start_time }) as startTime,
               datetime({ epochMillis: st.end_time }) as endTime,
@@ -536,7 +536,7 @@ export class Neo4jService {
           WHERE startTime >= startOfDay AND endTime <= startOfDay + duration({ days: 4 })
           
           RETURN m._id AS _id, pearson, r.score as score, sum(pearson * r.score) AS recommendation
-          ORDER BY score DESC LIMIT 24
+          ORDER BY recommendation DESC LIMIT 24
           `,
           {
             id: user._id.toString(),
