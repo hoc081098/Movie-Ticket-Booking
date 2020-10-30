@@ -27,7 +27,7 @@ dependencies:
   meta: ^1.2.3
   flutter_rating_bar: ^3.0.1+1
   rx_redux: ^2.1.0
-  stream_loader: ^1.0.1
+  stream_loader: ^1.1.0-beta01
   loading_indicator: ^1.2.0
   google_sign_in: ^4.5.4
   font_awesome_flutter: ^8.8.1

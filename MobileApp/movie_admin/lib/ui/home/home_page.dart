@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_admin/ui/movies/movies_page.dart';
+import '../../utils/type_defs.dart';
 import '../users/manager_users_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,18 +21,29 @@ class _HomePageState extends State<HomePage> {
         crossAxisCount: 2,
         physics: ClampingScrollPhysics(),
         children: <Widget>[
-          card(Icons.supervised_user_circle_rounded, "Manager users",
-              "5 notifiction", Colors.red),
-          card(Icons.supervised_user_circle_rounded, "Manager users",
-              "5 notifiction", Colors.red)
+          card(
+            Icons.supervised_user_circle_rounded,
+            'Manager users',
+            '5 notifiction',
+            Colors.red,
+            () => Navigator.of(context).pushNamed(ManagerUsersPage.routeName),
+          ),
+          card(
+            Icons.movie_filter_outlined,
+            "Manager movie",
+            "5 notifiction",
+            Colors.red,
+            () => Navigator.of(context).pushNamed(MoviePage.routeName),
+          )
         ],
       ),
     );
   }
 
-  Widget card(IconData icon, String title, String note, Color color) {
+  Widget card(
+      IconData icon, String title, String note, Color color, Function0 onTap) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(ManagerUsersPage.routeName),
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Material(

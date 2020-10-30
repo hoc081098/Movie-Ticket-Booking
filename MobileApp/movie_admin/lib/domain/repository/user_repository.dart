@@ -7,11 +7,7 @@ import '../../utils/optional.dart';
 import '../model/location.dart';
 import '../model/user.dart';
 
-enum AuthState {
-  loggedIn,
-  notLoggedIn,
-  notCompletedLogin,
-}
+enum AuthState { loggedIn, notLoggedIn, notCompletedLogin, notForRole }
 
 abstract class UserRepository {
   /// Returns a [ValueStream]

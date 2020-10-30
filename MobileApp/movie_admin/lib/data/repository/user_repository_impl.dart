@@ -69,7 +69,9 @@ class UserRepositoryImpl implements UserRepository {
     return local == null
         ? AuthState.notLoggedIn
         : local.is_completed
-            ? AuthState.loggedIn
+            ? local.role == Role.USER.string()
+                ? AuthState.notForRole
+                : AuthState.loggedIn
             : AuthState.notCompletedLogin;
   }
 

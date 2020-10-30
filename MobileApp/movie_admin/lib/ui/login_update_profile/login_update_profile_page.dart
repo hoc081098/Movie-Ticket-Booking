@@ -12,6 +12,7 @@ import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:movie_admin/ui/login/login_page.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
@@ -102,7 +103,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     avatarTuple$ = Rx.combineLatest2(
       avatarFile$,
       avatar$,
-      (File a, String b) => Tuple2(a, b),
+          (File a, String b) => Tuple2(a, b),
     ).shareValueSeeded(Tuple2(avatarFile$.value, avatar$.value))
       ..listen(null).disposedBy(bag);
 
@@ -143,7 +144,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    textFieldStyle ??= Theme.of(context)
+    textFieldStyle ??= Theme
+        .of(context)
         .textTheme
         .subtitle1
         .copyWith(fontSize: 15.0, color: Colors.white);
@@ -161,9 +163,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           .doOnData((_) => isFetching$.add(false))
           .doOnError((_, __) => isFetching$.add(false))
           .listen(
-            populateUser,
-            onError: (e, s) => print('Fetch user error $e $s'),
-          )
+        populateUser,
+        onError: (e, s) => print('Fetch user error $e $s'),
+      )
           .disposedBy(bag);
     }
   }
@@ -180,6 +182,15 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('Update profile'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {
+                await Provider.of<UserRepository>(context).logout();
+                await Navigator.of(context).pushNamed(LoginPage.routeName);
+                Navigator.of(context).pop();
+              })
+        ],
       ),
       body: Stack(
         children: [
@@ -295,7 +306,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         height: imageSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Theme.of(context).backgroundColor,
+          color: Theme
+              .of(context)
+              .backgroundColor,
           boxShadow: [
             BoxShadow(
               blurRadius: 16,
@@ -328,11 +341,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                   fit: BoxFit.cover,
                   width: imageSize,
                   height: imageSize,
-                  progressIndicatorBuilder: (
-                    BuildContext context,
-                    String url,
-                    progress,
-                  ) {
+                  progressIndicatorBuilder: (BuildContext context,
+                      String url,
+                      progress,) {
                     return Center(
                       child: CircularProgressIndicator(
                         value: progress.progress,
@@ -341,11 +352,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                       ),
                     );
                   },
-                  errorWidget: (
-                    BuildContext context,
-                    String url,
-                    dynamic error,
-                  ) {
+                  errorWidget: (BuildContext context,
+                      String url,
+                      dynamic error,) {
                     return Center(
                       child: Icon(
                         Icons.person,
@@ -429,7 +438,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           FocusScope.of(context).requestFocus(addressFocusNode),
       focusNode: phoneNumberFocusNode,
       validator: (v) =>
-          phoneNumberRegex.hasMatch(v) ? null : 'Invalid phone number',
+      phoneNumberRegex.hasMatch(v) ? null : 'Invalid phone number',
       controller: phoneNumberTextController,
     );
   }
@@ -498,7 +507,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           FocusScope.of(context).requestFocus(FocusNode());
           onSubmit();
         },
-        color: Theme.of(context).backgroundColor,
+        color: Theme
+            .of(context)
+            .backgroundColor,
         child: Text(
           'UPDATE',
           style: TextStyle(
@@ -506,7 +517,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             fontSize: 16.0,
           ),
         ),
-        splashColor: Theme.of(context).accentColor,
+        splashColor: Theme
+            .of(context)
+            .accentColor,
         elevation: 12,
       ),
       builder: (context, child) {
@@ -518,13 +531,15 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           child: Material(
             elevation: 5.0,
             clipBehavior: Clip.antiAlias,
-            shadowColor: Theme.of(context).accentColor,
+            shadowColor: Theme
+                .of(context)
+                .accentColor,
             borderRadius: BorderRadius.circular(30.0),
             child: value > 75.0
                 ? child
                 : Center(
-                    child: CircularProgressIndicator(strokeWidth: 2.0),
-                  ),
+              child: CircularProgressIndicator(strokeWidth: 2.0),
+            ),
           ),
         );
       },
@@ -614,7 +629,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         await Navigator.pushNamedAndRemoveUntil(
           context,
           MainPage.routeName,
-          (route) => false,
+              (route) => false,
         );
       } else {
         await Navigator.pop(context);
@@ -650,7 +665,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       }
 
       final details = (await GoogleMapsPlaces(apiKey: apiKey)
-              .getDetailsByPlaceId(prediction.placeId))
+          .getDetailsByPlaceId(prediction.placeId))
           .result;
 
       address = details.formattedAddress;
