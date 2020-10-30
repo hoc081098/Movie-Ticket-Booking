@@ -14,7 +14,7 @@ import { LocationDto } from '../common/location.dto';
 import { exhaustMap, first, map, shareReplay, toArray } from 'rxjs/operators';
 import { concat, defer, identity, merge, Observable, partition } from 'rxjs';
 import { UserPayload } from '../auth/get-user.decorator';
-import { checkCompletedLogin } from '../common/utils';
+import { checkCompletedLogin, constants, getCoordinates } from '../common/utils';
 import { Parameters } from 'neo4j-driver/types/query-runner';
 
 const FAVORITE_SCORE = 1;
@@ -458,39 +458,92 @@ export class Neo4jService {
       dto: LocationDto,
       userPayload: UserPayload
   ): Observable<(DocumentDefinition<Movie> & Record<string, any>)[]> {
+    const center: [number, number] | null = getCoordinates(dto);
     const user = checkCompletedLogin(userPayload);
 
     const isInteracted$ = this.userInteractedMovie(user).pipe(shareReplay(1));
     const [interacted$, notInteracted$] = partition(isInteracted$, identity);
 
-    const queryInteracted: () => [string, Parameters] = () => [
-      `
-        MATCH (u1:USER { _id: $id })-[r1:INTERACTIVE]->(m:MOVIE)
-        WITH u1, avg(r1.score) AS u1_mean
-        
-        MATCH (u1:USER)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
-        WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS iteractions WHERE size(iteractions) > 0
-        
-        MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE)
-        WITH u1, u1_mean, u2, avg(r.score) AS u2_mean, iteractions
-        
-        UNWIND iteractions AS r
-        
-        WITH sum( (r.r1.score - u1_mean) * (r.r2.score - u2_mean) ) AS nom,
-             sqrt( sum((r.r1.score - u1_mean) ^ 2) * sum((r.r2.score - u2_mean) ^ 2) ) AS denom,
-             u1, u2 WHERE denom <> 0
+    const queryInteracted: () => [string, Parameters] = () => {
+      if (center) {
+        return [
+          `
+          MATCH (u1:USER { _id: $id })-[r1:INTERACTIVE]->(m:MOVIE)
+          WITH u1, avg(r1.score) AS u1_mean
           
-        WITH u1, u2, nom / denom AS pearson
-        ORDER BY pearson DESC LIMIT 16
-        
-        MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
-        RETURN m._id AS _id, sum(pearson * r.score) AS score
-        ORDER BY score DESC LIMIT 24
-      `,
-      {
-        id: user._id.toString(),
-      },
-    ];
+          MATCH (u1:USER)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
+          WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS iteractions WHERE size(iteractions) > 1
+          
+          MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE)
+          WITH u1, u1_mean, u2, avg(r.score) AS u2_mean, iteractions
+          
+          UNWIND iteractions AS r
+          
+          WITH sum( (r.r1.score - u1_mean) * (r.r2.score - u2_mean) ) AS nom,
+               sqrt( sum((r.r1.score - u1_mean) ^ 2) * sum((r.r2.score - u2_mean) ^ 2) ) AS denom,
+               u1, u2 WHERE denom <> 0
+            
+          WITH u1, u2, nom / denom AS pearson
+          ORDER BY pearson DESC LIMIT 15
+          
+          OPTIONAL MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
+          MATCH (m)-[:HAS_SHOW_TIME]-(st:SHOW_TIME)-[:HAS_SHOW_TIME]-(t:THEATRE)
+          WITH m, pearson, r, datetime({ epochMillis: st.start_time }) as startTime,
+              datetime({ epochMillis: st.end_time }) as endTime,
+              datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) as startOfDay
+          WHERE
+              distance(point({ latitude: $lat, longitude: $lng }), t.location) < $max_distance
+              AND startTime >= startOfDay
+              AND endTime <= startOfDay + duration({ days: 4 })
+          
+          RETURN m._id AS _id, pearson, r.score as score, sum(pearson * r.score) AS recommendation
+          ORDER BY score DESC LIMIT 24
+          `,
+          {
+            id: user._id.toString(),
+            lng: center[0],
+            lat: center[1],
+            max_distance: constants.maxDistanceInMeters,
+          },
+        ];
+      } else {
+        return [
+          `
+          MATCH (u1:USER { _id: $id })-[r1:INTERACTIVE]->(m:MOVIE)
+          WITH u1, avg(r1.score) AS u1_mean
+          
+          MATCH (u1:USER)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
+          WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS iteractions WHERE size(iteractions) > 1
+          
+          MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE)
+          WITH u1, u1_mean, u2, avg(r.score) AS u2_mean, iteractions
+          
+          UNWIND iteractions AS r
+          
+          WITH sum( (r.r1.score - u1_mean) * (r.r2.score - u2_mean) ) AS nom,
+               sqrt( sum((r.r1.score - u1_mean) ^ 2) * sum((r.r2.score - u2_mean) ^ 2) ) AS denom,
+               u1, u2 WHERE denom <> 0
+            
+          WITH u1, u2, nom / denom AS pearson
+          ORDER BY pearson DESC LIMIT 15
+          
+          OPTIONAL MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
+          MATCH (m)-[:HAS_SHOW_TIME]-(st:SHOW_TIME)-[:HAS_SHOW_TIME]-(t:THEATRE)
+          WITH m, pearson, r,
+              datetime({ epochMillis: st.start_time }) as startTime,
+              datetime({ epochMillis: st.end_time }) as endTime,
+              datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) as startOfDay
+          WHERE startTime >= startOfDay AND endTime <= startOfDay + duration({ days: 4 })
+          
+          RETURN m._id AS _id, pearson, r.score as score, sum(pearson * r.score) AS recommendation
+          ORDER BY score DESC LIMIT 24
+          `,
+          {
+            id: user._id.toString(),
+          },
+        ];
+      }
+    };
     const queryNotInteracted: () => [string, Parameters] = () => [
       `
         
@@ -512,8 +565,8 @@ export class Neo4jService {
                   .pipe(
                       map(record =>
                           ({
+                            ...record.toObject(),
                             _id: record.get('_id') as string,
-                            score: record.get('score') as number
                           })
                       ),
                       toArray(),
@@ -525,8 +578,8 @@ export class Neo4jService {
                                 .pipe(
                                     map(movies =>
                                         movies.sort((l, r) => {
-                                          const lScore = restById.get(l._id.toString())['score'];
-                                          const rScore = restById.get(r._id.toString())['score'];
+                                          const lScore = restById.get(l._id.toString())['recommendation'];
+                                          const rScore = restById.get(r._id.toString())['recommendation'];
                                           return rScore - lScore;
                                         })
                                     ),
