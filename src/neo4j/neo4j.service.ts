@@ -21,6 +21,28 @@ const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
 const RESERVED_SCORE = 2;
 
+function splitIdAndRests(idAndRests: IdAndRest[]): IdAndMap {
+  const ids: string[] = idAndRests.map(r => r._id);
+
+  const restById: Map<string, Record<string, any>> = idAndRests.reduce(
+      (acc, e) => {
+        const { _id, ...rest } = e;
+        acc.set(_id, rest);
+        return acc;
+      },
+      new Map<string, Record<string, any>>()
+  );
+
+  return { ids, restById };
+}
+
+type IdAndRest = {
+  _id: string,
+  [k: string]: any,
+};
+
+type IdAndMap = { ids: string[]; restById: Map<string, Record<string, any>> };
+
 @Injectable()
 export class Neo4jService {
   private readonly logger = new Logger(Neo4jService.name);
@@ -432,11 +454,12 @@ export class Neo4jService {
   /// START RECOMMENDED
   ///
 
-  async getRecommendedMovies(
+  getRecommendedMovies(
       dto: LocationDto,
       userPayload: UserPayload
-  ) {
+  ): Observable<(DocumentDefinition<Movie> & Record<string, any>)[]> {
     const user = checkCompletedLogin(userPayload);
+
     const isInteracted$ = this.userInteractedMovie(user).pipe(shareReplay(1));
     const [interacted$, notInteracted$] = partition(isInteracted$, identity);
 
@@ -458,11 +481,11 @@ export class Neo4jService {
              u1, u2 WHERE denom <> 0
           
         WITH u1, u2, nom / denom AS pearson
-        ORDER BY pearson DESC LIMIT 10
+        ORDER BY pearson DESC LIMIT 16
         
         MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
         RETURN m._id AS _id, sum(pearson * r.score) AS score
-        ORDER BY score DESC LIMIT 25
+        ORDER BY score DESC LIMIT 24
       `,
       {
         id: user._id.toString(),
@@ -487,11 +510,31 @@ export class Neo4jService {
                   .run(query, parameters)
                   .records()
                   .pipe(
-                      map(record => ({ _id: record.get('_id') as string, score: record.get('score') as number })),
+                      map(record =>
+                          ({
+                            _id: record.get('_id') as string,
+                            score: record.get('score') as number
+                          })
+                      ),
                       toArray(),
-                      exhaustMap((idAndRests) => this.findMoviesInIds(idAndRests)),
+                      map(splitIdAndRests),
+                      exhaustMap((idAndMap) => {
+                            const { restById } = idAndMap;
+                            return this
+                                .findMoviesInIds(idAndMap)
+                                .pipe(
+                                    map(movies =>
+                                        movies.sort((l, r) => {
+                                          const lScore = restById.get(l._id.toString())['score'];
+                                          const rScore = restById.get(r._id.toString())['score'];
+                                          return rScore - lScore;
+                                        })
+                                    ),
+                                );
+                          },
+                      ),
                   ),
-              session.close(),
+              session.close() as Observable<never>,
           );
         }),
     );
@@ -524,26 +567,16 @@ export class Neo4jService {
     )
   }
 
-
-  private findMoviesInIds(idAndRests: IdAndRest[]): Observable<Movie[]> {
-    const ids: string[] = idAndRests.map(r => r._id);
-    const restById: Map<string, Record<string, any>> = idAndRests.reduce(
-        (acc, e) => {
-          const { _id, rest } = e;
-          acc.set(_id, rest);
-          return acc;
-        },
-        new Map<string, Record<string, any>>()
-    );
-
-    this.logger.debug(restById);
-
+  private findMoviesInIds({ ids, restById }: IdAndMap): Observable<(DocumentDefinition<Movie> & Record<string, any>)[]> {
     return defer(() => this.movieModel.find({ _id: { $in: ids } }))
         .pipe(
             map(movies =>
-                movies.map(m => {
-                  return Object.assign(m, restById.get(m._id.toString()) ?? {});
-                }),
+                movies.map(m =>
+                    ({
+                      ...m.toObject(),
+                      ...(restById.get(m._id.toString()) ?? {}),
+                    }),
+                ),
             ),
         );
   }
@@ -552,8 +585,3 @@ export class Neo4jService {
   /// END RECOMMENDED
   ///
 }
-
-type IdAndRest = {
-  _id: string,
-  [k: string]: any,
-};
