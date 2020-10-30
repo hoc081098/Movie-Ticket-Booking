@@ -12,7 +12,7 @@ import { Theatre } from '../theatres/theatre.schema';
 import { Reservation } from '../reservations/reservation.schema';
 import { LocationDto } from '../common/location.dto';
 import { exhaustMap, first, map, shareReplay, toArray } from 'rxjs/operators';
-import { concat, identity, merge, Observable, partition } from 'rxjs';
+import { concat, defer, identity, merge, Observable, partition } from 'rxjs';
 import { UserPayload } from '../auth/get-user.decorator';
 import { checkCompletedLogin } from '../common/utils';
 import { Parameters } from 'neo4j-driver/types/query-runner';
@@ -49,6 +49,10 @@ export class Neo4jService {
       this.logger.debug(`Error ${e}`);
     }
   }
+
+  ///
+  /// START TRANSFER DATA
+  ///
 
   async transferData(): Promise<void> {
     await this.runTransaction(txc =>
@@ -420,6 +424,14 @@ export class Neo4jService {
     );
   }
 
+  ///
+  /// END TRANSFER DATA
+  ///
+
+  ///
+  /// START RECOMMENDED
+  ///
+
   async getRecommendedMovies(
       dto: LocationDto,
       userPayload: UserPayload
@@ -430,9 +442,31 @@ export class Neo4jService {
 
     const queryInteracted: () => [string, Parameters] = () => [
       `
+        MATCH (u1:USER { _id: $id })-[r1:INTERACTIVE]->(m:MOVIE)
+        WITH u1, avg(r1.score) AS u1_mean
         
+        MATCH (u1:USER)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
+        WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS iteractions WHERE size(iteractions) > 0
+        
+        MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE)
+        WITH u1, u1_mean, u2, avg(r.score) AS u2_mean, iteractions
+        
+        UNWIND iteractions AS r
+        
+        WITH sum( (r.r1.score - u1_mean) * (r.r2.score - u2_mean) ) AS nom,
+             sqrt( sum((r.r1.score - u1_mean) ^ 2) * sum((r.r2.score - u2_mean) ^ 2) ) AS denom,
+             u1, u2 WHERE denom <> 0
+          
+        WITH u1, u2, nom / denom AS pearson
+        ORDER BY pearson DESC LIMIT 10
+        
+        MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
+        RETURN m._id AS _id, sum(pearson * r.score) AS score
+        ORDER BY score DESC LIMIT 25
       `,
-      {},
+      {
+        id: user._id.toString(),
+      },
     ];
     const queryNotInteracted: () => [string, Parameters] = () => [
       `
@@ -453,8 +487,9 @@ export class Neo4jService {
                   .run(query, parameters)
                   .records()
                   .pipe(
-                      map(record => record.get('u.full_name')),
+                      map(record => ({ _id: record.get('_id') as string, score: record.get('score') as number })),
                       toArray(),
+                      exhaustMap((idAndRests) => this.findMoviesInIds(idAndRests)),
                   ),
               session.close(),
           );
@@ -488,4 +523,37 @@ export class Neo4jService {
         session.close() as Observable<never>,
     )
   }
+
+
+  private findMoviesInIds(idAndRests: IdAndRest[]): Observable<Movie[]> {
+    const ids: string[] = idAndRests.map(r => r._id);
+    const restById: Map<string, Record<string, any>> = idAndRests.reduce(
+        (acc, e) => {
+          const { _id, rest } = e;
+          acc.set(_id, rest);
+          return acc;
+        },
+        new Map<string, Record<string, any>>()
+    );
+
+    this.logger.debug(restById);
+
+    return defer(() => this.movieModel.find({ _id: { $in: ids } }))
+        .pipe(
+            map(movies =>
+                movies.map(m => {
+                  return Object.assign(m, restById.get(m._id.toString()) ?? {});
+                }),
+            ),
+        );
+  }
+
+  ///
+  /// END RECOMMENDED
+  ///
 }
+
+type IdAndRest = {
+  _id: string,
+  [k: string]: any,
+};
