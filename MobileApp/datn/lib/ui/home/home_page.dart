@@ -14,6 +14,7 @@ import '../../domain/model/movie.dart';
 import '../../domain/repository/city_repository.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../../utils/error.dart';
+import '../../utils/streams.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
@@ -54,10 +55,9 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
     token ??= () {
       final cityRepo = Provider.of<CityRepository>(context);
+      final repo = Provider.of<MovieRepository>(context);
 
       nowPlayingBloc = () {
-        final repo = Provider.of<MovieRepository>(context);
-
         final loaderFunction = () {
           final location = cityRepo.selectedCity$.value.location;
           print('[DEBUG] fetch location=$location');
@@ -79,10 +79,14 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
       cityRepo.selectedCity$.distinct().listen((city) {
         print('[DEBUG] city=$city');
         nowPlayingBloc.fetch();
+
+        repo
+            .getRecommendedMovies(city.location)
+            .debug('RECOMMENDED <3')
+            .listen((event) {});
       }).disposedBy(bag);
 
       comingSoonBloc = () {
-        final repo = Provider.of<MovieRepository>(context);
         final loaderFunction = () => repo.getComingSoonMovies(
               page: 1,
               perPage: 32,

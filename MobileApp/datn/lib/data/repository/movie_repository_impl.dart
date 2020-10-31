@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/location.dart';
 import '../../domain/model/movie.dart';
@@ -120,5 +121,33 @@ class MovieRepositoryImpl implements MovieRepository {
 
     final json = await _authClient.getBody(buildUrl('/movies/$movieId'));
     yield _movieDetailResponseToMovie(MovieDetailResponse.fromJson(json));
+  }
+
+  @override
+  Stream<BuiltList<Movie>> getRecommendedMovies(Location location) {
+    final mapResult = (dynamic json) {
+      final response = serializers.deserialize(
+        json,
+        specifiedType: builtListMovieResponse,
+      ) as BuiltList<MovieResponse>;
+
+      return response.map(_movieResponseToMovie).toBuiltList();
+    };
+
+    return Rx.fromCallable(
+      () => _authClient
+          .getBody(
+            buildUrl(
+              '/neo4j',
+              location != null
+                  ? {
+                      'lat': location.latitude.toString(),
+                      'lng': location.longitude.toString(),
+                    }
+                  : null,
+            ),
+          )
+          .then(mapResult),
+    );
   }
 }
