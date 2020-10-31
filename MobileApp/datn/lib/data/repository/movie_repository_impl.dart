@@ -45,8 +45,10 @@ class MovieRepositoryImpl implements MovieRepository {
         {
           'page': page.toString(),
           'per_page': perPage.toString(),
-          'lat': location?.latitude?.toString(),
-          'lng': location?.longitude?.toString(),
+          if (location != null) ...{
+            'lat': location.latitude.toString(),
+            'lng': location.longitude.toString(),
+          },
         },
       ),
     );
@@ -95,10 +97,12 @@ class MovieRepositoryImpl implements MovieRepository {
     final json = await _authClient.getBody(
       buildUrl(
         '/show-times/movies/$movieId',
-        {
-          'lat': location?.latitude?.toString(),
-          'lng': location?.longitude?.toString(),
-        },
+        location != null
+            ? {
+                'lat': location.latitude.toString(),
+                'lng': location.longitude.toString(),
+              }
+            : null,
       ),
     );
 

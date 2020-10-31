@@ -37,6 +37,7 @@ export class MoviesController {
   async getNowShowingMovies(
       @Query() dto: GetNowShowingMoviesDto,
   ): Promise<Movie[]> {
+    this.logger.debug(dto);
     return this.moviesService.getNowShowingMovies(
         getCoordinates(dto),
         dto,
