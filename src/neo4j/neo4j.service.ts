@@ -64,7 +64,8 @@ export class Neo4jService {
           auth.basic(
               configService.get(ConfigKey.NEO4J_USER),
               configService.get(ConfigKey.NEO4J_PASSWORD),
-          )
+          ),
+          { disableLosslessIntegers: true },
       );
       this.logger.debug(`Done ${this.driver}`);
     } catch (e) {
@@ -496,7 +497,32 @@ export class Neo4jService {
               AND startTime >= startOfDay
               AND endTime <= startOfDay + duration({ days: 4 })
           
-          RETURN m._id AS _id, pearson, r.score as score, sum(pearson * r.score) AS recommendation
+          RETURN m._id AS _id, sum(pearson * r.score) AS recommendation, pearson, r.score AS score, null AS cats
+          ORDER BY recommendation DESC LIMIT 24
+          
+          UNION ALL
+          
+          MATCH (u:USER { _id: $id })-[r:INTERACTIVE]->(m:MOVIE)
+          WITH u, avg(r.score) AS mean
+          
+          MATCH (u)-[r:INTERACTIVE]->(m:MOVIE)-[:IN_CATEGORY]->(cat:CATEGORY)
+          WHERE r.score > mean
+          
+          WITH u, cat, COUNT(*) AS score
+          
+          MATCH (cat)<-[:IN_CATEGORY]-(rec:MOVIE), (rec)-[:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[:HAS_SHOW_TIME]-(t:THEATRE)
+          WHERE NOT exists((u)-[:INTERACTIVE]->(rec))
+          WITH rec, score, cat,
+               datetime({ epochMillis: st.start_time }) AS startTime,
+               datetime({ epochMillis: st.end_time }) AS endTime,
+               datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay
+          WHERE
+            distance(point({ latitude: $lat, longitude: $lng }), t.location) < $max_distance
+            AND startTime >= startOfDay
+            AND endTime <= startOfDay + duration({ days: 4 })
+          
+          WITH sum(score) AS score, rec, cat
+          RETURN rec._id AS _id, score AS recommendation, null AS pearson, score, collect(DISTINCT cat.name) AS cats
           ORDER BY recommendation DESC LIMIT 24
           `,
           {
@@ -535,7 +561,29 @@ export class Neo4jService {
               datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) as startOfDay
           WHERE startTime >= startOfDay AND endTime <= startOfDay + duration({ days: 4 })
           
-          RETURN m._id AS _id, pearson, r.score as score, sum(pearson * r.score) AS recommendation
+          RETURN m._id AS _id, sum(pearson * r.score) AS recommendation, pearson, r.score AS score, null AS cats
+          ORDER BY recommendation DESC LIMIT 24
+          
+          UNION ALL
+          
+          MATCH (u:USER { _id: $id })-[r:INTERACTIVE]->(m:MOVIE)
+          WITH u, avg(r.score) AS mean
+          
+          MATCH (u)-[r:INTERACTIVE]->(m:MOVIE)-[:IN_CATEGORY]->(cat:CATEGORY)
+          WHERE r.score > mean
+          
+          WITH u, cat, COUNT(*) AS score
+          
+          MATCH (cat)<-[:IN_CATEGORY]-(rec:MOVIE), (rec)-[:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[:HAS_SHOW_TIME]-(t:THEATRE)
+          WHERE NOT exists((u)-[:INTERACTIVE]->(rec))
+          WITH rec, score, cat,
+               datetime({ epochMillis: st.start_time }) AS startTime,
+               datetime({ epochMillis: st.end_time }) AS endTime,
+               datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay
+          WHERE startTime >= startOfDay AND endTime <= startOfDay + duration({ days: 4 })
+          
+          WITH sum(score) AS score, rec, cat
+          RETURN rec._id AS _id, score AS recommendation, null AS pearson, score, collect(DISTINCT cat.name) AS cats
           ORDER BY recommendation DESC LIMIT 24
           `,
           {
@@ -572,16 +620,27 @@ export class Neo4jService {
                       toArray(),
                       map(splitIdAndRests),
                       exhaustMap((idAndMap) => {
-                            const { restById } = idAndMap;
                             return this
                                 .findMoviesInIds(idAndMap)
                                 .pipe(
-                                    map(movies =>
-                                        movies.sort((l, r) => {
-                                          const lScore = restById.get(l._id.toString())['recommendation'];
-                                          const rScore = restById.get(r._id.toString())['recommendation'];
-                                          return rScore - lScore;
-                                        })
+                                    map(movies => {
+                                          const a1 = movies
+                                              .filter(m => m.pearson !== null)
+                                              .sort((l, r) => r.recommendation - l.recommendation);
+
+                                          const a2 = movies
+                                              .filter(m => m.pearson === null)
+                                              .sort((l, r) => r.recommendation - l.recommendation);
+
+                                          const result = a1.concat(a2).distinct(v => v._id.toString());
+
+                                          this.logger.debug(movies.length, '[]');
+                                          this.logger.debug(a1.length, '[1]');
+                                          this.logger.debug(a2.length, '[2]');
+                                          this.logger.debug(result.length, '[*]');
+
+                                          return result;
+                                        }
                                     ),
                                 );
                           },
