@@ -17,7 +17,7 @@ extension NotificationExt<T> on Notification<T> {
       case Kind.OnDone:
         return 'done';
       case Kind.OnError:
-        return 'error(${error})';
+        return 'error(${error}, $stackTrace)';
     }
     return '';
   }

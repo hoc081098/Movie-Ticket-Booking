@@ -1,8 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../domain/model/age_type.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:movie_admin/ui/app_scaffold.dart';
+import 'package:movie_admin/ui/movies/movie_info.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../domain/model/movie.dart';
-import 'movie_info.dart';
+import '../../utils/utils.dart';
+import '../widgets/age_type.dart';
+import 'movie_bloc.dart';
 
 class MoviePage extends StatefulWidget {
   static const routeName = '/movie_page_route';
@@ -12,144 +19,228 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends State<MoviePage> {
-  final List<Movie> movies = List.generate(
-      10,
-      (index) => Movie(
-            id: 'id' + index.toString(),
-            isActive: false,
-            actorIds: List.empty(),
-            directorIds: List.empty(),
-            title: 'asdadasdffsaf',
-            trailerVideoUrl: '',
-            posterUrl: '',
-            overview: '',
-            releasedDate: DateTime(1000),
-            duration: 10,
-            originalLanguage: '',
-            createdAt: DateTime(1000),
-            updatedAt: DateTime(100),
-            ageType: AgeType.C13,
-            actors: List.empty(),
-            directors: List.empty(),
-            categories: List.empty(),
-            rateStar: 4.5,
-            totalFavorite: 10,
-            totalRate: 10,
-          ));
-  Color mainColor = const Color(0xff3C3261);
+  MovieBloc _bloc;
+  ScrollController _scrollController;
+
+  @override
+  void didChangeDependencies() {
+    _bloc ??= BlocProvider.of<MovieBloc>(context)..loadMovies();
+    _scrollController ??= ScrollController()
+      ..addListener(() {
+        if (_scrollController.position.pixels + 100 >=
+            _scrollController.position.maxScrollExtent) {
+          _bloc.loadMovies();
+        }
+      });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          'Movies',
-          style: TextStyle(
-              color: mainColor,
-              fontFamily: 'Arvo',
-              fontWeight: FontWeight.bold),
-        ),
+        title: Text('Movies'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                  itemCount: movies == null ? 0 : movies.length,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: StreamBuilder<Tuple2<List<Movie>, bool>>(
+              stream: _bloc.loadMovies$,
+              builder: (context, snapshot) {
+                final data = snapshot.data;
+
+                final movies = data?.item1;
+                return ListView.builder(
+                  controller: _scrollController,
+                  itemCount: data == null
+                      ? 1
+                      : data.item2
+                          ? movies.length + 1
+                          : movies.length,
                   itemBuilder: (context, i) {
-                    return FlatButton(
-                      child: MovieCell(movies, i),
-                      padding: const EdgeInsets.all(0.0),
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MovieInfoPage(movie: movies[i]);
-                        }));
-                      },
-                      color: Colors.white,
-                    );
-                  }),
-            )
-          ],
-        ),
+                    return i < (movies?.length ?? 0)
+                        ? MovieCell(movies[i], (_) {})
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: CircularProgressIndicator(strokeWidth: 3),
+                            ),
+                          );
+                  },
+                );
+              },
+            ),
+          )
+        ],
       ),
     );
   }
 }
 
 class MovieCell extends StatelessWidget {
-  final List<Movie> movies;
-  final i;
-  final Color mainColor = const Color(0xff3C3261);
-  final image_url = 'https://image.tmdb.org/t/p/w500/';
+  final Movie item;
+  final Function1<Movie, void> onToggle;
 
-  MovieCell(this.movies, this.i);
+  MovieCell(this.item, this.onToggle);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: Container(
-                margin: const EdgeInsets.all(16.0),
+    const imageHeight = 154.0;
+    const imageWidth = imageHeight * 0.7;
+
+    final titleStyle = Theme.of(context).textTheme.headline6.copyWith(
+          fontSize: 17,
+          color: const Color(0xff687189),
+        );
+    final durationStyle =
+        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14);
+
+    final rateStyle = titleStyle.copyWith(fontSize: 20);
+
+    return InkWell(
+      onTap: () {
+        AppScaffold.of(context)
+            .pushNamed(MovieInfoPage.routeName, arguments: item);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(
+          left: 6,
+          right: 8,
+          top: 8,
+          bottom: 12,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              offset: Offset(2, 4),
+              blurRadius: 10,
+              spreadRadius: 2,
+            )
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Slidable(
+          actionPane: SlidableDrawerActionPane(),
+          actionExtentRatio: 0.25,
+          secondaryActions: [
+            IconSlideAction(
+              caption: 'Delete',
+              color: Colors.red,
+              icon: Icons.delete,
+              onTap: () => onToggle(item),
+            ),
+          ],
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
                 child: Container(
-                  width: 70.0,
-                  height: 70.0,
+                  width: imageWidth,
+                  height: imageHeight,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: CachedNetworkImage(
+                          imageUrl: item.posterUrl ?? '',
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) => Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          ),
+                          errorWidget: (_, __, ___) => Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.error,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  'Load image error',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 8,
+                        right: 8,
+                        child: AgeTypeWidget(
+                          ageType: item.ageType,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.grey,
-                  image: DecorationImage(
-                      image: NetworkImage(image_url),
-                      fit: BoxFit.cover),
-                  boxShadow: [
-                    BoxShadow(
-                        color: mainColor,
-                        blurRadius: 5.0,
-                        offset: Offset(2.0, 5.0))
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 8),
+                    Text(
+                      item.title,
+                      style: titleStyle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${item.duration} minutes',
+                      style: durationStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star_rate_rounded,
+                          size: 32,
+                          color: Color(0xff8690A0),
+                        ),
+                        const SizedBox(width: 4),
+                        RichText(
+                          text: TextSpan(
+                            text: item.rateStar.toStringAsFixed(2),
+                            style: rateStyle,
+                            children: [
+                              TextSpan(
+                                text: ' / 5',
+                                style: durationStyle,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${item.totalRate} reviews',
+                      style: durationStyle,
+                    ),
                   ],
                 ),
               ),
-            ),
-            Expanded(
-                child: Container(
-              margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-              child: Column(
-                children: [
-                  Text(
-                    movies[i].title,
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontFamily: 'Arvo',
-                        fontWeight: FontWeight.bold,
-                        color: mainColor),
-                  ),
-                  Padding(padding: const EdgeInsets.all(2.0)),
-                  Text(
-                    movies[i].overview,
-                    maxLines: 3,
-                    style: TextStyle(
-                        color: const Color(0xff8785A4), fontFamily: 'Arvo'),
-                  )
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ),
-            )),
-          ],
+              const SizedBox(width: 8),
+            ],
+          ),
         ),
-        Container(
-          width: 300.0,
-          height: 0.5,
-          color: const Color(0xD2D2E1ff),
-          margin: const EdgeInsets.all(16.0),
-        )
-      ],
+      ),
     );
   }
 }
