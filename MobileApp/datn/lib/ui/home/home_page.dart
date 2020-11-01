@@ -627,7 +627,10 @@ class ComingSoonHeader extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
               decoration: BoxDecoration(
                 color: Color(0xff8690A0),
                 borderRadius: BorderRadius.circular(3),
@@ -677,7 +680,10 @@ class RecommendedHeader extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 gradient: LinearGradient(
@@ -721,10 +727,20 @@ class MostFavoriteHeader extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
               decoration: BoxDecoration(
-                color: Color(0xff8690A0),
                 borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  colors: const [
+                    Color(0xffF67062),
+                    Color(0xffFC5296),
+                  ],
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                ),
               ),
               child: Text(
                 'MOST FAVORITE',
@@ -771,10 +787,20 @@ class MostRateHeader extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
               decoration: BoxDecoration(
-                color: Color(0xff8690A0),
                 borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  colors: const [
+                    Color(0xffFC575E),
+                    Color(0xffF7B42C),
+                  ],
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                ),
               ),
               child: Text(
                 'MOST RATE',
