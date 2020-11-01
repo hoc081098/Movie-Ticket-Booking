@@ -203,8 +203,17 @@ export class MoviesService {
     const { skip, limit } = getSkipLimit(paginationDto);
     return this.movieModel
         .find({})
-        .sort({ total_favorite: -1 })
+        .sort({ total_favorite: -1, rate_star: -1 })
         .skip(skip)
         .limit(limit)
+  }
+
+  async getMostRate(paginationDto: PaginationDto): Promise<Movie[]> {
+    const { skip, limit } = getSkipLimit(paginationDto);
+    return this.movieModel
+        .find({})
+        .sort({ rate_star: -1, total_favorite: -1 })
+        .skip(skip)
+        .limit(limit);
   }
 }

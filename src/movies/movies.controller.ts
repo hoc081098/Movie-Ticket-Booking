@@ -58,6 +58,13 @@ export class MoviesController {
     return this.moviesService.getMostFavorite(paginationDto);
   }
 
+  @Get('most-rate')
+  getMostRate(
+      @Query() paginationDto: PaginationDto,
+  ): Promise<Movie[]> {
+    return this.moviesService.getMostRate(paginationDto);
+  }
+
   @Get(':id')
   getDetail(
       @Param('id') id: string,
