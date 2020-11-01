@@ -117,7 +117,22 @@ export class Neo4jService {
                         user.gender = $gender,
                         user.address = $address,
                         user.location = point({ latitude: toFloat($latitude), longitude: toFloat($longitude) })
-                    RETURN user.email as email
+                    
+                    WITH user
+                    
+                    MATCH (o: USER)
+                    WHERE o._id <> user._id AND o.gender = user.gender
+                    WITH user, o
+                    MERGE (user)-[r:SIMILAR_GENDER]-(o)
+                    ON CREATE SET r.score = 1
+                    ON MATCH SET r.score = r.score + 1
+                    
+                    WITH user, o, coalesce(distance(user.location, o.location), -1) AS d
+                    WHERE 0 <= d AND d <= $max_distance
+                    WITH user, o
+                    MERGE (user)-[r:SIMILAR_LOCATION]-(o)
+                    ON CREATE SET r.score = 3
+                    ON MATCH SET r.score = r.score + 3
                 `,
                 {
                   _id: user._id.toString(),
@@ -126,11 +141,29 @@ export class Neo4jService {
                   full_name: user.full_name ?? '',
                   gender: user.gender ?? 'MALE',
                   address: user.address ?? '',
-                  longitude: user.location?.coordinates?.[0] ?? -1,
-                  latitude: user.location?.coordinates?.[1] ?? -1,
+                  longitude: user.location?.coordinates?.[0] ?? null,
+                  latitude: user.location?.coordinates?.[1] ?? null,
+                  max_distance: constants.maxDistanceInMeters,
                 }
             );
           }
+        },
+        `[USERS] ${users.length}`,
+    );
+
+    await this.runTransaction(
+        async txc => {
+          await txc.run(
+              `
+                    MATCH(u1:USER)-[r]-(u2:USER)
+                    WITH u1, u2, r, sum(r.score) as score
+                    DELETE r
+                    MERGE (u1)-[rs:SIMILAR]-(u2)
+                    ON CREATE SET rs.score = score
+                    ON MATCH SET rs.score = score
+                `,
+              {},
+          );
         },
         `[USERS] ${users.length}`,
     );
@@ -393,8 +426,8 @@ export class Neo4jService {
                   id: t._id.toString(),
                   name: t.name ?? '',
                   address: t.address ?? '',
-                  latitude: t.location?.coordinates?.[1] ?? -1,
-                  longitude: t.location?.coordinates?.[0] ?? -1,
+                  latitude: t.location?.coordinates?.[1] ?? null,
+                  longitude: t.location?.coordinates?.[0] ?? null,
                 }
             );
           }
@@ -489,15 +522,18 @@ export class Neo4jService {
           
           MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE), (m)-[:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[:HAS_SHOW_TIME]-(t:THEATRE)
           WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
-          WITH m, pearson, r, datetime({ epochMillis: st.start_time }) as startTime,
-              datetime({ epochMillis: st.end_time }) as endTime,
-              datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) as startOfDay
+          WITH m, pearson, r,
+              datetime({ epochMillis: st.start_time }) AS startTime,
+              datetime({ epochMillis: st.end_time }) AS endTime,
+              datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay,
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) as distance
           WHERE
-              distance(point({ latitude: $lat, longitude: $lng }), t.location) < $max_distance
+              0 <= distance AND distance <= $max_distance
               AND startTime >= startOfDay
               AND endTime <= startOfDay + duration({ days: 4 })
           
-          RETURN m._id AS _id, sum(pearson * r.score) AS recommendation, pearson, r.score AS score, null AS cats
+          WITH m, pearson, r, distance
+          RETURN m._id AS _id, sum(pearson * r.score) AS recommendation, pearson, r.score AS score, null AS cats, distance
           ORDER BY recommendation DESC LIMIT 24
           
           UNION ALL
@@ -515,14 +551,15 @@ export class Neo4jService {
           WITH rec, score, cat,
                datetime({ epochMillis: st.start_time }) AS startTime,
                datetime({ epochMillis: st.end_time }) AS endTime,
-               datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay
+               datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay,
+               coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) as distance
           WHERE
-            distance(point({ latitude: $lat, longitude: $lng }), t.location) < $max_distance
-            AND startTime >= startOfDay
-            AND endTime <= startOfDay + duration({ days: 4 })
+              0 <= distance AND distance <= $max_distance
+              AND startTime >= startOfDay
+              AND endTime <= startOfDay + duration({ days: 4 })
           
-          WITH sum(score) AS score, rec, cat
-          RETURN rec._id AS _id, score AS recommendation, null AS pearson, score, collect(DISTINCT cat.name) AS cats
+          WITH sum(score) AS score, rec, cat, distance
+          RETURN rec._id AS _id, score AS recommendation, null AS pearson, score, collect(DISTINCT cat.name) AS cats, distance
           ORDER BY recommendation DESC LIMIT 24
           `,
           {
