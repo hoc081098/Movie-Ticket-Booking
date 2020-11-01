@@ -14,6 +14,7 @@ import '../../domain/model/movie.dart';
 import '../../domain/repository/city_repository.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../../utils/error.dart';
+import '../../utils/streams.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
@@ -24,6 +25,8 @@ enum MovieType {
   nowPlaying,
   comingSoon,
   recommended,
+  mostFavorite,
+  mostRate,
 }
 
 class HomePage extends StatefulWidget {
@@ -35,6 +38,8 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Movie>> nowPlayingBloc;
   LoaderBloc<BuiltList<Movie>> comingSoonBloc;
   LoaderBloc<BuiltList<Movie>> recommendedBloc;
+  LoaderBloc<BuiltList<Movie>> mostFavoriteBloc;
+  LoaderBloc<BuiltList<Movie>> mostRateBloc;
   Object token;
 
   @override
@@ -44,9 +49,14 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
   @override
   void dispose() {
-    nowPlayingBloc.dispose();
-    comingSoonBloc.dispose();
-    recommendedBloc.dispose();
+    [
+      nowPlayingBloc.dispose,
+      comingSoonBloc.dispose,
+      recommendedBloc.dispose,
+      mostFavoriteBloc.dispose,
+      mostRateBloc.dispose,
+    ].forEach((d) => d());
+
     super.dispose();
   }
 
@@ -57,6 +67,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
     token ??= () {
       final cityRepo = Provider.of<CityRepository>(context);
       final repo = Provider.of<MovieRepository>(context);
+      final emptyList = <Movie>[].build();
 
       nowPlayingBloc = () {
         final loaderFunction = () {
@@ -72,7 +83,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: <Movie>[].build(),
+          initialContent: emptyList,
           enableLogger: true,
         );
       }();
@@ -87,27 +98,46 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: <Movie>[].build(),
+          initialContent: emptyList,
           enableLogger: true,
         );
       }();
 
-      cityRepo.selectedCity$.distinct().listen((city) {
-        print('[DEBUG] city=$city');
+      cityRepo.selectedCity$.distinct().debug('[HOME] SELECT CITY').listen((_) {
         nowPlayingBloc.fetch();
         recommendedBloc.fetch();
       }).disposedBy(bag);
 
       comingSoonBloc = () {
-        final loaderFunction = () => repo.getComingSoonMovies(
-              page: 1,
-              perPage: 32,
-            );
+        final loaderFunction =
+            () => repo.getComingSoonMovies(page: 1, perPage: 32);
 
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: <Movie>[].build(),
+          initialContent: emptyList,
+          enableLogger: true,
+        )..fetch();
+      }();
+
+      mostFavoriteBloc = () {
+        final loaderFunction = () => repo.getMostFavorite(page: 1, perPage: 32);
+
+        return LoaderBloc(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: emptyList,
+          enableLogger: true,
+        )..fetch();
+      }();
+
+      mostRateBloc = () {
+        final loaderFunction = () => repo.getMostRate(page: 1, perPage: 32);
+
+        return LoaderBloc(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: emptyList,
           enableLogger: true,
         )..fetch();
       }();
@@ -137,17 +167,33 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
               bloc: nowPlayingBloc,
               type: MovieType.nowPlaying,
             ),
+            //
             const ComingSoonHeader(),
             HomeHorizontalMoviesList(
               key: ValueKey(MovieType.comingSoon),
               bloc: comingSoonBloc,
               type: MovieType.comingSoon,
             ),
+            //
             const RecommendedHeader(),
             HomeHorizontalMoviesList(
               key: ValueKey(MovieType.recommended),
               bloc: recommendedBloc,
               type: MovieType.recommended,
+            ),
+            //
+            const MostFavoriteHeader(),
+            HomeHorizontalMoviesList(
+              key: ValueKey(MovieType.mostFavorite),
+              bloc: mostFavoriteBloc,
+              type: MovieType.mostFavorite,
+            ),
+            //
+            const MostRateHeader(),
+            HomeHorizontalMoviesList(
+              key: ValueKey(MovieType.mostRate),
+              bloc: mostRateBloc,
+              type: MovieType.mostRate,
             ),
           ],
         ),
@@ -294,7 +340,18 @@ class HomeHorizontalMoviesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalHeight = type == MovieType.nowPlaying ? 350.0 : 330.0;
+    final totalHeight = () {
+      switch (type) {
+        case MovieType.nowPlaying:
+        case MovieType.mostFavorite:
+        case MovieType.mostRate:
+        case MovieType.recommended:
+          return 350.0;
+        case MovieType.comingSoon:
+          return 330.0;
+      }
+    }();
+
     const imageHeight = 248.0;
     const imageWidth = imageHeight / 1.3;
 
@@ -459,6 +516,9 @@ class HomeHorizontalMoviesList extends StatelessWidget {
   ) {
     switch (type) {
       case MovieType.nowPlaying:
+      case MovieType.mostFavorite:
+      case MovieType.mostRate:
+      case MovieType.recommended:
         return Container(
           width: imageWidth - 12,
           child: Column(
@@ -497,7 +557,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    '${item.totalRate} review${item.totalRate > 1 ? 's' : ''}',
+                    getDescription(item),
                     style: reviewstextStyle,
                   )
                 ],
@@ -511,7 +571,6 @@ class HomeHorizontalMoviesList extends StatelessWidget {
           ),
         );
       case MovieType.comingSoon:
-      case MovieType.recommended:
         return Container(
           width: imageWidth - 12,
           child: Column(
@@ -535,6 +594,21 @@ class HomeHorizontalMoviesList extends StatelessWidget {
         );
     }
     throw StateError('Unknown $type');
+  }
+
+  String getDescription(Movie item) {
+    switch (type) {
+      case MovieType.comingSoon:
+        throw StateError('Wrong type $type');
+      case MovieType.nowPlaying:
+      case MovieType.recommended:
+        return '${item.totalRate} review${item.totalRate > 1 ? 's' : ''}';
+      case MovieType.mostFavorite:
+        return '${item.totalFavorite} favorite${item.totalFavorite > 1 ? 's' : ''}';
+      case MovieType.mostRate:
+        return '${item.rateStar.toStringAsFixed(2)} / 5';
+    }
+    throw StateError('Missing type $type');
   }
 }
 
@@ -625,6 +699,106 @@ class RecommendedHeader extends StatelessWidget {
                 ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MostFavoriteHeader extends StatelessWidget {
+  const MostFavoriteHeader({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: 16),
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: Color(0xff8690A0),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Text(
+                'MOST FAVORITE',
+                maxLines: 1,
+                style: textTheme.headline6.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Spacer(),
+            FlatButton(
+              padding: const EdgeInsets.all(12),
+              onPressed: () {},
+              child: Text(
+                'VIEW ALL',
+                style: textTheme.button.copyWith(
+                  color: Theme.of(context).accentColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MostRateHeader extends StatelessWidget {
+  const MostRateHeader({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: 16),
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: Color(0xff8690A0),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Text(
+                'MOST RATE',
+                maxLines: 1,
+                style: textTheme.headline6.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Spacer(),
+            FlatButton(
+              padding: const EdgeInsets.all(12),
+              onPressed: () {},
+              child: Text(
+                'VIEW ALL',
+                style: textTheme.button.copyWith(
+                  color: Theme.of(context).accentColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
           ],
         ),
       ),

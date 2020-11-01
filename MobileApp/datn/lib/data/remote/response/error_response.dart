@@ -38,6 +38,7 @@ abstract class SingleMessageErrorResponse
   @override
   int get statusCode;
 
+  @nullable
   @override
   String get error;
 
@@ -67,6 +68,7 @@ abstract class MultipleMessagesErrorResponse
   @override
   int get statusCode;
 
+  @nullable
   @override
   String get error;
 

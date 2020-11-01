@@ -19,6 +19,16 @@ abstract class MovieRepository {
 
   Stream<BuiltList<Movie>> getRecommendedMovies(Location location);
 
+  Stream<BuiltList<Movie>> getMostFavorite({
+    @required int page,
+    @required int perPage,
+  });
+
+  Stream<BuiltList<Movie>> getMostRate({
+    @required int page,
+    @required int perPage,
+  });
+
   Stream<BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>> getShowTimes({
     @required String movieId,
     Location location,

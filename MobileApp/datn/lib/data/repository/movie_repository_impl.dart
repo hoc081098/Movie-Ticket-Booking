@@ -124,18 +124,8 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Stream<BuiltList<Movie>> getRecommendedMovies(Location location) {
-    final mapResult = (dynamic json) {
-      final response = serializers.deserialize(
-        json,
-        specifiedType: builtListMovieResponse,
-      ) as BuiltList<MovieResponse>;
-
-      return response.map(_movieResponseToMovie).toBuiltList();
-    };
-
-    return Rx.fromCallable(
-      () => _authClient
+  Stream<BuiltList<Movie>> getRecommendedMovies(Location location) =>
+      Rx.fromCallable(() => _authClient
           .getBody(
             buildUrl(
               '/neo4j',
@@ -147,7 +137,50 @@ class MovieRepositoryImpl implements MovieRepository {
                   : null,
             ),
           )
-          .then(mapResult),
-    );
+          .then(mapResult));
+
+  @override
+  Stream<BuiltList<Movie>> getMostFavorite({int page, int perPage}) {
+    if (page == null) return Stream.error(ArgumentError.notNull('page'));
+    if (perPage == null) return Stream.error(ArgumentError.notNull('perPage'));
+
+    return Rx.fromCallable(() => _authClient
+        .getBody(
+          buildUrl(
+            '/movies/most-favorite',
+            {
+              'page': page.toString(),
+              'per_page': perPage.toString(),
+            },
+          ),
+        )
+        .then(mapResult));
+  }
+
+  @override
+  Stream<BuiltList<Movie>> getMostRate({int page, int perPage}) {
+    if (page == null) return Stream.error(ArgumentError.notNull('page'));
+    if (perPage == null) return Stream.error(ArgumentError.notNull('perPage'));
+
+    return Rx.fromCallable(() => _authClient
+        .getBody(
+          buildUrl(
+            '/movies/most-rate',
+            {
+              'page': page.toString(),
+              'per_page': perPage.toString(),
+            },
+          ),
+        )
+        .then(mapResult));
+  }
+
+  BuiltList<Movie> mapResult(dynamic json) {
+    final response = serializers.deserialize(
+      json,
+      specifiedType: builtListMovieResponse,
+    ) as BuiltList<MovieResponse>;
+
+    return response.map(_movieResponseToMovie).toBuiltList();
   }
 }
