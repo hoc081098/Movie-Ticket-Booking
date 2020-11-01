@@ -29,8 +29,8 @@ export class AuthGuard implements CanActivate {
     const test = this.configService.get(ConfigKey.TEST_AUTH_GUARD);
     if (test === 'USER' || test === 'ADMIN') {
       // const me = (await this.usersService.findByUid('l9StgzQlR1h3XpaWCf3juyYgG772'))?.toJSON() ?? {};
-      // const me = (await this.usersService.findByUid(test === 'USER' ? 'l9StgzQlR1h3XpaWCf3juyYgG772' : 'NePOX4o5zhPqLUlHR9IY8eigNd92'))?.toJSON() ?? {};
-      const me = (await this.usersService.findByUid('g6OqSdG6XpQfCBr5k7v0O5Evkb93'))?.toJSON() ?? {};
+      const me = (await this.usersService.findByUid(test === 'USER' ? 'l9StgzQlR1h3XpaWCf3juyYgG772' : 'NePOX4o5zhPqLUlHR9IY8eigNd92'))?.toJSON() ?? {};
+      // const me = (await this.usersService.findByUid('g6OqSdG6XpQfCBr5k7v0O5Evkb93'))?.toJSON() ?? {};
       context.switchToHttp().getRequest().user = new UserPayload({ ...me, user_entity: me });
       this.logger.debug(`>>> TEST ${test}`);
       this.logger.debug(me);

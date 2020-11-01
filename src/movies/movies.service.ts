@@ -198,4 +198,13 @@ export class MoviesService {
     (movie as any).categories = movie.categories.map(c => c.category_id);
     return movie;
   }
+
+  async getMostFavorite(paginationDto: PaginationDto): Promise<Movie[]> {
+    const { skip, limit } = getSkipLimit(paginationDto);
+    return this.movieModel
+        .find({})
+        .sort({ total_favorite: -1 })
+        .skip(skip)
+        .limit(limit)
+  }
 }
