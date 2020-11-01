@@ -605,11 +605,18 @@ class RecommendedHeader extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  colors: const [
+                    Color(0xff545AE9),
+                    Color(0xffB881F9),
+                  ],
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                ),
               ),
               child: Text(
-                'RECOMMENDED',
+                'RECOMMENDED FOR YOU',
                 maxLines: 1,
                 style: textTheme.headline6.copyWith(
                   fontSize: 16,
