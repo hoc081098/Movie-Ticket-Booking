@@ -23,6 +23,7 @@ environment:
 # flutter packages pub run build_runner build --delete-conflicting-outputs
 
 dependencies:
+  firebase_remote_config: ^0.4.1
   flutter_cache_manager: ^2.0.0
   distinct_value_connectable_stream: ^1.2.0-beta01
   flutter_local_notifications: ^2.0.1+1
