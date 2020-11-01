@@ -44,7 +44,7 @@ void main() async {
   //
   // Env
   //
-  await EnvManager.shared.config(EnvPath.PROD);
+  await EnvManager.shared.config(EnvPath.DEV);
 
   //
   // Firebase, Google, Facebook

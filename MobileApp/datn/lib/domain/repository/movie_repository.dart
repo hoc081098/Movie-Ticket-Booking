@@ -17,6 +17,8 @@ abstract class MovieRepository {
     @required int perPage,
   });
 
+  Stream<BuiltList<Movie>> getRecommendedMovies(Location location);
+
   Stream<BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>> getShowTimes({
     @required String movieId,
     Location location,

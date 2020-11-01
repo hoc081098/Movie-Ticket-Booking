@@ -23,6 +23,7 @@ import 'detail/movie_detail_page.dart';
 enum MovieType {
   nowPlaying,
   comingSoon,
+  recommended,
 }
 
 class HomePage extends StatefulWidget {
@@ -33,6 +34,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Movie>> nowPlayingBloc;
   LoaderBloc<BuiltList<Movie>> comingSoonBloc;
+  LoaderBloc<BuiltList<Movie>> recommendedBloc;
   Object token;
 
   @override
@@ -44,7 +46,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
   void dispose() {
     nowPlayingBloc.dispose();
     comingSoonBloc.dispose();
-
+    recommendedBloc.dispose();
     super.dispose();
   }
 
@@ -54,13 +56,12 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
     token ??= () {
       final cityRepo = Provider.of<CityRepository>(context);
+      final repo = Provider.of<MovieRepository>(context);
 
       nowPlayingBloc = () {
-        final repo = Provider.of<MovieRepository>(context);
-
         final loaderFunction = () {
           final location = cityRepo.selectedCity$.value.location;
-          print('[DEBUG] fetch location=$location');
+          print('[DEBUG] fetch 1 location=$location');
           return repo.getNowPlayingMovies(
             location: location,
             page: 1,
@@ -76,13 +77,28 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         );
       }();
 
+      recommendedBloc = () {
+        final loaderFunction = () {
+          final location = cityRepo.selectedCity$.value.location;
+          print('[DEBUG] fetch 2 location=$location');
+          return repo.getRecommendedMovies(location);
+        };
+
+        return LoaderBloc(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: <Movie>[].build(),
+          enableLogger: true,
+        );
+      }();
+
       cityRepo.selectedCity$.distinct().listen((city) {
         print('[DEBUG] city=$city');
         nowPlayingBloc.fetch();
+        recommendedBloc.fetch();
       }).disposedBy(bag);
 
       comingSoonBloc = () {
-        final repo = Provider.of<MovieRepository>(context);
         final loaderFunction = () => repo.getComingSoonMovies(
               page: 1,
               perPage: 32,
@@ -117,15 +133,21 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           slivers: [
             const HomeLocationHeader(),
             HomeHorizontalMoviesList(
-              key: ValueKey('movies/now-playing'),
+              key: ValueKey(MovieType.nowPlaying),
               bloc: nowPlayingBloc,
               type: MovieType.nowPlaying,
             ),
             const ComingSoonHeader(),
             HomeHorizontalMoviesList(
-              key: ValueKey('movies/coming-soon'),
+              key: ValueKey(MovieType.comingSoon),
               bloc: comingSoonBloc,
               type: MovieType.comingSoon,
+            ),
+            const RecommendedHeader(),
+            HomeHorizontalMoviesList(
+              key: ValueKey(MovieType.recommended),
+              bloc: recommendedBloc,
+              type: MovieType.recommended,
             ),
           ],
         ),
@@ -272,7 +294,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const totalHeight = 350.0;
+    final totalHeight = type == MovieType.nowPlaying ? 350.0 : 330.0;
     const imageHeight = 248.0;
     const imageWidth = imageHeight / 1.3;
 
@@ -489,6 +511,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
           ),
         );
       case MovieType.comingSoon:
+      case MovieType.recommended:
         return Container(
           width: imageWidth - 12,
           child: Column(
@@ -558,6 +581,50 @@ class ComingSoonHeader extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RecommendedHeader extends StatelessWidget {
+  const RecommendedHeader({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: 16),
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  colors: const [
+                    Color(0xff545AE9),
+                    Color(0xffB881F9),
+                  ],
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                ),
+              ),
+              child: Text(
+                'RECOMMENDED FOR YOU',
+                maxLines: 1,
+                style: textTheme.headline6.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ],
         ),
       ),

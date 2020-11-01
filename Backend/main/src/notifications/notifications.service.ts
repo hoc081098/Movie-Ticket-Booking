@@ -11,6 +11,7 @@ import { CreatedReservation } from '../reservations/reservations.service';
 import { PaginationDto } from "../common/pagination.dto";
 import { UserPayload } from "../auth/get-user.decorator";
 import { checkCompletedLogin, getSkipLimit } from "../common/utils";
+import { identity } from 'rxjs';
 
 @Injectable()
 export class NotificationsService {
@@ -147,16 +148,20 @@ export class NotificationsService {
 
 declare global {
   interface Array<T> {
-    distinct(): T[]
+    distinct<R = any>(selector?: (t: T) => R): T[]
   }
 }
 
-Array.prototype.distinct = function <T>(this: T[]): T[] {
-  const seen = new Set<T>();
+Array.prototype.distinct = function <T, R = any>(this: T[], selector?: (T) => R): T[] {
+  selector = selector ?? identity;
+
+  const seen = new Set<R>();
   return this.filter(i => {
-    const added = seen.has(i);
+    const key = selector(i);
+    const added = seen.has(key);
+
     if (!added) {
-      seen.add(i);
+      seen.add(key);
     }
     return !added;
   });
