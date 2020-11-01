@@ -154,10 +154,17 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         title: Text('Home page'),
       ),
       body: RefreshIndicator(
-        onRefresh: () => Future.wait([
-          nowPlayingBloc.refresh(),
-          comingSoonBloc.refresh(),
-        ]),
+        onRefresh: () async {
+          await Future.wait([
+            nowPlayingBloc.refresh(),
+            mostFavoriteBloc.refresh(),
+          ]);
+          await Future.wait([
+            comingSoonBloc.refresh(),
+            mostRateBloc.refresh(),
+          ]);
+          await recommendedBloc.refresh();
+        },
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
