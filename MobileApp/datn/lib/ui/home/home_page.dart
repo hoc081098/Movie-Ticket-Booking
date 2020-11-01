@@ -20,6 +20,7 @@ import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'detail/movie_detail_page.dart';
+import 'view_all/view_all_page.dart';
 
 enum MovieType {
   nowPlaying,
@@ -271,17 +272,7 @@ class HomeLocationHeader extends StatelessWidget {
               ),
             ),
             Spacer(),
-            FlatButton(
-              padding: const EdgeInsets.all(12),
-              onPressed: () {},
-              child: Text(
-                'VIEW ALL',
-                style: textTheme.button.copyWith(
-                  color: Theme.of(context).accentColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+            ViewAllButton(movieType: MovieType.nowPlaying),
             const SizedBox(width: 16),
           ],
         ),
@@ -646,17 +637,7 @@ class ComingSoonHeader extends StatelessWidget {
               ),
             ),
             Spacer(),
-            FlatButton(
-              padding: const EdgeInsets.all(12),
-              onPressed: () {},
-              child: Text(
-                'VIEW ALL',
-                style: textTheme.button.copyWith(
-                  color: Theme.of(context).accentColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+            ViewAllButton(movieType: MovieType.comingSoon),
             const SizedBox(width: 16),
           ],
         ),
@@ -753,17 +734,7 @@ class MostFavoriteHeader extends StatelessWidget {
               ),
             ),
             Spacer(),
-            FlatButton(
-              padding: const EdgeInsets.all(12),
-              onPressed: () {},
-              child: Text(
-                'VIEW ALL',
-                style: textTheme.button.copyWith(
-                  color: Theme.of(context).accentColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+            ViewAllButton(movieType: MovieType.mostFavorite),
             const SizedBox(width: 16),
           ],
         ),
@@ -813,19 +784,35 @@ class MostRateHeader extends StatelessWidget {
               ),
             ),
             Spacer(),
-            FlatButton(
-              padding: const EdgeInsets.all(12),
-              onPressed: () {},
-              child: Text(
-                'VIEW ALL',
-                style: textTheme.button.copyWith(
-                  color: Theme.of(context).accentColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+            ViewAllButton(movieType: MovieType.mostRate),
             const SizedBox(width: 16),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ViewAllButton extends StatelessWidget {
+  final MovieType movieType;
+
+  const ViewAllButton({Key key, @required this.movieType}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return FlatButton(
+      padding: const EdgeInsets.all(12),
+      onPressed: () => AppScaffold.of(context).pushNamed(
+        ViewAllPage.routeName,
+        arguments: movieType,
+      ),
+      child: Text(
+        'VIEW ALL',
+        style: textTheme.button.copyWith(
+          color: Theme.of(context).accentColor,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
