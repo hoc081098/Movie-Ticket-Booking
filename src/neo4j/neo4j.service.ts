@@ -526,7 +526,7 @@ export class Neo4jService {
               datetime({ epochMillis: st.start_time }) AS startTime,
               datetime({ epochMillis: st.end_time }) AS endTime,
               datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay,
-              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) as distance
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance
           WHERE
               0 <= distance AND distance <= $max_distance
               AND startTime >= startOfDay
@@ -552,7 +552,7 @@ export class Neo4jService {
                datetime({ epochMillis: st.start_time }) AS startTime,
                datetime({ epochMillis: st.end_time }) AS endTime,
                datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay,
-               coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) as distance
+               coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance
           WHERE
               0 <= distance AND distance <= $max_distance
               AND startTime >= startOfDay
@@ -629,12 +629,56 @@ export class Neo4jService {
         ];
       }
     };
-    const queryNotInteracted: () => [string, Parameters] = () => [
-      `
-        
-      `,
-      {},
-    ];
+    const queryNotInteracted: () => [string, Parameters] = () => {
+      if (center) {
+        return [
+          `
+            MATCH (u:USER { _id: $id })-[r:SIMILAR]-(other:USER)
+            WITH other, sum(r.score) AS score
+            
+            MATCH (other)-[r:INTERACTIVE]->(m: MOVIE), (m)-[:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[:HAS_SHOW_TIME]-(t:THEATRE)
+            WITH r.score + score AS recommendation, m, score, st, t,
+                datetime({ epochMillis: st.start_time }) AS startTime,
+                datetime({ epochMillis: st.end_time }) AS endTime,
+                datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay,
+                coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance
+            WHERE
+                0 <= distance AND distance <= $max_distance
+                AND startTime >= startOfDay
+                AND endTime <= startOfDay + duration({ days: 4 })
+            
+            RETURN m._id AS _id, recommendation, score, distance
+            ORDER BY recommendation DESC LIMIT 24
+          `,
+          {
+            id: user._id.toString(),
+            lng: center[0],
+            lat: center[1],
+            max_distance: constants.maxDistanceInMeters,
+          },
+        ];
+      } else {
+        return [
+          `
+            MATCH (u:USER { _id: $id })-[r:SIMILAR]-(other:USER)
+            WITH other, sum(r.score) AS score
+            
+            MATCH (other)-[r:INTERACTIVE]->(m: MOVIE), (m)-[:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[:HAS_SHOW_TIME]-(t:THEATRE)
+            WITH r.score + score AS recommendation, m, score, st, t,
+                datetime({ epochMillis: st.start_time }) AS startTime,
+                datetime({ epochMillis: st.end_time }) AS endTime,
+                datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay
+            WHERE startTime >= startOfDay AND endTime <= startOfDay + duration({ days: 4 })
+            
+            RETURN m._id AS _id, recommendation, score
+            ORDER BY recommendation DESC LIMIT 24
+          `,
+          {
+            id: user._id.toString(),
+          },
+        ];
+      }
+    };
 
     return merge(
         interacted$.pipe(map(queryInteracted)),
@@ -662,11 +706,11 @@ export class Neo4jService {
                                 .pipe(
                                     map(movies => {
                                           const a1 = movies
-                                              .filter(m => m.pearson !== null)
+                                              .filter(m => m.pearson !== null && m.pearson !== undefined)
                                               .sort((l, r) => r.recommendation - l.recommendation);
 
                                           const a2 = movies
-                                              .filter(m => m.pearson === null)
+                                              .filter(m => m.pearson === null || m.pearson === undefined)
                                               .sort((l, r) => r.recommendation - l.recommendation);
 
                                           const result = a1.concat(a2).distinct(v => v._id.toString());
