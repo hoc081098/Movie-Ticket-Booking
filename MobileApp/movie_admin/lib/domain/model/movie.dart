@@ -9,10 +9,6 @@ class Movie {
 
   final bool isActive;
 
-  final List<String> actorIds;
-
-  final List<String> directorIds;
-
   final String title;
 
   final String trailerVideoUrl;
@@ -48,8 +44,6 @@ class Movie {
   Movie({
     @required this.id,
     @required this.isActive,
-    @required this.actorIds,
-    @required this.directorIds,
     @required this.title,
     @required this.trailerVideoUrl,
     @required this.posterUrl,

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_admin/data/repository/movie_repository_impl.dart';
+import 'package:movie_admin/domain/repository/movie_repository.dart';
 import 'data/repository/mannager_repository_impl.dart';
 import 'domain/repository/manager_repository.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
@@ -69,6 +71,7 @@ void main() async {
     googleSignIn,
   );
   final managerUsersRepository = ManagerRepositoryImpl(authClient);
+  final movieRepository = MovieRepositoryImpl(authClient);
 
   _onSignOut = userRepository.logout;
 
@@ -78,6 +81,7 @@ void main() async {
         Provider<AuthClient>(value: authClient),
         Provider<UserRepository>(value: userRepository),
         Provider<ManagerRepository>(value: managerUsersRepository),
+        Provider<MovieRepository>(value: movieRepository),
       ],
       child: MyApp(),
     ),
