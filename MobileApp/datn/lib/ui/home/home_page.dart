@@ -241,6 +241,9 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
               bloc: mostRateBloc,
               type: MovieType.mostRate,
             ),
+            //
+            const NearbyTheatreHeader(),
+            NearbyTheatresList(bloc: theatresBloc),
           ],
         ),
       ),
@@ -850,6 +853,56 @@ class MostRateHeader extends StatelessWidget {
   }
 }
 
+class NearbyTheatreHeader extends StatelessWidget {
+  const NearbyTheatreHeader({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  colors: const [
+                    Color(0xffFC575E),
+                    Color(0xffF7B42C),
+                  ],
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                ),
+              ),
+              child: Hero(
+                tag: 'NEARBY_THEATRES',
+                child: Text(
+                  'NEARBY THEATRES',
+                  maxLines: 1,
+                  style: textTheme.headline6.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class ViewAllButton extends StatelessWidget {
   final MovieType movieType;
 
@@ -872,6 +925,76 @@ class ViewAllButton extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
+    );
+  }
+}
+
+class NearbyTheatresList extends StatelessWidget {
+  final LoaderBloc<BuiltList<Theatre>> bloc;
+
+  const NearbyTheatresList({Key key, this.bloc}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RxStreamBuilder<LoaderState<BuiltList<Theatre>>>(
+      stream: bloc.state$,
+      builder: (context, snapshot) {
+        final state = snapshot.data;
+        final height = 200.0;
+
+        if (state.error != null) {
+          return SliverToBoxAdapter(
+            child: Container(
+              height: height,
+              child: MyErrorWidget(
+                errorText: 'Error: ${getErrorMessage(state.error)}',
+                onPressed: bloc.fetch,
+              ),
+            ),
+          );
+        }
+
+        if (state.isLoading) {
+          return SliverToBoxAdapter(
+            child: Container(
+              height: height,
+              child: Center(
+                child: SizedBox(
+                  width: 64,
+                  height: 64,
+                  child: LoadingIndicator(
+                    indicatorType: Indicator.ballClipRotatePulse,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        final theatres = state.content;
+
+        if (theatres.isEmpty) {
+          return SliverToBoxAdapter(
+            child: Container(
+              height: height,
+              child: Center(
+                child: EmptyWidget(message: 'Empty theatre'),
+              ),
+            ),
+          );
+        }
+
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return ListTile(
+                title: Text(theatres[index].name),
+              );
+            },
+            childCount: theatres.length,
+          ),
+        );
+      },
     );
   }
 }
