@@ -184,6 +184,8 @@ export class ReservationsService {
         doc.promotion_id = promotion._id;
       }
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
       let reservation = await this.reservationModel.create(
           [doc],
           { session },
