@@ -113,6 +113,9 @@ class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
               settings: settings,
               builder: (context) => widget.builders[i](context, settings),
             ),
+            observers: [
+              HeroController(),
+            ],
           )
       ],
     );

@@ -228,10 +228,13 @@ class HomeLocationHeader extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Movies on Theatre',
-                      maxLines: 1,
-                      style: textTheme.headline6.copyWith(fontSize: 18),
+                    Hero(
+                      tag: MovieType.nowPlaying.toString(),
+                      child: Text(
+                        'Movies on Theatre',
+                        maxLines: 1,
+                        style: textTheme.headline6.copyWith(fontSize: 18),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -626,13 +629,16 @@ class ComingSoonHeader extends StatelessWidget {
                 color: Color(0xff8690A0),
                 borderRadius: BorderRadius.circular(3),
               ),
-              child: Text(
-                'COMING SOON',
-                maxLines: 1,
-                style: textTheme.headline6.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+              child: Hero(
+                tag: MovieType.comingSoon.toString(),
+                child: Text(
+                  'COMING SOON',
+                  maxLines: 1,
+                  style: textTheme.headline6.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -723,13 +729,16 @@ class MostFavoriteHeader extends StatelessWidget {
                   end: AlignmentDirectional.bottomEnd,
                 ),
               ),
-              child: Text(
-                'MOST FAVORITE',
-                maxLines: 1,
-                style: textTheme.headline6.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+              child: Hero(
+                tag: MovieType.mostFavorite.toString(),
+                child: Text(
+                  'MOST FAVORITE',
+                  maxLines: 1,
+                  style: textTheme.headline6.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -773,13 +782,16 @@ class MostRateHeader extends StatelessWidget {
                   end: AlignmentDirectional.bottomEnd,
                 ),
               ),
-              child: Text(
-                'MOST RATE',
-                maxLines: 1,
-                style: textTheme.headline6.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+              child: Hero(
+                tag: MovieType.mostRate.toString(),
+                child: Text(
+                  'MOST RATE',
+                  maxLines: 1,
+                  style: textTheme.headline6.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

@@ -10,6 +10,7 @@ import '../../../utils/utils.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
 import '../movie_type.dart';
+import 'list_item.dart';
 import 'store.dart';
 import 'view_all_state.dart';
 
@@ -80,7 +81,12 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text('Movies'),
+        title: Hero(
+          tag: widget.movieType.toString(),
+          child: Text(
+            _getTitle(widget.movieType),
+          ),
+        ),
       ),
       body: StreamBuilder<ViewAllState>(
         stream: store.stateStream,
@@ -130,8 +136,8 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
               itemCount: items.length + (state.isFirstPage ? 0 : 1),
               itemBuilder: (context, index) {
                 if (index < items.length) {
-                  return ListTile(
-                    title: Text(items[index].title),
+                  return ViewAllListItem(
+                    item: items[index],
                   );
                 }
 
@@ -221,5 +227,22 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
       case MovieType.mostRate:
         return movieRepo.getMostRate;
     }
+    throw StateError('Missing $movieType');
   }
+}
+
+String _getTitle(MovieType movieType) {
+  switch (movieType) {
+    case MovieType.nowPlaying:
+      return 'Movies on Theatre';
+    case MovieType.comingSoon:
+      return 'Coming soon';
+    case MovieType.recommended:
+      throw StateError('Unsupported type $movieType');
+    case MovieType.mostFavorite:
+      return 'Most favorite';
+    case MovieType.mostRate:
+      return 'Most rate';
+  }
+  throw StateError('Missing $movieType');
 }

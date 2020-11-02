@@ -4,7 +4,6 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:datn/domain/model/movie.dart';
 
-import '../../../domain/model/reservation.dart';
 import '../../../utils/iterable.dart';
 
 part 'view_all_state.g.dart';
@@ -129,6 +128,11 @@ class SuccessAction implements ViewAllAction {
       },
     );
   }
+
+  @override
+  String toString() =>
+      (newBuiltValueToStringHelper('SuccessAction')..add('items', items))
+          .toString();
 }
 
 class FailureAction implements ViewAllAction {
