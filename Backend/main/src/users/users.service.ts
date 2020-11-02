@@ -14,8 +14,8 @@ import { PaginationDto } from '../common/pagination.dto';
 import * as faker from 'faker';
 import { defer, of, range } from 'rxjs';
 import { catchError, concatMap, exhaustMap, ignoreElements, tap } from 'rxjs/operators';
-import dayjs = require('dayjs');
 import { Movie } from "../movies/movie.schema";
+import dayjs = require('dayjs');
 
 function paymentMethodToCardDto(paymentMethod: Stripe.PaymentMethod): Card {
   const card = paymentMethod.card;
@@ -219,9 +219,15 @@ export class UsersService {
   }
 
   seedUsers() {
-    // const users = await this.userModel.find({});
+    // await this.userModel.updateMany({}, { favorite_movie_ids: {} }).exec();
+    //
+    // const users = await this.userModel
+    //     .find({})
+    //     .limit(50);
     // for (const user of users) {
-    //   const ids = await this.movieModel.find({}, {_id: 1}).limit(32);
+    //   const ids = await this.movieModel.find({})
+    //       .skip(Math.random() * 100)
+    //       .limit(10);
     //   const favorite_movie_ids = ids.reduce((acc, e) => {
     //     return {
     //       ...acc,
@@ -229,6 +235,9 @@ export class UsersService {
     //     }
     //   }, {});
     //   await this.userModel.updateOne({ uid: user.uid }, { favorite_movie_ids }).exec();
+    //   for (const id of ids) {
+    //     await this.movieModel.updateOne({ _id: id }, { $inc: { total_favorite: 1 } });
+    //   }
     // }
     //
     // return;

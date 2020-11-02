@@ -14,17 +14,14 @@ import '../../domain/model/movie.dart';
 import '../../domain/repository/city_repository.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../../utils/error.dart';
+import '../../utils/streams.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'detail/movie_detail_page.dart';
-
-enum MovieType {
-  nowPlaying,
-  comingSoon,
-  recommended,
-}
+import 'movie_type.dart';
+import 'view_all/view_all_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -35,6 +32,8 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Movie>> nowPlayingBloc;
   LoaderBloc<BuiltList<Movie>> comingSoonBloc;
   LoaderBloc<BuiltList<Movie>> recommendedBloc;
+  LoaderBloc<BuiltList<Movie>> mostFavoriteBloc;
+  LoaderBloc<BuiltList<Movie>> mostRateBloc;
   Object token;
 
   @override
@@ -44,9 +43,14 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
   @override
   void dispose() {
-    nowPlayingBloc.dispose();
-    comingSoonBloc.dispose();
-    recommendedBloc.dispose();
+    [
+      nowPlayingBloc.dispose,
+      comingSoonBloc.dispose,
+      recommendedBloc.dispose,
+      mostFavoriteBloc.dispose,
+      mostRateBloc.dispose,
+    ].forEach((d) => d());
+
     super.dispose();
   }
 
@@ -57,6 +61,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
     token ??= () {
       final cityRepo = Provider.of<CityRepository>(context);
       final repo = Provider.of<MovieRepository>(context);
+      final emptyList = <Movie>[].build();
 
       nowPlayingBloc = () {
         final loaderFunction = () {
@@ -72,7 +77,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: <Movie>[].build(),
+          initialContent: emptyList,
           enableLogger: true,
         );
       }();
@@ -87,27 +92,46 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: <Movie>[].build(),
+          initialContent: emptyList,
           enableLogger: true,
         );
       }();
 
-      cityRepo.selectedCity$.distinct().listen((city) {
-        print('[DEBUG] city=$city');
+      cityRepo.selectedCity$.distinct().debug('[HOME] SELECT CITY').listen((_) {
         nowPlayingBloc.fetch();
         recommendedBloc.fetch();
       }).disposedBy(bag);
 
       comingSoonBloc = () {
-        final loaderFunction = () => repo.getComingSoonMovies(
-              page: 1,
-              perPage: 32,
-            );
+        final loaderFunction =
+            () => repo.getComingSoonMovies(page: 1, perPage: 32);
 
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: <Movie>[].build(),
+          initialContent: emptyList,
+          enableLogger: true,
+        )..fetch();
+      }();
+
+      mostFavoriteBloc = () {
+        final loaderFunction = () => repo.getMostFavorite(page: 1, perPage: 32);
+
+        return LoaderBloc(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: emptyList,
+          enableLogger: true,
+        )..fetch();
+      }();
+
+      mostRateBloc = () {
+        final loaderFunction = () => repo.getMostRate(page: 1, perPage: 32);
+
+        return LoaderBloc(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: emptyList,
           enableLogger: true,
         )..fetch();
       }();
@@ -123,10 +147,17 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         title: Text('Home page'),
       ),
       body: RefreshIndicator(
-        onRefresh: () => Future.wait([
-          nowPlayingBloc.refresh(),
-          comingSoonBloc.refresh(),
-        ]),
+        onRefresh: () async {
+          await Future.wait([
+            nowPlayingBloc.refresh(),
+            mostFavoriteBloc.refresh(),
+          ]);
+          await Future.wait([
+            comingSoonBloc.refresh(),
+            mostRateBloc.refresh(),
+          ]);
+          await recommendedBloc.refresh();
+        },
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -137,17 +168,33 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
               bloc: nowPlayingBloc,
               type: MovieType.nowPlaying,
             ),
+            //
             const ComingSoonHeader(),
             HomeHorizontalMoviesList(
               key: ValueKey(MovieType.comingSoon),
               bloc: comingSoonBloc,
               type: MovieType.comingSoon,
             ),
+            //
             const RecommendedHeader(),
             HomeHorizontalMoviesList(
               key: ValueKey(MovieType.recommended),
               bloc: recommendedBloc,
               type: MovieType.recommended,
+            ),
+            //
+            const MostFavoriteHeader(),
+            HomeHorizontalMoviesList(
+              key: ValueKey(MovieType.mostFavorite),
+              bloc: mostFavoriteBloc,
+              type: MovieType.mostFavorite,
+            ),
+            //
+            const MostRateHeader(),
+            HomeHorizontalMoviesList(
+              key: ValueKey(MovieType.mostRate),
+              bloc: mostRateBloc,
+              type: MovieType.mostRate,
             ),
           ],
         ),
@@ -181,10 +228,13 @@ class HomeLocationHeader extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Movies on Theatre',
-                      maxLines: 1,
-                      style: textTheme.headline6.copyWith(fontSize: 18),
+                    Hero(
+                      tag: MovieType.nowPlaying.toString(),
+                      child: Text(
+                        'Movies on Theatre',
+                        maxLines: 1,
+                        style: textTheme.headline6.copyWith(fontSize: 18),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -225,17 +275,7 @@ class HomeLocationHeader extends StatelessWidget {
               ),
             ),
             Spacer(),
-            FlatButton(
-              padding: const EdgeInsets.all(12),
-              onPressed: () {},
-              child: Text(
-                'VIEW ALL',
-                style: textTheme.button.copyWith(
-                  color: Theme.of(context).accentColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+            ViewAllButton(movieType: MovieType.nowPlaying),
             const SizedBox(width: 16),
           ],
         ),
@@ -294,7 +334,18 @@ class HomeHorizontalMoviesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalHeight = type == MovieType.nowPlaying ? 350.0 : 330.0;
+    final totalHeight = () {
+      switch (type) {
+        case MovieType.nowPlaying:
+        case MovieType.mostFavorite:
+        case MovieType.mostRate:
+        case MovieType.recommended:
+          return 350.0;
+        case MovieType.comingSoon:
+          return 330.0;
+      }
+    }();
+
     const imageHeight = 248.0;
     const imageWidth = imageHeight / 1.3;
 
@@ -459,6 +510,9 @@ class HomeHorizontalMoviesList extends StatelessWidget {
   ) {
     switch (type) {
       case MovieType.nowPlaying:
+      case MovieType.mostFavorite:
+      case MovieType.mostRate:
+      case MovieType.recommended:
         return Container(
           width: imageWidth - 12,
           child: Column(
@@ -497,7 +551,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    '${item.totalRate} review${item.totalRate > 1 ? 's' : ''}',
+                    getDescription(item),
                     style: reviewstextStyle,
                   )
                 ],
@@ -511,7 +565,6 @@ class HomeHorizontalMoviesList extends StatelessWidget {
           ),
         );
       case MovieType.comingSoon:
-      case MovieType.recommended:
         return Container(
           width: imageWidth - 12,
           child: Column(
@@ -536,6 +589,21 @@ class HomeHorizontalMoviesList extends StatelessWidget {
     }
     throw StateError('Unknown $type');
   }
+
+  String getDescription(Movie item) {
+    switch (type) {
+      case MovieType.comingSoon:
+        throw StateError('Wrong type $type');
+      case MovieType.nowPlaying:
+      case MovieType.recommended:
+        return '${item.totalRate} review${item.totalRate > 1 ? 's' : ''}';
+      case MovieType.mostFavorite:
+        return '${item.totalFavorite} favorite${item.totalFavorite > 1 ? 's' : ''}';
+      case MovieType.mostRate:
+        return '${item.rateStar.toStringAsFixed(2)} / 5';
+    }
+    throw StateError('Missing type $type');
+  }
 }
 
 class ComingSoonHeader extends StatelessWidget {
@@ -553,33 +621,29 @@ class ComingSoonHeader extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
               decoration: BoxDecoration(
                 color: Color(0xff8690A0),
                 borderRadius: BorderRadius.circular(3),
               ),
-              child: Text(
-                'COMING SOON',
-                maxLines: 1,
-                style: textTheme.headline6.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+              child: Hero(
+                tag: MovieType.comingSoon.toString(),
+                child: Text(
+                  'COMING SOON',
+                  maxLines: 1,
+                  style: textTheme.headline6.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
             Spacer(),
-            FlatButton(
-              padding: const EdgeInsets.all(12),
-              onPressed: () {},
-              child: Text(
-                'VIEW ALL',
-                style: textTheme.button.copyWith(
-                  color: Theme.of(context).accentColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+            ViewAllButton(movieType: MovieType.comingSoon),
             const SizedBox(width: 16),
           ],
         ),
@@ -603,7 +667,10 @@ class RecommendedHeader extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 gradient: LinearGradient(
@@ -626,6 +693,138 @@ class RecommendedHeader extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class MostFavoriteHeader extends StatelessWidget {
+  const MostFavoriteHeader({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  colors: const [
+                    Color(0xffF67062),
+                    Color(0xffFC5296),
+                  ],
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                ),
+              ),
+              child: Hero(
+                tag: MovieType.mostFavorite.toString(),
+                child: Text(
+                  'MOST FAVORITE',
+                  maxLines: 1,
+                  style: textTheme.headline6.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Spacer(),
+            ViewAllButton(movieType: MovieType.mostFavorite),
+            const SizedBox(width: 16),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MostRateHeader extends StatelessWidget {
+  const MostRateHeader({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  colors: const [
+                    Color(0xffFC575E),
+                    Color(0xffF7B42C),
+                  ],
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                ),
+              ),
+              child: Hero(
+                tag: MovieType.mostRate.toString(),
+                child: Text(
+                  'MOST RATE',
+                  maxLines: 1,
+                  style: textTheme.headline6.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Spacer(),
+            ViewAllButton(movieType: MovieType.mostRate),
+            const SizedBox(width: 16),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ViewAllButton extends StatelessWidget {
+  final MovieType movieType;
+
+  const ViewAllButton({Key key, @required this.movieType}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return FlatButton(
+      padding: const EdgeInsets.all(12),
+      onPressed: () => AppScaffold.of(context).pushNamed(
+        ViewAllPage.routeName,
+        arguments: movieType,
+      ),
+      child: Text(
+        'VIEW ALL',
+        style: textTheme.button.copyWith(
+          color: Theme.of(context).accentColor,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );

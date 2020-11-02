@@ -33,6 +33,7 @@ import 'home/home_page.dart';
 import 'home/tickets/combo_bloc.dart';
 import 'home/tickets/combo_page.dart';
 import 'home/tickets/ticket_page.dart';
+import 'home/view_all/view_all_page.dart';
 import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
 import 'notifications/notifications_page.dart';
@@ -149,6 +150,9 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         child: DiscountsPage(showTimeId: settings.arguments as String),
       );
     },
+    ViewAllPage.routeName: (context, settings) {
+      return ViewAllPage(movieType: settings.arguments);
+    }
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

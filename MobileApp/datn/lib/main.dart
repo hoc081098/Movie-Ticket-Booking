@@ -2,6 +2,7 @@ import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -44,7 +45,7 @@ void main() async {
   //
   // Env
   //
-  await EnvManager.shared.config(EnvPath.DEV);
+  await _envConfig();
 
   //
   // Firebase, Google, Facebook
@@ -78,7 +79,7 @@ void main() async {
   final userLocalSource = UserLocalSourceImpl(preferences);
 
   final client = http.Client();
-  const httpTimeout = Duration(seconds: 15);
+  const httpTimeout = Duration(seconds: 20);
 
   final normalClient = NormalClient(client, httpTimeout);
   print(normalClient);
@@ -163,4 +164,26 @@ void main() async {
       child: MyApp(),
     ),
   );
+}
+
+Future<void> _envConfig() async {
+  final fromRemote = <EnvKey, String>{};
+
+  final remoteConfig = await RemoteConfig.instance;
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
+  try {
+    await remoteConfig.fetch(expiration: Duration.zero);
+    await remoteConfig.activateFetched();
+
+    final baseUrl =
+        remoteConfig.getString(EnvKey.BASE_URL.toString().split('.')[1]);
+    if (baseUrl != null && baseUrl.isNotEmpty) {
+      fromRemote[EnvKey.BASE_URL] = baseUrl;
+    }
+    print('###### baseUrl=${baseUrl}');
+  } catch (e) {
+    print('###### error $e');
+  }
+
+  await EnvManager.shared.config(EnvPath.DEV, fromRemote);
 }
