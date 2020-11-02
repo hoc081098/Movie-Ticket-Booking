@@ -941,7 +941,7 @@ class NearbyTheatresList extends StatelessWidget {
       builder: (context, snapshot) {
         final state = snapshot.data;
         final height = 200.0;
-        const padding = const EdgeInsets.only(top: 10);
+        const padding = EdgeInsets.symmetric(vertical: 10);
 
         if (state.error != null) {
           return SliverToBoxAdapter(
