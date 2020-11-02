@@ -87,10 +87,10 @@ export class TheatresService {
     return await this.theatreModel.create(seedTheatres);
   }
 
-  async getNearbyTheatres(dto: LocationDto) {
+  async getNearbyTheatres(dto?: LocationDto): Promise<Theatre[]> {
     const center = getCoordinates(dto);
     if (!center) {
-      throw new BadRequestException(`Required location`);
+      return this.theatreModel.find({}).sort({ name: 1 });
     }
 
     return this.theatreModel.aggregate([

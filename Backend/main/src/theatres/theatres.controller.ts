@@ -3,6 +3,7 @@ import { TheatresService } from './theatres.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LocationDto } from "../common/location.dto";
+import { Theatre } from "./theatre.schema";
 
 @ApiTags('theatres')
 @UseGuards(AuthGuard)
@@ -20,8 +21,8 @@ export class TheatresController {
 
   @Get('nearby')
   getNearbyTheatres(
-      @Query() dto: LocationDto,
-  ) {
+      @Query() dto?: LocationDto,
+  ): Promise<Theatre[]> {
     return this.theatresService.getNearbyTheatres(dto);
   }
 }

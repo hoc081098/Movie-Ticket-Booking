@@ -7,10 +7,12 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../domain/model/city.dart';
 import '../../domain/model/movie.dart';
+import '../../domain/model/theatre.dart';
 import '../../domain/repository/city_repository.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../../utils/error.dart';
@@ -34,6 +36,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Movie>> recommendedBloc;
   LoaderBloc<BuiltList<Movie>> mostFavoriteBloc;
   LoaderBloc<BuiltList<Movie>> mostRateBloc;
+  LoaderBloc<BuiltList<Theatre>> theatresBloc;
   Object token;
 
   @override
@@ -97,11 +100,6 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         );
       }();
 
-      cityRepo.selectedCity$.distinct().debug('[HOME] SELECT CITY').listen((_) {
-        nowPlayingBloc.fetch();
-        recommendedBloc.fetch();
-      }).disposedBy(bag);
-
       comingSoonBloc = () {
         final loaderFunction =
             () => repo.getComingSoonMovies(page: 1, perPage: 32);
@@ -111,7 +109,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           refresherFunction: loaderFunction,
           initialContent: emptyList,
           enableLogger: true,
-        )..fetch();
+        );
       }();
 
       mostFavoriteBloc = () {
@@ -122,7 +120,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           refresherFunction: loaderFunction,
           initialContent: emptyList,
           enableLogger: true,
-        )..fetch();
+        );
       }();
 
       mostRateBloc = () {
@@ -133,8 +131,37 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           refresherFunction: loaderFunction,
           initialContent: emptyList,
           enableLogger: true,
-        )..fetch();
+        );
       }();
+
+      final fetchDoneFirstTime = (LoaderMessage<Object> event) => event.fold(
+            onFetchFailure: (e, s) => true,
+            onFetchSuccess: (d) => true,
+            onRefreshFailure: (e, s) => false,
+            onRefreshSuccess: (d) => false,
+          );
+
+      Rx.forkJoin2(
+              nowPlayingBloc.message$.where(fetchDoneFirstTime).take(1),
+              recommendedBloc.message$.where(fetchDoneFirstTime).take(1),
+              (a, b) => null)
+          .doOnData((_) {
+            comingSoonBloc.fetch();
+            mostFavoriteBloc.fetch();
+            mostRateBloc.fetch();
+          })
+          .listen(null)
+          .disposedBy(bag);
+
+      cityRepo.selectedCity$
+          .distinct()
+          .debug('[HOME] SELECT CITY')
+          .doOnData((_) {
+            nowPlayingBloc.fetch();
+            recommendedBloc.fetch();
+          })
+          .listen(null)
+          .disposedBy(bag);
 
       return const Object();
     }();

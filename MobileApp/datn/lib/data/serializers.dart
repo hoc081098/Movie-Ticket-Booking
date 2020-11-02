@@ -69,6 +69,11 @@ const builtListFullReservationResponse = FullType(
   [FullType(FullReservationResponse)],
 );
 
+const builtListTheatreResponse = FullType(
+  BuiltList,
+  [FullType(TheatreResponse)],
+);
+
 @SerializersFor([
   UserLocal,
   LocationLocal,
@@ -132,6 +137,10 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListFullReservationResponse,
         () => ListBuilder<FullReservationResponse>(),
+      )
+      ..addBuilderFactory(
+        builtListTheatreResponse,
+        () => ListBuilder<TheatreResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))
