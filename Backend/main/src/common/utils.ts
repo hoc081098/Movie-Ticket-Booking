@@ -14,7 +14,10 @@ export interface LatLng {
   lng?: string | number | undefined | null;
 }
 
-export function getCoordinates(latLng: LatLng): [number, number] | null {
+export function getCoordinates(latLng: LatLng | null | undefined): [number, number] | null {
+  if (!latLng) {
+    return null;
+  }
   const { lat, lng } = latLng;
 
   if (lat === null || lat === undefined || lng === null || lng === undefined) {

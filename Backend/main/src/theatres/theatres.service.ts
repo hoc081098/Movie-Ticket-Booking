@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Theatre } from './theatre.schema';
 import { CreateDocumentDefinition, Model } from 'mongoose';
+import { LocationDto } from "../common/location.dto";
+import { constants, getCoordinates } from "../common/utils";
 
 const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
   {
@@ -76,10 +78,35 @@ export class TheatresService {
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
   ) {}
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   async seed(): Promise<string | Theatre[]> {
     if (await this.theatreModel.estimatedDocumentCount().exec() > 0) {
       return 'Nice';
     }
     return await this.theatreModel.create(seedTheatres);
+  }
+
+  async getNearbyTheatres(dto: LocationDto) {
+    const center = getCoordinates(dto);
+    if (!center) {
+      throw new BadRequestException(`Required location`);
+    }
+
+    return this.theatreModel.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: 'Point',
+            coordinates: center,
+          },
+          distanceField: 'distance',
+          includeLocs: 'location',
+          maxDistance: constants.maxDistanceInMeters,
+          spherical: true,
+        },
+      },
+      { $match: { is_active: true } },
+    ]).exec();
   }
 }
