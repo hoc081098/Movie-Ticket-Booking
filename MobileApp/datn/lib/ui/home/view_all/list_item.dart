@@ -13,15 +13,16 @@ class ViewAllListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const imageHeight = 154.0;
+    const imageHeight = 164.0;
     const imageWidth = imageHeight * 0.7;
 
     final titleStyle = Theme.of(context).textTheme.headline6.copyWith(
           fontSize: 17,
           color: const Color(0xff687189),
+          fontWeight: FontWeight.w600,
         );
     final durationStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14);
+        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 12);
 
     final rateStyle = titleStyle.copyWith(fontSize: 20);
 
@@ -116,7 +117,7 @@ class ViewAllListItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '${item.duration} minutes',
+                      '#${item.duration} minutes',
                       style: durationStyle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -147,6 +148,11 @@ class ViewAllListItem extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       '${item.totalRate} reviews',
+                      style: durationStyle,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${item.totalFavorite} favorites',
                       style: durationStyle,
                     ),
                   ],
