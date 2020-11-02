@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:datn/domain/repository/theatre_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -47,12 +48,13 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
   @override
   void dispose() {
     [
-      nowPlayingBloc.dispose,
-      comingSoonBloc.dispose,
-      recommendedBloc.dispose,
-      mostFavoriteBloc.dispose,
-      mostRateBloc.dispose,
-    ].forEach((d) => d());
+      nowPlayingBloc,
+      comingSoonBloc,
+      recommendedBloc,
+      mostFavoriteBloc,
+      mostRateBloc,
+      theatresBloc,
+    ].forEach((b) => b.dispose());
 
     super.dispose();
   }
@@ -64,7 +66,8 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
     token ??= () {
       final cityRepo = Provider.of<CityRepository>(context);
       final repo = Provider.of<MovieRepository>(context);
-      final emptyList = <Movie>[].build();
+      final theatreRepo = Provider.of<TheatreRepository>(context);
+      final emptyMovieList = <Movie>[].build();
 
       nowPlayingBloc = () {
         final loaderFunction = () {
@@ -80,7 +83,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
         );
       }();
@@ -95,7 +98,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
         );
       }();
@@ -107,7 +110,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
         );
       }();
@@ -118,7 +121,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
         );
       }();
@@ -129,7 +132,19 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
+          enableLogger: true,
+        );
+      }();
+
+      theatresBloc = () {
+        final loaderFunction = () => theatreRepo
+            .getNearbyTheatres(cityRepo.selectedCity$.value.location);
+
+        return LoaderBloc<BuiltList<Theatre>>(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: const <Theatre>[].build(),
           enableLogger: true,
         );
       }();
@@ -141,11 +156,13 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
             onRefreshSuccess: (d) => false,
           );
 
-      Rx.forkJoin2(
-              nowPlayingBloc.message$.where(fetchDoneFirstTime).take(1),
-              recommendedBloc.message$.where(fetchDoneFirstTime).take(1),
-              (a, b) => null)
-          .doOnData((_) {
+      Rx.forkJoin([
+        nowPlayingBloc.message$.where(fetchDoneFirstTime).take(1),
+        recommendedBloc.message$.where(fetchDoneFirstTime).take(1),
+        theatresBloc.message$.where(fetchDoneFirstTime).take(1)
+      ], (l) => l)
+          .doOnData((l) {
+            print('###### ${l.map((v) => v.runtimeType)}');
             comingSoonBloc.fetch();
             mostFavoriteBloc.fetch();
             mostRateBloc.fetch();
@@ -159,6 +176,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           .doOnData((_) {
             nowPlayingBloc.fetch();
             recommendedBloc.fetch();
+            theatresBloc.fetch();
           })
           .listen(null)
           .disposedBy(bag);
