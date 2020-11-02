@@ -147,7 +147,8 @@ Theatre theatreResponseToTheatre(TheatreResponse response) {
       ..opening_hours = response.opening_hours
       ..room_summary = response.room_summary
       ..createdAt = response.createdAt
-      ..updatedAt = response.updatedAt;
+      ..updatedAt = response.updatedAt
+      ..distance = response.distance;
   });
 }
 

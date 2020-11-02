@@ -876,8 +876,8 @@ class NearbyTheatreHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(3),
                 gradient: LinearGradient(
                   colors: const [
-                    Color(0xffFC575E),
-                    Color(0xffF7B42C),
+                    Color(0xff5F0A87),
+                    Color(0xffA4508B),
                   ],
                   begin: AlignmentDirectional.topStart,
                   end: AlignmentDirectional.bottomEnd,
@@ -941,11 +941,13 @@ class NearbyTheatresList extends StatelessWidget {
       builder: (context, snapshot) {
         final state = snapshot.data;
         final height = 200.0;
+        const padding = const EdgeInsets.only(top: 10);
 
         if (state.error != null) {
           return SliverToBoxAdapter(
             child: Container(
               height: height,
+              padding: padding,
               child: MyErrorWidget(
                 errorText: 'Error: ${getErrorMessage(state.error)}',
                 onPressed: bloc.fetch,
@@ -958,6 +960,7 @@ class NearbyTheatresList extends StatelessWidget {
           return SliverToBoxAdapter(
             child: Container(
               height: height,
+              padding: padding,
               child: Center(
                 child: SizedBox(
                   width: 64,
@@ -976,6 +979,7 @@ class NearbyTheatresList extends StatelessWidget {
         if (theatres.isEmpty) {
           return SliverToBoxAdapter(
             child: Container(
+              padding: padding,
               height: height,
               child: Center(
                 child: EmptyWidget(message: 'Empty theatre'),
@@ -984,14 +988,79 @@ class NearbyTheatresList extends StatelessWidget {
           );
         }
 
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return ListTile(
-                title: Text(theatres[index].name),
-              );
-            },
-            childCount: theatres.length,
+        return SliverPadding(
+          padding: padding,
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final theatre = theatres[index];
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        offset: Offset(1, 2),
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                      )
+                    ],
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  margin: const EdgeInsets.only(
+                    left: 8,
+                    right: 8,
+                    top: 8,
+                    bottom: 4,
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              theatre.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2
+                                  .copyWith(
+                                      fontSize: 14,
+                                      color: const Color(0xff5B64CF)),
+                              maxLines: 1,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              theatre.address,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1
+                                  .copyWith(fontSize: 11),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (theatre.distance != null) ...[
+                        const SizedBox(width: 8),
+                        Text(
+                          '${(theatre.distance / 1000.0).toStringAsFixed(1)} km',
+                          style: const TextStyle(
+                            color: Color(0xffFC575E),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                );
+              },
+              childCount: theatres.length,
+            ),
           ),
         );
       },

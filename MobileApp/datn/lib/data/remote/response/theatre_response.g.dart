@@ -65,6 +65,12 @@ class _$TheatreResponseSerializer
         ..add(serializers.serialize(object.email,
             specifiedType: const FullType(String)));
     }
+    if (object.distance != null) {
+      result
+        ..add('distance')
+        ..add(serializers.serialize(object.distance,
+            specifiedType: const FullType(double)));
+    }
     return result;
   }
 
@@ -135,6 +141,10 @@ class _$TheatreResponseSerializer
           result.updatedAt = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime;
           break;
+        case 'distance':
+          result.distance = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
       }
     }
 
@@ -169,6 +179,8 @@ class _$TheatreResponse extends TheatreResponse {
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
+  @override
+  final double distance;
 
   factory _$TheatreResponse([void Function(TheatreResponseBuilder) updates]) =>
       (new TheatreResponseBuilder()..update(updates)).build();
@@ -186,7 +198,8 @@ class _$TheatreResponse extends TheatreResponse {
       this.opening_hours,
       this.room_summary,
       this.createdAt,
-      this.updatedAt})
+      this.updatedAt,
+      this.distance})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('TheatreResponse', 'id');
@@ -247,7 +260,8 @@ class _$TheatreResponse extends TheatreResponse {
         opening_hours == other.opening_hours &&
         room_summary == other.room_summary &&
         createdAt == other.createdAt &&
-        updatedAt == other.updatedAt;
+        updatedAt == other.updatedAt &&
+        distance == other.distance;
   }
 
   @override
@@ -263,19 +277,21 @@ class _$TheatreResponse extends TheatreResponse {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    location.hashCode),
-                                                is_active.hashCode),
-                                            rooms.hashCode),
-                                        name.hashCode),
-                                    address.hashCode),
-                                phone_number.hashCode),
-                            description.hashCode),
-                        email.hashCode),
-                    opening_hours.hashCode),
-                room_summary.hashCode),
-            createdAt.hashCode),
-        updatedAt.hashCode));
+                                                $jc(
+                                                    $jc($jc(0, id.hashCode),
+                                                        location.hashCode),
+                                                    is_active.hashCode),
+                                                rooms.hashCode),
+                                            name.hashCode),
+                                        address.hashCode),
+                                    phone_number.hashCode),
+                                description.hashCode),
+                            email.hashCode),
+                        opening_hours.hashCode),
+                    room_summary.hashCode),
+                createdAt.hashCode),
+            updatedAt.hashCode),
+        distance.hashCode));
   }
 
   @override
@@ -293,7 +309,8 @@ class _$TheatreResponse extends TheatreResponse {
           ..add('opening_hours', opening_hours)
           ..add('room_summary', room_summary)
           ..add('createdAt', createdAt)
-          ..add('updatedAt', updatedAt))
+          ..add('updatedAt', updatedAt)
+          ..add('distance', distance))
         .toString();
   }
 }
@@ -356,6 +373,10 @@ class TheatreResponseBuilder
   DateTime get updatedAt => _$this._updatedAt;
   set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
 
+  double _distance;
+  double get distance => _$this._distance;
+  set distance(double distance) => _$this._distance = distance;
+
   TheatreResponseBuilder();
 
   TheatreResponseBuilder get _$this {
@@ -373,6 +394,7 @@ class TheatreResponseBuilder
       _room_summary = _$v.room_summary;
       _createdAt = _$v.createdAt;
       _updatedAt = _$v.updatedAt;
+      _distance = _$v.distance;
       _$v = null;
     }
     return this;
@@ -409,7 +431,8 @@ class TheatreResponseBuilder
               opening_hours: opening_hours,
               room_summary: room_summary,
               createdAt: createdAt,
-              updatedAt: updatedAt);
+              updatedAt: updatedAt,
+              distance: distance);
     } catch (_) {
       String _$failedField;
       try {
