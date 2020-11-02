@@ -20,15 +20,8 @@ import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'detail/movie_detail_page.dart';
+import 'movie_type.dart';
 import 'view_all/view_all_page.dart';
-
-enum MovieType {
-  nowPlaying,
-  comingSoon,
-  recommended,
-  mostFavorite,
-  mostRate,
-}
 
 class HomePage extends StatefulWidget {
   @override
