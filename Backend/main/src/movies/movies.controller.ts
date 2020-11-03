@@ -9,6 +9,8 @@ import { GetNowShowingMoviesDto } from './movie.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { Roles, RolesGuard } from '../auth/roles.guard';
 import { ForAdmin } from '../common/swagger.decorator';
+import { from, range } from "rxjs";
+import { concatMap, ignoreElements, map, toArray } from "rxjs/operators";
 
 @ApiTags('movies')
 @UseGuards(AuthGuard)
@@ -23,8 +25,20 @@ export class MoviesController {
 
   @ApiOperation({ summary: 'PRIVATE' })
   @Post('seed')
-  seed(@Body() { query, page, year }: { query: string, page: number, year: number }) {
-    return this.movieDbService.seed(query, page, year);
+  seed(/*@Body() { query, page, year }: { query: string, page: number, year: number }*/) {
+    const query = 'Love';
+
+    return range(0, 10)
+        .pipe(
+            map(i => 2020 - i),
+            concatMap(year =>
+                range(1, 20).pipe(map(page => ({ page, year })))
+            ),
+            concatMap(({year, page}) => this.movieDbService.seed(query, page, year)),
+            toArray(),
+        );
+
+    // return this.movieDbService.seed(query, page, year);
   }
 
   @ApiOperation({ summary: 'PRIVATE' })

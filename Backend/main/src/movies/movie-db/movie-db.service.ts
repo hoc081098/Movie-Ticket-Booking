@@ -19,7 +19,7 @@ export class MovieDbService {
   private readonly personByFullName = new Map<string, Person>();
 
   private readonly days = Array
-      .from({ length: 7 * 5 }, (_, i) => i)
+      .from({ length: 7 * 32 }, (_, i) => i)
       .map(i => dayjs(new Date()).add(i - 7, 'day').toDate());
   private dayCount = 0;
 
