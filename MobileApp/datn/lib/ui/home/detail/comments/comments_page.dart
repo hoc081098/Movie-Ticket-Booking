@@ -449,6 +449,7 @@ class Header extends StatelessWidget {
       children: [
         Card(
           elevation: 5,
+          shadowColor: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

@@ -133,6 +133,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
           assert(movie != null);
 
           return CustomScrollView(
+            physics: const BouncingScrollPhysics(),
             slivers: [
               DetailAppBar(
                 movie: movie,
@@ -301,8 +302,14 @@ class DetailAppBar extends StatelessWidget {
       expandedHeight: 300,
       pinned: false,
       floating: false,
+      stretch: true,
+      backgroundColor: const Color(0xfffafafa),
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
+        stretchModes: [
+          StretchMode.blurBackground,
+          StretchMode.zoomBackground,
+        ],
         background: Container(
           color: Colors.white,
           child: Stack(
@@ -348,36 +355,37 @@ class DetailAppBar extends StatelessWidget {
                 child: Container(
                   constraints: BoxConstraints.expand(),
                   decoration: BoxDecoration(
-                    backgroundBlendMode: BlendMode.screen,
+                    // backgroundBlendMode: BlendMode.screen,
                     gradient: LinearGradient(
                       colors: <Color>[
                         Colors.black.withOpacity(0.5),
-                        const Color(0xff545AE9).withOpacity(0.6),
-                        const Color(0xffB881F9),
+                        Colors.transparent,
+                        // const Color(0xff545AE9).withOpacity(0.6),
+                        // const Color(0xffB881F9),
                       ],
-                      stops: [0, 0.5, 1],
+                      // stops: [0, 0.5, 1],
                       begin: AlignmentDirectional.topEnd,
                       end: AlignmentDirectional.bottomStart,
                     ),
                   ),
                 ),
               ),
-              Positioned.fill(
-                child: Container(
-                  constraints: BoxConstraints.expand(),
-                  decoration: BoxDecoration(
-                    backgroundBlendMode: BlendMode.multiply,
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        const Color(0xff545AE9).withOpacity(0.8),
-                        const Color(0xffB881F9).withOpacity(0.8),
-                      ],
-                      begin: AlignmentDirectional.topEnd,
-                      end: AlignmentDirectional.bottomStart,
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned.fill(
+              //   child: Container(
+              //     constraints: BoxConstraints.expand(),
+              //     decoration: BoxDecoration(
+              //       backgroundBlendMode: BlendMode.multiply,
+              //       gradient: LinearGradient(
+              //         colors: <Color>[
+              //           const Color(0xff545AE9).withOpacity(0.8),
+              //           const Color(0xffB881F9).withOpacity(0.8),
+              //         ],
+              //         begin: AlignmentDirectional.topEnd,
+              //         end: AlignmentDirectional.bottomStart,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Positioned(
                 top: 16,
                 right: 16,

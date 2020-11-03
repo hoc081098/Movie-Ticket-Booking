@@ -111,6 +111,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
         children: [
           Card(
             elevation: 5,
+            shadowColor: Colors.white,
             child: Column(
               children: [
                 const SelectCityWidget(),

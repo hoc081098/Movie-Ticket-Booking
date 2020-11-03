@@ -1,5 +1,6 @@
-import 'package:datn/domain/model/theatre.dart';
 import 'package:flutter/material.dart';
+
+import '../../../domain/model/theatre.dart';
 
 class ShowTimesByTheatrePage extends StatefulWidget {
   static const routeName = '/home/show_time_by_theatre';
