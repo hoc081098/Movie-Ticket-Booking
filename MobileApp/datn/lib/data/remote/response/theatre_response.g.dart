@@ -71,6 +71,18 @@ class _$TheatreResponseSerializer
         ..add(serializers.serialize(object.distance,
             specifiedType: const FullType(double)));
     }
+    if (object.thumbnail != null) {
+      result
+        ..add('thumbnail')
+        ..add(serializers.serialize(object.thumbnail,
+            specifiedType: const FullType(String)));
+    }
+    if (object.cover != null) {
+      result
+        ..add('cover')
+        ..add(serializers.serialize(object.cover,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -145,6 +157,14 @@ class _$TheatreResponseSerializer
           result.distance = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
           break;
+        case 'thumbnail':
+          result.thumbnail = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'cover':
+          result.cover = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -181,6 +201,10 @@ class _$TheatreResponse extends TheatreResponse {
   final DateTime updatedAt;
   @override
   final double distance;
+  @override
+  final String thumbnail;
+  @override
+  final String cover;
 
   factory _$TheatreResponse([void Function(TheatreResponseBuilder) updates]) =>
       (new TheatreResponseBuilder()..update(updates)).build();
@@ -199,7 +223,9 @@ class _$TheatreResponse extends TheatreResponse {
       this.room_summary,
       this.createdAt,
       this.updatedAt,
-      this.distance})
+      this.distance,
+      this.thumbnail,
+      this.cover})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('TheatreResponse', 'id');
@@ -261,7 +287,9 @@ class _$TheatreResponse extends TheatreResponse {
         room_summary == other.room_summary &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt &&
-        distance == other.distance;
+        distance == other.distance &&
+        thumbnail == other.thumbnail &&
+        cover == other.cover;
   }
 
   @override
@@ -278,20 +306,29 @@ class _$TheatreResponse extends TheatreResponse {
                                         $jc(
                                             $jc(
                                                 $jc(
-                                                    $jc($jc(0, id.hashCode),
-                                                        location.hashCode),
-                                                    is_active.hashCode),
-                                                rooms.hashCode),
-                                            name.hashCode),
-                                        address.hashCode),
-                                    phone_number.hashCode),
-                                description.hashCode),
-                            email.hashCode),
-                        opening_hours.hashCode),
-                    room_summary.hashCode),
-                createdAt.hashCode),
-            updatedAt.hashCode),
-        distance.hashCode));
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    0,
+                                                                    id
+                                                                        .hashCode),
+                                                                location
+                                                                    .hashCode),
+                                                            is_active.hashCode),
+                                                        rooms.hashCode),
+                                                    name.hashCode),
+                                                address.hashCode),
+                                            phone_number.hashCode),
+                                        description.hashCode),
+                                    email.hashCode),
+                                opening_hours.hashCode),
+                            room_summary.hashCode),
+                        createdAt.hashCode),
+                    updatedAt.hashCode),
+                distance.hashCode),
+            thumbnail.hashCode),
+        cover.hashCode));
   }
 
   @override
@@ -310,7 +347,9 @@ class _$TheatreResponse extends TheatreResponse {
           ..add('room_summary', room_summary)
           ..add('createdAt', createdAt)
           ..add('updatedAt', updatedAt)
-          ..add('distance', distance))
+          ..add('distance', distance)
+          ..add('thumbnail', thumbnail)
+          ..add('cover', cover))
         .toString();
   }
 }
@@ -377,6 +416,14 @@ class TheatreResponseBuilder
   double get distance => _$this._distance;
   set distance(double distance) => _$this._distance = distance;
 
+  String _thumbnail;
+  String get thumbnail => _$this._thumbnail;
+  set thumbnail(String thumbnail) => _$this._thumbnail = thumbnail;
+
+  String _cover;
+  String get cover => _$this._cover;
+  set cover(String cover) => _$this._cover = cover;
+
   TheatreResponseBuilder();
 
   TheatreResponseBuilder get _$this {
@@ -395,6 +442,8 @@ class TheatreResponseBuilder
       _createdAt = _$v.createdAt;
       _updatedAt = _$v.updatedAt;
       _distance = _$v.distance;
+      _thumbnail = _$v.thumbnail;
+      _cover = _$v.cover;
       _$v = null;
     }
     return this;
@@ -432,7 +481,9 @@ class TheatreResponseBuilder
               room_summary: room_summary,
               createdAt: createdAt,
               updatedAt: updatedAt,
-              distance: distance);
+              distance: distance,
+              thumbnail: thumbnail,
+              cover: cover);
     } catch (_) {
       String _$failedField;
       try {

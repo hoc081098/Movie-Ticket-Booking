@@ -36,6 +36,10 @@ abstract class Theatre implements Built<Theatre, TheatreBuilder> {
   @nullable
   double get distance;
 
+  String get thumbnail;
+
+  String get cover;
+
   Theatre._();
 
   factory Theatre([void Function(TheatreBuilder) updates]) = _$Theatre;

@@ -35,6 +35,10 @@ class _$Theatre extends Theatre {
   final DateTime updatedAt;
   @override
   final double distance;
+  @override
+  final String thumbnail;
+  @override
+  final String cover;
 
   factory _$Theatre([void Function(TheatreBuilder) updates]) =>
       (new TheatreBuilder()..update(updates)).build();
@@ -53,7 +57,9 @@ class _$Theatre extends Theatre {
       this.room_summary,
       this.createdAt,
       this.updatedAt,
-      this.distance})
+      this.distance,
+      this.thumbnail,
+      this.cover})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Theatre', 'id');
@@ -91,6 +97,12 @@ class _$Theatre extends Theatre {
     if (updatedAt == null) {
       throw new BuiltValueNullFieldError('Theatre', 'updatedAt');
     }
+    if (thumbnail == null) {
+      throw new BuiltValueNullFieldError('Theatre', 'thumbnail');
+    }
+    if (cover == null) {
+      throw new BuiltValueNullFieldError('Theatre', 'cover');
+    }
   }
 
   @override
@@ -117,7 +129,9 @@ class _$Theatre extends Theatre {
         room_summary == other.room_summary &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt &&
-        distance == other.distance;
+        distance == other.distance &&
+        thumbnail == other.thumbnail &&
+        cover == other.cover;
   }
 
   @override
@@ -134,20 +148,29 @@ class _$Theatre extends Theatre {
                                         $jc(
                                             $jc(
                                                 $jc(
-                                                    $jc($jc(0, id.hashCode),
-                                                        location.hashCode),
-                                                    is_active.hashCode),
-                                                rooms.hashCode),
-                                            name.hashCode),
-                                        address.hashCode),
-                                    phone_number.hashCode),
-                                description.hashCode),
-                            email.hashCode),
-                        opening_hours.hashCode),
-                    room_summary.hashCode),
-                createdAt.hashCode),
-            updatedAt.hashCode),
-        distance.hashCode));
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    0,
+                                                                    id
+                                                                        .hashCode),
+                                                                location
+                                                                    .hashCode),
+                                                            is_active.hashCode),
+                                                        rooms.hashCode),
+                                                    name.hashCode),
+                                                address.hashCode),
+                                            phone_number.hashCode),
+                                        description.hashCode),
+                                    email.hashCode),
+                                opening_hours.hashCode),
+                            room_summary.hashCode),
+                        createdAt.hashCode),
+                    updatedAt.hashCode),
+                distance.hashCode),
+            thumbnail.hashCode),
+        cover.hashCode));
   }
 
   @override
@@ -166,7 +189,9 @@ class _$Theatre extends Theatre {
           ..add('room_summary', room_summary)
           ..add('createdAt', createdAt)
           ..add('updatedAt', updatedAt)
-          ..add('distance', distance))
+          ..add('distance', distance)
+          ..add('thumbnail', thumbnail)
+          ..add('cover', cover))
         .toString();
   }
 }
@@ -231,6 +256,14 @@ class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
   double get distance => _$this._distance;
   set distance(double distance) => _$this._distance = distance;
 
+  String _thumbnail;
+  String get thumbnail => _$this._thumbnail;
+  set thumbnail(String thumbnail) => _$this._thumbnail = thumbnail;
+
+  String _cover;
+  String get cover => _$this._cover;
+  set cover(String cover) => _$this._cover = cover;
+
   TheatreBuilder();
 
   TheatreBuilder get _$this {
@@ -249,6 +282,8 @@ class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
       _createdAt = _$v.createdAt;
       _updatedAt = _$v.updatedAt;
       _distance = _$v.distance;
+      _thumbnail = _$v.thumbnail;
+      _cover = _$v.cover;
       _$v = null;
     }
     return this;
@@ -286,7 +321,9 @@ class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
               room_summary: room_summary,
               createdAt: createdAt,
               updatedAt: updatedAt,
-              distance: distance);
+              distance: distance,
+              thumbnail: thumbnail,
+              cover: cover);
     } catch (_) {
       String _$failedField;
       try {

@@ -30,6 +30,7 @@ import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
+import 'home/showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'home/tickets/combo_bloc.dart';
 import 'home/tickets/combo_page.dart';
 import 'home/tickets/ticket_page.dart';
@@ -152,7 +153,10 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     ViewAllPage.routeName: (context, settings) {
       return ViewAllPage(movieType: settings.arguments);
-    }
+    },
+    ShowTimesByTheatrePage.routeName: (context, settings) {
+      return ShowTimesByTheatrePage(theatre: settings.arguments);
+    },
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

@@ -24,6 +24,7 @@ import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'detail/movie_detail_page.dart';
 import 'movie_type.dart';
+import 'showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'view_all/view_all_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -884,9 +885,9 @@ class NearbyTheatreHeader extends StatelessWidget {
                 ),
               ),
               child: Hero(
-                tag: 'NEARBY_THEATRES',
+                tag: 'NEARBY_CINEMAS',
                 child: Text(
-                  'NEARBY THEATRES',
+                  'NEARBY CINEMAS',
                   maxLines: 1,
                   style: textTheme.headline6.copyWith(
                     fontSize: 16,
@@ -993,69 +994,76 @@ class NearbyTheatresList extends StatelessWidget {
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final theatre = theatres[index];
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
+                final item = theatres[index];
+
+                return Card(
+                  color: Colors.white,
+                  shadowColor: Colors.white,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade300,
-                        offset: Offset(1, 2),
-                        blurRadius: 8,
-                        spreadRadius: 2,
-                      )
-                    ],
                   ),
-                  clipBehavior: Clip.antiAlias,
-                  margin: const EdgeInsets.only(
-                    left: 8,
-                    right: 8,
-                    top: 8,
-                    bottom: 4,
-                  ),
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              theatre.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2
-                                  .copyWith(
-                                      fontSize: 14,
-                                      color: const Color(0xff5B64CF)),
-                              maxLines: 1,
+                  child: InkWell(
+                    onTap: () {
+                      AppScaffold.of(context).pushNamed(
+                        ShowTimesByTheatrePage.routeName,
+                        arguments: item,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(6),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          ClipOval(
+                            child: Image.network(
+                              item.thumbnail ?? '',
+                              width: 54,
+                              height: 54,
                             ),
-                            const SizedBox(height: 8),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  item.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(
+                                          fontSize: 14,
+                                          color: const Color(0xff5B64CF)),
+                                  maxLines: 1,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  item.address,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1
+                                      .copyWith(fontSize: 11),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (item.distance != null) ...[
+                            const SizedBox(width: 8),
                             Text(
-                              theatre.address,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1
-                                  .copyWith(fontSize: 11),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                              '${(item.distance / 1000.0).toStringAsFixed(1)} km',
+                              style: const TextStyle(
+                                color: Color(0xffFC575E),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
-                        ),
+                        ],
                       ),
-                      if (theatre.distance != null) ...[
-                        const SizedBox(width: 8),
-                        Text(
-                          '${(theatre.distance / 1000.0).toStringAsFixed(1)} km',
-                          style: const TextStyle(
-                            color: Color(0xffFC575E),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ],
+                    ),
                   ),
                 );
               },
