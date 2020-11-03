@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShowTime } from './show-time.schema';
 import * as mongoose from 'mongoose';
@@ -13,6 +13,16 @@ import { constants } from '../common/utils';
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');
 dayjs.extend(isBetween);
+
+type RawShowTimeAndTheatre = {
+  theatre: Theatre;
+  show_time: ShowTime;
+};
+
+type ShowTimeAndMovie = {
+  movie: Movie,
+  show_time: ShowTime;
+};
 
 @Injectable()
 export class ShowTimesService {
@@ -136,10 +146,7 @@ export class ShowTimesService {
     return await this.movieModel.findOne().skip(skip).exec();
   }
 
-  getShowTimesByMovieId(movieId: string, center: [number, number] | null): Promise<{
-    theatre: Theatre;
-    show_time: ShowTime
-  }[]> {
+  getShowTimesByMovieId(movieId: string, center: [number, number] | null): Promise<RawShowTimeAndTheatre[]> {
     const currentDay = new Date();
 
     const start = dayjs(currentDay).startOf('day').toDate();
@@ -210,6 +217,52 @@ export class ShowTimesService {
         },
       },
       { $project: { movie: 0 } },
+    ]).exec();
+  }
+
+  async getShowTimesByTheatreId(theatreId: string): Promise<ShowTimeAndMovie[]> {
+    const theatre = await this.theatreModel.findById(theatreId);
+    if (!theatre) {
+      throw new NotFoundException();
+    }
+
+    const currentDay = new Date();
+    const start = dayjs(currentDay).startOf('day').toDate();
+    const end = dayjs(currentDay).endOf('day').add(4, 'day').toDate();
+
+    return this.showTimeModel.aggregate([
+      {
+        $lookup: {
+          from: 'show_times',
+          localField: '_id',
+          foreignField: 'theatre',
+          as: 'show_time',
+        }
+      },
+      { $unwind: '$show_time' },
+      {
+        $match: {
+          $and: [
+            { 'show_time.start_time': { $gte: start } },
+            { 'show_time.end_time': { $lte: end } },
+            { 'show_time.is_active': true },
+          ]
+        },
+      },
+      {
+        $lookup: {
+          from: 'movies',
+          localField: 'show_time.movie',
+          foreignField: '_id',
+          as: 'movie',
+        }
+      },
+      { $unwind: '$movie' },
+      {
+        $match: {
+          'movie.released_date': { $lte: start },
+        },
+      },
     ]).exec();
   }
 }
