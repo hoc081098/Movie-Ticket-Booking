@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/domain/repository/theatre_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -16,6 +15,7 @@ import '../../domain/model/movie.dart';
 import '../../domain/model/theatre.dart';
 import '../../domain/repository/city_repository.dart';
 import '../../domain/repository/movie_repository.dart';
+import '../../domain/repository/theatre_repository.dart';
 import '../../utils/error.dart';
 import '../../utils/streams.dart';
 import '../app_scaffold.dart';
@@ -996,72 +996,75 @@ class NearbyTheatresList extends StatelessWidget {
               (context, index) {
                 final item = theatres[index];
 
-                return Card(
-                  color: Colors.white,
-                  shadowColor: Colors.white,
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      AppScaffold.of(context).pushNamed(
-                        ShowTimesByTheatrePage.routeName,
-                        arguments: item,
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(6),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          ClipOval(
-                            child: Image.network(
-                              item.thumbnail ?? '',
-                              width: 54,
-                              height: 54,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  item.name,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2
-                                      .copyWith(
-                                          fontSize: 14,
-                                          color: const Color(0xff5B64CF)),
-                                  maxLines: 1,
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  item.address,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1
-                                      .copyWith(fontSize: 11),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (item.distance != null) ...[
-                            const SizedBox(width: 8),
-                            Text(
-                              '${(item.distance / 1000.0).toStringAsFixed(1)} km',
-                              style: const TextStyle(
-                                color: Color(0xffFC575E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Card(
+                    color: Colors.white,
+                    shadowColor: Colors.white,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        AppScaffold.of(context).pushNamed(
+                          ShowTimesByTheatrePage.routeName,
+                          arguments: item,
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(6),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            ClipOval(
+                              child: Image.network(
+                                item.thumbnail ?? '',
+                                width: 54,
+                                height: 54,
                               ),
                             ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    item.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                            fontSize: 14,
+                                            color: const Color(0xff5B64CF)),
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    item.address,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1
+                                        .copyWith(fontSize: 11),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (item.distance != null) ...[
+                              const SizedBox(width: 8),
+                              Text(
+                                '${(item.distance / 1000.0).toStringAsFixed(1)} km',
+                                style: const TextStyle(
+                                  color: const Color(0xffA4508B),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
                     ),
                   ),
