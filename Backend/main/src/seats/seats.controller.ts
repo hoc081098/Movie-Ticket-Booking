@@ -21,7 +21,7 @@ export class SeatsController {
 
   @ApiOperation({ summary: 'PRIVATE' })
   @Post('seed-tickets')
-  seedTickets(): Promise<Ticket[]> {
+  seedTickets() {
     return this.seatsService.seedTickets();
   }
 

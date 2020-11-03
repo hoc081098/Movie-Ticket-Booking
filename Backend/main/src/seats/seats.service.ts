@@ -166,15 +166,15 @@ export class SeatsService {
   }
 
   async seedTickets() {
-    const showTimes = await this
+    const showTimes: ShowTime[] = await this
         .showTimeModel
         .find({ start_time: { $gte: new Date() } });
 
-    let last: Ticket[] = [];
+    let count = 0;
     for (const st of showTimes) {
-      last = await this.seedTicketsForSingleShowTime(st);
+      await this.seedTicketsForSingleShowTime(st);
+      this.logger.debug(`Done ${++count}/${showTimes.length}`);
     }
-    return last;
   }
 
   async getTicketsByShowTimeId(id: string): Promise<Ticket[]> {
