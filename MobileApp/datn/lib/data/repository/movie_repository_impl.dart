@@ -26,11 +26,16 @@ class MovieRepositoryImpl implements MovieRepository {
       _showTimeAndTheatreResponsesToTheatreAndShowTimes;
   final Function1<MovieDetailResponse, Movie> _movieDetailResponseToMovie;
 
+  final Function1<BuiltList<MovieAndShowTimeResponse>,
+          BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>>
+      _movieAndShowTimeResponsesToMovieAndShowTimes;
+
   MovieRepositoryImpl(
     this._authClient,
     this._movieResponseToMovie,
     this._showTimeAndTheatreResponsesToTheatreAndShowTimes,
     this._movieDetailResponseToMovie,
+    this._movieAndShowTimeResponsesToMovieAndShowTimes,
   );
 
   @override
@@ -198,8 +203,7 @@ class MovieRepositoryImpl implements MovieRepository {
         json,
         specifiedType: builtListMovieAndShowTimeResponse,
       ) as BuiltList<MovieAndShowTimeResponse>;
-      print(response);
-      return BuiltMap.of(<DateTime, BuiltList<MovieAndShowTimes>>{});
+      return _movieAndShowTimeResponsesToMovieAndShowTimes(response);
     };
 
     return Rx.fromCallable(() => _authClient
