@@ -72,6 +72,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         theatre: arguments['theatre'],
         showTime: arguments['showTime'],
         movie: arguments['movie'],
+        fromMovieDetail: arguments['fromMovieDetail'] ?? true,
       );
     },
     ComboPage.routeName: (context, settings) {

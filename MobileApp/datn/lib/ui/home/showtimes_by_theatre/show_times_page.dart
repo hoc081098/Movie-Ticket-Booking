@@ -322,6 +322,7 @@ class ShowTimeItem extends StatelessWidget {
                 'theatre': theatre,
                 'showTime': show,
                 'movie': movie,
+                'fromMovieDetail': false,
               },
             ),
             child: Container(

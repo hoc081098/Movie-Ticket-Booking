@@ -20,6 +20,7 @@ import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../detail/movie_detail_page.dart';
+import '../showtimes_by_theatre/show_time_by_theatre_page.dart';
 import '../tickets/ticket_page.dart';
 import 'widgets/bottom.dart';
 import 'widgets/card.dart';
@@ -306,8 +307,13 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
           'Checkout successfully. Please check email to get ticket');
       await delay(700);
 
-      AppScaffold.ofIndex(context, 0)
-          .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+      if (TicketsCountDownTimerBlocProvider.shared().fromDetailPage) {
+        AppScaffold.ofIndex(context, 0)
+            .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+      } else {
+        AppScaffold.ofIndex(context, 0)
+            .popUntil(ModalRoute.withName(ShowTimesByTheatrePage.routeName));
+      }
     }
     if (message is CheckoutFailure) {
       scaffoldKey
