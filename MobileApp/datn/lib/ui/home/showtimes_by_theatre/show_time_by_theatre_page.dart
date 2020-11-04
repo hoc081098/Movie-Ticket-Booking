@@ -1,4 +1,7 @@
+import 'package:datn/domain/repository/movie_repository.dart';
+import 'package:datn/utils/streams.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_provider/flutter_provider.dart';
 
 import '../../../domain/model/theatre.dart';
 
@@ -15,6 +18,16 @@ class ShowTimesByTheatrePage extends StatefulWidget {
 }
 
 class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    Provider.of<MovieRepository>(context)
+        .getShowTimesByTheatreId(widget.theatre.id)
+        .debug('<3')
+        .listen(null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
