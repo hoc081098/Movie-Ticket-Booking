@@ -318,28 +318,42 @@ class ShowTimeItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return ExpansionTile(
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      title: Row(
         children: [
-          Text(theatre.name),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              Icon(
-                Icons.map_rounded,
-                color: Colors.grey.shade500,
-                size: 20,
-              ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Text(
-                  theatre.address,
-                  style: textTheme.caption.copyWith(fontSize: 14),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+          ClipOval(
+            child: Image.network(
+              theatre.thumbnail ?? '',
+              width: 54,
+              height: 54,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(theatre.name),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.map_rounded,
+                      color: Colors.grey.shade500,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        theatre.address,
+                        style: textTheme.caption.copyWith(fontSize: 12),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
