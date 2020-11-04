@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShowTime } from './show-time.schema';
 import * as mongoose from 'mongoose';
-import { CreateDocumentDefinition, Model } from 'mongoose';
+import { CreateDocumentDefinition, Model, Types } from 'mongoose';
 import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
@@ -270,7 +270,8 @@ export class ShowTimesService {
     const start = dayjs(currentDay).startOf('day').toDate();
     const end = dayjs(currentDay).endOf('day').add(4, 'day').toDate();
 
-    return this.showTimeModel.aggregate([
+    return this.theatreModel.aggregate([
+      { $match: { _id: new Types.ObjectId(theatreId) } },
       {
         $lookup: {
           from: 'show_times',
@@ -303,6 +304,12 @@ export class ShowTimesService {
           'movie.released_date': { $lte: start },
         },
       },
+      {
+        $sort: {
+          'show_time.start_time': 1,
+          'movie.title': 1,
+        }
+      }
     ]).exec();
   }
 }
