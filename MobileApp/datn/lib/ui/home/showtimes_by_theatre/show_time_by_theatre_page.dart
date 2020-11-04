@@ -1,10 +1,8 @@
-import 'package:datn/domain/repository/movie_repository.dart';
-import 'package:datn/ui/home/detail/movie_detail_page.dart';
-import 'package:datn/utils/streams.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_provider/flutter_provider.dart';
 
 import '../../../domain/model/theatre.dart';
+import '../detail/movie_detail_page.dart';
+import 'show_times_page.dart';
 
 class ShowTimesByTheatrePage extends StatefulWidget {
   static const routeName = '/home/show_time_by_theatre';
@@ -25,23 +23,11 @@ class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
   void initState() {
     super.initState();
     pages = <Widget>[
-      Container(
-        color: Colors.red,
-      ),
+      ShowTimesPage(theatre: widget.theatre),
       Container(
         color: Colors.green,
       ),
     ];
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    Provider.of<MovieRepository>(context)
-        .getShowTimesByTheatreId(widget.theatre.id)
-        .debug('<3')
-        .listen(null);
   }
 
   @override
