@@ -1,10 +1,12 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/home/detail/movie_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
@@ -218,7 +220,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
         showTimeDateFormat: showTimeDateFormat,
         theatre: widget.theatre,
       ),
-      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      separatorBuilder: (_, __) => const Divider(height: 0),
     );
   }
 
@@ -303,75 +305,111 @@ class ShowTimeItem extends StatelessWidget {
     final showTimes = item.showTimes;
     final textTheme = Theme.of(context).textTheme;
 
-    return ExpansionTile(
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(movie.title),
-          const SizedBox(height: 4),
-          // Row(
-          //   children: [
-          //     Icon(
-          //       Icons.map_rounded,
-          //       color: Colors.grey.shade500,
-          //       size: 20,
-          //     ),
-          //     const SizedBox(width: 4),
-          //     Expanded(
-          //       child: Text(
-          //         movie.title,
-          //         style: textTheme.caption.copyWith(fontSize: 14),
-          //         maxLines: 2,
-          //         overflow: TextOverflow.ellipsis,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        ],
-      ),
+    final gridView = GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 3,
+      padding: const EdgeInsets.all(12),
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      childAspectRatio: 1.8,
       children: [
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 3,
-          padding: const EdgeInsets.all(16),
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          childAspectRatio: 1.8,
+        for (final show in showTimes)
+          InkWell(
+            onTap: () => AppScaffold.of(context).pushNamed(
+              TicketsPage.routeName,
+              arguments: <String, dynamic>{
+                'theatre': theatre,
+                'showTime': show,
+                'movie': movie,
+              },
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  color: const Color(0xffD1DBE2),
+                  width: 1,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  showTimeDateFormat.format(show.start_time),
+                  textAlign: TextAlign.center,
+                  style: textTheme.subtitle1.copyWith(
+                    fontSize: 18,
+                    color: const Color(0xff687189),
+                  ),
+                ),
+              ),
+            ),
+          )
+      ],
+    );
+
+    return InkWell(
+      onTap: () {
+        AppScaffold.of(context).pushNamed(
+          MovieDetailPage.routeName,
+          arguments: movie,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 8,
+          right: 8,
+          top: 12,
+        ),
+        child: Column(
           children: [
-            for (final show in showTimes)
-              InkWell(
-                onTap: () => AppScaffold.of(context).pushNamed(
-                  TicketsPage.routeName,
-                  arguments: <String, dynamic>{
-                    'theatre': movie,
-                    'showTime': show,
-                    'movie': movie,
-                  },
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                      color: const Color(0xffD1DBE2),
-                      width: 1,
-                    ),
+            Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: OctoImage(
+                    image: NetworkImage(movie.posterUrl ?? ''),
+                    width: 72,
+                    height: 72,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder: (context, event) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, e, s) {
+                      return Center(
+                        child: Icon(
+                          Icons.error,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      );
+                    },
                   ),
-                  child: Center(
-                    child: Text(
-                      showTimeDateFormat.format(show.start_time),
-                      textAlign: TextAlign.center,
-                      style: textTheme.subtitle1.copyWith(
-                        fontSize: 18,
-                        color: const Color(0xff687189),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(movie.title),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${movie.duration} mins',
+                        style: textTheme.caption.copyWith(fontSize: 14),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              )
+                )
+              ],
+            ),
+            gridView,
           ],
         ),
-      ],
+      ),
     );
   }
 }

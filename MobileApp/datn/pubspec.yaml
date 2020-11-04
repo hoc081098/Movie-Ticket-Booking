@@ -23,6 +23,7 @@ environment:
 # flutter packages pub run build_runner build --delete-conflicting-outputs
 
 dependencies:
+  octo_image: ^0.3.0
   firebase_remote_config: ^0.4.1
   flutter_cache_manager: ^2.0.0
   distinct_value_connectable_stream: ^1.2.0-beta01
