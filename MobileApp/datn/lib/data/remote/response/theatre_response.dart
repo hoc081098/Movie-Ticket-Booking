@@ -38,6 +38,15 @@ abstract class TheatreResponse
 
   DateTime get updatedAt;
 
+  @nullable
+  double get distance;
+
+  @nullable
+  String get thumbnail;
+
+  @nullable
+  String get cover;
+
   TheatreResponse._();
 
   factory TheatreResponse([void Function(TheatreResponseBuilder) updates]) =

@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:octo_image/octo_image.dart';
 
 import '../../../domain/model/movie.dart';
 import '../../app_scaffold.dart';
@@ -28,10 +28,10 @@ class ViewAllListItem extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(
-        left: 6,
+        left: 8,
         right: 8,
         top: 8,
-        bottom: 12,
+        bottom: 8,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -63,15 +63,15 @@ class ViewAllListItem extends StatelessWidget {
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        child: CachedNetworkImage(
-                          imageUrl: item.posterUrl ?? '',
+                        child: OctoImage(
+                          image: NetworkImage(item.posterUrl ?? ''),
                           fit: BoxFit.cover,
-                          placeholder: (_, __) => Center(
+                          progressIndicatorBuilder: (_, __) => Center(
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                             ),
                           ),
-                          errorWidget: (_, __, ___) => Center(
+                          errorBuilder: (_, __, ___) => Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[

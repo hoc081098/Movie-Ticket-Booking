@@ -33,6 +33,13 @@ abstract class Theatre implements Built<Theatre, TheatreBuilder> {
 
   DateTime get updatedAt;
 
+  @nullable
+  double get distance;
+
+  String get thumbnail;
+
+  String get cover;
+
   Theatre._();
 
   factory Theatre([void Function(TheatreBuilder) updates]) = _$Theatre;

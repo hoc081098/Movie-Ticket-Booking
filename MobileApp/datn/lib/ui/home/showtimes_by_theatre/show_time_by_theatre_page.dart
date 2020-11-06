@@ -1,35 +1,43 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/model/movie.dart';
-import 'comments/comments_page.dart';
-import 'info/movie_info_page.dart';
+import '../../../domain/model/theatre.dart';
+import '../detail/movie_detail_page.dart';
 import 'show_times_page.dart';
+import 'theatre_info_page.dart';
 
-class MovieDetailPage extends StatefulWidget {
-  static const routeName = '/home/detail';
+class ShowTimesByTheatrePage extends StatefulWidget {
+  static const routeName = '/home/show_time_by_theatre';
 
-  final Movie movie;
+  final Theatre theatre;
 
-  const MovieDetailPage({
-    Key key,
-    @required this.movie,
-  }) : super(key: key);
+  const ShowTimesByTheatrePage({Key key, @required this.theatre})
+      : super(key: key);
 
   @override
-  _MovieDetailPageState createState() => _MovieDetailPageState();
+  _ShowTimesByTheatrePageState createState() => _ShowTimesByTheatrePageState();
 }
 
-class _MovieDetailPageState extends State<MovieDetailPage> {
+class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
   List<Widget> pages;
 
   @override
   void initState() {
     super.initState();
     pages = <Widget>[
-      ShowTimesPage(movie: widget.movie),
-      CommentsPage(movieId: widget.movie.id),
-      MovieInfoPage(movieId: widget.movie.id),
+      ShowTimesPage(theatre: widget.theatre),
+      TheatreInfoPage(theatre: widget.theatre),
     ];
+  }
+
+  @override
+  void didUpdateWidget(covariant ShowTimesByTheatrePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.theatre != widget.theatre) {
+      pages = <Widget>[
+        ShowTimesPage(theatre: widget.theatre),
+        TheatreInfoPage(theatre: widget.theatre),
+      ];
+    }
   }
 
   @override
@@ -39,10 +47,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       tabs: [
         Tab(
           text: 'Showtimes',
-          iconMargin: const EdgeInsets.only(bottom: 8),
-        ),
-        Tab(
-          text: 'Comments',
           iconMargin: const EdgeInsets.only(bottom: 8),
         ),
         Tab(
@@ -66,13 +70,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
 
     return DefaultTabController(
-      length: 3,
+      length: pages.length,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           bottom: CustomTabBar(tabBar: tabBar),
           title: Text(
-            widget.movie.title,
+            widget.theatre.name,
             style: Theme.of(context).textTheme.headline6.copyWith(
                   fontSize: 16,
                   color: Colors.white,
@@ -83,33 +87,4 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       ),
     );
   }
-}
-
-class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
-  final TabBar tabBar;
-
-  const CustomTabBar({Key key, this.tabBar}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: tabBar.preferredSize.height - 8,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 4,
-          ),
-        ],
-      ),
-      child: Material(
-        child: tabBar,
-        color: Colors.white,
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => Size.fromHeight(tabBar.preferredSize.height - 8);
 }

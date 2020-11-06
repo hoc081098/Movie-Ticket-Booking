@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/data/remote/response/movie_and_show_time_response.dart';
+import 'package:datn/domain/model/movie_and_showtimes.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -24,11 +26,16 @@ class MovieRepositoryImpl implements MovieRepository {
       _showTimeAndTheatreResponsesToTheatreAndShowTimes;
   final Function1<MovieDetailResponse, Movie> _movieDetailResponseToMovie;
 
+  final Function1<BuiltList<MovieAndShowTimeResponse>,
+          BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>>
+      _movieAndShowTimeResponsesToMovieAndShowTimes;
+
   MovieRepositoryImpl(
     this._authClient,
     this._movieResponseToMovie,
     this._showTimeAndTheatreResponsesToTheatreAndShowTimes,
     this._movieDetailResponseToMovie,
+    this._movieAndShowTimeResponsesToMovieAndShowTimes,
   );
 
   @override
@@ -182,5 +189,25 @@ class MovieRepositoryImpl implements MovieRepository {
     ) as BuiltList<MovieResponse>;
 
     return response.map(_movieResponseToMovie).toBuiltList();
+  }
+
+  @override
+  Stream<BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>>
+      getShowTimesByTheatreId(String theatreId) {
+    if (theatreId == null) {
+      return Stream.error(ArgumentError.notNull('theatreId'));
+    }
+
+    final mapResult = (Object json) {
+      final response = serializers.deserialize(
+        json,
+        specifiedType: builtListMovieAndShowTimeResponse,
+      ) as BuiltList<MovieAndShowTimeResponse>;
+      return _movieAndShowTimeResponsesToMovieAndShowTimes(response);
+    };
+
+    return Rx.fromCallable(() => _authClient
+        .getBody(buildUrl('/show-times/theatres/${theatreId}'))
+        .then(mapResult));
   }
 }

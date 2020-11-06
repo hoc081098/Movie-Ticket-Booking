@@ -2,7 +2,7 @@ import { Controller, Get, Logger, Param, Post, Query, UseGuards } from '@nestjs/
 import { ShowTimesService } from './show-times.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { getCoordinates } from '../common/utils';
-import { MovieAndTheatre } from './show-time.dto';
+import { MovieAndShowTime, TheatreAndShowTime } from './show-time.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { LocationDto } from '../common/location.dto';
 
@@ -26,7 +26,7 @@ export class ShowTimesController {
   async getShowTimesByMovieId(
       @Param('movie_id') movieId: string,
       @Query() locationDto: LocationDto,
-  ): Promise<MovieAndTheatre[]> {
+  ): Promise<TheatreAndShowTime[]> {
     this.logger.debug(`getShowTimesByMovieId ${movieId} ${locationDto.lat}, ${locationDto.lng}`);
 
     const movieShowTimes = await this.showTimesService.getShowTimesByMovieId(
@@ -34,6 +34,14 @@ export class ShowTimesController {
         getCoordinates(locationDto)
     );
 
-    return movieShowTimes.map(doc => new MovieAndTheatre(doc));
+    return movieShowTimes.map(doc => new TheatreAndShowTime(doc));
+  }
+
+  @Get('theatres/:theatre_id')
+  async getShowTimesByTheatreId(
+      @Param('theatre_id') theatreId: string,
+  ): Promise<MovieAndShowTime[]> {
+    const result = await this.showTimesService.getShowTimesByTheatreId(theatreId);
+    return result.map(doc => new MovieAndShowTime(doc));
   }
 }

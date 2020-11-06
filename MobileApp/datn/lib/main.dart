@@ -1,4 +1,6 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
+import 'package:datn/data/repository/theatre_repository_impl.dart';
+import 'package:datn/domain/repository/theatre_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -115,6 +117,7 @@ void main() async {
     mappers.movieResponseToMovie,
     mappers.showTimeAndTheatreResponsesToTheatreAndShowTimes,
     mappers.movieDetailResponseToMovie,
+    mappers.movieAndShowTimeResponsesToMovieAndShowTimes,
   );
 
   final cityRepository = CityRepositoryImpl(preferences, userLocalSource);
@@ -147,6 +150,11 @@ void main() async {
     mappers.notificationResponseToNotification,
   );
 
+  final theatreRepository = TheatreRepositoryImpl(
+    authClient,
+    mappers.theatreResponseToTheatre,
+  );
+
   runApp(
     Providers(
       providers: [
@@ -160,6 +168,7 @@ void main() async {
         Provider<FavoritesRepository>(value: favoritesRepository),
         Provider<NotificationRepository>(value: notificationRepository),
         Provider<FcmNotificationManager>(value: fcmNotificationManager),
+        Provider<TheatreRepository>(value: theatreRepository),
       ],
       child: MyApp(),
     ),

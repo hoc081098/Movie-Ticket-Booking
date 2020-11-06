@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/home/showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -33,6 +34,7 @@ class TicketsCountDownTimerBlocProvider {
   static TicketsCountDownTimerBlocProvider _instance;
 
   TicketsCountDownTimerBloc _bloc;
+  bool _fromDetailPage;
   var _destroyed = false;
   var _initialized = false;
 
@@ -41,8 +43,9 @@ class TicketsCountDownTimerBlocProvider {
   factory TicketsCountDownTimerBlocProvider.shared() =>
       _instance ??= TicketsCountDownTimerBlocProvider._();
 
-  void _init(TicketsCountDownTimerBloc bloc) {
+  void _init(TicketsCountDownTimerBloc bloc, bool fromDetailPage) {
     _bloc = bloc;
+    _fromDetailPage = fromDetailPage;
     _initialized = true;
   }
 
@@ -52,8 +55,15 @@ class TicketsCountDownTimerBlocProvider {
     return _bloc;
   }
 
+  bool get fromDetailPage {
+    if (!_initialized) throw StateError('Not init');
+    if (_destroyed || _fromDetailPage == null) throw StateError('Destroyed');
+    return _fromDetailPage;
+  }
+
   void _destroy() {
     _bloc = null;
+    _fromDetailPage = null;
     _destroyed = true;
     _instance = null;
   }
@@ -116,12 +126,14 @@ class TicketsPage extends StatefulWidget {
   final ShowTime showTime;
   final Theatre theatre;
   final Movie movie;
+  final bool fromMovieDetail;
 
   const TicketsPage({
     Key key,
     @required this.showTime,
     @required this.movie,
     @required this.theatre,
+    @required this.fromMovieDetail,
   }) : super(key: key);
 
   @override
@@ -138,7 +150,10 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   void initState() {
     super.initState();
     selectedTicketIdsS.disposedBy(bag);
-    TicketsCountDownTimerBlocProvider.shared()._init(countDownTimerBloc);
+    TicketsCountDownTimerBlocProvider.shared()._init(
+      countDownTimerBloc,
+      widget.fromMovieDetail,
+    );
   }
 
   @override
@@ -222,8 +237,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               onPressed: () {
                 Navigator.of(dialogContext).pop();
 
-                AppScaffold.ofIndex(context, 0)
-                    .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+                if (widget.fromMovieDetail) {
+                  AppScaffold.ofIndex(context, 0)
+                      .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+                } else {
+                  AppScaffold.ofIndex(context, 0).popUntil(
+                      ModalRoute.withName(ShowTimesByTheatrePage.routeName));
+                }
               },
             ),
           ],

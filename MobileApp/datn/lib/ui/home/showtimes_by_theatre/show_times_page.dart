@@ -1,16 +1,18 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/ui/home/detail/movie_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../../domain/model/city.dart';
-import '../../../domain/model/movie.dart';
-import '../../../domain/model/theatre_and_show_times.dart';
+import '../../../domain/model/movie_and_showtimes.dart';
+import '../../../domain/model/theatre.dart';
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
 import '../../../utils/date_time.dart';
@@ -21,9 +23,9 @@ import '../../widgets/error_widget.dart';
 import '../tickets/ticket_page.dart';
 
 class ShowTimesPage extends StatefulWidget {
-  final Movie movie;
+  final Theatre theatre;
 
-  const ShowTimesPage({Key key, @required this.movie}) : super(key: key);
+  const ShowTimesPage({Key key, @required this.theatre}) : super(key: key);
 
   @override
   _ShowTimesPageState createState() => _ShowTimesPageState();
@@ -38,7 +40,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
   final startDay = startOfDay(DateTime.now());
   List<DateTime> days;
   BehaviorSubject<DateTime> selectedDayS;
-  LoaderBloc<BuiltList<TheatreAndShowTimes>> bloc;
+  LoaderBloc<BuiltList<MovieAndShowTimes>> bloc;
 
   @override
   void initState() {
@@ -54,38 +56,26 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     super.didChangeDependencies();
 
     bloc ??= () {
-      final cityRepo = Provider.of<CityRepository>(context);
       final movieRepo = Provider.of<MovieRepository>(context);
-      final emptyList = <TheatreAndShowTimes>[].build();
+      final emptyList = <MovieAndShowTimes>[].build();
 
-      final bloc = LoaderBloc<BuiltList<TheatreAndShowTimes>>(
+      return LoaderBloc<BuiltList<MovieAndShowTimes>>(
         loaderFunction: () {
-          final showTimesByDay$ = movieRepo.getShowTimes(
-            movieId: widget.movie.id,
-            location: cityRepo.selectedCity$.value.location,
-          );
+          final showTimesByDay$ =
+              movieRepo.getShowTimesByTheatreId(widget.theatre.id);
 
           return Rx.combineLatest2(
               showTimesByDay$,
               selectedDayS,
               (
-                BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>
-                    showTimesByDay,
+                BuiltMap<DateTime, BuiltList<MovieAndShowTimes>> showTimesByDay,
                 DateTime day,
               ) =>
                   showTimesByDay[day] ?? emptyList);
         },
         enableLogger: true,
         initialContent: emptyList,
-      );
-
-      cityRepo.selectedCity$
-          .map((city) => city.location)
-          .distinct()
-          .listen((_) => bloc.fetch())
-          .disposedBy(bag);
-
-      return bloc;
+      )..fetch();
     }();
   }
 
@@ -114,7 +104,6 @@ class _ShowTimesPageState extends State<ShowTimesPage>
             shadowColor: Colors.white,
             child: Column(
               children: [
-                const SelectCityWidget(),
                 const SizedBox(height: 8),
                 RxStreamBuilder<DateTime>(
                   stream: selectedDayS,
@@ -176,8 +165,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
           const SizedBox(height: 8),
           Expanded(
             child: Container(
-              child:
-                  RxStreamBuilder<LoaderState<BuiltList<TheatreAndShowTimes>>>(
+              child: RxStreamBuilder<LoaderState<BuiltList<MovieAndShowTimes>>>(
                 stream: bloc.state$,
                 builder: (context, snapshot) {
                   return AnimatedSwitcher(
@@ -193,7 +181,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     );
   }
 
-  Widget _buildBottom(LoaderState<BuiltList<TheatreAndShowTimes>> state) {
+  Widget _buildBottom(LoaderState<BuiltList<MovieAndShowTimes>> state) {
     if (state.error != null) {
       return MyErrorWidget(
         errorText: 'Error: ${getErrorMessage(state.error)}',
@@ -227,12 +215,12 @@ class _ShowTimesPageState extends State<ShowTimesPage>
       physics: const BouncingScrollPhysics(),
       itemCount: list.length,
       itemBuilder: (context, index) => ShowTimeItem(
-        key: ValueKey(list[index].theatre.id),
-        theatreAndShowTimes: list[index],
+        key: ValueKey(list[index].movie.id),
+        item: list[index],
         showTimeDateFormat: showTimeDateFormat,
-        movie: widget.movie,
+        theatre: widget.theatre,
       ),
-      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      separatorBuilder: (_, __) => const Divider(height: 0),
     );
   }
 
@@ -301,105 +289,128 @@ class SelectCityWidget extends StatelessWidget {
 
 class ShowTimeItem extends StatelessWidget {
   final DateFormat showTimeDateFormat;
-  final TheatreAndShowTimes theatreAndShowTimes;
-  final Movie movie;
+  final MovieAndShowTimes item;
+  final Theatre theatre;
 
   ShowTimeItem(
       {Key key,
-      @required this.theatreAndShowTimes,
+      @required this.item,
       @required this.showTimeDateFormat,
-      @required this.movie})
+      @required this.theatre})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theatre = theatreAndShowTimes.theatre;
-    final showTimes = theatreAndShowTimes.showTimes;
+    final movie = item.movie;
+    final showTimes = item.showTimes;
     final textTheme = Theme.of(context).textTheme;
 
-    return ExpansionTile(
-      title: Row(
-        children: [
-          ClipOval(
-            child: Image.network(
-              theatre.thumbnail ?? '',
-              width: 54,
-              height: 54,
+    final gridView = GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 3,
+      padding: const EdgeInsets.all(12),
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      childAspectRatio: 1.8,
+      children: [
+        for (final show in showTimes)
+          InkWell(
+            onTap: () => AppScaffold.of(context).pushNamed(
+              TicketsPage.routeName,
+              arguments: <String, dynamic>{
+                'theatre': theatre,
+                'showTime': show,
+                'movie': movie,
+                'fromMovieDetail': false,
+              },
             ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  color: const Color(0xffD1DBE2),
+                  width: 1,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  showTimeDateFormat.format(show.start_time),
+                  textAlign: TextAlign.center,
+                  style: textTheme.subtitle1.copyWith(
+                    fontSize: 18,
+                    color: const Color(0xff687189),
+                  ),
+                ),
+              ),
+            ),
+          )
+      ],
+    );
+
+    return InkWell(
+      onTap: () {
+        AppScaffold.of(context).pushNamed(
+          MovieDetailPage.routeName,
+          arguments: movie,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 8,
+          right: 8,
+          top: 12,
+        ),
+        child: Column(
+          children: [
+            Row(
               children: [
-                Text(theatre.name),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.map_rounded,
-                      color: Colors.grey.shade500,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        theatre.address,
-                        style: textTheme.caption.copyWith(fontSize: 12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: OctoImage(
+                    image: NetworkImage(movie.posterUrl ?? ''),
+                    width: 72,
+                    height: 72,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder: (context, event) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, e, s) {
+                      return Center(
+                        child: Icon(
+                          Icons.error,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(movie.title),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${movie.duration} mins',
+                        style: textTheme.caption.copyWith(fontSize: 14),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                )
               ],
             ),
-          ),
-        ],
-      ),
-      children: [
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 3,
-          padding: const EdgeInsets.all(16),
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          childAspectRatio: 1.8,
-          children: [
-            for (final show in showTimes)
-              InkWell(
-                onTap: () => AppScaffold.of(context).pushNamed(
-                  TicketsPage.routeName,
-                  arguments: <String, dynamic>{
-                    'theatre': theatre,
-                    'showTime': show,
-                    'movie': movie,
-                  },
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                      color: const Color(0xffD1DBE2),
-                      width: 1,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      showTimeDateFormat.format(show.start_time),
-                      textAlign: TextAlign.center,
-                      style: textTheme.subtitle1.copyWith(
-                        fontSize: 18,
-                        color: const Color(0xff687189),
-                      ),
-                    ),
-                  ),
-                ),
-              )
+            gridView,
           ],
         ),
-      ],
+      ),
     );
   }
 }

@@ -1,8 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShowTime } from './show-time.schema';
 import * as mongoose from 'mongoose';
-import { CreateDocumentDefinition, Model } from 'mongoose';
+import { CreateDocumentDefinition, Model, Types } from 'mongoose';
 import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
@@ -13,6 +13,16 @@ import { constants } from '../common/utils';
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');
 dayjs.extend(isBetween);
+
+type RawShowTimeAndTheatre = {
+  theatre: Theatre;
+  show_time: ShowTime;
+};
+
+type ShowTimeAndMovie = {
+  movie: Movie,
+  show_time: ShowTime;
+};
 
 @Injectable()
 export class ShowTimesService {
@@ -26,6 +36,13 @@ export class ShowTimesService {
   ) {}
 
   async seed() {
+    // const sts = await this.showTimeModel.find({});
+    // for (const st of sts) {
+    //   const r = dayjs(st.start_time).add(-2, 'day').toDate();
+    //   await this.movieModel.updateOne({ _id: st.movie }, { released_date: r }).exec();
+    // }
+    // return;
+    //
     const current = dayjs(new Date());
     const theatres = await this.theatreModel.find({});
 
@@ -50,14 +67,38 @@ export class ShowTimesService {
           const thStartTime = day.set('hour', startH).set('minute', startM);
           const thEndTime = day.set('hour', endH).set('minute', endM);
 
-          const movie = await this.randomMovie();
+          const movie: Movie | null = await this.pickAMovieReleasedBefore(day);
+          if (!movie) {
+            continue;
+          }
 
           for (const hour of hours) {
-            await this.checkAndSave(day, hour, movie, theatre, room, thStartTime, thEndTime);
+            const res = await this.checkAndSave(day, hour, movie, theatre, room, thStartTime, thEndTime);
+            this.logger.debug(res);
           }
         }
       }
     }
+  }
+
+  private async pickAMovieReleasedBefore(day: dayjs.Dayjs): Promise<Movie | null> {
+    let movie: Movie | null | undefined = null;
+    let retryCount = 0;
+
+    while (true) {
+      movie = await this.randomMovie(day);
+
+      if (movie) {
+        return movie;
+      }
+
+      retryCount++;
+      if (retryCount >= 3) {
+        break;
+      }
+    }
+
+    return movie;
   }
 
   private async checkAndSave(
@@ -68,12 +109,16 @@ export class ShowTimesService {
       room: string,
       thStartTime: dayjs.Dayjs,
       thEndTime: dayjs.Dayjs
-  ) {
+  ): Promise<0 | 1 | 2 | 3> {
     const startTime = day
         .set('hour', hour)
         .set('minute', 0)
         .set('second', 0)
         .set('millisecond', 0);
+    if (startTime.isBefore(movie.released_date)) {
+      return 0;
+    }
+
     const endTime = startTime.add(movie.duration, 'minute');
 
     this.logger.debug(`Start saving show time: ${theatre.name} -- ${room} <> ${thStartTime.toDate()}-${thEndTime.toDate()} <> ${startTime}-${endTime}`);
@@ -91,7 +136,7 @@ export class ShowTimesService {
     if (showTimes.length == 1) {
       if (startTime.isBefore(showTimes[0].end_time) && endTime.isAfter(showTimes[0].start_time)
           || startTime.isBefore(thStartTime) || endTime.isAfter(thEndTime)) {
-        return;
+        return 1;
       }
     }
 
@@ -110,7 +155,7 @@ export class ShowTimesService {
           .toPromise();
 
       if (array === undefined) {
-        return;
+        return 2;
       }
 
       this.logger.debug(`>>> Array ${array}`);
@@ -127,19 +172,21 @@ export class ShowTimesService {
     const showTime = await this.showTimeModel.create(doc);
 
     this.logger.debug(`Saved show time: ${JSON.stringify(showTime)}`);
+    return 3;
   }
 
-  private async randomMovie() {
+  private async randomMovie(day: dayjs.Dayjs): Promise<Movie | undefined> {
     const count = this.movieCount = this.movieCount ?? await this.movieModel.count({});
     const skip = Math.floor(count * Math.random());
 
-    return await this.movieModel.findOne().skip(skip).exec();
+    return await this.movieModel.find({ released_date: { $lte: day.startOf('day').toDate() } })
+        .skip(skip)
+        .limit(1)
+        .exec()
+        .then(v => v[0]);
   }
 
-  getShowTimesByMovieId(movieId: string, center: [number, number] | null): Promise<{
-    theatre: Theatre;
-    show_time: ShowTime
-  }[]> {
+  getShowTimesByMovieId(movieId: string, center: [number, number] | null): Promise<RawShowTimeAndTheatre[]> {
     const currentDay = new Date();
 
     const start = dayjs(currentDay).startOf('day').toDate();
@@ -210,6 +257,59 @@ export class ShowTimesService {
         },
       },
       { $project: { movie: 0 } },
+    ]).exec();
+  }
+
+  async getShowTimesByTheatreId(theatreId: string): Promise<ShowTimeAndMovie[]> {
+    const theatre = await this.theatreModel.findById(theatreId);
+    if (!theatre) {
+      throw new NotFoundException();
+    }
+
+    const currentDay = new Date();
+    const start = dayjs(currentDay).startOf('day').toDate();
+    const end = dayjs(currentDay).endOf('day').add(4, 'day').toDate();
+
+    return this.theatreModel.aggregate([
+      { $match: { _id: new Types.ObjectId(theatreId) } },
+      {
+        $lookup: {
+          from: 'show_times',
+          localField: '_id',
+          foreignField: 'theatre',
+          as: 'show_time',
+        }
+      },
+      { $unwind: '$show_time' },
+      {
+        $match: {
+          $and: [
+            { 'show_time.start_time': { $gte: start } },
+            { 'show_time.end_time': { $lte: end } },
+            { 'show_time.is_active': true },
+          ]
+        },
+      },
+      {
+        $lookup: {
+          from: 'movies',
+          localField: 'show_time.movie',
+          foreignField: '_id',
+          as: 'movie',
+        }
+      },
+      { $unwind: '$movie' },
+      {
+        $match: {
+          'movie.released_date': { $lte: start },
+        },
+      },
+      {
+        $sort: {
+          'show_time.start_time': 1,
+          'movie.title': 1,
+        }
+      }
     ]).exec();
   }
 }

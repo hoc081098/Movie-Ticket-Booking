@@ -180,10 +180,10 @@ class FavoriteItem extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(
-        left: 6,
+        left: 8,
         right: 8,
         top: 8,
-        bottom: 12,
+        bottom: 8,
       ),
       decoration: BoxDecoration(
         color: Colors.white,

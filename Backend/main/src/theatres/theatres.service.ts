@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Theatre } from './theatre.schema';
 import { CreateDocumentDefinition, Model } from 'mongoose';
+import { LocationDto } from "../common/location.dto";
+import { constants, getCoordinates } from "../common/utils";
 
 const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
   {
@@ -26,7 +28,9 @@ const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
       '2D 6',
       '2D 7',
       '3D',
-    ]
+    ],
+    cover: '',
+    thumbnail: '',
   },
   {
     name: 'Starlight Đà Nẵng',
@@ -46,7 +50,9 @@ const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
       '2D 2',
       '2D 3',
       '2D 4',
-    ]
+    ],
+    cover: 'https://s3img.vcdn.vn/123phim/2017/07/starlight-da-nang-14999290721876.jpg',
+    thumbnail: 'https://s3img.vcdn.vn/123phim/2018/09/16b811ab4773065c15eb0e9be67527b3.png',
   },
   {
     name: 'Lotte Cinema Đà Nẵng',
@@ -66,7 +72,9 @@ const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
       '2D 2',
       '2D 3',
       '2D 4',
-    ]
+    ],
+    cover: 'https://s3img.vcdn.vn/123phim/2017/07/lotte-cinema-da-nang-14999146022923.jpg',
+    thumbnail: 'https://s3img.vcdn.vn/123phim/2018/09/404b8c4b80d77732e7426cdb7e24be20.png',
   }
 ];
 
@@ -76,10 +84,45 @@ export class TheatresService {
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
   ) {}
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   async seed(): Promise<string | Theatre[]> {
+    const theatres = await this.theatreModel.find({});
+    for (const theatre of theatres) {
+      const data = seedTheatres.find(e => e.name === theatre.name);
+      await this.theatreModel.updateOne(
+          { _id: theatre._id },
+          { cover: data.cover, thumbnail: data.thumbnail }
+      ).exec();
+    }
+    return;
+
     if (await this.theatreModel.estimatedDocumentCount().exec() > 0) {
       return 'Nice';
     }
     return await this.theatreModel.create(seedTheatres);
+  }
+
+  async getNearbyTheatres(dto?: LocationDto): Promise<Theatre[]> {
+    const center = getCoordinates(dto);
+    if (!center) {
+      return this.theatreModel.find({}).sort({ name: 1 });
+    }
+
+    return this.theatreModel.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: 'Point',
+            coordinates: center,
+          },
+          distanceField: 'distance',
+          includeLocs: 'location',
+          maxDistance: constants.maxDistanceInMeters,
+          spherical: true,
+        },
+      },
+      { $match: { is_active: true } },
+    ]).exec();
   }
 }

@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 import '../model/location.dart';
 import '../model/movie.dart';
+import '../model/movie_and_showtimes.dart';
 import '../model/theatre_and_show_times.dart';
 
 abstract class MovieRepository {
@@ -35,4 +36,7 @@ abstract class MovieRepository {
   });
 
   Stream<Movie> getMovieDetail(String movieId);
+
+  Stream<BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>>
+      getShowTimesByTheatreId(String theatreId);
 }

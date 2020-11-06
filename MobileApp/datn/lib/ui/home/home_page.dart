@@ -7,12 +7,15 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../domain/model/city.dart';
 import '../../domain/model/movie.dart';
+import '../../domain/model/theatre.dart';
 import '../../domain/repository/city_repository.dart';
 import '../../domain/repository/movie_repository.dart';
+import '../../domain/repository/theatre_repository.dart';
 import '../../utils/error.dart';
 import '../../utils/streams.dart';
 import '../app_scaffold.dart';
@@ -21,6 +24,7 @@ import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'detail/movie_detail_page.dart';
 import 'movie_type.dart';
+import 'showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'view_all/view_all_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,6 +38,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Movie>> recommendedBloc;
   LoaderBloc<BuiltList<Movie>> mostFavoriteBloc;
   LoaderBloc<BuiltList<Movie>> mostRateBloc;
+  LoaderBloc<BuiltList<Theatre>> theatresBloc;
   Object token;
 
   @override
@@ -44,12 +49,13 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
   @override
   void dispose() {
     [
-      nowPlayingBloc.dispose,
-      comingSoonBloc.dispose,
-      recommendedBloc.dispose,
-      mostFavoriteBloc.dispose,
-      mostRateBloc.dispose,
-    ].forEach((d) => d());
+      nowPlayingBloc,
+      comingSoonBloc,
+      recommendedBloc,
+      mostFavoriteBloc,
+      mostRateBloc,
+      theatresBloc,
+    ].forEach((b) => b.dispose());
 
     super.dispose();
   }
@@ -61,7 +67,8 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
     token ??= () {
       final cityRepo = Provider.of<CityRepository>(context);
       final repo = Provider.of<MovieRepository>(context);
-      final emptyList = <Movie>[].build();
+      final theatreRepo = Provider.of<TheatreRepository>(context);
+      final emptyMovieList = <Movie>[].build();
 
       nowPlayingBloc = () {
         final loaderFunction = () {
@@ -77,7 +84,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
         );
       }();
@@ -92,15 +99,10 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
         );
       }();
-
-      cityRepo.selectedCity$.distinct().debug('[HOME] SELECT CITY').listen((_) {
-        nowPlayingBloc.fetch();
-        recommendedBloc.fetch();
-      }).disposedBy(bag);
 
       comingSoonBloc = () {
         final loaderFunction =
@@ -109,9 +111,9 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
-        )..fetch();
+        );
       }();
 
       mostFavoriteBloc = () {
@@ -120,9 +122,9 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
-        )..fetch();
+        );
       }();
 
       mostRateBloc = () {
@@ -131,10 +133,54 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
         return LoaderBloc(
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
-          initialContent: emptyList,
+          initialContent: emptyMovieList,
           enableLogger: true,
-        )..fetch();
+        );
       }();
+
+      theatresBloc = () {
+        final loaderFunction = () => theatreRepo
+            .getNearbyTheatres(cityRepo.selectedCity$.value.location);
+
+        return LoaderBloc<BuiltList<Theatre>>(
+          loaderFunction: loaderFunction,
+          refresherFunction: loaderFunction,
+          initialContent: const <Theatre>[].build(),
+          enableLogger: true,
+        );
+      }();
+
+      final fetchDoneFirstTime = (LoaderMessage<Object> event) => event.fold(
+            onFetchFailure: (e, s) => true,
+            onFetchSuccess: (d) => true,
+            onRefreshFailure: (e, s) => false,
+            onRefreshSuccess: (d) => false,
+          );
+
+      Rx.forkJoin([
+        nowPlayingBloc.message$.where(fetchDoneFirstTime).take(1),
+        recommendedBloc.message$.where(fetchDoneFirstTime).take(1),
+        theatresBloc.message$.where(fetchDoneFirstTime).take(1)
+      ], (l) => l)
+          .doOnData((l) {
+            print('###### ${l.map((v) => v.runtimeType)}');
+            comingSoonBloc.fetch();
+            mostFavoriteBloc.fetch();
+            mostRateBloc.fetch();
+          })
+          .listen(null)
+          .disposedBy(bag);
+
+      cityRepo.selectedCity$
+          .distinct()
+          .debug('[HOME] SELECT CITY')
+          .doOnData((_) {
+            nowPlayingBloc.fetch();
+            recommendedBloc.fetch();
+            theatresBloc.fetch();
+          })
+          .listen(null)
+          .disposedBy(bag);
 
       return const Object();
     }();
@@ -196,6 +242,9 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
               bloc: mostRateBloc,
               type: MovieType.mostRate,
             ),
+            //
+            const NearbyTheatreHeader(),
+            NearbyTheatresList(bloc: theatresBloc),
           ],
         ),
       ),
@@ -805,6 +854,56 @@ class MostRateHeader extends StatelessWidget {
   }
 }
 
+class NearbyTheatreHeader extends StatelessWidget {
+  const NearbyTheatreHeader({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 4,
+                horizontal: 8,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  colors: const [
+                    Color(0xff5F0A87),
+                    Color(0xffA4508B),
+                  ],
+                  begin: AlignmentDirectional.topStart,
+                  end: AlignmentDirectional.bottomEnd,
+                ),
+              ),
+              child: Hero(
+                tag: 'NEARBY_CINEMAS',
+                child: Text(
+                  'NEARBY CINEMAS',
+                  maxLines: 1,
+                  style: textTheme.headline6.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class ViewAllButton extends StatelessWidget {
   final MovieType movieType;
 
@@ -827,6 +926,155 @@ class ViewAllButton extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
+    );
+  }
+}
+
+class NearbyTheatresList extends StatelessWidget {
+  final LoaderBloc<BuiltList<Theatre>> bloc;
+
+  const NearbyTheatresList({Key key, this.bloc}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RxStreamBuilder<LoaderState<BuiltList<Theatre>>>(
+      stream: bloc.state$,
+      builder: (context, snapshot) {
+        final state = snapshot.data;
+        final height = 200.0;
+        const padding = EdgeInsets.symmetric(vertical: 10);
+
+        if (state.error != null) {
+          return SliverToBoxAdapter(
+            child: Container(
+              height: height,
+              padding: padding,
+              child: MyErrorWidget(
+                errorText: 'Error: ${getErrorMessage(state.error)}',
+                onPressed: bloc.fetch,
+              ),
+            ),
+          );
+        }
+
+        if (state.isLoading) {
+          return SliverToBoxAdapter(
+            child: Container(
+              height: height,
+              padding: padding,
+              child: Center(
+                child: SizedBox(
+                  width: 64,
+                  height: 64,
+                  child: LoadingIndicator(
+                    indicatorType: Indicator.ballClipRotatePulse,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        final theatres = state.content;
+
+        if (theatres.isEmpty) {
+          return SliverToBoxAdapter(
+            child: Container(
+              padding: padding,
+              height: height,
+              child: Center(
+                child: EmptyWidget(message: 'Empty theatre'),
+              ),
+            ),
+          );
+        }
+
+        return SliverPadding(
+          padding: padding,
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final item = theatres[index];
+
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Card(
+                    color: Colors.white,
+                    shadowColor: Colors.white,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        AppScaffold.of(context).pushNamed(
+                          ShowTimesByTheatrePage.routeName,
+                          arguments: item,
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(6),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            ClipOval(
+                              child: Image.network(
+                                item.thumbnail ?? '',
+                                width: 54,
+                                height: 54,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    item.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                            fontSize: 14,
+                                            color: const Color(0xff5B64CF)),
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    item.address,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1
+                                        .copyWith(fontSize: 11),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (item.distance != null) ...[
+                              const SizedBox(width: 8),
+                              Text(
+                                '${(item.distance / 1000.0).toStringAsFixed(1)} km',
+                                style: const TextStyle(
+                                  color: const Color(0xffA4508B),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+              childCount: theatres.length,
+            ),
+          ),
+        );
+      },
     );
   }
 }
