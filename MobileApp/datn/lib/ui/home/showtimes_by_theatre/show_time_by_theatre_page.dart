@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../domain/model/theatre.dart';
 import '../detail/movie_detail_page.dart';
 import 'show_times_page.dart';
+import 'theatre_info_page.dart';
 
 class ShowTimesByTheatrePage extends StatefulWidget {
   static const routeName = '/home/show_time_by_theatre';
@@ -24,10 +25,19 @@ class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
     super.initState();
     pages = <Widget>[
       ShowTimesPage(theatre: widget.theatre),
-      Container(
-        color: Colors.green,
-      ),
+      TheatreInfoPage(theatre: widget.theatre),
     ];
+  }
+
+  @override
+  void didUpdateWidget(covariant ShowTimesByTheatrePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.theatre != widget.theatre) {
+      pages = <Widget>[
+        ShowTimesPage(theatre: widget.theatre),
+        TheatreInfoPage(theatre: widget.theatre),
+      ];
+    }
   }
 
   @override
