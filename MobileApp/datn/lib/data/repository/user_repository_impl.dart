@@ -246,7 +246,7 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     if (birthday != null) {
-      updateBody['birthday'] = birthday.toIso8601String();
+      updateBody['birthday'] = birthday.toUtc().toIso8601String();
     }
     if (location != null) {
       updateBody['location'] = [

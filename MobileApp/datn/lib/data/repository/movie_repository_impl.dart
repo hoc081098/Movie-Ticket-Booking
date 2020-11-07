@@ -210,4 +210,64 @@ class MovieRepositoryImpl implements MovieRepository {
         .getBody(buildUrl('/show-times/theatres/${theatreId}'))
         .then(mapResult));
   }
+
+  @override
+  Stream<BuiltList<Movie>> search({
+    @required String query,
+    @required DateTime showtimeStartTime,
+    @required DateTime showtimeEndTime,
+    @required DateTime minReleasedDate,
+    @required DateTime maxReleasedDate,
+    @required int minDuration,
+    @required int maxDuration,
+    @required AgeType ageType,
+    Location location,
+  }) {
+    if (query == null) {
+      return Stream.error(ArgumentError.notNull('query'));
+    }
+    if (showtimeStartTime == null) {
+      return Stream.error(ArgumentError.notNull('showtimeStartTime'));
+    }
+    if (showtimeEndTime == null) {
+      return Stream.error(ArgumentError.notNull('showtimeEndTime'));
+    }
+    if (minReleasedDate == null) {
+      return Stream.error(ArgumentError.notNull('minReleasedDate'));
+    }
+    if (maxReleasedDate == null) {
+      return Stream.error(ArgumentError.notNull('maxReleasedDate'));
+    }
+    if (minDuration == null) {
+      return Stream.error(ArgumentError.notNull('minDuration'));
+    }
+    if (maxReleasedDate == null) {
+      return Stream.error(ArgumentError.notNull('maxReleasedDate'));
+    }
+    if (maxReleasedDate == null) {
+      return Stream.error(ArgumentError.notNull('maxReleasedDate'));
+    }
+
+    return Rx.fromCallable(() => _authClient
+        .getBody(
+          buildUrl(
+            '/neo4j/search-movies',
+            {
+              'query': query,
+              'search_start_time': showtimeStartTime.toUtc().toIso8601String(),
+              'search_end_time': showtimeEndTime.toUtc().toIso8601String(),
+              'min_released_date': minReleasedDate.toUtc().toIso8601String(),
+              'max_released_date': maxReleasedDate.toUtc().toIso8601String(),
+              'min_duration': minDuration.toString(),
+              'max_duration': maxDuration.toString(),
+              'age_type': ageType.toString().split('.')[1],
+              if (location != null) ...{
+                'lat': location.latitude.toString(),
+                'lng': location.longitude.toString(),
+              },
+            },
+          ),
+        )
+        .then(mapResult));
+  }
 }
