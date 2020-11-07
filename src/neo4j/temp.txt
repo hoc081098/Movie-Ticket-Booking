@@ -1,0 +1,10 @@
+$min_duration <= m.duration AND m.duration <= $max_duration
+              AND m.age_type = $age_type
+              AND min_released_date <= m.released_date AND m.released_date <= max_released_date
+              AND 0 <= distance AND distance <= $max_distance
+              AND search_start_time <= startTime AND endTime <= search_end_time
+              AND
+
+
+               AND min_released_date <= m.released_date AND m.released_date <= max_released_date
+               AND search_start_time <= startTime AND endTime <= search_end_time
