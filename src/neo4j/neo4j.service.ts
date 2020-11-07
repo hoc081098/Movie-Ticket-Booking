@@ -884,8 +884,48 @@ export class Neo4jService {
     }
 
     return [
-      ``,
-      {},
+      `
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+          WITH m,
+              st,
+              datetime({ epochMillis: st.start_time }) AS startTime,
+              datetime({ epochMillis: st.end_time }) AS endTime,
+              datetime({epochMillis: m.released_date}) AS released_date,
+              datetime($search_start_time) AS search_start_time,
+              datetime($search_end_time) AS search_end_time,
+              ('(?i).*' + $query + '.*') AS query,
+              datetime($min_released_date) AS min_released_date,
+              datetime($max_released_date) AS max_released_date
+          WHERE (
+                m.title =~ query
+                OR m.overview =~ query
+                OR st.room =~ query
+                OR t.name =~ query
+                OR t.address =~ query
+              )
+              AND $min_duration <= m.duration AND m.duration <= $max_duration
+              AND m.age_type = $age_type
+              AND min_released_date <= released_date AND released_date <= max_released_date
+              AND search_start_time <= startTime AND endTime <= search_end_time
+              AND m.is_active = TRUE
+           
+          OPTIONAL MATCH (u: USER { _id: $uid })-[r:INTERACTIVE]->(m: MOVIE)
+          WITH DISTINCT m, sum(r.score) AS recommendation, st
+          RETURN m._id AS _id, recommendation
+          ORDER BY recommendation DESC, st.start_time ASC
+          LIMIT 100
+         `,
+      {
+        search_start_time: dto.search_start_time.toISOString(),
+        search_end_time: dto.search_end_time.toISOString(),
+        query: dto.query,
+        min_released_date: dto.min_released_date.toISOString(),
+        max_released_date: dto.max_released_date.toISOString(),
+        min_duration: dto.min_duration,
+        max_duration: dto.max_duration,
+        age_type: dto.age_type,
+        uid: user._id,
+      },
     ];
   }
 }
