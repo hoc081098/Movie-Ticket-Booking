@@ -40,3 +40,10 @@ extension RandomIterableExtension<T> on Iterable<T> {
 extension IsNullOrEmptyIterableExtension<T> on Iterable<T> {
   bool get isNullOrEmpty => this == null || isEmpty;
 }
+
+extension DistinctIterableExtension<T> on Iterable<T> {
+  Iterable<T> distinct() {
+    final set = <T>{};
+    return where(set.add);
+  }
+}

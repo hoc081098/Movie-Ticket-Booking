@@ -1,10 +1,12 @@
 import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
-import { Neo4jService } from './neo4j.service';
+import { MovieAndExtraInfo, Neo4jService } from './neo4j.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { Roles, RolesGuard } from '../auth/roles.guard';
 import { LocationDto } from '../common/location.dto';
 import { GetUser, UserPayload } from '../auth/get-user.decorator';
+import { SearchMoviesDto } from './search-movies.dto';
+import { Observable } from 'rxjs';
 
 @UseGuards(AuthGuard, RolesGuard)
 @ApiTags('neo4j')
@@ -25,7 +27,15 @@ export class Neo4jController {
   getRecommendedMovies(
       @Query() dto: LocationDto,
       @GetUser() userPayload: UserPayload,
-  ) {
+  ): Observable<MovieAndExtraInfo[]> {
     return this.neo4jService.getRecommendedMovies(dto, userPayload);
+  }
+
+  @Get('search-movies')
+  searchMovies(
+      @Query() dto: SearchMoviesDto,
+      @GetUser() userPayload: UserPayload,
+  ): Observable<MovieAndExtraInfo[]> {
+    return this.neo4jService.searchMovies(userPayload, dto);
   }
 }

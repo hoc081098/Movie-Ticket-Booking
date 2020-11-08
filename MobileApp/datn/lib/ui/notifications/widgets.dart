@@ -65,9 +65,9 @@ class NotificationItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade400,
-              offset: Offset(2, 4),
-              blurRadius: 10,
+              color: Colors.grey.shade300,
+              offset: Offset(2, 2),
+              blurRadius: 4,
               spreadRadius: 2,
             )
           ],

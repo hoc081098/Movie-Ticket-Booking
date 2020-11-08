@@ -1,6 +1,4 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
-import 'package:datn/data/repository/theatre_repository_impl.dart';
-import 'package:datn/domain/repository/theatre_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 import 'app.dart';
+import 'data/local/search_keyword_source_impl.dart';
 import 'data/local/user_local_source_impl.dart';
 import 'data/mappers.dart' as mappers;
 import 'data/remote/auth_client.dart';
@@ -23,6 +22,7 @@ import 'data/repository/favorites_repository_impl.dart';
 import 'data/repository/movie_repository_impl.dart';
 import 'data/repository/notification_repository_impl.dart';
 import 'data/repository/reservation_repository_impl.dart';
+import 'data/repository/theatre_repository_impl.dart';
 import 'data/repository/ticket_repository_impl.dart';
 import 'data/repository/user_repository_impl.dart';
 import 'domain/repository/city_repository.dart';
@@ -31,6 +31,7 @@ import 'domain/repository/favorites_repository.dart';
 import 'domain/repository/movie_repository.dart';
 import 'domain/repository/notification_repository.dart';
 import 'domain/repository/reservation_repository.dart';
+import 'domain/repository/theatre_repository.dart';
 import 'domain/repository/ticket_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
@@ -118,6 +119,7 @@ void main() async {
     mappers.showTimeAndTheatreResponsesToTheatreAndShowTimes,
     mappers.movieDetailResponseToMovie,
     mappers.movieAndShowTimeResponsesToMovieAndShowTimes,
+    SearchKeywordSourceImpl(preferences),
   );
 
   final cityRepository = CityRepositoryImpl(preferences, userLocalSource);

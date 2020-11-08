@@ -1,17 +1,18 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/data/remote/response/movie_and_show_time_response.dart';
-import 'package:datn/domain/model/movie_and_showtimes.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/location.dart';
 import '../../domain/model/movie.dart';
+import '../../domain/model/movie_and_showtimes.dart';
 import '../../domain/model/theatre_and_show_times.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../../utils/type_defs.dart';
 import '../../utils/utils.dart';
+import '../local/search_keyword_source.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
+import '../remote/response/movie_and_show_time_response.dart';
 import '../remote/response/movie_detail_response.dart';
 import '../remote/response/movie_response.dart';
 import '../remote/response/show_time_and_theatre_response.dart';
@@ -30,12 +31,15 @@ class MovieRepositoryImpl implements MovieRepository {
           BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>>
       _movieAndShowTimeResponsesToMovieAndShowTimes;
 
+  final SearchKeywordSource _searchKeywordSource;
+
   MovieRepositoryImpl(
     this._authClient,
     this._movieResponseToMovie,
     this._showTimeAndTheatreResponsesToTheatreAndShowTimes,
     this._movieDetailResponseToMovie,
     this._movieAndShowTimeResponsesToMovieAndShowTimes,
+    this._searchKeywordSource,
   );
 
   @override
@@ -210,4 +214,71 @@ class MovieRepositoryImpl implements MovieRepository {
         .getBody(buildUrl('/show-times/theatres/${theatreId}'))
         .then(mapResult));
   }
+
+  @override
+  Stream<BuiltList<Movie>> search({
+    @required String query,
+    @required DateTime showtimeStartTime,
+    @required DateTime showtimeEndTime,
+    @required DateTime minReleasedDate,
+    @required DateTime maxReleasedDate,
+    @required int minDuration,
+    @required int maxDuration,
+    @required AgeType ageType,
+    Location location,
+  }) {
+    if (query == null) {
+      return Stream.error(ArgumentError.notNull('query'));
+    }
+    if (showtimeStartTime == null) {
+      return Stream.error(ArgumentError.notNull('showtimeStartTime'));
+    }
+    if (showtimeEndTime == null) {
+      return Stream.error(ArgumentError.notNull('showtimeEndTime'));
+    }
+    if (minReleasedDate == null) {
+      return Stream.error(ArgumentError.notNull('minReleasedDate'));
+    }
+    if (maxReleasedDate == null) {
+      return Stream.error(ArgumentError.notNull('maxReleasedDate'));
+    }
+    if (minDuration == null) {
+      return Stream.error(ArgumentError.notNull('minDuration'));
+    }
+    if (maxReleasedDate == null) {
+      return Stream.error(ArgumentError.notNull('maxReleasedDate'));
+    }
+    if (maxReleasedDate == null) {
+      return Stream.error(ArgumentError.notNull('maxReleasedDate'));
+    }
+
+    return Rx.fromCallable(() => _authClient
+        .getBody(
+          buildUrl(
+            '/neo4j/search-movies',
+            {
+              'query': query,
+              'search_start_time': showtimeStartTime.toUtc().toIso8601String(),
+              'search_end_time': showtimeEndTime.toUtc().toIso8601String(),
+              'min_released_date': minReleasedDate.toUtc().toIso8601String(),
+              'max_released_date': maxReleasedDate.toUtc().toIso8601String(),
+              'min_duration': minDuration.toString(),
+              'max_duration': maxDuration.toString(),
+              'age_type': ageType.toString().split('.')[1],
+              if (location != null) ...{
+                'lat': location.latitude.toString(),
+                'lng': location.longitude.toString(),
+              },
+            },
+          ),
+        )
+        .then(mapResult));
+  }
+
+  @override
+  Future<void> saveSearchQuery(String query) =>
+      _searchKeywordSource.saveSearchQuery(query);
+
+  @override
+  Future<BuiltList<String>> getQueries() => _searchKeywordSource.getQueries();
 }

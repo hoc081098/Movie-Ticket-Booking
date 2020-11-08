@@ -24,6 +24,7 @@ import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'detail/movie_detail_page.dart';
 import 'movie_type.dart';
+import 'search_delegate.dart';
 import 'showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'view_all/view_all_page.dart';
 
@@ -188,9 +189,29 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    final movieRepo = Provider.of<MovieRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home page'),
+        title: Text('Enjoy movies'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () async {
+              final searchDelegate = MovieSearchDelegate(movieRepo);
+              final bag = searchDelegate.bag;
+              final result = await showSearch(
+                context: context,
+                delegate: searchDelegate,
+              );
+
+              print('>>>>>>>>>>>>>>> [${result}]');
+              if (result == null) {
+                await bag.dispose();
+              }
+            },
+          ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {

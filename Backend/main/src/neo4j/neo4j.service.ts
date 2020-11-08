@@ -16,6 +16,7 @@ import { concat, defer, identity, merge, Observable, partition } from 'rxjs';
 import { UserPayload } from '../auth/get-user.decorator';
 import { checkCompletedLogin, constants, getCoordinates } from '../common/utils';
 import { Parameters } from 'neo4j-driver/types/query-runner';
+import { SearchMoviesDto } from './search-movies.dto';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
@@ -42,6 +43,8 @@ type IdAndRest = {
 };
 
 type IdAndMap = { ids: string[]; restById: Map<string, Record<string, any>> };
+
+export type MovieAndExtraInfo = DocumentDefinition<Movie> & Record<string, any>;
 
 @Injectable()
 export class Neo4jService {
@@ -491,7 +494,7 @@ export class Neo4jService {
   getRecommendedMovies(
       dto: LocationDto,
       userPayload: UserPayload
-  ): Observable<(DocumentDefinition<Movie> & Record<string, any>)[]> {
+  ): Observable<MovieAndExtraInfo[]> {
     const center: [number, number] | null = getCoordinates(dto);
     const user = checkCompletedLogin(userPayload);
 
@@ -760,7 +763,7 @@ export class Neo4jService {
     )
   }
 
-  private findMoviesInIds({ ids, restById }: IdAndMap): Observable<(DocumentDefinition<Movie> & Record<string, any>)[]> {
+  private findMoviesInIds({ ids, restById }: IdAndMap): Observable<MovieAndExtraInfo[]> {
     return defer(() => this.movieModel.find({ _id: { $in: ids } }))
         .pipe(
             map(movies =>
@@ -777,4 +780,184 @@ export class Neo4jService {
   ///
   /// END RECOMMENDED
   ///
+
+  searchMovies(userPayload: UserPayload, dto: SearchMoviesDto): Observable<MovieAndExtraInfo[]> {
+    const [query, parameters] = Neo4jService.buildQueryAndParams(checkCompletedLogin(userPayload), dto);
+
+    this.logger.debug(dto);
+    this.logger.debug(typeof dto.search_start_time);
+    this.logger.debug(dto.search_start_time.toISOString());
+
+    const session = this.driver.rxSession();
+    return concat(
+        session
+            .run(query, parameters)
+            .records()
+            .pipe(
+                map(record =>
+                    ({
+                      ...record.toObject(),
+                      _id: record.get('_id') as string,
+                    })
+                ),
+                toArray(),
+                map(splitIdAndRests),
+                exhaustMap(idAndMap => this.findMoviesInIds(idAndMap)),
+            ),
+        session.close() as Observable<never>,
+    );
+  }
+
+  private static buildQueryAndParams(user: User, dto: SearchMoviesDto): [string, Record<string, any>] {
+    // return [
+    //   `
+    //   MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+    //   WITH m,
+    //           st,
+    //           ('(?i).*' + $query + '.*') AS query
+    //   WHERE (
+    //             m.title =~ query
+    //             OR m.overview =~ query
+    //             OR st.room =~ query
+    //             OR t.name =~ query
+    //             OR t.address =~ query
+    //           )
+    //   RETURN m._id as _id, query
+    //   `,
+    //   {
+    //     query: dto.query,
+    //   }
+    // ];
+
+    const center = getCoordinates(dto);
+
+    if (center) {
+      return [
+        `
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+          WITH m,
+              st,
+              datetime({ epochMillis: st.start_time }) AS startTime,
+              datetime({ epochMillis: st.end_time }) AS endTime,
+              datetime({epochMillis: m.released_date}) AS released_date,
+              datetime($search_start_time) AS search_start_time,
+              datetime($search_end_time) AS search_end_time,
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance,
+              ('(?i).*' + $query + '.*') AS query,
+              datetime($min_released_date) AS min_released_date,
+              datetime($max_released_date) AS max_released_date
+          WHERE (
+                m.title =~ query
+                OR m.overview =~ query
+                OR st.room =~ query
+                OR t.name =~ query
+                OR t.address =~ query
+              )
+              AND $min_duration <= m.duration AND m.duration <= $max_duration
+              AND m.age_type = $age_type
+              AND 0 <= distance AND distance <= $max_distance
+              AND min_released_date <= released_date AND released_date <= max_released_date
+              AND search_start_time <= startTime AND endTime <= search_end_time
+              AND m.is_active = TRUE
+           
+          OPTIONAL MATCH (u: USER { _id: $uid })-[r:INTERACTIVE]->(m: MOVIE)
+          WITH DISTINCT m, sum(r.score) AS recommendation, st
+          RETURN m._id AS _id, recommendation
+          ORDER BY recommendation DESC, st.start_time ASC
+          LIMIT 100
+         `,
+        {
+          search_start_time: dto.search_start_time.toISOString(),
+          search_end_time: dto.search_end_time.toISOString(),
+          lng: center[0],
+          lat: center[1],
+          query: dto.query,
+          min_released_date: dto.min_released_date.toISOString(),
+          max_released_date: dto.max_released_date.toISOString(),
+          min_duration: dto.min_duration,
+          max_duration: dto.max_duration,
+          age_type: dto.age_type,
+          max_distance: constants.maxDistanceInMeters,
+          uid: user._id,
+        },
+      ];
+    }
+
+    return [
+      `
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+          WITH m,
+              st,
+              datetime({ epochMillis: st.start_time }) AS startTime,
+              datetime({ epochMillis: st.end_time }) AS endTime,
+              datetime({epochMillis: m.released_date}) AS released_date,
+              datetime($search_start_time) AS search_start_time,
+              datetime($search_end_time) AS search_end_time,
+              ('(?i).*' + $query + '.*') AS query,
+              datetime($min_released_date) AS min_released_date,
+              datetime($max_released_date) AS max_released_date
+          WHERE (
+                m.title =~ query
+                OR m.overview =~ query
+                OR st.room =~ query
+                OR t.name =~ query
+                OR t.address =~ query
+              )
+              AND $min_duration <= m.duration AND m.duration <= $max_duration
+              AND m.age_type = $age_type
+              AND min_released_date <= released_date AND released_date <= max_released_date
+              AND search_start_time <= startTime AND endTime <= search_end_time
+              AND m.is_active = TRUE
+           
+          OPTIONAL MATCH (u: USER { _id: $uid })-[r:INTERACTIVE]->(m: MOVIE)
+          WITH DISTINCT m, sum(r.score) AS recommendation, st
+          RETURN m._id AS _id, recommendation
+          ORDER BY recommendation DESC, st.start_time ASC
+          LIMIT 100
+         `,
+      {
+        search_start_time: dto.search_start_time.toISOString(),
+        search_end_time: dto.search_end_time.toISOString(),
+        query: dto.query,
+        min_released_date: dto.min_released_date.toISOString(),
+        max_released_date: dto.max_released_date.toISOString(),
+        min_duration: dto.min_duration,
+        max_duration: dto.max_duration,
+        age_type: dto.age_type,
+        uid: user._id,
+      },
+    ];
+  }
 }
+
+`
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+          WITH m,
+              st,
+              datetime({ epochMillis: st.start_time }) AS startTime,
+              datetime({ epochMillis: st.end_time }) AS endTime,
+              datetime($search_start_time) AS search_start_time,
+              datetime($search_end_time) AS search_end_time,
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance,
+              ('(?i).*' + $query + '.*') AS query,
+              datetime($min_released_date) AS min_released_date,
+              datetime($max_released_date) AS max_released_date
+          WHERE $min_duration <= m.duration AND m.duration <= $max_duration
+              AND m.age_type = $age_type
+              AND min_released_date <= m.released_date AND m.released_date <= max_released_date
+              AND 0 <= distance AND distance <= $max_distance
+              AND search_start_time <= startTime AND endTime <= search_end_time
+              AND (
+                m.title =~ query
+                OR m.overview =~ query
+                OR st.room =~ query
+                OR t.name =~ query
+                OR t.address =~ query
+              )
+           
+          OPTIONAL MATCH (u: USER { _id: $uid })-[r:INTERACTIVE]->(m: MOVIE)
+          WITH DISTINCT m, sum(r.score) AS recommendation, st
+          RETURN m._id AS _id, recommendation
+          ORDER BY recommendation DESC, st.start_time ASC
+          LIMIT 100
+         `;

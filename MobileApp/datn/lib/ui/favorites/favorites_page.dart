@@ -190,15 +190,16 @@ class FavoriteItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.shade300,
-            offset: Offset(2, 4),
-            blurRadius: 10,
+            color: Colors.grey.shade200,
+            offset: Offset(2, 2),
+            blurRadius: 4,
             spreadRadius: 2,
           )
         ],
       ),
       clipBehavior: Clip.antiAlias,
       child: Material(
+        borderRadius: BorderRadius.circular(8),
         child: InkWell(
           onTap: () => AppScaffold.of(context, newTabIndex: 0).pushNamed(
             MovieDetailPage.routeName,
