@@ -56,3 +56,7 @@ extension MapNotNullStreamExt<T> on Stream<T> {
     ));
   }
 }
+
+extension ListenNullStreamExt<T> on Stream<T> {
+  StreamSubscription<T> listenNull() => listen(null);
+}
