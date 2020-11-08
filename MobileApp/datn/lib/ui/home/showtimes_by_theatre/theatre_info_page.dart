@@ -92,7 +92,7 @@ class TheatreInfoPage extends StatelessWidget {
                       Icon(
                         Icons.label,
                         color: const Color(0xff8690A0),
-                        size: 20,
+                        size: 18,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -103,13 +103,13 @@ class TheatreInfoPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       Icon(
                         Icons.phone,
                         color: const Color(0xff8690A0),
-                        size: 20,
+                        size: 18,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -120,14 +120,14 @@ class TheatreInfoPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   if (theatre.email != null) ...[
                     Row(
                       children: [
                         Icon(
                           Icons.email,
                           color: const Color(0xff8690A0),
-                          size: 20,
+                          size: 18,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -138,14 +138,14 @@ class TheatreInfoPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                   ],
                   Row(
                     children: [
                       Icon(
                         Icons.category,
                         color: const Color(0xff8690A0),
-                        size: 20,
+                        size: 18,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -156,13 +156,13 @@ class TheatreInfoPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       Icon(
                         Icons.timelapse_outlined,
                         color: const Color(0xff8690A0),
-                        size: 20,
+                        size: 18,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
