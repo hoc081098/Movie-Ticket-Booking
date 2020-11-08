@@ -51,4 +51,8 @@ abstract class MovieRepository {
     @required AgeType ageType,
     Location location,
   });
+
+  Future<void> saveSearchQuery(String query);
+
+  Future<BuiltList<String>> getQueries();
 }

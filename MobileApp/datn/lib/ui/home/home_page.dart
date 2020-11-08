@@ -189,16 +189,27 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    final movieRepo = Provider.of<MovieRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Enjoy movies'),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () => showSearch(
-              context: context,
-              delegate: MovieSearchDelegate(),
-            ),
+            onPressed: () async {
+              final searchDelegate = MovieSearchDelegate(movieRepo);
+              final bag = searchDelegate.bag;
+              final result = await showSearch(
+                context: context,
+                delegate: searchDelegate,
+              );
+
+              print('>>>>>>>>>>>>>>> [${result}]');
+              if (result == null) {
+                await bag.dispose();
+              }
+            },
           ),
         ],
       ),
