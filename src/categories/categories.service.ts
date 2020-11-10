@@ -36,4 +36,8 @@ export class CategoriesService {
             ),
         );
   }
+
+  getAll(): Promise<Category[]> {
+    return this.categoryMode.find({}).exec();
+  }
 }

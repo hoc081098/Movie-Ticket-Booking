@@ -1,8 +1,7 @@
 import { LocationDto } from '../common/location.dto';
-import { IsArray, IsDate, IsIn, IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
+import { IsArray, IsDate, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { Movie } from '../movies/movie.schema';
-import { ApiImplicitQuery } from "@nestjs/swagger/dist/decorators/api-implicit-query.decorator";
 
 export class SearchMoviesDto extends LocationDto {
   @IsString()
@@ -40,9 +39,10 @@ export class SearchMoviesDto extends LocationDto {
   @IsIn(['P', 'C13', 'C16', 'C18'])
   age_type: Movie['age_type'];
 
+  @IsOptional()
   @Type(() => String)
   @Transform((value: string) => value.split(','))
   @IsArray()
   @IsString({ each: true })
-  category_ids: string[];
+  category_ids?: string[] | null | undefined;
 }

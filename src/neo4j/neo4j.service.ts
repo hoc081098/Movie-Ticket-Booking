@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, Logger } from '@nestjs/common';
 import { auth, driver, Driver, Transaction } from 'neo4j-driver';
 import { ConfigKey, ConfigService } from '../config/config.service';
 import { DocumentDefinition, Model } from 'mongoose';
@@ -11,8 +11,8 @@ import { ShowTime } from '../show-times/show-time.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import { Reservation } from '../reservations/reservation.schema';
 import { LocationDto } from '../common/location.dto';
-import { exhaustMap, first, map, shareReplay, toArray } from 'rxjs/operators';
-import { concat, defer, identity, merge, Observable, partition } from 'rxjs';
+import { catchError, exhaustMap, first, map, shareReplay, tap, toArray } from 'rxjs/operators';
+import { concat, defer, identity, merge, Observable, of, partition, throwError } from 'rxjs';
 import { UserPayload } from '../auth/get-user.decorator';
 import { checkCompletedLogin, constants, getCoordinates } from '../common/utils';
 import { Parameters } from 'neo4j-driver/types/query-runner';
@@ -782,29 +782,52 @@ export class Neo4jService {
   ///
 
   searchMovies(userPayload: UserPayload, dto: SearchMoviesDto): Observable<MovieAndExtraInfo[]> {
-    const [query, parameters] = Neo4jService.buildQueryAndParams(checkCompletedLogin(userPayload), dto);
+    this.logger.debug(dto.category_ids);
 
-    this.logger.debug(dto);
-    this.logger.debug(typeof dto.search_start_time);
-    this.logger.debug(dto.search_start_time.toISOString());
+    return defer(() =>
+        dto.category_ids
+            ? this.categoryModel.find({ _id: { $in: dto.category_ids } })
+            : this.categoryModel.find({})
+    ).pipe(
+        exhaustMap(cats =>
+            dto.category_ids ?
+                (
+                    cats.length != dto.category_ids.length
+                        ? throwError(new BadRequestException(`Invalid category ids`))
+                        : of(cats)
+                )
+                : of(cats),
+        ),
+        catchError(e =>
+            e instanceof HttpException
+                ? throwError(e)
+                : throwError(new BadRequestException(e.message ?? 'Error'))
+        ),
+        tap(cats => this.logger.debug(`Cats.length: ${cats.length}`)),
+        exhaustMap(cats => {
+          dto.category_ids = cats.map(c => c._id.toString());
+          const [query, parameters] = Neo4jService.buildQueryAndParams(checkCompletedLogin(userPayload), dto);
+          this.logger.debug(dto);
 
-    const session = this.driver.rxSession();
-    return concat(
-        session
-            .run(query, parameters)
-            .records()
-            .pipe(
-                map(record =>
-                    ({
-                      ...record.toObject(),
-                      _id: record.get('_id') as string,
-                    })
-                ),
-                toArray(),
-                map(splitIdAndRests),
-                exhaustMap(idAndMap => this.findMoviesInIds(idAndMap)),
-            ),
-        session.close() as Observable<never>,
+          const session = this.driver.rxSession();
+          return concat(
+              session
+                  .run(query, parameters)
+                  .records()
+                  .pipe(
+                      map(record =>
+                          ({
+                            ...record.toObject(),
+                            _id: record.get('_id') as string,
+                          })
+                      ),
+                      toArray(),
+                      map(splitIdAndRests),
+                      exhaustMap(idAndMap => this.findMoviesInIds(idAndMap)),
+                  ),
+              session.close() as Observable<never>,
+          );
+        }),
     );
   }
 
@@ -834,7 +857,8 @@ export class Neo4jService {
     if (center) {
       return [
         `
-          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE), (m)-[r3:IN_CATEGORY]->(c:CATEGORY)
+          WHERE c._id IN $cat_ids
           WITH m,
               st,
               datetime({ epochMillis: st.start_time }) AS startTime,
@@ -858,7 +882,7 @@ export class Neo4jService {
               AND 0 <= distance AND distance <= $max_distance
               AND min_released_date <= released_date AND released_date <= max_released_date
               AND search_start_time <= startTime AND endTime <= search_end_time
-              AND m.is_active = TRUE
+              AND m.is_active = true
            
           OPTIONAL MATCH (u: USER { _id: $uid })-[r:INTERACTIVE]->(m: MOVIE)
           WITH DISTINCT m, sum(r.score) AS recommendation, st
@@ -879,13 +903,15 @@ export class Neo4jService {
           age_type: dto.age_type,
           max_distance: constants.maxDistanceInMeters,
           uid: user._id,
+          cat_ids: dto.category_ids,
         },
       ];
     }
 
     return [
       `
-          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE), (m)-[r3:IN_CATEGORY]->(c:CATEGORY)
+          WHERE c._id IN $cat_ids
           WITH m,
               st,
               datetime({ epochMillis: st.start_time }) AS startTime,
@@ -925,6 +951,7 @@ export class Neo4jService {
         max_duration: dto.max_duration,
         age_type: dto.age_type,
         uid: user._id,
+        cat_ids: dto.category_ids,
       },
     ];
   }
