@@ -124,6 +124,8 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
             },
           );
 
+      movieRepo.getCategories().debug('CATS').listenNull();
+
       return LoaderBloc<BuiltList<Movie>>(
         loaderFunction: loaderFunction,
         refresherFunction: loaderFunction,

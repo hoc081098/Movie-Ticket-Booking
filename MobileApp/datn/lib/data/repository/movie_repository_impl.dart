@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/data/remote/response/category_response.dart';
+import 'package:datn/domain/model/category.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -31,6 +33,8 @@ class MovieRepositoryImpl implements MovieRepository {
           BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>>
       _movieAndShowTimeResponsesToMovieAndShowTimes;
 
+  final Function1<CategoryResponse, Category> _categoryResponseToCategory;
+
   final SearchKeywordSource _searchKeywordSource;
 
   MovieRepositoryImpl(
@@ -40,6 +44,7 @@ class MovieRepositoryImpl implements MovieRepository {
     this._movieDetailResponseToMovie,
     this._movieAndShowTimeResponsesToMovieAndShowTimes,
     this._searchKeywordSource,
+    this._categoryResponseToCategory,
   );
 
   @override
@@ -281,4 +286,19 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<BuiltList<String>> getQueries() => _searchKeywordSource.getQueries();
+
+  @override
+  Stream<BuiltList<Category>> getCategories() {
+    final mapResult = (dynamic json) {
+      return [
+        for (final r in serializers.deserialize(
+          json,
+          specifiedType: builtListCategoryResponse,
+        ))
+          _categoryResponseToCategory(r),
+      ].build();
+    };
+    return Rx.fromCallable(
+        () => _authClient.getBody(buildUrl('/categories')).then(mapResult));
+  }
 }
