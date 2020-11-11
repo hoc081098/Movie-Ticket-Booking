@@ -231,6 +231,7 @@ class MovieRepositoryImpl implements MovieRepository {
     @required int maxDuration,
     @required AgeType ageType,
     Location location,
+    @required BuiltSet<String> selectedCategoryIds,
   }) {
     if (query == null) {
       return Stream.error(ArgumentError.notNull('query'));
@@ -256,6 +257,9 @@ class MovieRepositoryImpl implements MovieRepository {
     if (maxReleasedDate == null) {
       return Stream.error(ArgumentError.notNull('maxReleasedDate'));
     }
+    if (selectedCategoryIds == null) {
+      return Stream.error(ArgumentError.notNull('selectedCategoryIds'));
+    }
 
     return Rx.fromCallable(() => _authClient
         .getBody(
@@ -270,6 +274,8 @@ class MovieRepositoryImpl implements MovieRepository {
               'min_duration': minDuration.toString(),
               'max_duration': maxDuration.toString(),
               'age_type': ageType.toString().split('.')[1],
+              if (selectedCategoryIds.isNotEmpty)
+                'category_ids': selectedCategoryIds.join(','),
               if (location != null) ...{
                 'lat': location.latitude.toString(),
                 'lng': location.longitude.toString(),

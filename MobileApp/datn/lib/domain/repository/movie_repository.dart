@@ -51,6 +51,7 @@ abstract class MovieRepository {
     @required int maxDuration,
     @required AgeType ageType,
     Location location,
+    @required BuiltSet<String> selectedCategoryIds,
   });
 
   Future<void> saveSearchQuery(String query);

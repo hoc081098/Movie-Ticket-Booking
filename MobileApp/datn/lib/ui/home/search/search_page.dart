@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/domain/model/category.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -50,6 +51,8 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
   DistinctValueStream<AgeType> ageType$;
 
   LoaderBloc<BuiltList<Movie>> bloc;
+  BuiltList<Category> cats;
+  BuiltSet<String> selectedCatIds;
 
   @override
   void initState() {
@@ -109,6 +112,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
               print('>>>> FETCH ${showtimeEndTime$.value}');
               print('>>>> FETCH ${minReleasedDate$.value}');
               print('>>>> FETCH ${maxReleasedDate$.value}');
+              print('>>>> FETCH ${selectedCatIds.length}');
 
               return movieRepo.search(
                 query: widget.query,
@@ -120,30 +124,49 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
                 maxDuration: maxDuration$.value,
                 ageType: ageType$.value,
                 location: cityRepo.selectedCity$.value.location,
+                selectedCategoryIds: selectedCatIds,
               );
             },
           );
 
-      movieRepo.getCategories().debug('CATS').listenNull();
-
-      return LoaderBloc<BuiltList<Movie>>(
+      final _bloc = LoaderBloc<BuiltList<Movie>>(
         loaderFunction: loaderFunction,
         refresherFunction: loaderFunction,
         initialContent: const <Movie>[].build(),
         enableLogger: true,
-      )..fetch();
+      );
+
+      movieRepo.getCategories().listen((event) {
+        cats = event;
+        selectedCatIds = event.map((c) => c.id).toBuiltSet();
+        bloc.fetch();
+      }).disposedBy(bag);
+
+      return _bloc;
     }();
   }
 
   @override
   Widget build(BuildContext context) {
+    final movieRepo = Provider.of<MovieRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.query),
         actions: [
-          IconButton(
-            icon: Icon(Icons.filter_alt_outlined),
-            onPressed: showFilterSheet,
+          RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
+            stream: bloc.state$,
+            builder: (context, snapshot) {
+              final state = snapshot.data;
+              if (state.isLoading) {
+                return const SizedBox();
+              }
+
+              return IconButton(
+                icon: Icon(Icons.filter_alt_outlined),
+                onPressed: () => showFilterSheet(movieRepo),
+              );
+            },
           ),
         ],
       ),
@@ -233,7 +256,15 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
     );
   }
 
-  void showFilterSheet() async {
+  void showFilterSheet(MovieRepository movieRepo) async {
+    if (cats == null) {
+      await movieRepo.getCategories().forEach((event) => cats = event);
+      selectedCatIds = cats.map((c) => c.id).toBuiltSet();
+    }
+    if (!mounted) {
+      return;
+    }
+
     final apply = await showModalBottomSheet<bool>(
       context: context,
       builder: (context) => _FilterBottomSheet(this),
@@ -247,6 +278,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
       print('>>>> ${showtimeEndTime$.value}');
       print('>>>> ${minReleasedDate$.value}');
       print('>>>> ${maxReleasedDate$.value}');
+      print('>>>> ${selectedCatIds.length}');
 
       bloc.fetch();
     }
@@ -276,6 +308,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
 
   final dateFormat = DateFormat('dd/MM/yy, hh:mm a');
 
+  Set<String> selectedCatIds;
+  BuiltList<Category> cats;
+
   @override
   void initState() {
     super.initState();
@@ -292,6 +327,8 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
     showtimeEndTime = state.showtimeEndTime$.value;
     minReleasedDate = state.minReleasedDate$.value;
     maxReleasedDate = state.maxReleasedDate$.value;
+    selectedCatIds = state.selectedCatIds.toSet();
+    cats = widget.searchPageState.cats;
   }
 
   @override
@@ -316,9 +353,12 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
           value: t,
         ),
     ];
+    const visualDensity = VisualDensity(horizontal: -3, vertical: -3);
+    const divider = Divider(height: 0);
+    const divider2 = Divider(height: 8);
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
           Expanded(
@@ -349,6 +389,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           value: ageType,
                           items: ageTypes,
                           onChanged: (val) => setState(() => ageType = val),
+                          underline: divider,
                         ),
                         const Spacer(),
                       ],
@@ -368,6 +409,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           }
                           setState(() => minDuration = val);
                         },
+                        underline: divider,
                       ),
                       const Text(' to '),
                       DropdownButton<int>(
@@ -380,9 +422,11 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           }
                           setState(() => maxDuration = val);
                         },
+                        underline: divider,
                       ),
                     ],
                   ),
+                  divider2,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -401,6 +445,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           setState(() => showtimeStartTime = newStart);
                         },
                         child: Text(dateFormat.format(showtimeStartTime)),
+                        visualDensity: visualDensity,
                       ),
                     ],
                   ),
@@ -421,10 +466,12 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           setState(() => showtimeEndTime = newEnd);
                         },
                         child: Text(dateFormat.format(showtimeEndTime)),
+                        visualDensity: visualDensity,
                       ),
                     ],
                   ),
                   ////////////////////////
+                  divider2,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -442,6 +489,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           setState(() => minReleasedDate = newStart);
                         },
                         child: Text(dateFormat.format(minReleasedDate)),
+                        visualDensity: visualDensity,
                       ),
                     ],
                   ),
@@ -462,21 +510,46 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           setState(() => maxReleasedDate = newEnd);
                         },
                         child: Text(dateFormat.format(maxReleasedDate)),
+                        visualDensity: visualDensity,
                       ),
                     ],
                   ),
+                  divider2,
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      for (final cat in cats)
+                        FilterChip(
+                          selectedColor:
+                              Theme.of(context).accentColor.withOpacity(0.3),
+                          label: Text(cat.name),
+                          labelStyle: ChipTheme.of(context).labelStyle.copyWith(
+                                fontSize: 11,
+                              ),
+                          onSelected: (v) {
+                            setState(() {
+                              if (v) {
+                                selectedCatIds.add(cat.id);
+                              } else {
+                                selectedCatIds.remove(cat.id);
+                              }
+                            });
+                          },
+                          selected: selectedCatIds.contains(cat.id),
+                        ),
+                    ],
+                  )
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 8),
           Container(
             color: Colors.white,
             child: ButtonTheme(
               height: 38,
               child: Row(
                 children: [
-                  const SizedBox(width: 24),
+                  const SizedBox(width: 32),
                   Expanded(
                     child: FlatButton(
                       onPressed: () => Navigator.of(context).pop(false),
@@ -484,7 +557,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                       color: Theme.of(context).disabledColor,
                       textTheme: ButtonTextTheme.primary,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(38 / 2),
                       ),
                     ),
                   ),
@@ -499,11 +572,11 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                       color: Theme.of(context).primaryColor,
                       textTheme: ButtonTextTheme.primary,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(38 / 2),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 24),
+                  const SizedBox(width: 32),
                 ],
               ),
             ),
@@ -526,6 +599,8 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
 
     state.minReleasedDateS.add(minReleasedDate);
     state.maxReleasedDateS.add(maxReleasedDate);
+
+    state.selectedCatIds = selectedCatIds.build();
   }
 
   Future<DateTime> pickDateTime(DateTime initialDate) async {
