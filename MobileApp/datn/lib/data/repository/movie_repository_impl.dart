@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:datn/data/remote/response/category_response.dart';
+import 'package:datn/domain/model/category.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -31,6 +33,8 @@ class MovieRepositoryImpl implements MovieRepository {
           BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>>
       _movieAndShowTimeResponsesToMovieAndShowTimes;
 
+  final Function1<CategoryResponse, Category> _categoryResponseToCategory;
+
   final SearchKeywordSource _searchKeywordSource;
 
   MovieRepositoryImpl(
@@ -40,6 +44,7 @@ class MovieRepositoryImpl implements MovieRepository {
     this._movieDetailResponseToMovie,
     this._movieAndShowTimeResponsesToMovieAndShowTimes,
     this._searchKeywordSource,
+    this._categoryResponseToCategory,
   );
 
   @override
@@ -226,6 +231,7 @@ class MovieRepositoryImpl implements MovieRepository {
     @required int maxDuration,
     @required AgeType ageType,
     Location location,
+    @required BuiltSet<String> selectedCategoryIds,
   }) {
     if (query == null) {
       return Stream.error(ArgumentError.notNull('query'));
@@ -251,6 +257,9 @@ class MovieRepositoryImpl implements MovieRepository {
     if (maxReleasedDate == null) {
       return Stream.error(ArgumentError.notNull('maxReleasedDate'));
     }
+    if (selectedCategoryIds == null) {
+      return Stream.error(ArgumentError.notNull('selectedCategoryIds'));
+    }
 
     return Rx.fromCallable(() => _authClient
         .getBody(
@@ -265,6 +274,8 @@ class MovieRepositoryImpl implements MovieRepository {
               'min_duration': minDuration.toString(),
               'max_duration': maxDuration.toString(),
               'age_type': ageType.toString().split('.')[1],
+              if (selectedCategoryIds.isNotEmpty)
+                'category_ids': selectedCategoryIds.join(','),
               if (location != null) ...{
                 'lat': location.latitude.toString(),
                 'lng': location.longitude.toString(),
@@ -281,4 +292,19 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<BuiltList<String>> getQueries() => _searchKeywordSource.getQueries();
+
+  @override
+  Stream<BuiltList<Category>> getCategories() {
+    final mapResult = (dynamic json) {
+      return [
+        for (final r in serializers.deserialize(
+          json,
+          specifiedType: builtListCategoryResponse,
+        ))
+          _categoryResponseToCategory(r),
+      ].build();
+    };
+    return Rx.fromCallable(
+        () => _authClient.getBody(buildUrl('/categories')).then(mapResult));
+  }
 }

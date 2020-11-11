@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.9.0 <3.0.0"
 
 # flutter packages pub run build_runner build --delete-conflicting-outputs
+# (\w+):(\s+)([a-zA-Z\s\[\]|]+);
+# $3 get $1;
 
 dependencies:
   octo_image: ^0.3.0

@@ -223,7 +223,10 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
             comingSoonBloc.refresh(),
             mostRateBloc.refresh(),
           ]);
-          await recommendedBloc.refresh();
+          await Future.wait([
+            recommendedBloc.refresh(),
+            theatresBloc.refresh(),
+          ]);
         },
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),

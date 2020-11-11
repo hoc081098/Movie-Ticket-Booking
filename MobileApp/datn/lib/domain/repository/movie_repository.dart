@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 
+import '../model/category.dart';
 import '../model/location.dart';
 import '../model/movie.dart';
 import '../model/movie_and_showtimes.dart';
@@ -50,9 +51,12 @@ abstract class MovieRepository {
     @required int maxDuration,
     @required AgeType ageType,
     Location location,
+    @required BuiltSet<String> selectedCategoryIds,
   });
 
   Future<void> saveSearchQuery(String query);
 
   Future<BuiltList<String>> getQueries();
+
+  Stream<BuiltList<Category>> getCategories();
 }

@@ -80,6 +80,11 @@ const builtListMovieAndShowTimeResponse = FullType(
   [FullType(MovieAndShowTimeResponse)],
 );
 
+const builtListCategoryResponse = FullType(
+  BuiltList,
+  [FullType(CategoryResponse)],
+);
+
 @SerializersFor([
   UserLocal,
   LocationLocal,
@@ -152,6 +157,10 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListMovieAndShowTimeResponse,
         () => ListBuilder<MovieAndShowTimeResponse>(),
+      )
+      ..addBuilderFactory(
+        builtListCategoryResponse,
+        () => ListBuilder<CategoryResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))
