@@ -5,12 +5,12 @@ import { Movie } from './movie.schema';
 import { getCoordinates } from '../common/utils';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../common/pagination.dto';
-import { GetNowShowingMoviesDto } from './movie.dto';
+import { AddMovieDto, GetNowShowingMoviesDto } from './movie.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { Roles, RolesGuard } from '../auth/roles.guard';
 import { ForAdmin } from '../common/swagger.decorator';
-import { from, range } from "rxjs";
-import { concatMap, ignoreElements, map, toArray } from "rxjs/operators";
+import { range } from "rxjs";
+import { concatMap, map, toArray } from "rxjs/operators";
 
 @ApiTags('movies')
 @UseGuards(AuthGuard)
@@ -34,7 +34,7 @@ export class MoviesController {
             concatMap(year =>
                 range(1, 20).pipe(map(page => ({ page, year })))
             ),
-            concatMap(({year, page}) => this.movieDbService.seed(query, page, year)),
+            concatMap(({ year, page }) => this.movieDbService.seed(query, page, year)),
             toArray(),
         );
 
@@ -102,5 +102,14 @@ export class AdminMoviesController {
       @Query() dto: PaginationDto,
   ): Promise<Movie[]> {
     return this.moviesService.getAll(dto);
+  }
+
+  @ForAdmin()
+  @Roles('ADMIN')
+  @Post()
+  addMovie(
+      @Body() dto: AddMovieDto,
+  ): Promise<Movie> {
+    return this.moviesService.addMovie(dto);
   }
 }
