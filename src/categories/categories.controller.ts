@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { Observable } from 'rxjs';
 import { Category } from './category.schema';
@@ -18,4 +18,10 @@ export class CategoriesController {
   seed(): Observable<Category[]> {
     return this.categoriesService.seed();
   }
+
+  @Get()
+  getAll(): Promise<Category[]> {
+    return this.categoriesService.getAll();
+  }
 }
+
