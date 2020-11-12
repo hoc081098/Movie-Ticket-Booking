@@ -1,6 +1,6 @@
 import { LocationDto } from '../common/location.dto';
-import { IsDate, IsDateString, IsIn, IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsArray, IsDate, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 import { Movie } from '../movies/movie.schema';
 
 export class SearchMoviesDto extends LocationDto {
@@ -38,4 +38,11 @@ export class SearchMoviesDto extends LocationDto {
   @IsString()
   @IsIn(['P', 'C13', 'C16', 'C18'])
   age_type: Movie['age_type'];
+
+  @IsOptional()
+  @Type(() => String)
+  @Transform((value: string) => value.split(','))
+  @IsArray()
+  @IsString({ each: true })
+  category_ids?: string[] | null | undefined;
 }

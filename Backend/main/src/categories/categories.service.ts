@@ -36,4 +36,10 @@ export class CategoriesService {
             ),
         );
   }
+
+  getAll(): Promise<Category[]> {
+    return this.categoryMode.find({})
+        .sort({ name: 1 })
+        .exec();
+  }
 }

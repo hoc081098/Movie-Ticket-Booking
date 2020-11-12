@@ -120,6 +120,7 @@ void main() async {
     mappers.movieDetailResponseToMovie,
     mappers.movieAndShowTimeResponsesToMovieAndShowTimes,
     SearchKeywordSourceImpl(preferences),
+    mappers.categoryResponseToCategory,
   );
 
   final cityRepository = CityRepositoryImpl(preferences, userLocalSource);
