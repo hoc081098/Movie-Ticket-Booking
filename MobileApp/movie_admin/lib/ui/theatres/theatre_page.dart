@@ -38,6 +38,12 @@ class _TheatresPageState extends State<TheatresPage> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
