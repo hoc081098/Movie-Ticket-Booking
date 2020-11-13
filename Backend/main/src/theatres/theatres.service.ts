@@ -4,6 +4,8 @@ import { Theatre } from './theatre.schema';
 import { CreateDocumentDefinition, Model } from 'mongoose';
 import { LocationDto } from "../common/location.dto";
 import { constants, getCoordinates } from "../common/utils";
+import { AddTheatreDto, SeatDto } from "./theatre.dto";
+import { Seat } from "../seats/seat.schema";
 
 const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
   {
@@ -82,6 +84,7 @@ const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
 export class TheatresService {
   constructor(
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
+      @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -100,6 +103,8 @@ export class TheatresService {
     if (await this.theatreModel.estimatedDocumentCount().exec() > 0) {
       return 'Nice';
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
     return await this.theatreModel.create(seedTheatres);
   }
 
@@ -124,5 +129,60 @@ export class TheatresService {
       },
       { $match: { is_active: true } },
     ]).exec();
+  }
+
+  async addTheatre(dto: AddTheatreDto): Promise<Theatre> {
+    const coordinates = getCoordinates(dto);
+    if (!coordinates) {
+      throw new BadRequestException(`Required lat and lng`);
+    }
+
+    const theatreDoc: Omit<CreateDocumentDefinition<Theatre>, '_id'> = {
+      address: dto.address,
+      cover: dto.cover,
+      description: dto.description,
+      email: dto.email,
+      is_active: true,
+      location: {
+        type: 'Point',
+        coordinates,
+      },
+      name: dto.name,
+      opening_hours: '8:30 - 23:30',
+      phone_number: dto.phone_number,
+      room_summary: '1 2D',
+      rooms: ['2D1'],
+      thumbnail: dto.thumbnail,
+    };
+
+    const theatre = await this.theatreModel.create(theatreDoc);
+
+    const seatsMap = new Map<string, SeatDto[]>();
+    dto.seats.forEach(s => {
+      const row = seatsMap.get(s.row) ?? [];
+      seatsMap.set(s.row, [...row, s]);
+    });
+
+    for (const [_, v] of seatsMap) {
+      await this.seatModel
+          .create(
+              v.sort((l, r) => l.coordinates[0] - r.coordinates[0])
+                  .map((seat, index) => {
+                    const doc: Omit<CreateDocumentDefinition<Seat>, '_id'> = {
+                      column: index + 1,
+                      coordinates: seat.coordinates,
+                      count: seat.count,
+                      is_active: true,
+                      room: '2D1',
+                      row: seat.row,
+                      theatre: theatre._id,
+                    };
+                    return doc;
+                  })
+          );
+    }
+
+
+    return theatre;
   }
 }
