@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:movie_admin/ui/app_scaffold.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
@@ -10,6 +11,7 @@ import '../../domain/repository/theatres_repository.dart';
 import '../../utils/error.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
+import 'theatre_info_page.dart';
 
 class TheatresPage extends StatefulWidget {
   static const routeName = '/home/theatres';
@@ -95,7 +97,12 @@ class _TheatresPageState extends State<TheatresPage> {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        AppScaffold.of(context).pushNamed(
+                          TheatreInfoPage.routeName,
+                          arguments: item,
+                        );
+                      },
                       borderRadius: BorderRadius.circular(6),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

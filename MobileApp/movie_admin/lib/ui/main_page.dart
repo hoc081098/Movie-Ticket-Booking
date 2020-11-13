@@ -17,6 +17,7 @@ import 'login_update_profile/login_update_profile_page.dart';
 import 'movies/movie_bloc.dart';
 import 'movies/movies_page.dart';
 import 'profile/profile_page.dart';
+import 'theatres/theatre_info_page.dart';
 import 'users/manager_users_bloc.dart';
 import 'users/manager_users_page.dart';
 
@@ -49,6 +50,9 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     TheatresPage.routeName: (context, setting) {
       return TheatresPage();
+    },
+    TheatreInfoPage.routeName: (context, settings) {
+      return TheatreInfoPage(theatre: settings.arguments);
     },
   };
 
