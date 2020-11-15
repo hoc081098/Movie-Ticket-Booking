@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:movie_admin/ui/theatres/add/seats_page.dart';
+import 'package:movie_admin/ui/theatres/seat.dart';
 
 import '../../../utils/utils.dart';
+import '../../app_scaffold.dart';
 
 class AddTheatrePage extends StatefulWidget {
   static const routeName = '/home/theatres/add';
@@ -26,6 +30,7 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
   String address;
   File cover;
   File thumbnail;
+  BuiltList<Seat> seats;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +57,24 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
                 buildThumbnail(),
                 const SizedBox(height: 12),
                 buildCover(),
+                const SizedBox(height: 12),
+                RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () async {
+                    final newSeats = await AppScaffold.of(context).pushNamed(
+                      SeatsPage.routeName,
+                      arguments: seats,
+                    );
+
+                    print('newSeats: ${newSeats}');
+
+                    if (newSeats is BuiltList<Seat>) {
+                      seats = newSeats;
+                    }
+                  },
+                  textTheme: ButtonTextTheme.primary,
+                  child: Text('Change seats map'),
+                ),
                 const SizedBox(height: 16),
                 Builder(
                   builder: (context) => RaisedButton(
@@ -281,7 +304,10 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
     final state = Form.of(context);
 
     state.save();
-    if (!state.validate() || cover == null || thumbnail == null) {
+    if (!state.validate() ||
+        cover == null ||
+        thumbnail == null ||
+        seats == null) {
       return context.showSnackBar('Invalid information');
     }
 
@@ -292,5 +318,6 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
     print('>>>>> FORM_VALUE = ${address}');
     print('>>>>> FORM_VALUE = ${cover}');
     print('>>>>> FORM_VALUE = ${thumbnail}');
+    print('>>>>> FORM_VALUE = ${seats}');
   }
 }

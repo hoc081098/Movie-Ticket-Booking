@@ -18,6 +18,7 @@ import 'login_update_profile/login_update_profile_page.dart';
 import 'movies/movie_bloc.dart';
 import 'movies/movies_page.dart';
 import 'profile/profile_page.dart';
+import 'theatres/add/seats_page.dart';
 import 'theatres/theatre_info_page.dart';
 import 'users/manager_users_bloc.dart';
 import 'users/manager_users_page.dart';
@@ -57,7 +58,10 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     AddTheatrePage.routeName: (context, settings) {
       return AddTheatrePage();
-    }
+    },
+    SeatsPage.routeName: (context, settings) {
+      return SeatsPage(seats: settings.arguments);
+    },
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{
