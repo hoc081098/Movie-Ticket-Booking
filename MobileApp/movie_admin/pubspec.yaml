@@ -59,6 +59,7 @@ dev_dependencies:
 
 dependency_overrides:
   rxdart: 0.25.0-beta3
+  collection: 1.14.13
 
 flutter:
   uses-material-design: true

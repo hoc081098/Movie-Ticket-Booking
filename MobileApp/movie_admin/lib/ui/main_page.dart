@@ -4,6 +4,7 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:movie_admin/domain/repository/movie_repository.dart';
 import 'package:movie_admin/ui/movies/movie_info.dart';
+import 'package:movie_admin/ui/theatres/add/add_theatre_page.dart';
 import 'package:movie_admin/ui/theatres/theatre_page.dart';
 
 import '../domain/model/user.dart';
@@ -54,6 +55,9 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     TheatreInfoPage.routeName: (context, settings) {
       return TheatreInfoPage(theatre: settings.arguments);
     },
+    AddTheatrePage.routeName: (context, settings) {
+      return AddTheatrePage();
+    }
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{
