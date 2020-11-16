@@ -34,7 +34,7 @@ class LegendsWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Select',
+                  'Available',
                   style: textStyle,
                 ),
               ],
@@ -57,26 +57,7 @@ class LegendsWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Available',
-                  style: textStyle,
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(0.5),
-                  width: widthPerSeat,
-                  height: widthPerSeat,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffCBD7E9),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  'Taken',
+                  'Unavailable',
                   style: textStyle,
                 ),
               ],
@@ -89,7 +70,7 @@ class LegendsWidget extends StatelessWidget {
                   width: widthPerSeat * 2,
                   height: widthPerSeat,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: accentColor,
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
                       color: const Color(0xffCBD7E9),

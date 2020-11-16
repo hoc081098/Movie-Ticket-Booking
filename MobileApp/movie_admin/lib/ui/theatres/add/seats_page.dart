@@ -6,16 +6,16 @@ import 'package:distinct_value_connectable_stream/distinct_value_connectable_str
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
-import '../../../utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../seat.dart';
 import 'legends_widget.dart';
 import 'screen_widget.dart';
 
 const MAX_X = 14 - 0 + 1; // 0 -> 14
-final MAX_Y = 'H'.codeUnitAt(0) - 'A'.codeUnitAt(0); // 'A' -> 'H'
+final MAX_Y = 'K'.codeUnitAt(0) - 'A'.codeUnitAt(0) + 1; // 'A' -> 'H'
 
 BuiltList<Seat> fullSeats() {
   final seats = <Seat>[];
@@ -158,6 +158,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
   int maxX;
   int maxY;
   Map<Coordinates, Seat> seatByCoordinates;
+  Map<Coordinates, int> columnByCoordinates;
 
   @override
   void initState() {
@@ -176,7 +177,17 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
     maxY = math.max(maxY, MAX_Y);
 
     seatByCoordinates =
-        Map.fromEntries(widget.seats.map((t) => MapEntry(t.coordinates, t)));
+        Map.fromEntries(seats.map((t) => MapEntry(t.coordinates, t)));
+
+    columnByCoordinates = Map.fromEntries(
+      seats.groupBy((s) => s.coordinates.y, (s) => s).entries.expand((e) {
+        final sorted = e.value
+          ..sort((l, r) => l.coordinates.x.compareTo(r.coordinates.x));
+
+        var col = 1;
+        return [for (final c in sorted) MapEntry(c.coordinates, col++)];
+      }),
+    );
   }
 
   @override
@@ -296,6 +307,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
         widthPerSeat: widthPerSeat,
         isSelected: true,
         onTap: () => widget.changeSeat(seat),
+        column: columnByCoordinates[coordinates],
       );
     }
   }
@@ -306,6 +318,7 @@ class SeatWidget extends StatelessWidget {
   final double widthPerSeat;
   final bool isSelected;
   final VoidCallback onTap;
+  final int column;
 
   const SeatWidget({
     Key key,
@@ -313,6 +326,7 @@ class SeatWidget extends StatelessWidget {
     this.seat,
     this.isSelected,
     this.onTap,
+    this.column,
   }) : super(key: key);
 
   @override
@@ -336,7 +350,7 @@ class SeatWidget extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            '${seat.row}${''}',
+            '${seat.row}${column}',
             style: Theme.of(context).textTheme.caption.copyWith(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
