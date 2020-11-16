@@ -195,19 +195,21 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
   }
 
   Widget buildThumbnail() {
+    final onTap = () async {
+      final image = await imagePicker.getImage(
+        source: ImageSource.gallery,
+        maxWidth: 128,
+        maxHeight: 128,
+      );
+      if (image != null) {
+        setState(() => thumbnail = File(image.path));
+      }
+    };
+
     if (thumbnail == null) {
       return Center(
         child: InkWell(
-          onTap: () async {
-            final image = await imagePicker.getImage(
-              source: ImageSource.gallery,
-              maxWidth: 128,
-              maxHeight: 128,
-            );
-            if (image != null) {
-              setState(() => thumbnail = File(image.path));
-            }
-          },
+          onTap: onTap,
           child: Container(
             width: 128,
             height: 128,
@@ -237,29 +239,33 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
     }
 
     return Center(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.file(
-          thumbnail,
-          width: 128,
-          height: 128,
-          fit: BoxFit.cover,
+      child: InkWell(
+        onTap: onTap,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.file(
+            thumbnail,
+            width: 128,
+            height: 128,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
   }
 
   Widget buildCover() {
+    final onTap = () async {
+      final image = await imagePicker.getImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() => cover = File(image.path));
+      }
+    };
+
     if (cover == null) {
       return Center(
         child: InkWell(
-          onTap: () async {
-            final image =
-                await imagePicker.getImage(source: ImageSource.gallery);
-            if (image != null) {
-              setState(() => cover = File(image.path));
-            }
-          },
+          onTap: onTap,
           child: Container(
             width: 256,
             height: 256,
@@ -288,13 +294,16 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
       );
     }
     return Center(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.file(
-          cover,
-          width: 256,
-          height: 256,
-          fit: BoxFit.cover,
+      child: InkWell(
+        onTap: onTap,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.file(
+            cover,
+            width: 256,
+            height: 256,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
