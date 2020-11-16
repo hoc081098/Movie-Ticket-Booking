@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
@@ -46,14 +47,16 @@ class SeatsPage extends StatefulWidget {
 
 class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
   final changeSeatS = StreamController<Seat>();
-  DistinctValueStream<BuiltList<Seat>> seats$;
+  final longSelectedS = BehaviorSubject.seeded(<Seat>{}.build());
+
+  DistinctValueStream<Tuple2<BuiltList<Seat>, BuiltSet<Seat>>> seats$;
 
   @override
   void initState() {
     super.initState();
 
     final seedValue = widget.seats ?? fullSeats();
-    seats$ = changeSeatS.stream
+    final s$ = changeSeatS.stream
         .debug('??')
         .scan<BuiltList<Seat>>(
           (acc, value, _) => acc.contains(value)
@@ -61,8 +64,14 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
               : acc.rebuild((b) => b.add(value)),
           seedValue,
         )
-        .shareValueDistinct(seedValue, sync: true)
-          ..listen(null).disposedBy(bag);
+        .startWith(seedValue);
+
+    seats$ = Rx.combineLatest2(s$, longSelectedS,
+            (a, b) => Tuple2<BuiltList<Seat>, BuiltSet<Seat>>(a, b))
+        .shareValueDistinct(
+      Tuple2(seedValue, longSelectedS.value),
+      sync: true,
+    )..listen(null).disposedBy(bag);
   }
 
   @override
@@ -95,6 +104,23 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
         appBar: AppBar(
           title: Text('Seats'),
           actions: [
+            RxStreamBuilder<BuiltSet<Seat>>(
+              stream: longSelectedS,
+              builder: (context, snapshot) {
+                if (snapshot.data.isNotEmpty) {
+                  return FlatButton(
+                    child: Text(
+                      'Merge',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {},
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
             IconButton(
               icon: Icon(Icons.done),
               onPressed: () => AppScaffold.of(context).pop(seats$),
@@ -119,8 +145,15 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
             RxStreamBuilder(
               stream: seats$,
               builder: (context, snapshot) => SeatsGridWidget(
-                seats: snapshot.data,
+                tuple: snapshot.data,
                 changeSeat: changeSeatS.add,
+                onLongPressed: (seat) {
+                  final longSelected = longSelectedS.value;
+                  final newLongSelected = longSelected.contains(seat)
+                      ? longSelected.rebuild((b) => b.remove(seat))
+                      : longSelected.rebuild((b) => b.add(seat));
+                  longSelectedS.add(newLongSelected);
+                },
               ),
             ),
             const LegendsWidget(),
@@ -141,13 +174,15 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
 }
 
 class SeatsGridWidget extends StatefulWidget {
-  final BuiltList<Seat> seats;
+  final Tuple2<BuiltList<Seat>, BuiltSet<Seat>> tuple;
   final Function1<Seat, void> changeSeat;
+  final Function1<Seat, void> onLongPressed;
 
   const SeatsGridWidget({
     Key key,
-    @required this.seats,
-    this.changeSeat,
+    @required this.changeSeat,
+    @required this.tuple,
+    @required this.onLongPressed,
   }) : super(key: key);
 
   @override
@@ -168,7 +203,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
   }
 
   void init() {
-    final seats = widget.seats;
+    final seats = widget.tuple.item1;
 
     maxX = seats.map((s) => s.coordinates.x + s.count - 1).reduce(math.max);
     maxY = seats.map((s) => s.coordinates.y).reduce(math.max);
@@ -195,7 +230,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
   void didUpdateWidget(SeatsGridWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.seats != widget.seats) {
+    if (oldWidget.tuple.item1 != widget.tuple.item1) {
       init();
     }
   }
@@ -306,9 +341,10 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
       return SeatWidget(
         seat: seat,
         widthPerSeat: widthPerSeat,
-        isSelected: true,
+        isSelected: !widget.tuple.item2.contains(seat),
         onTap: () => widget.changeSeat(seat),
         column: columnByCoordinates[coordinates],
+        onLongPress: () => widget.onLongPressed(seat),
       );
     }
   }
@@ -320,6 +356,7 @@ class SeatWidget extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
   final int column;
+  final GestureLongPressCallback onLongPress;
 
   const SeatWidget({
     Key key,
@@ -328,6 +365,7 @@ class SeatWidget extends StatelessWidget {
     this.isSelected,
     this.onTap,
     this.column,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
@@ -335,17 +373,20 @@ class SeatWidget extends StatelessWidget {
     final width = widthPerSeat * seat.count + (seat.count - 1) * 1;
 
     final accentColor = Theme.of(context).accentColor;
+    final primaryColor = Theme.of(context).primaryColor;
+
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Container(
         margin: const EdgeInsets.all(0.5),
         width: width,
         height: widthPerSeat,
         decoration: BoxDecoration(
-          color: isSelected ? accentColor : Colors.white,
+          color: isSelected ? accentColor : primaryColor,
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: isSelected ? accentColor : const Color(0xffCBD7E9),
+            color: isSelected ? accentColor : primaryColor,
             width: 1,
           ),
         ),
@@ -355,7 +396,7 @@ class SeatWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.caption.copyWith(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  color: isSelected ? Colors.white : const Color(0xff687189),
+                  color: Colors.white,
                 ),
           ),
         ),
