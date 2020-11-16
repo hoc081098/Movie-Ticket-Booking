@@ -176,18 +176,19 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
     maxX = math.max(maxX, MAX_X);
     maxY = math.max(maxY, MAX_Y);
 
-    seatByCoordinates =
-        Map.fromEntries(seats.map((t) => MapEntry(t.coordinates, t)));
-
-    columnByCoordinates = Map.fromEntries(
-      seats.groupBy((s) => s.coordinates.y, (s) => s).entries.expand((e) {
-        final sorted = e.value
-          ..sort((l, r) => l.coordinates.x.compareTo(r.coordinates.x));
-
-        var col = 1;
-        return [for (final c in sorted) MapEntry(c.coordinates, col++)];
-      }),
-    );
+    seatByCoordinates = seats.map((t) => MapEntry(t.coordinates, t)).toMap();
+    columnByCoordinates = seats
+        .groupBy(
+          (s) => s.coordinates.y,
+          (s) => s,
+        )
+        .entries
+        .expand(
+          (e) => e.value
+              .sortedBy<num>((e) => e.coordinates.x)
+              .mapIndexed((i, c) => MapEntry(c.coordinates, i + 1)),
+        )
+        .toMap();
   }
 
   @override
