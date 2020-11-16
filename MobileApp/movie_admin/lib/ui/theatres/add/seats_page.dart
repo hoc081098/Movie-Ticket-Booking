@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:built_collection/built_collection.dart';
@@ -46,7 +45,7 @@ class SeatsPage extends StatefulWidget {
 }
 
 class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
-  final changeSeatS = StreamController<Seat>();
+  BehaviorSubject<BuiltList<Seat>> changeSeatS;
   final longSelectedS = BehaviorSubject.seeded(<Seat>{}.build());
 
   DistinctValueStream<Tuple2<BuiltList<Seat>, BuiltSet<Seat>>> seats$;
@@ -56,19 +55,13 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
     super.initState();
 
     final seedValue = widget.seats ?? fullSeats();
-    final s$ = changeSeatS.stream
-        .debug('??')
-        .scan<BuiltList<Seat>>(
-          (acc, value, _) => acc.contains(value)
-              ? acc.rebuild((b) => b.remove(value))
-              : acc.rebuild((b) => b.add(value)),
-          seedValue,
-        )
-        .startWith(seedValue);
+    changeSeatS = BehaviorSubject.seeded(seedValue);
 
-    seats$ = Rx.combineLatest2(s$, longSelectedS,
-            (a, b) => Tuple2<BuiltList<Seat>, BuiltSet<Seat>>(a, b))
-        .shareValueDistinct(
+    seats$ = Rx.combineLatest2(
+      changeSeatS,
+      longSelectedS,
+      (a, b) => Tuple2<BuiltList<Seat>, BuiltSet<Seat>>(a, b),
+    ).shareValueDistinct(
       Tuple2(seedValue, longSelectedS.value),
       sync: true,
     )..listen(null).disposedBy(bag);
@@ -115,7 +108,7 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
                         color: Colors.white,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () => onMerge(context),
                   );
                 }
                 return const SizedBox();
@@ -123,7 +116,7 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
             ),
             IconButton(
               icon: Icon(Icons.done),
-              onPressed: () => AppScaffold.of(context).pop(seats$),
+              onPressed: () => AppScaffold.of(context).pop(seats$.value.item1),
             ),
           ],
         ),
@@ -146,10 +139,22 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
               stream: seats$,
               builder: (context, snapshot) => SeatsGridWidget(
                 tuple: snapshot.data,
-                changeSeat: changeSeatS.add,
+                changeSeat: (value) {
+                  final acc = changeSeatS.value;
+                  final newSeats = acc.firstWhere(
+                              (e) => e.coordinates == value.coordinates,
+                              orElse: () => null) !=
+                          null
+                      ? acc.rebuild((b) => b.remove(value))
+                      : acc.rebuild((b) => b.add(value));
+                  changeSeatS.add(newSeats);
+                },
                 onLongPressed: (seat) {
                   final longSelected = longSelectedS.value;
-                  final newLongSelected = longSelected.contains(seat)
+                  final newLongSelected = longSelected.firstWhere(
+                              (e) => e.coordinates == seat.coordinates,
+                              orElse: () => null) !=
+                          null
                       ? longSelected.rebuild((b) => b.remove(seat))
                       : longSelected.rebuild((b) => b.add(seat));
                   longSelectedS.add(newLongSelected);
@@ -170,6 +175,43 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
         ),
       ),
     );
+  }
+
+  void onMerge(BuildContext context) {
+    final longSelected = longSelectedS.value;
+    if (longSelected.length <= 1) {
+      return context.showSnackBar('Please select more than 1 seat');
+    }
+
+    if (longSelected.map((e) => e.coordinates.y).toSet().length != 1) {
+      return context.showSnackBar('All seats must be same row');
+    }
+
+    final sorted = longSelected.sortedBy<num>((e) => e.coordinates.x);
+    print(sorted);
+    for (var i = 0; i < sorted.length - 1; i++) {
+      final cur = sorted[i];
+      final after = sorted[i + 1];
+      if (after.coordinates.x - cur.coordinates.x != cur.count) {
+        return context.showSnackBar('Seats must be consecutive');
+      }
+    }
+
+    final seats = changeSeatS.value.rebuild((b) {
+      sorted.forEach(b.remove);
+
+      final first = sorted.first;
+      final merged = Seat(
+        first.row,
+        sorted.map((e) => e.count).reduce((acc, e) => acc + e),
+        first.coordinates,
+      );
+      print(merged);
+      b.add(merged);
+    });
+
+    longSelectedS.add(<Seat>{}.build());
+    changeSeatS.add(seats);
   }
 }
 
@@ -205,11 +247,9 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
   void init() {
     final seats = widget.tuple.item1;
 
-    maxX = seats.map((s) => s.coordinates.x + s.count - 1).reduce(math.max);
-    maxY = seats.map((s) => s.coordinates.y).reduce(math.max);
-
-    maxX = math.max(maxX, MAX_X);
-    maxY = math.max(maxY, MAX_Y);
+    maxX =
+        seats.map((s) => s.coordinates.x + s.count - 1).fold(MAX_X, math.max);
+    maxY = seats.map((s) => s.coordinates.y).fold(MAX_Y, math.max);
 
     seatByCoordinates = seats.map((t) => MapEntry(t.coordinates, t)).toMap();
     columnByCoordinates = seats
@@ -318,8 +358,21 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
     final coordinates = Coordinates(x, y);
     final seat = seatByCoordinates[coordinates];
     if (seat == null) {
-      final prevCount = seatByCoordinates[Coordinates(x - 1, y)]?.count;
-      return prevCount != null && prevCount > 1
+      int prevCount;
+      Coordinates cc;
+      var jj = x - 1;
+      while (jj >= 0) {
+        cc = Coordinates(jj, y);
+        prevCount = seatByCoordinates[cc]?.count;
+        if (prevCount != null) {
+          break;
+        }
+        jj--;
+      }
+
+      return prevCount != null &&
+              prevCount > 1 &&
+              (coordinates.x - cc.x + 1) <= prevCount
           ? const SizedBox(width: 0, height: 0)
           : InkWell(
               onTap: () => widget.changeSeat(Seat(row, 1, coordinates)),
