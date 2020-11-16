@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_provider/flutter_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:movie_admin/domain/model/location.dart';
+import 'package:movie_admin/domain/repository/theatres_repository.dart';
 import 'package:movie_admin/ui/theatres/add/seats_page.dart';
 import 'package:movie_admin/ui/theatres/seat.dart';
 
@@ -327,6 +330,29 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
     print('>>>>> FORM_VALUE = ${address}');
     print('>>>>> FORM_VALUE = ${cover}');
     print('>>>>> FORM_VALUE = ${thumbnail}');
-    print('>>>>> FORM_VALUE = ${seats}');
+
+    try {
+      final added = await Provider.of<TheatresRepository>(context).addTheatre(
+        name: name,
+        address: address,
+        phone_number: phone,
+        email: email,
+        description: description,
+        location: Location(latitude: 0, longitude: 0),
+        cover: cover,
+        thumbnail: thumbnail,
+        seats: seats,
+      );
+
+      if (mounted) {
+        context.showSnackBar('Add successfully');
+      }
+
+      AppScaffold.of(context).pop(added);
+    } catch (e) {
+      if (mounted) {
+        context.showSnackBar('Error: ${getErrorMessage(e)}');
+      }
+    }
   }
 }

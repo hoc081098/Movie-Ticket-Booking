@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  uuid: ^2.2.2
   distinct_value_connectable_stream: 1.2.0-beta01
   built_collection: ^4.3.2
   flutter_slidable: ^0.5.7

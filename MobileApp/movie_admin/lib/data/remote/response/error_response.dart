@@ -39,7 +39,10 @@ class MultipleMessagesErrorResponse implements ErrorResponse {
 
   factory MultipleMessagesErrorResponse.fromJson(Map<String, dynamic> map) {
     return MultipleMessagesErrorResponse(
-        map['error'], map['statusCode'], map['message']);
+      map['error'],
+      map['statusCode'],
+      (map['message'] as List).cast<String>(),
+    );
   }
 
   @override
