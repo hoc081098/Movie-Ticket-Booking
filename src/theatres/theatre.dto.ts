@@ -48,7 +48,7 @@ export class AddTheatreDto extends LocationDto {
 
   @IsArray()
   @ArrayMinSize(1)
-  @ValidateNested()
+  @ValidateNested({ each: true })
   seats: SeatDto[];
 }
 
@@ -66,8 +66,4 @@ export class SeatDto {
   @ArrayMinSize(2)
   @ArrayMaxSize(2)
   coordinates: [number, number];
-
-  @IsString()
-  @IsNotEmpty()
-  theatre: string;
 }
