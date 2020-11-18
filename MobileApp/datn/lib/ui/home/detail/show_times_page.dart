@@ -325,6 +325,7 @@ class ShowTimeItem extends StatelessWidget {
               theatre.thumbnail ?? '',
               width: 54,
               height: 54,
+              fit: BoxFit.cover,
             ),
           ),
           const SizedBox(width: 8),

@@ -1046,6 +1046,7 @@ class NearbyTheatresList extends StatelessWidget {
                                 item.thumbnail ?? '',
                                 width: 54,
                                 height: 54,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             const SizedBox(width: 8),

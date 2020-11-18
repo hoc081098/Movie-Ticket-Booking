@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { TheatresService } from './theatres.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LocationDto } from "../common/location.dto";
 import { Theatre } from "./theatre.schema";
+import { RolesGuard } from "../auth/roles.guard";
+import { AddTheatreDto } from "./theatre.dto";
 
 @ApiTags('theatres')
 @UseGuards(AuthGuard)
@@ -24,5 +26,21 @@ export class TheatresController {
       @Query() dto?: LocationDto,
   ): Promise<Theatre[]> {
     return this.theatresService.getNearbyTheatres(dto);
+  }
+}
+
+@ApiTags('admin_theatres')
+@UseGuards(AuthGuard, RolesGuard)
+@Controller('admin_theatres')
+export class AdminTheatresController {
+  constructor(
+      private readonly theatresService: TheatresService,
+  ) {}
+
+  @Post()
+  addTheatre(
+      @Body() dto: AddTheatreDto,
+  ) {
+    return this.theatresService.addTheatre(dto);
   }
 }
