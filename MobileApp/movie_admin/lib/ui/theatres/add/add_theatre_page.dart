@@ -2,13 +2,16 @@ import 'dart:io';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:image_picker/image_picker.dart';
 import 'package:movie_admin/domain/model/location.dart';
 import 'package:movie_admin/domain/repository/theatres_repository.dart';
 import 'package:movie_admin/ui/theatres/add/seats_page.dart';
 import 'package:movie_admin/ui/theatres/seat.dart';
 
+import '../../../env_manager.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 
@@ -34,6 +37,8 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
   File cover;
   File thumbnail;
   BuiltList<Seat> seats;
+  Location location;
+  final addressTextController = TextEditingController();
 
   var isLoading = false;
 
@@ -109,22 +114,36 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
   }
 
   Widget buildAddressFormField() {
-    return TextFormField(
-      autocorrect: true,
-      keyboardType: TextInputType.text,
-      maxLines: 1,
-      textInputAction: TextInputAction.next,
-      onSaved: (v) => address = v,
-      validator: (v) => v.isEmpty ? 'Empty address' : null,
-      autovalidateMode: AutovalidateMode.always,
-      decoration: InputDecoration(
-        prefixIcon: const Padding(
-          padding: EdgeInsetsDirectional.only(end: 8.0),
-          child: Icon(Icons.map),
+    return Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+            controller: addressTextController,
+            autocorrect: true,
+            keyboardType: TextInputType.text,
+            maxLines: 1,
+            textInputAction: TextInputAction.done,
+            onSaved: (v) => address = v,
+            validator: (v) => v.isEmpty ? 'Empty address' : null,
+            autovalidateMode: AutovalidateMode.always,
+            decoration: InputDecoration(
+              prefixIcon: const Padding(
+                padding: EdgeInsetsDirectional.only(end: 8.0),
+                child: Icon(Icons.map),
+              ),
+              labelText: 'Address',
+              border: const OutlineInputBorder(),
+            ),
+          ),
         ),
-        labelText: 'Address',
-        border: const OutlineInputBorder(),
-      ),
+        IconButton(
+          icon: Icon(
+            Icons.location_on,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: searchLocation,
+        ),
+      ],
     );
   }
 
@@ -325,24 +344,72 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
     );
   }
 
+  void searchLocation() async {
+    try {
+      final apiKey = EnvManager.shared.get(EnvKey.PLACES_API_KEY);
+
+      final prediction = await PlacesAutocomplete.show(
+        context: context,
+        apiKey: apiKey,
+        mode: Mode.overlay,
+        language: 'vi',
+        components: [
+          Component(
+            Component.country,
+            'VN',
+          ),
+        ],
+      );
+
+      if (prediction == null) {
+        return;
+      }
+
+      final details = (await GoogleMapsPlaces(apiKey: apiKey)
+              .getDetailsByPlaceId(prediction.placeId))
+          .result;
+
+      address = details.formattedAddress;
+      location = Location(
+        latitude: details.geometry.location.lat,
+        longitude: details.geometry.location.lng,
+      );
+
+      addressTextController.text = address;
+    } catch (e, s) {
+      print('searchLocation $e $s');
+    }
+  }
+
   void submit(BuildContext context) async {
     final state = Form.of(context);
 
     state.save();
-    if (!state.validate() ||
-        cover == null ||
-        thumbnail == null ||
-        seats == null) {
+
+    print('>>>>> FORM_VALUE name= ${name}');
+    print('>>>>> FORM_VALUE phone= ${phone}');
+    print('>>>>> FORM_VALUE email= ${email}');
+    print('>>>>> FORM_VALUE description= ${description}');
+    print('>>>>> FORM_VALUE address= ${address}');
+    print('>>>>> FORM_VALUE cover= ${cover}');
+    print('>>>>> FORM_VALUE thumbnail= ${thumbnail}');
+    print('>>>>> FORM_VALUE location= ${location}');
+
+    if (!state.validate()) {
       return context.showSnackBar('Invalid information');
     }
-
-    print('>>>>> FORM_VALUE = ${name}');
-    print('>>>>> FORM_VALUE = ${phone}');
-    print('>>>>> FORM_VALUE = ${email}');
-    print('>>>>> FORM_VALUE = ${description}');
-    print('>>>>> FORM_VALUE = ${address}');
-    print('>>>>> FORM_VALUE = ${cover}');
-    print('>>>>> FORM_VALUE = ${thumbnail}');
+    if (cover == null) {
+      return context.showSnackBar('Missing cover image');
+    }
+    if (thumbnail == null) {
+      return context.showSnackBar('Missing thumbnail image');
+    }
+    if (seats == null) {
+      return context.showSnackBar('Missing seats map');
+    }
+    if (location == null) {
+      return context.showSnackBar('Missing location');
+    }
 
     try {
       final navigatorState = AppScaffold.of(context);
@@ -354,7 +421,7 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
         phone_number: phone,
         email: email,
         description: description,
-        location: Location(latitude: 0, longitude: 0),
+        location: location,
         cover: cover,
         thumbnail: thumbnail,
         seats: seats,
