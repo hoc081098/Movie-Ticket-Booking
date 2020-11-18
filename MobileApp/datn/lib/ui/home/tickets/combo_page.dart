@@ -209,6 +209,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                           product.image,
                           width: 64,
                           height: 64,
+                          fit: BoxFit.cover,
                         ),
                         childrenPadding: const EdgeInsets.all(8.0),
                         children: [
