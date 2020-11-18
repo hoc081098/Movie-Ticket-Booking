@@ -120,6 +120,7 @@ class _TheatresPageState extends State<TheatresPage> {
                                 item.thumbnail ?? '',
                                 width: 54,
                                 height: 54,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -162,10 +163,13 @@ class _TheatresPageState extends State<TheatresPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          AppScaffold.of(context).pushNamed(
+        onPressed: () async {
+          final added = await AppScaffold.of(context).pushNamed(
             AddTheatrePage.routeName,
           );
+          if (added != null) {
+            await bloc.refresh();
+          }
         },
         child: Icon(Icons.add),
       ),

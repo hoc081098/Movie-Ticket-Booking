@@ -35,6 +35,8 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
   File thumbnail;
   BuiltList<Seat> seats;
 
+  var isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,12 +82,23 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
                 ),
                 const SizedBox(height: 16),
                 Builder(
-                  builder: (context) => RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    onPressed: () => submit(context),
-                    textTheme: ButtonTextTheme.primary,
-                    child: Text('Submit'),
-                  ),
+                  builder: (context) {
+                    if (isLoading) {
+                      return SizedBox(
+                        child: Center(
+                          child: const CircularProgressIndicator(),
+                        ),
+                        height: 50,
+                      );
+                    }
+
+                    return RaisedButton(
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () => submit(context),
+                      textTheme: ButtonTextTheme.primary,
+                      child: Text('Submit'),
+                    );
+                  },
                 ),
               ],
             ),
@@ -332,6 +345,9 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
     print('>>>>> FORM_VALUE = ${thumbnail}');
 
     try {
+      final navigatorState = AppScaffold.of(context);
+      setState(() => isLoading = true);
+
       final added = await Provider.of<TheatresRepository>(context).addTheatre(
         name: name,
         address: address,
@@ -344,14 +360,19 @@ class _AddTheatrePageState extends State<AddTheatrePage> {
         seats: seats,
       );
 
+      await delay(500);
       if (mounted) {
         context.showSnackBar('Add successfully');
       }
 
-      AppScaffold.of(context).pop(added);
+      navigatorState.pop(added);
     } catch (e) {
       if (mounted) {
         context.showSnackBar('Error: ${getErrorMessage(e)}');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => isLoading = false);
       }
     }
   }

@@ -145,7 +145,17 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
                               (e) => e.coordinates == value.coordinates,
                               orElse: () => null) !=
                           null
-                      ? acc.rebuild((b) => b.remove(value))
+                      ? () {
+                          final longSelected = longSelectedS.value;
+                          if (longSelected.firstWhere(
+                                  (e) => e.coordinates == value.coordinates,
+                                  orElse: () => null) !=
+                              null) {
+                            longSelectedS.add(
+                                longSelected.rebuild((b) => b.remove(value)));
+                          }
+                          return acc.rebuild((b) => b.remove(value));
+                        }()
                       : acc.rebuild((b) => b.add(value));
                   changeSeatS.add(newSeats);
                 },
