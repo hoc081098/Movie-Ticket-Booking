@@ -12,6 +12,23 @@ import {
   ValidateNested,
 } from "class-validator";
 import { LocationDto } from "../common/location.dto";
+import { Type } from "class-transformer";
+
+export class SeatDto {
+  @IsString()
+  @IsNotEmpty()
+  row: string;
+
+  @IsNumber()
+  @Min(1)
+  count: number;
+
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @ArrayMinSize(2)
+  @ArrayMaxSize(2)
+  coordinates: [number, number];
+}
 
 export class AddTheatreDto extends LocationDto {
   @IsString()
@@ -49,21 +66,6 @@ export class AddTheatreDto extends LocationDto {
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
+  @Type(() => SeatDto)
   seats: SeatDto[];
-}
-
-export class SeatDto {
-  @IsString()
-  @IsNotEmpty()
-  row: string;
-
-  @IsNumber()
-  @Min(1)
-  count: number;
-
-  @IsArray()
-  @IsNumber({}, { each: true })
-  @ArrayMinSize(2)
-  @ArrayMaxSize(2)
-  coordinates: [number, number];
 }
