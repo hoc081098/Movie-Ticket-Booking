@@ -2,23 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
-import 'package:movie_admin/data/repository/movie_repository_impl.dart';
 import 'package:movie_admin/domain/repository/movie_repository.dart';
 import 'package:movie_admin/ui/movies/movie_info.dart';
-import '../domain/repository/manager_repository.dart';
-import 'movies/movie_bloc.dart';
-import 'movies/movies_page.dart';
-import 'users/manager_users_bloc.dart';
-import 'users/manager_users_page.dart';
+import 'package:movie_admin/ui/theatres/add/add_theatre_page.dart';
+import 'package:movie_admin/ui/theatres/theatre_page.dart';
 
 import '../domain/model/user.dart';
+import '../domain/repository/manager_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
 import 'home/home_page.dart';
 import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
+import 'movies/movie_bloc.dart';
+import 'movies/movies_page.dart';
 import 'profile/profile_page.dart';
+import 'theatres/add/seats_page.dart';
+import 'theatres/theatre_info_page.dart';
+import 'users/manager_users_bloc.dart';
+import 'users/manager_users_page.dart';
 
 class MainPage extends StatefulWidget {
   static const routeName = '/main';
@@ -46,7 +49,19 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     MovieInfoPage.routeName: (context, setting) {
       return MovieInfoPage(movie: setting.arguments);
-    }
+    },
+    TheatresPage.routeName: (context, setting) {
+      return TheatresPage();
+    },
+    TheatreInfoPage.routeName: (context, settings) {
+      return TheatreInfoPage(theatre: settings.arguments);
+    },
+    AddTheatrePage.routeName: (context, settings) {
+      return AddTheatrePage();
+    },
+    SeatsPage.routeName: (context, settings) {
+      return SeatsPage(seats: settings.arguments);
+    },
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

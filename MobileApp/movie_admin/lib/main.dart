@@ -7,15 +7,17 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_admin/data/repository/movie_repository_impl.dart';
+import 'package:movie_admin/data/repository/theatres_repository_impl.dart';
 import 'package:movie_admin/domain/repository/movie_repository.dart';
-import 'data/repository/mannager_repository_impl.dart';
-import 'domain/repository/manager_repository.dart';
+import 'package:movie_admin/domain/repository/theatres_repository.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 import 'data/local/user_local_source_impl.dart';
 import 'data/mappers.dart' as mappers;
 import 'data/remote/auth_client.dart';
+import 'data/repository/mannager_repository_impl.dart';
 import 'data/repository/user_repository_impl.dart';
+import 'domain/repository/manager_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
 import 'my_app.dart';
@@ -40,7 +42,7 @@ void main() async {
   //
   // Local and remote
   //
-  // RxSharedPreferencesConfigs.logger = null;
+  RxSharedPreferencesConfigs.logger = null;
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
 
@@ -72,6 +74,7 @@ void main() async {
   );
   final managerUsersRepository = ManagerRepositoryImpl(authClient);
   final movieRepository = MovieRepositoryImpl(authClient);
+  final theatresRepository = TheatresRepositoryImpl(authClient);
 
   _onSignOut = userRepository.logout;
 
@@ -82,6 +85,7 @@ void main() async {
         Provider<UserRepository>(value: userRepository),
         Provider<ManagerRepository>(value: managerUsersRepository),
         Provider<MovieRepository>(value: movieRepository),
+        Provider<TheatresRepository>(value: theatresRepository),
       ],
       child: MyApp(),
     ),
