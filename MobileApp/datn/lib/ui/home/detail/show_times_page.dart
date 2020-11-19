@@ -5,6 +5,7 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
@@ -321,11 +322,23 @@ class ShowTimeItem extends StatelessWidget {
       title: Row(
         children: [
           ClipOval(
-            child: Image.network(
-              theatre.thumbnail ?? '',
+            child: OctoImage(
+              image: NetworkImage(theatre.thumbnail ?? ''),
               width: 54,
               height: 54,
               fit: BoxFit.cover,
+              progressIndicatorBuilder: (context, event) {
+                return const Center(
+                  child: SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (_, __, ___) => const SizedBox(),
             ),
           ),
           const SizedBox(width: 8),

@@ -724,13 +724,24 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
     }
 
     x--;
-    final ticket = ticketByCoordinates[SeatCoordinates.from(x: x, y: y)];
+    final coordinates = SeatCoordinates.from(x: x, y: y);
+    final ticket = ticketByCoordinates[coordinates];
     if (ticket == null) {
-      final prevCount =
-          ticketByCoordinates[SeatCoordinates.from(x: x - 1, y: y)]
-              ?.seat
-              ?.count;
-      return prevCount != null && prevCount > 1
+      int prevCount;
+      SeatCoordinates prevCoords;
+      var prevX = x - 1;
+      while (prevX >= 0) {
+        prevCoords = SeatCoordinates.from(x: prevX, y: y);
+        prevCount = ticketByCoordinates[prevCoords]?.seat?.count;
+        if (prevCount != null) {
+          break;
+        }
+        prevX--;
+      }
+
+      return prevCount != null &&
+              prevCount > 1 &&
+              (coordinates.x - prevCoords.x + 1) <= prevCount
           ? const SizedBox(width: 0, height: 0)
           : Container(
               margin: const EdgeInsets.all(0.5),
