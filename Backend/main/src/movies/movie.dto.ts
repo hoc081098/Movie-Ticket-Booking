@@ -51,6 +51,7 @@ export class AddMovieDto {
   overview?: string | null;
 
   @IsDate()
+  @Type(() => Date)
   released_date: Date;
 
   @IsNumber()

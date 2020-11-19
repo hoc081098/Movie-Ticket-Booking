@@ -9,6 +9,7 @@ import * as dayjs from 'dayjs';
 import { from } from 'rxjs';
 import { filter, pairwise, take } from 'rxjs/operators';
 import { constants } from '../common/utils';
+import { AddShowTimeDto } from './show-time.dto';
 
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');
@@ -311,5 +312,36 @@ export class ShowTimesService {
         }
       }
     ]).exec();
+  }
+
+  async addShowTime(dto: AddShowTimeDto): Promise<ShowTime> {
+    // TODO: check before inserting.
+
+    const [movie, theatre] = await Promise.all([
+      this.movieModel.findById(dto.movie).then(v => {
+        if (!v) {
+          throw new NotFoundException(`Movie with id ${dto.movie}`);
+        }
+        return v;
+      }),
+      this.theatreModel.findById(dto.theatre).then(v => {
+        if (!v) {
+          throw new NotFoundException(`Theatre with id ${dto.theatre}`);
+        }
+        return v;
+      }),
+    ]);
+
+    // TODO: check valid time
+
+    const doc: Omit<CreateDocumentDefinition<ShowTime>, '_id'> = {
+      movie: movie._id,
+      theatre: theatre._id,
+      room: '2D1',
+      is_active: true,
+      end_time: dto.end_time,
+      start_time: dto.start_time,
+    };
+    return await this.showTimeModel.create(doc);
   }
 }

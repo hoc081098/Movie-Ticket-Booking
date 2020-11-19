@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ShowTimesController } from './show-times.controller';
+import { AdminShowTimesController, ShowTimesController } from './show-times.controller';
 import { ShowTimesService } from './show-times.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ShowTime, ShowTimeSchema } from './show-time.schema';
@@ -29,7 +29,7 @@ import { ConfigModule } from '../config/config.module';
     UsersModule,
     ConfigModule,
   ],
-  controllers: [ShowTimesController],
+  controllers: [ShowTimesController, AdminShowTimesController],
   providers: [ShowTimesService]
 })
 export class ShowTimesModule {}
