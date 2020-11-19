@@ -1,10 +1,12 @@
-import { Controller, Get, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ShowTimesService } from './show-times.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { getCoordinates } from '../common/utils';
-import { MovieAndShowTime, TheatreAndShowTime } from './show-time.dto';
+import { AddShowTimeDto, MovieAndShowTime, TheatreAndShowTime } from './show-time.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { LocationDto } from '../common/location.dto';
+import { Roles, RolesGuard } from '../auth/roles.guard';
+import { ForAdmin } from '../common/swagger.decorator';
 
 @ApiTags('show-times')
 @UseGuards(AuthGuard)
@@ -43,5 +45,23 @@ export class ShowTimesController {
   ): Promise<MovieAndShowTime[]> {
     const result = await this.showTimesService.getShowTimesByTheatreId(theatreId);
     return result.map(doc => new MovieAndShowTime(doc));
+  }
+}
+
+@ApiTags('admin-show-times')
+@UseGuards(AuthGuard, RolesGuard)
+@Controller('admin-show-times')
+export class AdminShowTimesController {
+  constructor(
+      private readonly showTimesService: ShowTimesService,
+  ) {}
+
+  @ForAdmin()
+  @Roles('ADMIN')
+  @Post()
+  addShowTime(
+      @Body() dto: AddShowTimeDto,
+  ) {
+    return this.showTimesService.addShowTime(dto);
   }
 }

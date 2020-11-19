@@ -1,6 +1,8 @@
 import { Theatre } from '../theatres/theatre.schema';
 import { ShowTime } from './show-time.schema';
 import { Movie } from "../movies/movie.schema";
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class TheatreAndShowTime {
   theatre: Theatre;
@@ -11,6 +13,7 @@ export class TheatreAndShowTime {
     this.show_time = doc.show_time;
   }
 }
+
 export class MovieAndShowTime {
   readonly movie: Movie;
   readonly show_time: ShowTime;
@@ -19,4 +22,22 @@ export class MovieAndShowTime {
     this.movie = doc.movie;
     this.show_time = doc.show_time;
   }
+}
+
+export class AddShowTimeDto {
+  @IsString()
+  @IsNotEmpty()
+  movie: string;
+
+  @IsString()
+  @IsNotEmpty()
+  theatre: string;
+
+  @IsDate()
+  @Type(() => Date)
+  start_time: Date;
+
+  @IsDate()
+  @Type(() => Date)
+  end_time: Date;
 }

@@ -4,8 +4,9 @@ import { AuthGuard } from '../auth/auth.guard';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LocationDto } from "../common/location.dto";
 import { Theatre } from "./theatre.schema";
-import { RolesGuard } from "../auth/roles.guard";
+import { Roles, RolesGuard } from "../auth/roles.guard";
 import { AddTheatreDto } from "./theatre.dto";
+import { ForAdmin } from '../common/swagger.decorator';
 
 @ApiTags('theatres')
 @UseGuards(AuthGuard)
@@ -37,6 +38,8 @@ export class AdminTheatresController {
       private readonly theatresService: TheatresService,
   ) {}
 
+  @ForAdmin()
+  @Roles('ADMIN')
   @Post()
   addTheatre(
       @Body() dto: AddTheatreDto,
