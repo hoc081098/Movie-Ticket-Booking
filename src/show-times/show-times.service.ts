@@ -398,6 +398,7 @@ export class ShowTimesService {
         .sort({ start_time: -1 })
         .skip(skip)
         .limit(limit)
+        .populate('movie')
         .exec();
   }
 }
