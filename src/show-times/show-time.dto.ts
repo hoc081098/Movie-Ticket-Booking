@@ -36,8 +36,4 @@ export class AddShowTimeDto {
   @IsDate()
   @Type(() => Date)
   start_time: Date;
-
-  @IsDate()
-  @Type(() => Date)
-  end_time: Date;
 }
