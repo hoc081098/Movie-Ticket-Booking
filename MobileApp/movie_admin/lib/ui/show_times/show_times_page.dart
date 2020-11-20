@@ -71,7 +71,7 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
           if (mounted) {
             setState(() {
               isLoading = true;
-              error = false;
+              error = null;
             });
           } else {
             return;
@@ -116,7 +116,7 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
   }
 
   Widget buildBody() {
-    if (isLoading && page == 0) {
+    if (list == null || (isLoading && page == 0)) {
       return Center(
         child: SizedBox(
           width: 56,
@@ -166,14 +166,10 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
         }
 
         if (isLoading) {
-          return Center(
-            child: SizedBox(
-              width: 56,
-              height: 56,
-              child: LoadingIndicator(
-                color: Theme.of(context).accentColor,
-                indicatorType: Indicator.ballScaleMultiple,
-              ),
+          return SizedBox(
+            height: 56,
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
           );
         }
