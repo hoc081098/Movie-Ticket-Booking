@@ -8,6 +8,8 @@ import 'package:movie_admin/ui/widgets/empty_widget.dart';
 import 'package:movie_admin/ui/widgets/error_widget.dart';
 import 'package:movie_admin/utils/error.dart';
 
+import 'list_item.dart';
+
 class ShowTimesPage extends StatefulWidget {
   static const routeName = '/home/show-times';
 
@@ -41,7 +43,7 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
       final showTimesRepository = Provider.of<ShowTimesRepository>(context);
 
       showTimesRepository
-          .getShowTimesByTheatreId(widget.theatre.id, 1, 32)
+          .getShowTimesByTheatreId(widget.theatre.id, 1, 16)
           .then((value) {
         if (mounted) {
           setState(() {
@@ -80,7 +82,7 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
           final newItems = await showTimesRepository.getShowTimesByTheatreId(
             widget.theatre.id,
             page + 1,
-            32,
+            16,
           );
 
           if (mounted) {
@@ -151,9 +153,7 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
       itemCount: list.length + (page == 0 ? 0 : 1),
       itemBuilder: (context, index) {
         if (index < list.length) {
-          return ListTile(
-            title: Text(index.toString()),
-          );
+          return ShowTimeItem(item: list[index]);
         }
 
         if (error != null) {
