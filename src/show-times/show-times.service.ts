@@ -7,13 +7,12 @@ import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
 import { defer, forkJoin, from, Observable } from 'rxjs';
-import { buffer, bufferCount, concatMap, filter, pairwise, take, tap } from 'rxjs/operators';
+import { bufferCount, concatMap, filter, pairwise, take, tap } from 'rxjs/operators';
 import { constants, getSkipLimit } from '../common/utils';
 import { AddShowTimeDto, TicketDto } from './show-time.dto';
 import { PaginationDto } from "../common/pagination.dto";
 import { Ticket } from "../seats/ticket.schema";
 import { Seat } from "../seats/seat.schema";
-import { SeatDto } from "../theatres/theatre.dto";
 
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');

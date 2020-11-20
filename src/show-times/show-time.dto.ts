@@ -3,9 +3,6 @@ import { ShowTime } from './show-time.schema';
 import { Movie } from "../movies/movie.schema";
 import { ArrayMinSize, IsArray, IsDate, IsNotEmpty, IsNumber, IsString, Min, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { SeatDto } from "../theatres/theatre.dto";
-import { Prop } from "@nestjs/mongoose";
-import { Schema as MongooseSchema } from "mongoose";
 
 export class TheatreAndShowTime {
   theatre: Theatre;
