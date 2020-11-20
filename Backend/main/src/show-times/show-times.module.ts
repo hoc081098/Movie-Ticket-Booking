@@ -8,6 +8,8 @@ import { Movie, MovieSchema } from '../movies/movie.schema';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '../config/config.module';
+import { Ticket, TicketSchema } from "../seats/ticket.schema";
+import { Seat, SeatSchema } from "../seats/seat.schema";
 
 @Module({
   imports: [
@@ -24,6 +26,14 @@ import { ConfigModule } from '../config/config.module';
         name: Movie.name,
         schema: MovieSchema,
       },
+      {
+        name: Ticket.name,
+        schema: TicketSchema,
+      },
+      {
+        name: Seat.name,
+        schema: SeatSchema,
+      }
     ]),
     AuthModule,
     UsersModule,

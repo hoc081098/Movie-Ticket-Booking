@@ -6,11 +6,14 @@ import { CreateDocumentDefinition, Model, Types } from 'mongoose';
 import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
-import { from } from 'rxjs';
-import { filter, pairwise, take } from 'rxjs/operators';
+import { defer, forkJoin, from, Observable } from 'rxjs';
+import { buffer, bufferCount, concatMap, filter, pairwise, take, tap } from 'rxjs/operators';
 import { constants, getSkipLimit } from '../common/utils';
-import { AddShowTimeDto } from './show-time.dto';
+import { AddShowTimeDto, TicketDto } from './show-time.dto';
 import { PaginationDto } from "../common/pagination.dto";
+import { Ticket } from "../seats/ticket.schema";
+import { Seat } from "../seats/seat.schema";
+import { SeatDto } from "../theatres/theatre.dto";
 
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');
@@ -35,6 +38,8 @@ export class ShowTimesService {
       @InjectModel(ShowTime.name) private readonly  showTimeModel: Model<ShowTime>,
       @InjectModel(Movie.name) private readonly  movieModel: Model<Movie>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
+      @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
+      @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
   ) {}
 
   async seed() {
@@ -331,6 +336,24 @@ export class ShowTimesService {
       }),
     ]);
 
+    const seats = await from(dto.tickets)
+        .pipe(
+            bufferCount(8),
+            concatMap(dtos => {
+              const tasks: Array<Observable<{ seat: Seat, dto: TicketDto }>> = dtos.map(dto => {
+                return defer(async () => {
+                  const seat = await this.seatModel.findById(dto.seat);
+                  if (!seat) {
+                    throw new NotFoundException(`Seat with id ${dto.seat}`);
+                  }
+                  return { seat, dto };
+                })
+              });
+              return forkJoin(tasks);
+            }),
+        )
+        .toPromise();
+
     const startTime: dayjs.Dayjs = dayjs(dto.start_time);
     const endTime: dayjs.Dayjs = startTime.add(movie.duration, 'minute');
     const day: dayjs.Dayjs = startTime.startOf('day');
@@ -388,7 +411,31 @@ export class ShowTimesService {
       end_time: endTime.toDate(),
       start_time: startTime.toDate(),
     };
-    return await this.showTimeModel.create(doc);
+    const showTime = await this.showTimeModel.create(doc);
+
+    await from(seats)
+        .pipe(
+            bufferCount(16),
+            concatMap(seats => {
+              const tasks: Observable<Ticket>[] = seats.map(({ seat, dto }) => {
+                return defer(async () => {
+                  const doc: Omit<CreateDocumentDefinition<Ticket>, '_id'> = {
+                    is_active: true,
+                    price: dto.price,
+                    reservation: null,
+                    seat: seat._id,
+                    show_time: showTime._id,
+                  };
+                  return this.ticketModel.create(doc);
+                });
+              });
+              return forkJoin(tasks);
+            }),
+            tap(tickets => this.logger.debug(`Created ${tickets.length} tickets`)),
+        )
+        .toPromise();
+
+    return showTime;
   }
 
   getShowTimesByTheatreIdAdmin(theatreId: string, dto: PaginationDto): Promise<ShowTime[]> {

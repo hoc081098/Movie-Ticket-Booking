@@ -1,8 +1,11 @@
 import { Theatre } from '../theatres/theatre.schema';
 import { ShowTime } from './show-time.schema';
 import { Movie } from "../movies/movie.schema";
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { ArrayMinSize, IsArray, IsDate, IsNotEmpty, IsNumber, IsString, Min, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { SeatDto } from "../theatres/theatre.dto";
+import { Prop } from "@nestjs/mongoose";
+import { Schema as MongooseSchema } from "mongoose";
 
 export class TheatreAndShowTime {
   theatre: Theatre;
@@ -24,6 +27,16 @@ export class MovieAndShowTime {
   }
 }
 
+export class TicketDto {
+  @IsString()
+  @IsNotEmpty()
+  seat: string;
+
+  @Min(0)
+  @IsNumber()
+  price: number;
+}
+
 export class AddShowTimeDto {
   @IsString()
   @IsNotEmpty()
@@ -36,4 +49,10 @@ export class AddShowTimeDto {
   @IsDate()
   @Type(() => Date)
   start_time: Date;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => TicketDto)
+  tickets: TicketDto[];
 }
