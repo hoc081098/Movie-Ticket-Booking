@@ -4,6 +4,8 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:movie_admin/domain/model/show_time.dart';
 import 'package:movie_admin/domain/model/theatre.dart';
 import 'package:movie_admin/domain/repository/show_times_repository.dart';
+import 'package:movie_admin/ui/app_scaffold.dart';
+import 'package:movie_admin/ui/show_times/select_movie_page.dart';
 import 'package:movie_admin/ui/widgets/empty_widget.dart';
 import 'package:movie_admin/ui/widgets/error_widget.dart';
 import 'package:movie_admin/utils/error.dart';
@@ -114,6 +116,15 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
         title: Text('Show times'),
       ),
       body: buildBody(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          AppScaffold.of(context).pushNamed(
+            SelectMoviePage.routeName,
+            arguments: widget.theatre,
+          );
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 
