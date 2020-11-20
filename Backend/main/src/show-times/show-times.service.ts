@@ -8,8 +8,9 @@ import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
 import { from } from 'rxjs';
 import { filter, pairwise, take } from 'rxjs/operators';
-import { constants } from '../common/utils';
+import { constants, getSkipLimit } from '../common/utils';
 import { AddShowTimeDto } from './show-time.dto';
+import { PaginationDto } from "../common/pagination.dto";
 
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');
@@ -388,6 +389,16 @@ export class ShowTimesService {
       start_time: startTime.toDate(),
     };
     return await this.showTimeModel.create(doc);
+  }
+
+  getShowTimesByTheatreIdAdmin(theatreId: string, dto: PaginationDto): Promise<ShowTime[]> {
+    const { limit, skip } = getSkipLimit(dto);
+    return this.showTimeModel
+        .find({ theatre: theatreId })
+        .sort({ start_time: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec();
   }
 }
 
