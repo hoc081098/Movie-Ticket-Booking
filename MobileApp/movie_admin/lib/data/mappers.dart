@@ -1,4 +1,6 @@
+import 'package:movie_admin/data/remote/response/show_time_response.dart';
 import 'package:movie_admin/data/remote/response/theatre_response.dart';
+import 'package:movie_admin/domain/model/show_time.dart';
 import 'package:movie_admin/domain/model/theatre.dart';
 
 import '../domain/model/age_type.dart';
@@ -177,5 +179,40 @@ Theatre theatreResponseToTheatre(TheatreResponse response) {
     updatedAt: response.updatedAt,
     thumbnail: response.thumbnail ?? '',
     cover: response.cover ?? '',
+  );
+}
+
+ShowTime showTimeResponseToShowTime(ShowTimeResponse r) {
+  final m = r.movie;
+  return ShowTime(
+    isActive: r.isActive ?? true,
+    id: r.id,
+    movie: Movie(
+      id: m.id,
+      isActive: m.isActive ?? true,
+      title: m.title,
+      trailerVideoUrl: m.trailerVideoUrl,
+      posterUrl: m.posterUrl,
+      overview: m.overview,
+      releasedDate: m.releasedDate,
+      duration: m.duration,
+      originalLanguage: m.originalLanguage,
+      createdAt: m.createdAt,
+      updatedAt: m.updatedAt,
+      ageType: m.ageType.ageType(),
+      actors: null,
+      directors: null,
+      categories: null,
+      rateStar: m.rateStar,
+      totalFavorite: m.totalFavorite,
+      totalRate: m.totalRate,
+    ),
+    movieId: m.id,
+    theatreId: r.theatre,
+    room: r.room,
+    endTime: r.endTime,
+    startTime: r.startTime,
+    createdAt: r.createdAt,
+    updatedAt: r.updatedAt,
   );
 }

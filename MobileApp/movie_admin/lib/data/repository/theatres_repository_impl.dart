@@ -2,26 +2,24 @@ import 'dart:io';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_admin/data/remote/response/theatre_response.dart';
-import 'package:movie_admin/domain/model/location.dart';
-import 'package:movie_admin/ui/theatres/seat.dart';
 import 'package:uuid/uuid.dart' as uuid;
 
+import '../../domain/model/location.dart';
 import '../../domain/model/theatre.dart';
 import '../../domain/repository/theatres_repository.dart';
+import '../../ui/theatres/seat.dart';
 import '../mappers.dart' as mappers;
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
+import '../remote/response/theatre_response.dart';
 
 class TheatresRepositoryImpl implements TheatresRepository {
   final AuthClient _authClient;
   final _firebaseStorage = FirebaseStorage.instance;
 
-  TheatresRepositoryImpl(this._authClient) {
-    this._authClient.get(buildUrl('/admin-show-times/theatres/5f68b34045ab693e24bd9d70'))
-    .then((value) => print(value.body));
-  }
+  TheatresRepositoryImpl(this._authClient);
 
   @override
   Future<List<Theatre>> getTheatres() async {

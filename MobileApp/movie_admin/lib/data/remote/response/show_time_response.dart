@@ -1,10 +1,4 @@
-// To parse this JSON data, do
-//
-//     final showTimeResponse = showTimeResponseFromJson(jsonString);
-
-import 'dart:convert';
-
-import 'package:movie_admin/data/remote/response/movie_response.dart';
+// ignore_for_file: prefer_single_quotes
 
 class ShowTimeResponse {
   ShowTimeResponse({
@@ -17,47 +11,89 @@ class ShowTimeResponse {
     this.startTime,
     this.createdAt,
     this.updatedAt,
-    this.v,
   });
 
   final bool isActive;
   final String id;
-  final MovieResponse movie;
+  final ShowTimeResponse_MovieResponse movie;
   final String theatre;
   final String room;
   final DateTime endTime;
   final DateTime startTime;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final int v;
 
-  factory ShowTimeResponse.fromRawJson(String str) => ShowTimeResponse.fromJson(json.decode(str));
+  factory ShowTimeResponse.fromJson(Map<String, dynamic> json) =>
+      ShowTimeResponse(
+        isActive: json["is_active"],
+        id: json["_id"],
+        movie: ShowTimeResponse_MovieResponse.fromJson(json["movie"]),
+        theatre: json["theatre"],
+        room: json["room"],
+        endTime: DateTime.parse(json["end_time"]).toLocal(),
+        startTime: DateTime.parse(json["start_time"]).toLocal(),
+        createdAt: DateTime.parse(json["createdAt"]).toLocal(),
+        updatedAt: DateTime.parse(json["updatedAt"]).toLocal(),
+      );
+}
 
-  String toRawJson() => json.encode(toJson());
+class ShowTimeResponse_MovieResponse {
+  ShowTimeResponse_MovieResponse({
+    this.isActive,
+    this.ageType,
+    this.actors,
+    this.directors,
+    this.id,
+    this.rateStar,
+    this.totalRate,
+    this.totalFavorite,
+    this.title,
+    this.trailerVideoUrl,
+    this.posterUrl,
+    this.overview,
+    this.releasedDate,
+    this.duration,
+    this.originalLanguage,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-  factory ShowTimeResponse.fromJson(Map<String, dynamic> json) => ShowTimeResponse(
-    isActive: json["is_active"],
-    id: json["_id"],
-    movie: json["movie"],
-    theatre: json["theatre"],
-    room: json["room"],
-    endTime: DateTime.parse(json["end_time"]),
-    startTime: DateTime.parse(json["start_time"]),
-    createdAt: DateTime.parse(json["createdAt"]),
-    updatedAt: DateTime.parse(json["updatedAt"]),
-    v: json["__v"],
-  );
+  final bool isActive;
+  final String ageType;
+  final List<String> actors;
+  final List<String> directors;
+  final String id;
+  final double rateStar;
+  final int totalRate;
+  final int totalFavorite;
+  final String title;
+  final String trailerVideoUrl;
+  final String posterUrl;
+  final String overview;
+  final DateTime releasedDate;
+  final int duration;
+  final String originalLanguage;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-  Map<String, dynamic> toJson() => {
-    "is_active": isActive,
-    "_id": id,
-    "movie": movie,
-    "theatre": theatre,
-    "room": room,
-    "end_time": endTime.toIso8601String(),
-    "start_time": startTime.toIso8601String(),
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
-    "__v": v,
-  };
+  factory ShowTimeResponse_MovieResponse.fromJson(Map<String, dynamic> json) =>
+      ShowTimeResponse_MovieResponse(
+        isActive: json["is_active"],
+        ageType: json["age_type"],
+        actors: List<String>.from(json["actors"].map((x) => x)),
+        directors: List<String>.from(json["directors"].map((x) => x)),
+        id: json["_id"],
+        rateStar: (json["rate_star"] as num).toDouble(),
+        totalRate: json["total_rate"],
+        totalFavorite: json["total_favorite"],
+        title: json["title"],
+        trailerVideoUrl: json["trailer_video_url"],
+        posterUrl: json["poster_url"],
+        overview: json["overview"],
+        releasedDate: DateTime.parse(json["released_date"]).toLocal(),
+        duration: json["duration"],
+        originalLanguage: json["original_language"],
+        createdAt: DateTime.parse(json["createdAt"]).toLocal(),
+        updatedAt: DateTime.parse(json["updatedAt"]).toLocal(),
+      );
 }
