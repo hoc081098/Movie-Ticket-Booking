@@ -7,6 +7,8 @@ import { AuthGuard } from '../auth/auth.guard';
 import { LocationDto } from '../common/location.dto';
 import { Roles, RolesGuard } from '../auth/roles.guard';
 import { ForAdmin } from '../common/swagger.decorator';
+import { PaginationDto } from "../common/pagination.dto";
+import { ShowTime } from "./show-time.schema";
 
 @ApiTags('show-times')
 @UseGuards(AuthGuard)
@@ -63,5 +65,15 @@ export class AdminShowTimesController {
       @Body() dto: AddShowTimeDto,
   ) {
     return this.showTimesService.addShowTime(dto);
+  }
+
+  @ForAdmin()
+  @Roles('ADMIN')
+  @Get('theatres/:theatre_id')
+  getShowTimesByTheatreId(
+      @Param('theatre_id') theatreId: string,
+      @Query() dto: PaginationDto,
+  ): Promise<ShowTime[]> {
+    return this.showTimesService.getShowTimesByTheatreIdAdmin(theatreId, dto);
   }
 }
