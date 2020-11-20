@@ -4,6 +4,7 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:movie_admin/domain/repository/movie_repository.dart';
 import 'package:movie_admin/ui/movies/movie_info.dart';
+import 'package:movie_admin/ui/show_times/show_times_page.dart';
 import 'package:movie_admin/ui/theatres/add/add_theatre_page.dart';
 import 'package:movie_admin/ui/theatres/theatre_page.dart';
 
@@ -51,7 +52,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       return MovieInfoPage(movie: setting.arguments);
     },
     TheatresPage.routeName: (context, setting) {
-      return TheatresPage();
+      return TheatresPage(showTime: setting.arguments ?? false);
     },
     TheatreInfoPage.routeName: (context, settings) {
       return TheatreInfoPage(theatre: settings.arguments);
@@ -61,6 +62,9 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     SeatsPage.routeName: (context, settings) {
       return SeatsPage(seats: settings.arguments);
+    },
+    ShowTimesPage.routeName: (context, settings) {
+      return ShowTimesPage();
     },
   };
 

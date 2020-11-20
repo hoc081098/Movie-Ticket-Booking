@@ -43,6 +43,16 @@ class _HomePageState extends State<HomePage> {
             "5 notifiction",
             Colors.red,
             () => Navigator.of(context).pushNamed(TheatresPage.routeName),
+          ),
+          card(
+            Icons.theaters,
+            "Manager show time",
+            "5 notifiction",
+            Colors.red,
+            () => Navigator.of(context).pushNamed(
+              TheatresPage.routeName,
+              arguments: true,
+            ),
           )
         ],
       ),
