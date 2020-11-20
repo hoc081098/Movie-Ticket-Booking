@@ -45,6 +45,16 @@ class AddedNotificationAction implements Action {
       state.rebuild((b) => b..items.insert(0, notification));
 }
 
+class RemovedNotificationAction implements Action {
+  final Notification notification;
+
+  RemovedNotificationAction(this.notification);
+
+  @override
+  State reduce(State state) =>
+      state.rebuild((b) => b.items.removeWhere((i) => i.id == notification.id));
+}
+
 //
 // Side effect actions
 //

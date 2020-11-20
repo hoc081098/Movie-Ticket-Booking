@@ -4,8 +4,9 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/rxdart.dart' hide Notification;
 
+import '../../domain/model/notification.dart';
 import '../../domain/repository/notification_repository.dart';
 import '../../fcm_notification.dart';
 import '../../utils/error.dart';
@@ -70,6 +71,7 @@ class _NotificationsPageState extends State<NotificationsPage>
   @override
   void dispose() {
     store.dispose();
+    store = null;
     listController.dispose();
     super.dispose();
   }
@@ -146,6 +148,7 @@ class _NotificationsPageState extends State<NotificationsPage>
                 return NotificationItemWidget(
                   items[index],
                   dateFormat,
+                  onDelete,
                 );
               }
 
@@ -208,5 +211,44 @@ class _NotificationsPageState extends State<NotificationsPage>
         },
       ),
     );
+  }
+
+  void onDelete(Notification item) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete notification'),
+          content: Text('Are you sure you want to delete this notification?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            TextButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (!identical(ok, true)) {
+      return;
+    }
+
+    try {
+      await Provider.of<NotificationRepository>(context)
+          .deleteNotificationById(item.id);
+      context.showSnackBar('Delete successfully');
+
+      store?.dispatch(RemovedNotificationAction(item));
+    } catch (e, s) {
+      print(e);
+      print(s);
+      context.showSnackBar('Error: ${getErrorMessage(e)}');
+    }
   }
 }
