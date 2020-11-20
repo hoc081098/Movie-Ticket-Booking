@@ -29,7 +29,6 @@ class _NotificationsPageState extends State<NotificationsPage>
   final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
 
   RxReduxStore<Action, st.State> store;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   final listController = ScrollController();
 
   @override
@@ -64,16 +63,21 @@ class _NotificationsPageState extends State<NotificationsPage>
           .listen(onNewNotification)
           .disposedBy(bag);
 
+      listController
+          .nearBottomEdge$()
+          .mapTo<Action>(const LoadNextPageAction())
+          .dispatchTo(s);
+
       return s;
     }();
   }
 
   @override
   void dispose() {
+    super.dispose();
     store.dispose();
     store = null;
     listController.dispose();
-    super.dispose();
   }
 
   void subscribe(RxReduxStore<Action, st.State> store) {
@@ -83,13 +87,13 @@ class _NotificationsPageState extends State<NotificationsPage>
 
     store.actionStream.listen((action) {
       if (action is FailureAction) {
-        scaffoldKey.showSnackBar(
+        context.showSnackBar(
           'Error occurred: ${getErrorMessage(action.error)}',
         );
       }
       if (action is SuccessAction) {
         if (action.notifications.isEmpty) {
-          scaffoldKey.showSnackBar('Loaded all notifications');
+          context.showSnackBar('Loaded all notifications');
         }
       }
     }).disposedBy(bag);
@@ -98,7 +102,6 @@ class _NotificationsPageState extends State<NotificationsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Notifications'),
       ),
@@ -179,33 +182,7 @@ class _NotificationsPageState extends State<NotificationsPage>
               if (state.loadedAll) {
                 return const SizedBox(width: 0, height: 0);
               }
-
-              return Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 12,
-                  top: 12,
-                ),
-                child: Center(
-                  child: SizedBox(
-                    width: 128,
-                    height: 48,
-                    child: RaisedButton(
-                      onPressed: () =>
-                          store.dispatch(const LoadNextPageAction()),
-                      child: Text('Next page'),
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        side: BorderSide(
-                          color: Theme.of(context).primaryColor,
-                          width: 1,
-                        ),
-                      ),
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              );
+              return const SizedBox(width: 0, height: 56);
             },
           );
         },

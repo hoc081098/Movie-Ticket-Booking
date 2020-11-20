@@ -28,7 +28,6 @@ class _ReservationsPageState extends State<ReservationsPage>
   final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
 
   RxReduxStore<ReservationsAction, ReservationsState> store;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
@@ -56,13 +55,13 @@ class _ReservationsPageState extends State<ReservationsPage>
 
     store.actionStream.listen((action) {
       if (action is FailureAction) {
-        scaffoldKey.showSnackBar(
+        context.showSnackBar(
           'Error occurred: ${getErrorMessage(action.error)}',
         );
       }
       if (action is SuccessAction) {
         if (action.reservations.isEmpty) {
-          scaffoldKey.showSnackBar('Loaded all reservations');
+          context.showSnackBar('Loaded all reservations');
         }
       }
     }).disposedBy(bag);
@@ -71,7 +70,6 @@ class _ReservationsPageState extends State<ReservationsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Your reservations'),
       ),

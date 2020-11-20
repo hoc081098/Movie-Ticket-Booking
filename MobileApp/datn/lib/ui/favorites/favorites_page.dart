@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/ui/home/detail/movie_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -16,6 +15,7 @@ import '../../domain/repository/favorites_repository.dart';
 import '../../utils/error.dart';
 import '../../utils/type_defs.dart';
 import '../app_scaffold.dart';
+import '../home/detail/movie_detail_page.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';

@@ -20,7 +20,6 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
   final cvcNode = FocusNode();
   final doneNode = FocusNode();
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   dynamic token;
 
   @override
@@ -41,7 +40,6 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
         .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Add card'),
         actions: [
@@ -228,13 +226,13 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
 
   void handleMessage(Message msg) async {
     if (msg is AddCardSuccess) {
-      scaffoldKey.showSnackBar('Added card successfully');
+      context.showSnackBar('Added card successfully');
       await delay(500);
       Navigator.pop(context, msg.card);
       return;
     }
     if (msg is AddCardFailure) {
-      return scaffoldKey
+      return context
           .showSnackBar('Add card failed: ${getErrorMessage(msg.error)}');
     }
   }

@@ -27,7 +27,6 @@ class ViewAllPage extends StatefulWidget {
 
 class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   RxReduxStore<ViewAllAction, ViewAllState> store;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
@@ -64,13 +63,13 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
 
     store.actionStream.listen((action) {
       if (action is FailureAction) {
-        scaffoldKey.showSnackBar(
+        context.showSnackBar(
           'Error occurred: ${getErrorMessage(action.error)}',
         );
       }
       if (action is SuccessAction) {
         if (action.items.isEmpty) {
-          scaffoldKey.showSnackBar('Loaded all movies');
+          context.showSnackBar('Loaded all movies');
         }
       }
     }).disposedBy(bag);
@@ -79,7 +78,6 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         title: Hero(
           tag: widget.movieType.toString(),

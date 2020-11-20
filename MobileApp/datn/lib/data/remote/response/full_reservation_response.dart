@@ -1,13 +1,12 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:datn/data/remote/response/promotion_response.dart';
-import 'package:datn/data/remote/response/ticket_response.dart';
-import 'product_response.dart';
 
 import '../../serializers.dart';
+import 'product_response.dart';
+import 'promotion_response.dart';
 import 'reservation_response.dart';
-import 'user_response.dart';
+import 'ticket_response.dart';
 
 part 'full_reservation_response.g.dart';
 

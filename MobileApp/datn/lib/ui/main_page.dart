@@ -215,19 +215,19 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_rounded),
-          title: Text('Home'),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_rounded),
-          title: Text('Favorites'),
+          label: 'Favorites',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.notifications),
-          title: Text('Notification'),
+          label: 'Notification',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_rounded),
-          title: Text('Profile'),
+          label: 'Profile',
         ),
       ],
     );

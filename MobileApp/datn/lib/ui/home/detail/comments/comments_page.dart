@@ -349,7 +349,7 @@ class CommentItemWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       IgnorePointer(
-                        child: RatingBar(
+                        child: RatingBar.builder(
                           initialRating: item.rate_star.toDouble(),
                           direction: Axis.horizontal,
                           itemCount: 5,
@@ -479,7 +479,7 @@ class Header extends StatelessWidget {
                 const SizedBox(height: 4),
                 Center(
                   child: IgnorePointer(
-                    child: RatingBar(
+                    child: RatingBar.builder(
                       initialRating: average,
                       direction: Axis.horizontal,
                       itemCount: 5,

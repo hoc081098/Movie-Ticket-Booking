@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/ui/app_scaffold.dart';
-import 'package:datn/ui/profile/reservation_detail/reservation_detail_page.dart';
-import 'package:datn/utils/type_defs.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:intl/intl.dart';
 
 import '../../domain/model/notification.dart';
+import '../../utils/type_defs.dart';
+import '../app_scaffold.dart';
+import '../profile/reservation_detail/reservation_detail_page.dart';
 import '../widgets/age_type.dart';
 
 class NotificationItemWidget extends StatelessWidget {

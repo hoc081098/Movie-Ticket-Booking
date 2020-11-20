@@ -35,7 +35,6 @@ class _MovieInfoPageState extends State<MovieInfoPage>
   LoaderBloc<Movie> bloc;
   LoaderBloc<bool> favBloc;
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   final releaseDateFormat = DateFormat('dd/MM/yy');
   final toggleS = PublishSubject<void>(sync: true);
   Object token;
@@ -101,7 +100,6 @@ class _MovieInfoPageState extends State<MovieInfoPage>
     final themeData = Theme.of(context);
 
     return Scaffold(
-      key: scaffoldKey,
       body: RxStreamBuilder<LoaderState<Movie>>(
         stream: bloc.state$,
         builder: (context, snapshot) {
@@ -270,12 +268,12 @@ class _MovieInfoPageState extends State<MovieInfoPage>
   void handleFavMessage(LoaderMessage<bool> msg) {
     msg.fold(
       onFetchFailure: (e, s) =>
-          scaffoldKey.showSnackBar('Failed: ${getErrorMessage(e)}'),
+          context.showSnackBar('Failed: ${getErrorMessage(e)}'),
       onFetchSuccess: (data) {
         if (firstMsg) {
           firstMsg = false;
         } else {
-          scaffoldKey.showSnackBar('Toggled successfully');
+          context.showSnackBar('Toggled successfully');
         }
       },
       onRefreshFailure: (e, s) {},
