@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShowTime } from './show-time.schema';
 import * as mongoose from 'mongoose';
@@ -315,9 +315,7 @@ export class ShowTimesService {
   }
 
   async addShowTime(dto: AddShowTimeDto): Promise<ShowTime> {
-    // TODO: check before inserting.
-
-    const [movie, theatre] = await Promise.all([
+    const [movie, theatre]: [Movie, Theatre] = await Promise.all([
       this.movieModel.findById(dto.movie).then(v => {
         if (!v) {
           throw new NotFoundException(`Movie with id ${dto.movie}`);
@@ -332,16 +330,85 @@ export class ShowTimesService {
       }),
     ]);
 
-    // TODO: check valid time
+    const startTime: dayjs.Dayjs = dayjs(dto.start_time);
+    const endTime: dayjs.Dayjs = startTime.add(movie.duration, 'minute');
+    const day: dayjs.Dayjs = startTime.startOf('day');
+
+    const [startHString, endHString]: string[] = theatre.opening_hours.split(' - ');
+    const [startH, startM]: number[] = startHString.split(':').map(x => +x);
+    const [endH, endM]: number[] = endHString.split(':').map(x => +x);
+    const thStartTime: dayjs.Dayjs = day.set('hour', startH).set('minute', startM);
+    const thEndTime: dayjs.Dayjs = day.set('hour', endH).set('minute', endM);
+
+    if (startTime.isBefore(movie.released_date)) {
+      throw new BadRequestException(`Start time must be not before movie released date`);
+    }
+    if (startTime.isBefore(thStartTime)) {
+      throw new BadRequestException(`Start time must be not before theatre start time`);
+    }
+    if (endTime.isAfter(thEndTime)) {
+      throw new BadRequestException(`End time must be not after theatre end time`);
+    }
+
+    const showTimes = await this.showTimeModel
+        .find({
+          theatre: theatre._id,
+          room: '2D1',
+          is_active: true,
+          start_time: { $gte: thStartTime.toDate() },
+          end_time: { $lte: thEndTime.toDate() },
+        })
+        .sort({ start_time: 'asc' });
+    if (showTimes.length == 1) {
+      const found = showTimes[0];
+      if (startTime.isBefore(found.end_time) && endTime.isAfter(found.start_time)) {
+        throw new BadRequestException(`Already have 1 showtime in this time period`);
+      }
+    }
+    if (showTimes.length >= 2) {
+      const pair: [ShowTime, ShowTime] | undefined = showTimes.pairwise().find(([prev, next]) =>
+          (startTime as any).isBetween(prev.end_time, next.start_time)
+          && (endTime as any).isBetween(prev.end_time, next.start_time)
+          && (startTime as any).isBetween(thStartTime, thEndTime)
+          && (endTime as any).isBetween(thStartTime, thEndTime)
+      );
+
+      if (pair === undefined) {
+        throw new BadRequestException(`There's no more free time to create a new showtime`);
+      }
+      this.logger.debug(`Found pair ${pair[0].start_time}:${pair[0].end_time} -> ${pair[1].start_time}:${pair[1].end_time}`);
+    }
 
     const doc: Omit<CreateDocumentDefinition<ShowTime>, '_id'> = {
       movie: movie._id,
       theatre: theatre._id,
       room: '2D1',
       is_active: true,
-      end_time: dto.end_time,
-      start_time: dto.start_time,
+      end_time: endTime.toDate(),
+      start_time: startTime.toDate(),
     };
     return await this.showTimeModel.create(doc);
   }
 }
+
+declare global {
+  interface Array<T> {
+    pairwise(): [T, T][];
+  }
+}
+
+Array.prototype.pairwise = function <T>(this: T[]): [T, T][] {
+  const result: [T, T][] = [];
+  if (this.length < 2) {
+    return [];
+  }
+
+  let prev: T | null = null;
+  for (const cur of this) {
+    if (prev !== null) {
+      result.push([prev, cur]);
+    }
+    prev = cur;
+  }
+  return result;
+};
