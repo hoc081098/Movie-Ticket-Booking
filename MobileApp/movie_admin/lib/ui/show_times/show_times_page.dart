@@ -8,8 +8,14 @@ class ShowTimesPage extends StatefulWidget {
 }
 
 class _ShowTimesPageState extends State<ShowTimesPage> {
+  var isLoading = true;
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Show times'),
+      ),
+    );
   }
 }

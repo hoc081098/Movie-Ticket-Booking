@@ -18,7 +18,10 @@ class TheatresRepositoryImpl implements TheatresRepository {
   final AuthClient _authClient;
   final _firebaseStorage = FirebaseStorage.instance;
 
-  TheatresRepositoryImpl(this._authClient);
+  TheatresRepositoryImpl(this._authClient) {
+    this._authClient.get(buildUrl('/admin-show-times/theatres/5f68b34045ab693e24bd9d70'))
+    .then((value) => print(value.body));
+  }
 
   @override
   Future<List<Theatre>> getTheatres() async {
