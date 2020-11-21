@@ -143,47 +143,54 @@ class _NotificationsPageState extends State<NotificationsPage>
 
           final items = state.items;
 
-          return ListView.builder(
-            controller: listController,
-            itemCount: items.length + (state.isFirstPage ? 0 : 1),
-            itemBuilder: (context, index) {
-              if (index < items.length) {
-                return NotificationItemWidget(
-                  items[index],
-                  dateFormat,
-                  onDelete,
-                );
-              }
-
-              if (state.error != null) {
-                return Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: MyErrorWidget(
-                    errorText:
-                        'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
-                    onPressed: () => store.dispatch(const RetryAction()),
-                  ),
-                );
-              }
-
-              if (state.isLoading) {
-                return Center(
-                  child: SizedBox(
-                    width: 56,
-                    height: 56,
-                    child: LoadingIndicator(
-                      color: Theme.of(context).accentColor,
-                      indicatorType: Indicator.ballScaleMultiple,
-                    ),
-                  ),
-                );
-              }
-
-              if (state.loadedAll) {
-                return const SizedBox(width: 0, height: 0);
-              }
-              return const SizedBox(width: 0, height: 56);
+          return RefreshIndicator(
+            onRefresh: () {
+              final action = RefreshAction();
+              store.dispatch(action);
+              return action.onDone;
             },
+            child: ListView.builder(
+              controller: listController,
+              itemCount: items.length + (state.isFirstPage ? 0 : 1),
+              itemBuilder: (context, index) {
+                if (index < items.length) {
+                  return NotificationItemWidget(
+                    items[index],
+                    dateFormat,
+                    onDelete,
+                  );
+                }
+
+                if (state.error != null) {
+                  return Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: MyErrorWidget(
+                      errorText:
+                          'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
+                      onPressed: () => store.dispatch(const RetryAction()),
+                    ),
+                  );
+                }
+
+                if (state.isLoading) {
+                  return Center(
+                    child: SizedBox(
+                      width: 56,
+                      height: 56,
+                      child: LoadingIndicator(
+                        color: Theme.of(context).accentColor,
+                        indicatorType: Indicator.ballScaleMultiple,
+                      ),
+                    ),
+                  );
+                }
+
+                if (state.loadedAll) {
+                  return const SizedBox(width: 0, height: 0);
+                }
+                return const SizedBox(width: 0, height: 56);
+              },
+            ),
           );
         },
       ),

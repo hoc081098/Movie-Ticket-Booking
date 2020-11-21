@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/model/notification.dart';
+import '../../utils/iterable.dart';
 import 'state.dart';
 
 @sealed
@@ -53,6 +56,17 @@ class RemovedNotificationAction implements Action {
   @override
   State reduce(State state) =>
       state.rebuild((b) => b.items.removeWhere((i) => i.id == notification.id));
+}
+
+class RefreshAction with Action {
+  final _completer = Completer<void>();
+
+  Future<void> get onDone => _completer.future;
+
+  void complete() => _completer.complete();
+
+  @override
+  State reduce(State state) => state;
 }
 
 //
@@ -126,4 +140,35 @@ class FailureAction implements Action {
         ..isLoading = false,
     );
   }
+}
+
+class RefreshSuccessAction implements Action {
+  final BuiltList<Notification> items;
+
+  RefreshSuccessAction(this.items);
+
+  @override
+  State reduce(State state) {
+    return state.rebuild(
+      (b) {
+        final listBuilder = b.items..safeReplace(items);
+
+        b
+          ..page = 1
+          ..items = listBuilder
+          ..error = null
+          ..isLoading = false
+          ..loadedAll = items.isEmpty;
+      },
+    );
+  }
+}
+
+class RefreshFailureAction implements Action {
+  final Object error;
+
+  RefreshFailureAction(this.error);
+
+  @override
+  State reduce(State state) => state;
 }
