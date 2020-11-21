@@ -1,10 +1,9 @@
 import 'package:built_collection/built_collection.dart';
-
-import '../../domain/model/notification.dart';
 import 'package:meta/meta.dart';
 import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart/rxdart.dart' hide Notification;
 
+import '../../domain/model/notification.dart';
 import 'action.dart';
 import 'state.dart';
 
@@ -34,7 +33,14 @@ class SideEffects {
         firstPage,
         nextPage,
         retry,
+        refresh,
       ];
+
+  Stream<Action> refresh(
+    Stream<Action> actions,
+    GetState<State> getState,
+  ) =>
+      actions.whereType<RefreshAction>().exhaustMap((value) => _refresh(value));
 
   Stream<Action> firstPage(
     Stream<Action> actions,
@@ -75,4 +81,10 @@ class SideEffects {
         .startWith(loadingAction)
         .onErrorReturnWith((error) => FailureAction(error));
   }
+
+  Stream<Action> _refresh(RefreshAction action) =>
+      getNotifications(page: 1, perPage: perPage)
+          .map<Action>((items) => RefreshSuccessAction(items))
+          .onErrorReturnWith((error) => RefreshFailureAction(error))
+          .doOnCancel(action.complete);
 }

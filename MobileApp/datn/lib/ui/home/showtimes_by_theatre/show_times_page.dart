@@ -1,5 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/ui/home/detail/movie_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -20,6 +19,7 @@ import '../../../utils/error.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
+import '../detail/movie_detail_page.dart';
 import '../tickets/ticket_page.dart';
 
 class ShowTimesPage extends StatefulWidget {

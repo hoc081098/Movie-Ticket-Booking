@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/ui/home/detail/movie_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -14,8 +13,10 @@ import 'package:stream_loader/stream_loader.dart';
 import '../../domain/model/movie.dart';
 import '../../domain/repository/favorites_repository.dart';
 import '../../utils/error.dart';
+import '../../utils/snackbar.dart';
 import '../../utils/type_defs.dart';
 import '../app_scaffold.dart';
+import '../home/detail/movie_detail_page.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
@@ -59,6 +60,8 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    final repo = Provider.of<FavoritesRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Favorites'),
@@ -102,7 +105,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
               );
             }
 
-            return FavoritesList(items);
+            return FavoritesList(items, repo.refresh);
           },
         ),
       ),
@@ -112,8 +115,9 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
 
 class FavoritesList extends StatefulWidget {
   final BuiltList<Movie> items;
+  final Future<void> Function() onRefresh;
 
-  FavoritesList(this.items);
+  FavoritesList(this.items, this.onRefresh);
 
   @override
   _FavoritesListState createState() => _FavoritesListState();
@@ -137,8 +141,18 @@ class _FavoritesListState extends State<FavoritesList> with DisposeBagMixin {
       final repo = Provider.of<FavoritesRepository>(context);
       toggleS
           .groupBy((movie) => movie.id)
-          .flatMap((movie$) =>
-              movie$.exhaustMap((movie) => repo.toggleFavorite(movie.id)))
+          .flatMap((movie$) => movie$.exhaustMap((movie) {
+                final title = movie.title.length > 24
+                    ? '${movie.title.substring(0, 24)}...'
+                    : movie.title;
+
+                return repo
+                    .toggleFavorite(movie.id)
+                    .doOnData((_) =>
+                        context.showSnackBar('Removed successfully: ${title}'))
+                    .doOnError((e, s) =>
+                        context.showSnackBar('Removed failed: ${title}'));
+              }))
           .listen(null)
           .disposedBy(bag);
 
@@ -148,12 +162,15 @@ class _FavoritesListState extends State<FavoritesList> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) => FavoriteItem(
-        widget.items[index],
-        toggleS.add,
+    return RefreshIndicator(
+      onRefresh: widget.onRefresh,
+      child: ListView.builder(
+        itemBuilder: (context, index) => FavoriteItem(
+          widget.items[index],
+          toggleS.add,
+        ),
+        itemCount: widget.items.length,
       ),
-      itemCount: widget.items.length,
     );
   }
 }

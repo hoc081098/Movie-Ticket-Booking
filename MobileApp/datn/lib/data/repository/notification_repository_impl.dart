@@ -1,13 +1,13 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:rxdart/rxdart.dart' hide Notification;
+
+import '../../domain/model/notification.dart';
+import '../../domain/repository/notification_repository.dart';
+import '../../utils/type_defs.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/notification_response.dart';
-import '../../utils/type_defs.dart';
-import 'package:rxdart/rxdart.dart' hide Notification;
-
-import '../../domain/repository/notification_repository.dart';
 import '../serializers.dart';
-import '../../domain/model/notification.dart';
 
 class NotificationRepositoryImpl implements NotificationRepository {
   final AuthClient _authClient;
@@ -45,4 +45,8 @@ class NotificationRepositoryImpl implements NotificationRepository {
           .then(toResult),
     );
   }
+
+  @override
+  Future<void> deleteNotificationById(String id) =>
+      _authClient.deleteBody(buildUrl('/notifications/$id'));
 }

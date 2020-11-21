@@ -27,7 +27,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin<LoginPage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   DisposeBag disposeBag;
 
   AnimationController loginButtonController;
@@ -111,7 +110,6 @@ class _LoginPageState extends State<LoginPage>
     final loginBloc = BlocProvider.of<LoginBloc>(context);
 
     return Scaffold(
-      key: scaffoldKey,
       body: Stack(
         children: [
           Positioned.fill(
@@ -285,7 +283,7 @@ class _LoginPageState extends State<LoginPage>
     print('>>>>>>>>>>>>> SignIn $message >> $navigator');
 
     if (message is LoginSuccessMessage) {
-      scaffoldKey.showSnackBar('Login successfully');
+      context.showSnackBar('Login successfully');
 
       navigator.pushNamedAndRemoveUntil(
         MainPage.routeName,
@@ -296,7 +294,7 @@ class _LoginPageState extends State<LoginPage>
     }
 
     if (message is LoginErrorMessage) {
-      scaffoldKey.showSnackBar(message.message);
+      context.showSnackBar(message.message);
 
       if (message.error is NotCompletedLoginException) {
         navigator.pushNamedAndRemoveUntil(
@@ -310,7 +308,7 @@ class _LoginPageState extends State<LoginPage>
     }
 
     if (message is InvalidInformationMessage) {
-      scaffoldKey.showSnackBar('Invalid information');
+      context.showSnackBar('Invalid information');
     }
   }
 

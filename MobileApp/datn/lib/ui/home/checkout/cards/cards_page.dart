@@ -148,7 +148,6 @@ class CardsPage extends StatefulWidget {
 
 class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
   Object token;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   ValueStream<bool> fabVisible$;
   final listController = ScrollController();
@@ -219,7 +218,6 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
         return false;
       },
       child: Scaffold(
-        key: scaffoldKey,
         appBar: AppBar(
           title: Text('Cards'),
           actions: [
@@ -409,12 +407,11 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
 
   void handleMessage(Message msg) {
     if (msg is RemovedSuccess) {
-      return scaffoldKey
-          .showSnackBar("Removed success: '${msg.removed.last4}'");
+      return context.showSnackBar("Removed success: '${msg.removed.last4}'");
     }
 
     if (msg is RemoveFailure) {
-      return scaffoldKey.showSnackBar(
+      return context.showSnackBar(
           "Remove '${msg.card.last4}' failed: ${getErrorMessage(msg.error)}");
     }
   }

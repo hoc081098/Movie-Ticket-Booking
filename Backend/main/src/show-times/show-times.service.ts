@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShowTime } from './show-time.schema';
 import * as mongoose from 'mongoose';
@@ -6,9 +6,13 @@ import { CreateDocumentDefinition, Model, Types } from 'mongoose';
 import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
-import { from } from 'rxjs';
-import { filter, pairwise, take } from 'rxjs/operators';
-import { constants } from '../common/utils';
+import { defer, forkJoin, from, Observable } from 'rxjs';
+import { bufferCount, concatMap, filter, pairwise, take, tap } from 'rxjs/operators';
+import { constants, getSkipLimit } from '../common/utils';
+import { AddShowTimeDto, TicketDto } from './show-time.dto';
+import { PaginationDto } from "../common/pagination.dto";
+import { Ticket } from "../seats/ticket.schema";
+import { Seat } from "../seats/seat.schema";
 
 // eslint-disable-next-line
 const isBetween = require('dayjs/plugin/isBetween');
@@ -33,6 +37,8 @@ export class ShowTimesService {
       @InjectModel(ShowTime.name) private readonly  showTimeModel: Model<ShowTime>,
       @InjectModel(Movie.name) private readonly  movieModel: Model<Movie>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
+      @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
+      @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
   ) {}
 
   async seed() {
@@ -312,4 +318,155 @@ export class ShowTimesService {
       }
     ]).exec();
   }
+
+  async addShowTime(dto: AddShowTimeDto): Promise<ShowTime> {
+    const [movie, theatre]: [Movie, Theatre] = await Promise.all([
+      this.movieModel.findById(dto.movie).then(v => {
+        if (!v) {
+          throw new NotFoundException(`Movie with id ${dto.movie}`);
+        }
+        return v;
+      }),
+      this.theatreModel.findById(dto.theatre).then(v => {
+        if (!v) {
+          throw new NotFoundException(`Theatre with id ${dto.theatre}`);
+        }
+        return v;
+      }),
+    ]);
+
+    const seats = await from(dto.tickets)
+        .pipe(
+            bufferCount(8),
+            concatMap(dtos => {
+              const tasks: Array<Observable<{ seat: Seat, dto: TicketDto }>> = dtos.map(dto => {
+                return defer(async () => {
+                  const seat = await this.seatModel.findById(dto.seat);
+                  if (!seat) {
+                    throw new NotFoundException(`Seat with id ${dto.seat}`);
+                  }
+                  return { seat, dto };
+                })
+              });
+              return forkJoin(tasks);
+            }),
+        )
+        .toPromise();
+
+    const startTime: dayjs.Dayjs = dayjs(dto.start_time);
+    const endTime: dayjs.Dayjs = startTime.add(movie.duration, 'minute');
+    const day: dayjs.Dayjs = startTime.startOf('day');
+
+    const [startHString, endHString]: string[] = theatre.opening_hours.split(' - ');
+    const [startH, startM]: number[] = startHString.split(':').map(x => +x);
+    const [endH, endM]: number[] = endHString.split(':').map(x => +x);
+    const thStartTime: dayjs.Dayjs = day.set('hour', startH).set('minute', startM);
+    const thEndTime: dayjs.Dayjs = day.set('hour', endH).set('minute', endM);
+
+    if (startTime.isBefore(movie.released_date)) {
+      throw new BadRequestException(`Start time must be not before movie released date`);
+    }
+    if (startTime.isBefore(thStartTime)) {
+      throw new BadRequestException(`Start time must be not before theatre start time`);
+    }
+    if (endTime.isAfter(thEndTime)) {
+      throw new BadRequestException(`End time must be not after theatre end time`);
+    }
+
+    const showTimes = await this.showTimeModel
+        .find({
+          theatre: theatre._id,
+          room: '2D1',
+          is_active: true,
+          start_time: { $gte: thStartTime.toDate() },
+          end_time: { $lte: thEndTime.toDate() },
+        })
+        .sort({ start_time: 'asc' });
+    if (showTimes.length == 1) {
+      const found = showTimes[0];
+      if (startTime.isBefore(found.end_time) && endTime.isAfter(found.start_time)) {
+        throw new BadRequestException(`Already have 1 showtime in this time period`);
+      }
+    }
+    if (showTimes.length >= 2) {
+      const pair: [ShowTime, ShowTime] | undefined = showTimes.pairwise().find(([prev, next]) =>
+          (startTime as any).isBetween(prev.end_time, next.start_time)
+          && (endTime as any).isBetween(prev.end_time, next.start_time)
+          && (startTime as any).isBetween(thStartTime, thEndTime)
+          && (endTime as any).isBetween(thStartTime, thEndTime)
+      );
+
+      if (pair === undefined) {
+        throw new BadRequestException(`There's no more free time to create a new showtime`);
+      }
+      this.logger.debug(`Found pair ${pair[0].start_time}:${pair[0].end_time} -> ${pair[1].start_time}:${pair[1].end_time}`);
+    }
+
+    const doc: Omit<CreateDocumentDefinition<ShowTime>, '_id'> = {
+      movie: movie._id,
+      theatre: theatre._id,
+      room: '2D1',
+      is_active: true,
+      end_time: endTime.toDate(),
+      start_time: startTime.toDate(),
+    };
+    const showTime = await this.showTimeModel.create(doc);
+
+    await from(seats)
+        .pipe(
+            bufferCount(16),
+            concatMap(seats => {
+              const tasks: Observable<Ticket>[] = seats.map(({ seat, dto }) => {
+                return defer(async () => {
+                  const doc: Omit<CreateDocumentDefinition<Ticket>, '_id'> = {
+                    is_active: true,
+                    price: dto.price,
+                    reservation: null,
+                    seat: seat._id,
+                    show_time: showTime._id,
+                  };
+                  return this.ticketModel.create(doc);
+                });
+              });
+              return forkJoin(tasks);
+            }),
+            tap(tickets => this.logger.debug(`Created ${tickets.length} tickets`)),
+        )
+        .toPromise();
+
+    return showTime;
+  }
+
+  getShowTimesByTheatreIdAdmin(theatreId: string, dto: PaginationDto): Promise<ShowTime[]> {
+    const { limit, skip } = getSkipLimit(dto);
+    return this.showTimeModel
+        .find({ theatre: theatreId })
+        .sort({ start_time: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate('movie')
+        .exec();
+  }
 }
+
+declare global {
+  interface Array<T> {
+    pairwise(): [T, T][];
+  }
+}
+
+Array.prototype.pairwise = function <T>(this: T[]): [T, T][] {
+  const result: [T, T][] = [];
+  if (this.length < 2) {
+    return [];
+  }
+
+  let prev: T | null = null;
+  for (const cur of this) {
+    if (prev !== null) {
+      result.push([prev, cur]);
+    }
+    prev = cur;
+  }
+  return result;
+};

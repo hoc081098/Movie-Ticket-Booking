@@ -607,7 +607,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
                     height: 16,
                     child: IgnorePointer(
                       child: Center(
-                        child: RatingBar(
+                        child: RatingBar.builder(
                           initialRating: item.rateStar,
                           allowHalfRating: true,
                           direction: Axis.horizontal,
@@ -1095,7 +1095,7 @@ class NearbyTheatresList extends StatelessWidget {
                               Text(
                                 '${(item.distance / 1000.0).toStringAsFixed(1)} km',
                                 style: const TextStyle(
-                                  color: const Color(0xffA4508B),
+                                  color: Color(0xffA4508B),
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                 ),

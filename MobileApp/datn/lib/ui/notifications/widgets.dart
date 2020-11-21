@@ -1,12 +1,13 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/ui/app_scaffold.dart';
-import 'package:datn/ui/profile/reservation_detail/reservation_detail_page.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:intl/intl.dart';
 
 import '../../domain/model/notification.dart';
+import '../../utils/type_defs.dart';
+import '../app_scaffold.dart';
+import '../profile/reservation_detail/reservation_detail_page.dart';
 import '../widgets/age_type.dart';
 
 class NotificationItemWidget extends StatelessWidget {
@@ -14,8 +15,9 @@ class NotificationItemWidget extends StatelessWidget {
 
   final Notification item;
   final DateFormat dateFormat;
+  final Function1<Notification, void> onDelete;
 
-  NotificationItemWidget(this.item, this.dateFormat);
+  NotificationItemWidget(this.item, this.dateFormat, this.onDelete);
 
   @override
   Widget build(BuildContext context) {
@@ -168,8 +170,39 @@ class NotificationItemWidget extends StatelessWidget {
                 Positioned(
                   bottom: 8,
                   right: 8,
-                  child: AgeTypeWidget(
-                    ageType: movie.ageType,
+                  child: Row(
+                    children: [
+                      AgeTypeWidget(
+                        ageType: movie.ageType,
+                      ),
+                      const SizedBox(width: 8),
+                      Material(
+                        color: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(15),
+                          onTap: () => onDelete(item),
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white70,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
