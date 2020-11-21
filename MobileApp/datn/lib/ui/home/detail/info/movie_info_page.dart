@@ -54,13 +54,10 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       final repo = Provider.of<FavoritesRepository>(context);
       final loaderFunction = () => repo.checkFavorite(widget.movieId);
 
-      final loaderBloc = LoaderBloc(
+      return LoaderBloc(
         loaderFunction: loaderFunction,
         enableLogger: true,
       )..fetch();
-      loaderBloc.message$.listen(handleFavMessage).disposedBy(bag);
-
-      return loaderBloc;
     }();
 
     bloc ??= () {
@@ -79,7 +76,11 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       final repo = Provider.of<FavoritesRepository>(context);
 
       toggleS
-          .exhaustMap((_) => repo.toggleFavorite(widget.movieId))
+          .exhaustMap((_) => repo
+              .toggleFavorite(widget.movieId)
+              .doOnData((_) => context.showSnackBar('Toggled successfully'))
+              .doOnError((e, s) =>
+                  context.showSnackBar('Failed: ${getErrorMessage(e)}')))
           .listen(null)
           .disposedBy(bag);
 
@@ -264,22 +265,6 @@ class _MovieInfoPageState extends State<MovieInfoPage>
 
   @override
   bool get wantKeepAlive => true;
-
-  void handleFavMessage(LoaderMessage<bool> msg) {
-    msg.fold(
-      onFetchFailure: (e, s) =>
-          context.showSnackBar('Failed: ${getErrorMessage(e)}'),
-      onFetchSuccess: (data) {
-        if (firstMsg) {
-          firstMsg = false;
-        } else {
-          context.showSnackBar('Toggled successfully');
-        }
-      },
-      onRefreshFailure: (e, s) {},
-      onRefreshSuccess: (data) {},
-    );
-  }
 }
 
 class DetailAppBar extends StatelessWidget {

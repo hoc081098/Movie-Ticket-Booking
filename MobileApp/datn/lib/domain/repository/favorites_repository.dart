@@ -8,4 +8,6 @@ abstract class FavoritesRepository {
   Stream<void> toggleFavorite(String movieId);
 
   Stream<BuiltList<Movie>> favoritesMovie();
+
+  Future<void> refresh();
 }
