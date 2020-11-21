@@ -36,7 +36,7 @@ class MovieRepositoryImpl implements MovieRepository {
       rethrow;
     }
   }
-
+  @override
   Future<Movie> uploadMovie(Movie movie) async {
     try {
       final movieRes = await _authClient.postBody(
@@ -51,7 +51,7 @@ class MovieRepositoryImpl implements MovieRepository {
       rethrow;
     }
   }
-
+  @override
   Future<List<Person>> getListSearchPerson(String name) async {
     try {
       final res = _authClient
@@ -67,7 +67,7 @@ class MovieRepositoryImpl implements MovieRepository {
       rethrow;
     }
   }
-
+  @override
   Future<List<Category>> getListCategory(String name) async {
     try {
       final res = _authClient.getBody(buildUrl('categories/')) as List;
