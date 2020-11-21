@@ -6,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../domain/model/comment.dart';
 import '../../../../domain/model/user.dart';
@@ -35,6 +36,7 @@ class _CommentsPageState extends State<CommentsPage>
     with DisposeBagMixin, AutomaticKeepAliveClientMixin {
   RxReduxStore<Action, st.State> store;
   final commentDateFormat = DateFormat('dd/MM/yy');
+  final scrollController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -59,14 +61,21 @@ class _CommentsPageState extends State<CommentsPage>
       );
       subscribe(store);
       store.dispatch(const LoadFirstPageAction());
+
+      scrollController
+          .nearBottomEdge$()
+          .mapTo<Action>(const LoadNextPageAction())
+          .dispatchTo(store);
+
       return store;
     }();
   }
 
   @override
   void dispose() {
-    store.dispose();
     super.dispose();
+    store.dispose();
+    scrollController.dispose();
   }
 
   void subscribe(RxReduxStore<Action, st.State> store) {
@@ -141,6 +150,7 @@ class _CommentsPageState extends State<CommentsPage>
           dispatch: store.dispatch,
           commentDateFormat: commentDateFormat,
           movieId: widget.movieId,
+          scrollController: scrollController,
         );
       },
     );
@@ -153,6 +163,7 @@ class _CommentsPageState extends State<CommentsPage>
 class CommentItemsListWidget extends StatelessWidget {
   final DateFormat commentDateFormat;
   final String movieId;
+  final ScrollController scrollController;
 
   const CommentItemsListWidget({
     Key key,
@@ -160,6 +171,7 @@ class CommentItemsListWidget extends StatelessWidget {
     @required this.dispatch,
     @required this.commentDateFormat,
     @required this.movieId,
+    @required this.scrollController,
   }) : super(key: key);
 
   final st.State state;
@@ -170,6 +182,7 @@ class CommentItemsListWidget extends StatelessWidget {
     final items = state.items;
 
     return ListView.separated(
+      controller: scrollController,
       itemCount: 1 + items.length + (state.isFirstPage ? 0 : 1),
       itemBuilder: (context, index) {
         if (index == 0) {
@@ -216,28 +229,7 @@ class CommentItemsListWidget extends StatelessWidget {
           );
         }
 
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Center(
-            child: SizedBox(
-              width: 128,
-              height: 48,
-              child: RaisedButton(
-                onPressed: () => dispatch(const LoadNextPageAction()),
-                child: Text('Next page'),
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  side: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                    width: 1,
-                  ),
-                ),
-                color: Colors.white,
-              ),
-            ),
-          ),
-        );
+        return const SizedBox(width: 0, height: 56);
       },
       separatorBuilder: (context, index) => const Divider(),
     );

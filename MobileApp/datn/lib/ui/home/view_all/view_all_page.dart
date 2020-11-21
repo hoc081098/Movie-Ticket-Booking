@@ -3,6 +3,7 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
@@ -27,6 +28,7 @@ class ViewAllPage extends StatefulWidget {
 
 class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   RxReduxStore<ViewAllAction, ViewAllState> store;
+  final scrollController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -46,14 +48,20 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
       subscribe(s);
       s.dispatch(const LoadFirstPageAction());
 
+      scrollController
+          .nearBottomEdge$()
+          .mapTo<ViewAllAction>(const LoadNextPageAction())
+          .dispatchTo(s);
+
       return s;
     }();
   }
 
   @override
   void dispose() {
-    store.dispose();
     super.dispose();
+    store.dispose();
+    scrollController.dispose();
   }
 
   void subscribe(RxReduxStore<ViewAllAction, ViewAllState> store) {
@@ -131,6 +139,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
               return action.completed;
             },
             child: ListView.builder(
+              controller: scrollController,
               itemCount: items.length + (state.isFirstPage ? 0 : 1),
               itemBuilder: (context, index) {
                 if (index < items.length) {
@@ -166,33 +175,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
                 if (state.loadedAll) {
                   return const SizedBox(width: 0, height: 0);
                 }
-
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 12,
-                    top: 12,
-                  ),
-                  child: Center(
-                    child: SizedBox(
-                      width: 128,
-                      height: 48,
-                      child: RaisedButton(
-                        onPressed: () =>
-                            store.dispatch(const LoadNextPageAction()),
-                        child: Text('Next page'),
-                        elevation: 8,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          side: BorderSide(
-                            color: Theme.of(context).primaryColor,
-                            width: 1,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                );
+                return const SizedBox(width: 0, height: 56);
               },
             ),
           );
