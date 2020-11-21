@@ -1,5 +1,12 @@
 import 'dart:io';
 
+import 'package:movie_admin/data/remote/request/movie_request.dart';
+import 'package:movie_admin/data/remote/response/category_response.dart';
+import 'package:movie_admin/data/remote/response/person_response.dart';
+import 'package:movie_admin/domain/model/category.dart';
+import 'package:movie_admin/domain/model/person.dart';
+import 'package:movie_admin/domain/model/user.dart';
+
 import '../../domain/model/exception.dart';
 import '../../domain/model/movie.dart';
 import '../../domain/repository/movie_repository.dart';
@@ -21,6 +28,52 @@ class MovieRepositoryImpl implements MovieRepository {
           'admin_movies/', {'page': '$page', 'per_page': '$perPage'})) as List;
       return usersRes
           .map((json) => movieRemoteToDomain(MovieResponse.fromJson(json)))
+          .toList();
+    } on ErrorResponse catch (e) {
+      if (e.statusCode == HttpStatus.notFound) {
+        throw const NotCompletedManagerUserException();
+      }
+      rethrow;
+    }
+  }
+
+  Future<Movie> uploadMovie(Movie movie) async {
+    try {
+      final movieRes = await _authClient.postBody(
+        buildUrl('admin_movies/'),
+        body: movieDomainToRemote(movie).toJson(),
+      ) as Map<String, dynamic>;
+      return movieRemoteToDomain(MovieResponse.fromJson(movieRes));
+    } on ErrorResponse catch (e) {
+      if (e.statusCode == HttpStatus.notFound) {
+        throw const NotCompletedManagerUserException();
+      }
+      rethrow;
+    }
+  }
+
+  Future<List<Person>> getListSearchPerson(String name) async {
+    try {
+      final res = _authClient
+          .getBody(buildUrl('people/search/', {'name': name})) as List;
+      return res
+          .map((e) => PersonResponse.fromJson(e))
+          .map((e) => personResponseToPerson(e))
+          .toList();
+    } on ErrorResponse catch (e) {
+      if (e.statusCode == HttpStatus.notFound) {
+        throw const NotCompletedManagerUserException();
+      }
+      rethrow;
+    }
+  }
+
+  Future<List<Category>> getListCategory(String name) async {
+    try {
+      final res = _authClient.getBody(buildUrl('categories/')) as List;
+      return res
+          .map((e) => CategoryResponse.fromJson(e))
+          .map((e) => categoryResponseToCategory(e))
           .toList();
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
