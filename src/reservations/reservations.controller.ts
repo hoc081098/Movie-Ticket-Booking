@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { GetUser, UserPayload } from '../auth/get-user.decorator';
 import { CreateReservationDto } from './reservation.dto';
@@ -46,5 +46,11 @@ export class ReservationsController {
         id,
         userPayload,
     )
+  }
+
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Get('seed')
+  seed() {
+    return this.reservationsService.seed();
   }
 }
