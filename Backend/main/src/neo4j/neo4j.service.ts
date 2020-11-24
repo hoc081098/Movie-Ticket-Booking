@@ -1012,21 +1012,21 @@ export class Neo4jService {
           this.logger.debug(`getRelatedMovies ${movie.title}`);
 
           const query = `
-              MATCH (m:MOVIE {_id: $id })-[:IN_CATEGORY]->(c:CATEGORY)<-[:IN_CATEGORY]-(other:MOVIE)
-              WITH m, other, count(c) AS intersection, collect(c.name) AS i
+              MATCH (m:MOVIE {_id: $id })-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(c)<-[:IN_CATEGORY|:DIRECTED|ACTED_IN]-(other:MOVIE)
+              WITH m, other, count(c) AS intersection, collect(c._id) AS i
               
-              MATCH (m)-[:IN_CATEGORY]->(mg:CATEGORY)
-              WITH m, other, intersection, i, collect(mg.name) AS s1
+              MATCH (m)-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(mg)
+              WITH m, other, intersection, i, collect(mg._id) AS s1
               
-              MATCH (other)-[:IN_CATEGORY]->(og:CATEGORY)
-              WITH m, other,intersection,i, s1, collect(og.name) AS s2
+              MATCH (other)-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(og)
+              WITH m, other, intersection, i, s1, collect(og._id) AS s2
               
-              WITH m, other,intersection,s1,s2
+              WITH m, other, intersection, s1, s2
               WITH m, other, intersection, s1+[x IN s2 WHERE NOT x IN s1] AS union, s1, s2
               
               RETURN other._id AS _id, ((1.0 * intersection) / size(union)) AS jaccard, s1, s2
               ORDER BY jaccard DESC
-              LIMIT 32
+              LIMIT 500
           `;
           const parameters = {
             id: movieId,
