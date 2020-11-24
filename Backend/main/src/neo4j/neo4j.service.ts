@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { auth, driver, Driver, Transaction } from 'neo4j-driver';
 import { ConfigKey, ConfigService } from '../config/config.service';
 import { DocumentDefinition, Model } from 'mongoose';
@@ -809,24 +809,7 @@ export class Neo4jService {
           const [query, parameters] = Neo4jService.buildQueryAndParams(checkCompletedLogin(userPayload), dto);
           this.logger.debug(dto);
 
-          const session = this.driver.rxSession();
-          return concat(
-              session
-                  .run(query, parameters)
-                  .records()
-                  .pipe(
-                      map(record =>
-                          ({
-                            ...record.toObject(),
-                            _id: record.get('_id') as string,
-                          })
-                      ),
-                      toArray(),
-                      map(splitIdAndRests),
-                      exhaustMap(idAndMap => this.findMoviesInIds(idAndMap)),
-                  ),
-              session.close() as Observable<never>,
-          );
+          return this.getMovies(query, parameters);
         }),
     );
   }
@@ -954,6 +937,68 @@ export class Neo4jService {
         cat_ids: dto.category_ids,
       },
     ];
+  }
+
+  getRelatedMovies(movieId: string) {
+    return defer(() => this.movieModel.findById(movieId)).pipe(
+        exhaustMap(movie => {
+          if (!movie) {
+            return throwError(new NotFoundException(`Not found movie with id ${movieId}`));
+          }
+
+          this.logger.debug(`getRelatedMovies ${movie.title}`);
+
+          const query = `
+              MATCH (m:MOVIE {_id: $id })-[:IN_CATEGORY]->(c:CATEGORY)<-[:IN_CATEGORY]-(other:MOVIE)
+              WITH m, other, count(c) AS intersection, collect(c.name) AS i
+              
+              MATCH (m:MOVIE)-[:IN_CATEGORY]->(mg:CATEGORY)
+              WITH m, other, intersection, i, collect(mg.name) AS s1
+              
+              MATCH (other:MOVIE)-[:IN_CATEGORY]->(og:CATEGORY)
+              WITH m, other,intersection,i, s1, collect(og.name) AS s2
+              
+              WITH m, other,intersection,s1,s2
+              WITH m, other, intersection, s1+[x IN s2 WHERE NOT x IN s1] AS union, s1, s2
+              
+              RETURN other._id AS _id, ((1.0 * intersection) / size(union)) AS jaccard
+              ORDER BY jaccard DESC
+              LIMIT 16
+          `;
+          const parameters = {
+            id: movieId,
+          };
+
+          return this.getMovies(query, parameters);
+        }),
+        catchError(e =>
+            e instanceof HttpException
+                ? throwError(e)
+                : throwError(new BadRequestException(e.message ?? 'Error'))
+        )
+    );
+  }
+
+  private getMovies(query: string, parameters: Record<string, any>): Observable<MovieAndExtraInfo[]> {
+    const session = this.driver.rxSession();
+
+    return concat(
+        session
+            .run(query, parameters)
+            .records()
+            .pipe(
+                map(record =>
+                    ({
+                      ...record.toObject(),
+                      _id: record.get('_id') as string,
+                    })
+                ),
+                toArray(),
+                map(splitIdAndRests),
+                exhaustMap(idAndMap => this.findMoviesInIds(idAndMap)),
+            ),
+        session.close() as Observable<never>,
+    );
   }
 }
 
