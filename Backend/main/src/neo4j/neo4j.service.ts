@@ -809,7 +809,9 @@ export class Neo4jService {
           const [query, parameters] = Neo4jService.buildQueryAndParams(checkCompletedLogin(userPayload), dto);
           this.logger.debug(dto);
 
-          return this.getMovies(query, parameters);
+          return this
+              .getMovies(query, parameters)
+              .pipe(map(movies => [...movies].sort((l, r) => r.recommendation - l.recommendation)));
         }),
     );
   }
@@ -961,15 +963,17 @@ export class Neo4jService {
               WITH m, other,intersection,s1,s2
               WITH m, other, intersection, s1+[x IN s2 WHERE NOT x IN s1] AS union, s1, s2
               
-              RETURN other._id AS _id, ((1.0 * intersection) / size(union)) AS jaccard
+              RETURN other._id AS _id, ((1.0 * intersection) / size(union)) AS jaccard, s1, s2
               ORDER BY jaccard DESC
-              LIMIT 16
+              LIMIT 32
           `;
           const parameters = {
             id: movieId,
           };
 
-          return this.getMovies(query, parameters);
+          return this
+              .getMovies(query, parameters)
+              .pipe(map(movies => [...movies].sort((l, r) => r.jaccard - l.jaccard)));
         }),
         catchError(e =>
             e instanceof HttpException
