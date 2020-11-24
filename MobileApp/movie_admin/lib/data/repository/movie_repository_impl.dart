@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:movie_admin/data/remote/request/movie_request.dart';
 import 'package:movie_admin/data/remote/response/category_response.dart';
 import 'package:movie_admin/data/remote/response/person_response.dart';
@@ -36,6 +38,7 @@ class MovieRepositoryImpl implements MovieRepository {
       rethrow;
     }
   }
+
   @override
   Future<Movie> uploadMovie(Movie movie) async {
     try {
@@ -51,6 +54,7 @@ class MovieRepositoryImpl implements MovieRepository {
       rethrow;
     }
   }
+
   @override
   Future<List<Person>> getListSearchPerson(String name) async {
     try {
@@ -67,6 +71,7 @@ class MovieRepositoryImpl implements MovieRepository {
       rethrow;
     }
   }
+
   @override
   Future<List<Category>> getListCategory(String name) async {
     try {
@@ -79,6 +84,24 @@ class MovieRepositoryImpl implements MovieRepository {
       if (e.statusCode == HttpStatus.notFound) {
         throw const NotCompletedManagerUserException();
       }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> uploadUrl(String path) async {
+    try {
+      final task = FirebaseStorage.instance
+          .ref()
+          .child('trailer_images')
+          .child(path + '_movie_admin')
+          .putFile(File(path));
+      await task.onComplete;
+      if (task.isSuccessful) {
+        return (await task.lastSnapshot.ref.getDownloadURL()).toString();
+      }
+      throw const NotCompletedManagerUserException();
+    } on PlatformException catch (e) {
       rethrow;
     }
   }

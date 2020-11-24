@@ -29,8 +29,10 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
   final Stream<Movie> stateStream$;
   final Stream<Tuple2<UrlType, String>> posterUrlStream$;
   final Stream<Tuple2<UrlType, String>> trailerUrlStream$;
+  final Stream<String> choiceFile$;
 
   MovieUploadBloc._({
+    @required this.choiceFile$,
     @required this.posterUrl,
     @required this.trailerUrl,
     @required this.loadCategory,
@@ -64,17 +66,20 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
           .where((e) => e.isNotEmpty)
     ]).exhaustMap(
       (path) => Rx.defer(() async* {
-        final task = FirebaseStorage.instance
-            .ref()
-            .child('trailer_images')
-            .child(path + '_movie_admin')
-            .putFile(File(path));
-        await task.onComplete;
-        if (task.isSuccessful) {
-          yield (await task.lastSnapshot.ref.getDownloadURL()).toString();
-        }
+
       }),
     );
+
+    final posterStream = Rx.merge<Tuple2<UrlType, String>>([
+      posterTypeUrlSubject
+          .distinct((p, n) => p.item1 == n.item1)
+          .bufferCount(2)
+          .map((e) => e.first),
+      posterTypeUrlSubject
+          .distinct((p, n) => !(p.item1 == n.item1 && p.item2 != n.item2)),
+    ]).doOnData((event) {
+      print('######################' + event.item1.toString() + event.item2);
+    }).publish();
 
     final uploadStream = uploadMovieSubject
         .where((e) => e.isHasData())
@@ -89,10 +94,11 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
         .doOnError((_, track) => loadingSubject.add(false))
         .publish();
 
-    final controllers = [uploadMovieSubject, posterTypeUrlSubject, trailerTypeUrlSubject];
-    final streams = [uploadStream, choiceFile];
+    final controllers = [];
+    final streams = [];
     return MovieUploadBloc._(
       dispose: DisposeBag([...controllers, ...streams]).dispose,
+      choiceFile$: choiceFile,
       loadCategory: null,
       loadPerson: null,
       uploadMovie: uploadMovieSubject.add,
@@ -103,7 +109,7 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
       trailerUrl: trailerTypeUrlSubject.add,
       posterUrl: posterTypeUrlSubject.add,
       trailerUrlStream$: trailerTypeUrlSubject.stream,
-      posterUrlStream$: posterTypeUrlSubject.stream,
+      posterUrlStream$: posterStream,
     );
   }
 }

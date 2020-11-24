@@ -202,9 +202,15 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                 Icon(Icons.arrow_drop_down),
               ],
             ),
-            onSelected: (e) => title == 'Poster url: '
-                ? bloc.posterUrl(Tuple2(typeUrl, ''))
-                : bloc.trailerUrl(Tuple2(typeUrl, '')),
+            onSelected: (e) {
+              if (title == 'Poster url: ') {
+                bloc.posterUrl(Tuple2(typeUrl, controller.text));
+                bloc.posterUrl(Tuple2(e, ''));
+              } else {
+                bloc.posterUrl(Tuple2(typeUrl, controller.text));
+                bloc.trailerUrl(Tuple2(e, ''));
+              }
+            },
             itemBuilder: (context) => UrlType.values
                 .map(
                   (e) => PopupMenuItem(
@@ -371,23 +377,25 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
         return null;
       case _RowTextType.TRAILER_URL:
         return StreamBuilder<Tuple2<UrlType, String>>(
+          stream: bloc.trailerUrlStream$,
           builder: (context, snapshot) {
-            controllers[e].text = snapshot.data.item2;
+            controllers[e].text = snapshot.data?.item2 ?? '';
             return _buildUrlOption(
               title: 'Trailer url: ',
               controller: controllers[e],
-              typeUrl: null,
+              typeUrl: snapshot.data?.item1 ?? UrlType.FILE,
             );
           },
         );
       case _RowTextType.POSTER_URL:
         return StreamBuilder<Tuple2<UrlType, String>>(
+          stream: bloc.posterUrlStream$,
           builder: (context, snapshot) {
-            controllers[e].text = snapshot.data.item2;
+            controllers[e].text = snapshot.data?.item2 ?? '';
             return _buildUrlOption(
               title: 'Poster url: ',
               controller: controllers[e],
-              typeUrl: snapshot.data.item1,
+              typeUrl: snapshot.data?.item1 ?? UrlType.FILE,
             );
           },
         );

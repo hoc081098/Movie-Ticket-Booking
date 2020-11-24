@@ -1,11 +1,8 @@
-import 'dart:html';
-
 import 'package:meta/meta.dart';
 import '../../../domain/model/age_type.dart';
 import '../../../domain/model/category.dart';
 import '../../../domain/model/movie.dart';
 import '../../../domain/model/person.dart';
-import 'movie_upload_bloc.dart';
 
 class MovieUploadInput {
   MovieUploadInput._({
