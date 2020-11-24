@@ -952,10 +952,10 @@ export class Neo4jService {
               MATCH (m:MOVIE {_id: $id })-[:IN_CATEGORY]->(c:CATEGORY)<-[:IN_CATEGORY]-(other:MOVIE)
               WITH m, other, count(c) AS intersection, collect(c.name) AS i
               
-              MATCH (m:MOVIE)-[:IN_CATEGORY]->(mg:CATEGORY)
+              MATCH (m)-[:IN_CATEGORY]->(mg:CATEGORY)
               WITH m, other, intersection, i, collect(mg.name) AS s1
               
-              MATCH (other:MOVIE)-[:IN_CATEGORY]->(og:CATEGORY)
+              MATCH (other)-[:IN_CATEGORY]->(og:CATEGORY)
               WITH m, other,intersection,i, s1, collect(og.name) AS s2
               
               WITH m, other,intersection,s1,s2
