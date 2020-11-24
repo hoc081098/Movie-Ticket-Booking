@@ -17,6 +17,7 @@ import { UserPayload } from '../auth/get-user.decorator';
 import { checkCompletedLogin, constants, getCoordinates } from '../common/utils';
 import { Parameters } from 'neo4j-driver/types/query-runner';
 import { SearchMoviesDto } from './search-movies.dto';
+import { Person } from '../people/person.schema';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
@@ -60,6 +61,7 @@ export class Neo4jService {
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
+      @InjectModel(Person.name) private readonly personModel: Model<Person>,
   ) {
     try {
       this.driver = driver(
@@ -90,6 +92,7 @@ export class Neo4jService {
     );
 
     await this.addCategories();
+    await this.addPeople();
     await this.addMovies();
     await this.addUsers();
     await this.addComments();
@@ -272,7 +275,7 @@ export class Neo4jService {
             },
         );
       }
-    }, `[MOVIES] ${movies.length}`);
+    }, `[MOVIES] [1] ${movies.length}`);
 
     await this.runTransaction(async txc => {
       for (const mov of movies) {
@@ -293,7 +296,43 @@ export class Neo4jService {
           );
         }
       }
-    }, `[MOVIES] ${movies.length}`);
+    }, `[MOVIES] [2] ${movies.length}`);
+
+    await this.runTransaction(async txc => {
+      for (const mov of movies) {
+        const actors: string[] = mov.actors.map(i => i.toString());
+        for (const p_id of actors) {
+          await txc.run(
+              `
+                MATCH (p: PERSON { _id: $p_id  })
+                MATCH (mov: MOVIE { _id: $mov_id })
+                MERGE (p)-[r:ACTED_IN]->(mov)
+                RETURN mov.title, p.full_name
+            `,
+              {
+                p_id,
+                mov_id: mov._id.toString(),
+              },
+          );
+        }
+
+        const directors: string[] = mov.directors.map(i => i.toString());
+        for (const p_id of directors) {
+          await txc.run(
+              `
+                MATCH (p: PERSON { _id: $p_id  })
+                MATCH (mov: MOVIE { _id: $mov_id })
+                MERGE (p)-[r:DIRECTED]->(mov)
+                RETURN mov.title, p.full_name
+            `,
+              {
+                p_id,
+                mov_id: mov._id.toString(),
+              },
+          );
+        }
+      }
+    }, `[MOVIES] [3] ${movies.length}`);
   }
 
   private async addCategories(): Promise<void> {
@@ -481,6 +520,28 @@ export class Neo4jService {
         },
         `[RESERVATIONS] ${reservations.length}`,
     );
+  }
+
+  private async addPeople() {
+    const people = await this.personModel.find({}).lean();
+
+    await this.runTransaction(async txc => {
+      for (const person of people) {
+        await txc.run(
+            `
+              MERGE(cat: PERSON { _id: $_id })
+              ON CREATE SET
+                cat.full_name = $name
+              ON MATCH SET
+                cat.full_name = $name
+            `,
+            {
+              _id: person._id.toString(),
+              name: person.full_name,
+            },
+        );
+      }
+    }, `[PEOPLE] ${people.length}`);
   }
 
   ///
