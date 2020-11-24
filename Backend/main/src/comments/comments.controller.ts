@@ -17,7 +17,7 @@ export class CommentsController {
 
   @ApiOperation({ summary: 'PRIVATE' })
   @Post('seed')
-  seed(): Promise<Comment[]> {
+  seed() {
     return this.commentsService.seed();
   }
 

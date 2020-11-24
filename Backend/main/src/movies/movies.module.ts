@@ -49,5 +49,6 @@ import { UsersModule } from '../users/users.module';
   ],
   providers: [MoviesService, MovieDbService],
   controllers: [MoviesController, AdminMoviesController],
+  exports: [MoviesService],
 })
 export class MoviesModule {}
