@@ -229,6 +229,9 @@ class CommentItemsListWidget extends StatelessWidget {
           );
         }
 
+        if (state.loadedAll) {
+          return const SizedBox();
+        }
         return const SizedBox(width: 0, height: 56);
       },
       separatorBuilder: (context, index) => const Divider(),

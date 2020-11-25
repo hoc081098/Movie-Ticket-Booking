@@ -19,12 +19,14 @@ abstract class State implements Built<State, StateBuilder> {
   @nullable
   Object get error;
 
+  bool get loadedAll;
+
   bool get isFirstPage => page == 0;
 
   bool get canLoadNextPage =>
-      !isLoading && error == null && items.isNotEmpty && page > 0;
+      !isLoading && error == null && items.isNotEmpty && page > 0 && !loadedAll;
 
-  bool get canRetry => !isLoading && error != null;
+  bool get canRetry => !isLoading && error != null && !loadedAll;
 
   State._();
 
@@ -35,6 +37,7 @@ abstract class State implements Built<State, StateBuilder> {
           ..page = 0
           ..average = 0
           ..total = 0
-          ..isLoading = false,
+          ..isLoading = false
+          ..loadedAll = false,
       );
 }

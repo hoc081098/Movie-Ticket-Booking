@@ -12,6 +12,7 @@ import { Comment, CommentSchema } from "../comments/comment.schema";
 import { ShowTime, ShowTimeSchema } from 'src/show-times/show-time.schema';
 import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
 import { Reservation, ReservationSchema } from '../reservations/reservation.schema';
+import { Person, PersonSchema } from '../people/person.schema';
 
 @Module({
   imports: [
@@ -43,6 +44,10 @@ import { Reservation, ReservationSchema } from '../reservations/reservation.sche
       {
         name: Reservation.name,
         schema: ReservationSchema,
+      },
+      {
+        name: Person.name,
+        schema: PersonSchema,
       },
     ]),
     ConfigModule,

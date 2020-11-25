@@ -1,4 +1,4 @@
-import 'package:built_collection/src/list.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,7 @@ import '../../../../utils/error.dart';
 import '../../../../utils/utils.dart';
 import '../../../widgets/age_type.dart';
 import '../../../widgets/error_widget.dart';
+import 'related_movies.dart';
 
 class MovieInfoPage extends StatefulWidget {
   final String movieId;
@@ -34,6 +35,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
     with AutomaticKeepAliveClientMixin, DisposeBagMixin {
   LoaderBloc<Movie> bloc;
   LoaderBloc<bool> favBloc;
+  LoaderBloc<BuiltList<Movie>> relatedBloc;
 
   final releaseDateFormat = DateFormat('dd/MM/yy');
   final toggleS = PublishSubject<void>(sync: true);
@@ -86,12 +88,24 @@ class _MovieInfoPageState extends State<MovieInfoPage>
 
       return const Object();
     }();
+
+    relatedBloc ??= () {
+      final repository = Provider.of<MovieRepository>(context);
+
+      return LoaderBloc(
+        loaderFunction: () => repository.getRelatedMovies(widget.movieId),
+        initialContent: null,
+        enableLogger: true,
+      )..fetch();
+    }();
   }
 
   @override
   void dispose() {
-    bloc.dispose();
     super.dispose();
+    bloc.dispose();
+    favBloc.dispose();
+    relatedBloc.dispose();
   }
 
   @override
@@ -252,10 +266,21 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                       ),
                       const SizedBox(height: 12),
                       PeopleList(people: movie.directors),
+                      Text(
+                        'RELATED MOVIES',
+                        maxLines: 1,
+                        style: themeData.textTheme.headline6.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff687189),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
                     ],
                   ),
                 ),
-              )
+              ),
+              RelatedMovies(bloc: relatedBloc),
             ],
           );
         },

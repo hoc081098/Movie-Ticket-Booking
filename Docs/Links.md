@@ -48,3 +48,17 @@ git subtree push --prefix Backend/main heroku master
 
 git subtree split --prefix Backend/main  master
 git push heroku c27d727321b0189e692e4a1d74d8867ee3f758da:master --force
+
+///
+///
+///
+
+1. Seed movies.       [optional]
+2. Seed show times.   [required]
+3. Seed tickets.      [required]
+4. Seed comments.     [optional]
+5. Seed promotions.   [optional]
+//
+6. Transfer data      [required]
+//
+7. Release app        [required]

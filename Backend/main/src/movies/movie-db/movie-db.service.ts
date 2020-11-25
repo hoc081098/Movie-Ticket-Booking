@@ -157,6 +157,11 @@ export class MovieDbService {
   private async saveMovieDetail(v: MovieDetailResponseResult, c: MovieCreditsResponseResult) {
     this.logger.debug('Start save movie detail');
 
+    if (await this.movieModel.findOne({ title: v.title })) {
+      this.logger.debug('End save movie detail [found]');
+      return;
+    }
+
     this.dayCount = (this.dayCount + 1) % this.days.length;
 
     const actors = await this.getPeople(c.cast.slice(0, 10));

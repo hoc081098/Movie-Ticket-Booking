@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { auth, driver, Driver, Transaction } from 'neo4j-driver';
 import { ConfigKey, ConfigService } from '../config/config.service';
 import { DocumentDefinition, Model } from 'mongoose';
@@ -17,6 +17,7 @@ import { UserPayload } from '../auth/get-user.decorator';
 import { checkCompletedLogin, constants, getCoordinates } from '../common/utils';
 import { Parameters } from 'neo4j-driver/types/query-runner';
 import { SearchMoviesDto } from './search-movies.dto';
+import { Person } from '../people/person.schema';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
@@ -60,6 +61,7 @@ export class Neo4jService {
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
+      @InjectModel(Person.name) private readonly personModel: Model<Person>,
   ) {
     try {
       this.driver = driver(
@@ -90,6 +92,7 @@ export class Neo4jService {
     );
 
     await this.addCategories();
+    await this.addPeople();
     await this.addMovies();
     await this.addUsers();
     await this.addComments();
@@ -272,7 +275,7 @@ export class Neo4jService {
             },
         );
       }
-    }, `[MOVIES] ${movies.length}`);
+    }, `[MOVIES] [1] ${movies.length}`);
 
     await this.runTransaction(async txc => {
       for (const mov of movies) {
@@ -293,7 +296,43 @@ export class Neo4jService {
           );
         }
       }
-    }, `[MOVIES] ${movies.length}`);
+    }, `[MOVIES] [2] ${movies.length}`);
+
+    await this.runTransaction(async txc => {
+      for (const mov of movies) {
+        const actors: string[] = mov.actors.map(i => i.toString());
+        for (const p_id of actors) {
+          await txc.run(
+              `
+                MATCH (p: PERSON { _id: $p_id  })
+                MATCH (mov: MOVIE { _id: $mov_id })
+                MERGE (p)-[r:ACTED_IN]->(mov)
+                RETURN mov.title, p.full_name
+            `,
+              {
+                p_id,
+                mov_id: mov._id.toString(),
+              },
+          );
+        }
+
+        const directors: string[] = mov.directors.map(i => i.toString());
+        for (const p_id of directors) {
+          await txc.run(
+              `
+                MATCH (p: PERSON { _id: $p_id  })
+                MATCH (mov: MOVIE { _id: $mov_id })
+                MERGE (p)-[r:DIRECTED]->(mov)
+                RETURN mov.title, p.full_name
+            `,
+              {
+                p_id,
+                mov_id: mov._id.toString(),
+              },
+          );
+        }
+      }
+    }, `[MOVIES] [3] ${movies.length}`);
   }
 
   private async addCategories(): Promise<void> {
@@ -481,6 +520,28 @@ export class Neo4jService {
         },
         `[RESERVATIONS] ${reservations.length}`,
     );
+  }
+
+  private async addPeople() {
+    const people = await this.personModel.find({}).lean();
+
+    await this.runTransaction(async txc => {
+      for (const person of people) {
+        await txc.run(
+            `
+              MERGE(cat: PERSON { _id: $_id })
+              ON CREATE SET
+                cat.full_name = $name
+              ON MATCH SET
+                cat.full_name = $name
+            `,
+            {
+              _id: person._id.toString(),
+              name: person.full_name,
+            },
+        );
+      }
+    }, `[PEOPLE] ${people.length}`);
   }
 
   ///
@@ -809,24 +870,9 @@ export class Neo4jService {
           const [query, parameters] = Neo4jService.buildQueryAndParams(checkCompletedLogin(userPayload), dto);
           this.logger.debug(dto);
 
-          const session = this.driver.rxSession();
-          return concat(
-              session
-                  .run(query, parameters)
-                  .records()
-                  .pipe(
-                      map(record =>
-                          ({
-                            ...record.toObject(),
-                            _id: record.get('_id') as string,
-                          })
-                      ),
-                      toArray(),
-                      map(splitIdAndRests),
-                      exhaustMap(idAndMap => this.findMoviesInIds(idAndMap)),
-                  ),
-              session.close() as Observable<never>,
-          );
+          return this
+              .getMovies(query, parameters)
+              .pipe(map(movies => [...movies].sort((l, r) => r.recommendation - l.recommendation)));
         }),
     );
   }
@@ -954,6 +1000,70 @@ export class Neo4jService {
         cat_ids: dto.category_ids,
       },
     ];
+  }
+
+  getRelatedMovies(movieId: string) {
+    return defer(() => this.movieModel.findById(movieId)).pipe(
+        exhaustMap(movie => {
+          if (!movie) {
+            return throwError(new NotFoundException(`Not found movie with id ${movieId}`));
+          }
+
+          this.logger.debug(`getRelatedMovies ${movie.title}`);
+
+          const query = `
+              MATCH (m:MOVIE {_id: $id })-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(c)<-[:IN_CATEGORY|:DIRECTED|ACTED_IN]-(other:MOVIE)
+              WITH m, other, count(c) AS intersection, collect(c._id) AS i
+              
+              MATCH (m)-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(mg)
+              WITH m, other, intersection, i, collect(mg._id) AS s1
+              
+              MATCH (other)-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(og)
+              WITH m, other, intersection, i, s1, collect(og._id) AS s2
+              
+              WITH m, other, intersection, s1, s2
+              WITH m, other, intersection, s1+[x IN s2 WHERE NOT x IN s1] AS union, s1, s2
+              
+              RETURN other._id AS _id, ((1.0 * intersection) / size(union)) AS jaccard, s1, s2
+              ORDER BY jaccard DESC
+              LIMIT 16
+          `;
+          const parameters = {
+            id: movieId,
+          };
+
+          return this
+              .getMovies(query, parameters)
+              .pipe(map(movies => [...movies].sort((l, r) => r.jaccard - l.jaccard)));
+        }),
+        catchError(e =>
+            e instanceof HttpException
+                ? throwError(e)
+                : throwError(new BadRequestException(e.message ?? 'Error'))
+        )
+    );
+  }
+
+  private getMovies(query: string, parameters: Record<string, any>): Observable<MovieAndExtraInfo[]> {
+    const session = this.driver.rxSession();
+
+    return concat(
+        session
+            .run(query, parameters)
+            .records()
+            .pipe(
+                map(record =>
+                    ({
+                      ...record.toObject(),
+                      _id: record.get('_id') as string,
+                    })
+                ),
+                toArray(),
+                map(splitIdAndRests),
+                exhaustMap(idAndMap => this.findMoviesInIds(idAndMap)),
+            ),
+        session.close() as Observable<never>,
+    );
   }
 }
 
