@@ -1026,7 +1026,7 @@ export class Neo4jService {
               
               RETURN other._id AS _id, ((1.0 * intersection) / size(union)) AS jaccard, s1, s2
               ORDER BY jaccard DESC
-              LIMIT 500
+              LIMIT 16
           `;
           const parameters = {
             id: movieId,

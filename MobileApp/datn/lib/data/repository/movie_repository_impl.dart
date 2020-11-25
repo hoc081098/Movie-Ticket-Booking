@@ -307,4 +307,16 @@ class MovieRepositoryImpl implements MovieRepository {
     return Rx.fromCallable(
         () => _authClient.getBody(buildUrl('/categories')).then(mapResult));
   }
+
+  @override
+  Stream<BuiltList<Movie>> getRelatedMovies(String movieId) {
+    if (movieId == null) {
+      return Stream.error(ArgumentError.notNull('movieId'));
+    }
+    return Rx.fromCallable(
+      () => _authClient
+          .getBody(buildUrl('/neo4j/related-movies/$movieId'))
+          .then(mapResult),
+    );
+  }
 }
