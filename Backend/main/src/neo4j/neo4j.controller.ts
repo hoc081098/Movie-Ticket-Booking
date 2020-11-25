@@ -45,4 +45,9 @@ export class Neo4jController {
   ) {
     return this.neo4jService.getRelatedMovies(movieId);
   }
+
+  @Post('seed/:id')
+  seed(@Param('id') id: string) {
+    return this.neo4jService.test(id);
+  }
 }
