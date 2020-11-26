@@ -1077,25 +1077,27 @@ export class Neo4jService {
                     WITH u1, avg(r1.score) AS u1_mean
                     
                     MATCH (u1)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
-                    WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS iteractions
+                    WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS interactions
                     
                     MATCH (u2)-[r2:INTERACTIVE]->(m:MOVIE)
-                    WITH u1, u1_mean, u2, avg(r2.score) AS u2_mean, iteractions
+                    WITH u1, u1_mean, u2, avg(r2.score) AS u2_mean, interactions
                     
-                    UNWIND iteractions AS r
+                    UNWIND interactions AS r
                     
                     WITH sum( (r.r1.score - u1_mean) * (r.r2.score - u2_mean) ) AS nom,
                          sqrt( sum((r.r1.score - u1_mean) ^ 2) * sum((r.r2.score - u2_mean) ^ 2) ) AS denom,
                          u1, u2 WHERE denom <> 0
                       
                     WITH u1, u2, nom / denom AS pearson
-                    ORDER BY pearson DESC LIMIT 15
-                    RETURN pearson
+                    ORDER BY pearson DESC LIMIT 30
+                    
+                    MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
+                    RETURN m, sum(pearson * r.score) AS recommendation, pearson, r.score AS score
+                    ORDER BY recommendation DESC LIMIT 64
                   `,
                 {
                   id
                 }
-
             )
             .records()
             .pipe(
@@ -1106,6 +1108,7 @@ export class Neo4jService {
     );
   }
 }
+
 `
 
           OPTIONAL MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
