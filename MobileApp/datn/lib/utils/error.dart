@@ -23,6 +23,9 @@ String getErrorMessage(dynamic error) {
   if (error is NotVerifiedEmail) {
     return 'Your account email has not been verify. Please verify to continue!';
   }
+  if (error is WrongRoleException) {
+    return 'Only USER role is allowed';
+  }
 
   // server error
   if (error is SingleMessageErrorResponse) {
