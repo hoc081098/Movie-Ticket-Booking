@@ -197,5 +197,5 @@ Future<void> _envConfig() async {
     print('###### error $e');
   }
 
-  await EnvManager.shared.config(EnvPath.PROD, fromRemote);
+  await EnvManager.shared.config(EnvPath.DEV, fromRemote);
 }
