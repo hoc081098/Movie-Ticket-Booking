@@ -75,8 +75,15 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
           .distinct((p, n) => p.item1 == n.item1)
           .bufferCount(2)
           .map((e) => e.first),
+    ]).doOnData((event) {
+      print('######################' + event.item1.toString() + event.item2);
+    }).publish();
+
+    final trailerStream = Rx.merge<Tuple2<UrlType, String>>([
       posterTypeUrlSubject
-          .distinct((p, n) => !(p.item1 == n.item1 && p.item2 != n.item2)),
+          .distinct((p, n) => p.item1 != n.item1)
+          .bufferCount(2)
+          .map((e) => e.first),
     ]).doOnData((event) {
       print('######################' + event.item1.toString() + event.item2);
     }).publish();
@@ -108,7 +115,7 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
       stateStream$: uploadStream,
       trailerUrl: trailerTypeUrlSubject.add,
       posterUrl: posterTypeUrlSubject.add,
-      trailerUrlStream$: trailerTypeUrlSubject.stream,
+      trailerUrlStream$: trailerStream,
       posterUrlStream$: posterStream,
     );
   }
