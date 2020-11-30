@@ -43,6 +43,7 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
   @override
   void dispose() {
     controllers.values.forEach((element) => element.dispose());
+
     super.dispose();
   }
 

@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Movie ticket',
         theme: themeData,
-        home: UploadMoviePage(),
+        home: SplashPage(),
         routes: routes,
         debugShowCheckedModeBanner: false,
       ),
