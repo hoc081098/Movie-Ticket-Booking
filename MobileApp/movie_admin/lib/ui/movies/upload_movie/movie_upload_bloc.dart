@@ -4,6 +4,7 @@ import 'package:disposebag/disposebag.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
+import 'package:movie_admin/ui/widgets/loading_button.dart';
 import 'package:tuple/tuple.dart';
 import 'movie_upload_input.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,22 +18,19 @@ import '../../../utils/type_defs.dart';
 enum UrlType { URL, FILE }
 
 class MovieUploadBloc extends DisposeCallbackBaseBloc {
-  final Function0<List<Category>> loadCategory;
-  final Function1<String, List<Person>> loadPerson;
+  final Function1<int, void> loadCategory;
+  final Function1<String, void> loadPerson;
   final Function1<MovieUploadInput, void> uploadMovie;
   final Function1<Tuple2<UrlType, String>, void> posterUrl;
   final Function1<Tuple2<UrlType, String>, void> trailerUrl;
 
   final Stream<List<Category>> fetchCategory$;
   final Stream<List<Person>> showSearch$;
-  final Stream<bool> loading$;
-  final Stream<Movie> stateStream$;
+  final Stream<ButtonState> stateStream$;
   final Stream<Tuple2<UrlType, String>> posterUrlStream$;
   final Stream<Tuple2<UrlType, String>> trailerUrlStream$;
-  final Stream<String> choiceFile$;
 
   MovieUploadBloc._({
-    @required this.choiceFile$,
     @required this.posterUrl,
     @required this.trailerUrl,
     @required this.loadCategory,
@@ -40,7 +38,6 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
     @required this.uploadMovie,
     @required this.fetchCategory$,
     @required this.showSearch$,
-    @required this.loading$,
     @required this.stateStream$,
     @required this.trailerUrlStream$,
     @required this.posterUrlStream$,
@@ -49,69 +46,86 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
 
   factory MovieUploadBloc(MovieRepository repository) {
     final uploadMovieSubject = PublishSubject<MovieUploadInput>();
-    final loadingSubject = BehaviorSubject.seeded(false);
     final posterTypeUrlSubject =
         BehaviorSubject.seeded(Tuple2(UrlType.FILE, ''));
     final trailerTypeUrlSubject =
         BehaviorSubject.seeded(Tuple2(UrlType.FILE, ''));
+    final loadCategorySubject = BehaviorSubject.seeded(0);
+    final loadPersonSubject = PublishSubject();
 
-    final choiceFile = Rx.merge([
-      posterTypeUrlSubject
-          .where((e) => e.item1 == UrlType.FILE)
-          .map((e) => e.item2)
-          .where((e) => e.isNotEmpty),
-      trailerTypeUrlSubject
-          .where((e) => e.item1 == UrlType.FILE)
-          .map((e) => e.item2)
-          .where((e) => e.isNotEmpty)
-    ]).exhaustMap(
-      (path) => Rx.defer(() async* {
+    final posterStream = posterTypeUrlSubject
+        .exhaustMap((value) => Rx.defer(() async* {
+              if (value.item1 == UrlType.FILE && value.item2.isNotEmpty) {
+                final result = await repository.uploadUrl(value.item2);
+                yield Tuple2(value.item1, result);
+              } else {
+                yield value;
+              }
+            }))
+        .publish();
 
-      }),
-    );
+    final trailerStream = trailerTypeUrlSubject
+        .exhaustMap((value) => Rx.defer(() async* {
+              if (value.item1 == UrlType.FILE && value.item2.isNotEmpty) {
+                final result = await repository.uploadUrl(value.item2);
+                yield Tuple2(value.item1, result);
+              } else {
+                yield value;
+              }
+            }))
+        .publish();
 
-    final posterStream = Rx.merge<Tuple2<UrlType, String>>([
-      posterTypeUrlSubject
-          .distinct((p, n) => p.item1 == n.item1)
-          .bufferCount(2)
-          .map((e) => e.first),
-    ]).doOnData((event) {
-      print('######################' + event.item1.toString() + event.item2);
-    }).publish();
+    final categoryStream = loadCategorySubject
+        .flatMap((value) => Rx.defer(() async* {
+              final result = await repository.getListCategory();
+              yield result;
+            }))
+        .publish();
 
-    final trailerStream = Rx.merge<Tuple2<UrlType, String>>([
-      posterTypeUrlSubject
-          .distinct((p, n) => p.item1 != n.item1)
-          .bufferCount(2)
-          .map((e) => e.first),
-    ]).doOnData((event) {
-      print('######################' + event.item1.toString() + event.item2);
-    }).publish();
+    final personStream = loadPersonSubject
+        .exhaustMap((value) => Rx.defer(() async* {
+              final result = await repository.getListSearchPerson(value);
+              yield result;
+            }))
+        .publish();
 
     final uploadStream = uploadMovieSubject
         .where((e) => e.isHasData())
         .exhaustMap(
           (input) => Rx.defer(() async* {
-            yield await repository.uploadMovie(input.toMovie());
+            yield ButtonState.loading;
+            final movie = await repository.uploadMovie(input.toMovie());
+            if (movie.id != null) {
+              yield ButtonState.success;
+            } else {
+              yield ButtonState.fail;
+            }
           }),
         )
         .where((movie) => movie != null)
-        .doOnListen(() => loadingSubject.add(true))
-        .doOnData((event) => loadingSubject.add(false))
-        .doOnError((_, track) => loadingSubject.add(false))
         .publish();
 
-    final controllers = [];
-    final streams = [];
+    final controllers = [
+      loadPersonSubject,
+      loadCategorySubject,
+      uploadMovieSubject,
+      posterTypeUrlSubject,
+      trailerTypeUrlSubject,
+    ];
+    final streams = [
+      uploadStream.connect(),
+      personStream.connect(),
+      categoryStream.connect(),
+      trailerStream.connect(),
+      posterStream.connect(),
+    ];
     return MovieUploadBloc._(
       dispose: DisposeBag([...controllers, ...streams]).dispose,
-      choiceFile$: choiceFile,
-      loadCategory: null,
-      loadPerson: null,
+      loadCategory: loadCategorySubject.add,
+      loadPerson: loadPersonSubject.add,
       uploadMovie: uploadMovieSubject.add,
-      fetchCategory$: null,
-      showSearch$: null,
-      loading$: null,
+      fetchCategory$: categoryStream,
+      showSearch$: personStream,
       stateStream$: uploadStream,
       trailerUrl: trailerTypeUrlSubject.add,
       posterUrl: posterTypeUrlSubject.add,

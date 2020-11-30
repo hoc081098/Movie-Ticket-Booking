@@ -3,6 +3,7 @@ import '../../../domain/model/age_type.dart';
 import '../../../domain/model/category.dart';
 import '../../../domain/model/movie.dart';
 import '../../../domain/model/person.dart';
+import 'movie_upload_bloc.dart';
 
 class MovieUploadInput {
   MovieUploadInput._({
@@ -19,6 +20,22 @@ class MovieUploadInput {
     @required this.categorys,
   });
 
+  factory MovieUploadInput.init() {
+    return MovieUploadInput._(
+      title: null,
+      trailerVideoUrl: '',
+      posterUrl: '',
+      overview: '',
+      releasedDate: DateTime.now(),
+      duration: 0,
+      directors: [],
+      actors: [],
+      originalLanguage: 'en',
+      ageType: AgeType.P,
+      categorys: [],
+    );
+  }
+
   String title;
   String trailerVideoUrl;
   String posterUrl;
@@ -30,22 +47,6 @@ class MovieUploadInput {
   String originalLanguage;
   AgeType ageType;
   List<Category> categorys;
-
-  factory MovieUploadInput.init() {
-    return MovieUploadInput._(
-      title: '',
-      trailerVideoUrl: '',
-      posterUrl: '',
-      overview: '',
-      releasedDate: DateTime(2020),
-      duration: 0,
-      directors: [],
-      actors: [],
-      originalLanguage: '',
-      ageType: AgeType.P,
-      categorys: [],
-    );
-  }
 
   Movie toMovie() {
     return Movie(
@@ -81,4 +82,54 @@ class MovieUploadInput {
       ageType != null &&
       actors.isNotEmpty &&
       categorys.isNotEmpty;
+}
+
+class MovieUploadState {
+  MovieUploadState._({
+    @required this.title,
+    @required this.trailerVideoUrl,
+    @required this.posterUrl,
+    @required this.overview,
+    @required this.releasedDate,
+    @required this.duration,
+    @required this.directors,
+    @required this.actors,
+    @required this.originalLanguage,
+    @required this.ageType,
+    @required this.categorys,
+    @required this.typeUrlTrailer,
+    @required this.typeUrlPoster,
+  });
+
+  factory MovieUploadState.init() {
+    return MovieUploadState._(
+      title: '',
+      trailerVideoUrl: '',
+      posterUrl: '',
+      overview: '',
+      releasedDate: DateTime(2020),
+      duration: 0,
+      directors: [],
+      actors: [],
+      originalLanguage: '',
+      ageType: AgeType.P,
+      categorys: [],
+      typeUrlPoster: UrlType.FILE,
+      typeUrlTrailer: UrlType.FILE,
+    );
+  }
+
+  String title;
+  String trailerVideoUrl;
+  String posterUrl;
+  String overview;
+  DateTime releasedDate;
+  int duration;
+  List<Person> directors;
+  List<Person> actors;
+  String originalLanguage;
+  AgeType ageType;
+  List<Category> categorys;
+  UrlType typeUrlPoster;
+  UrlType typeUrlTrailer;
 }

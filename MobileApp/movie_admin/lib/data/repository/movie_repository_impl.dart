@@ -73,7 +73,7 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<List<Category>> getListCategory(String name) async {
+  Future<List<Category>> getListCategory() async {
     try {
       final res = _authClient.getBody(buildUrl('categories/')) as List;
       return res

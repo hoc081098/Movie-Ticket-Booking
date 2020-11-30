@@ -1,8 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_admin/domain/model/movie.dart';
+import '../../app_scaffold.dart';
+import '../../widgets/multi_pick_person.dart';
+import '../../../domain/model/person.dart';
 import 'package:search_page/search_page.dart';
 import 'package:tuple/tuple.dart';
 
@@ -31,19 +37,19 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
     _RowTextType.TRAILER_URL: TextEditingController(),
     _RowTextType.RELEASED_DAY: TextEditingController(),
   };
+  MovieUploadInput movieUploadInput = MovieUploadInput.init();
 
   MovieUploadBloc bloc;
 
   @override
   void didChangeDependencies() {
-    bloc = MovieUploadBloc(Provider.of<MovieRepository>(context));
+    bloc ??= BlocProvider.of<MovieUploadBloc>(context);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     controllers.values.forEach((element) => element.dispose());
-
     super.dispose();
   }
 
@@ -55,31 +61,18 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
       appBar: AppBar(
         title: Text('Upload Movie'),
       ),
-      body: StreamBuilder<MovieUploadInput>(
-        initialData: MovieUploadInput.init(),
-        builder: (context, snapshot) {
-          return ListView(
-            children: _RowTextType.values
-                .map((e) => Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: _typeToWidget(e) ?? Text('11111'),
-                    ))
-                .toList(),
-          );
-        },
+      body: ListView(
+        children: _RowTextType.values
+            .map((e) => Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: _typeToWidget(
+                        e,
+                      ) ??
+                      Text('11111'),
+                ))
+            .toList(),
       ),
     );
-  }
-
-  void updateForState(MovieUploadInput state) {
-    controllers[_RowTextType.TITLE].text = state.title;
-    controllers[_RowTextType.ORIGIN_LANG].text = state.originalLanguage;
-    controllers[_RowTextType.OVERVIEW].text = state.overview;
-    controllers[_RowTextType.DURATION].text = state.duration.toString();
-    controllers[_RowTextType.POSTER_URL].text = state.posterUrl;
-    controllers[_RowTextType.TRAILER_URL].text = state.trailerVideoUrl;
-    controllers[_RowTextType.RELEASED_DAY].text =
-        state.releasedDate.toIso8601String();
   }
 
   Widget _buildTextRow({
@@ -150,6 +143,10 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
         Expanded(
           child: typeUrl == UrlType.FILE
               ? RaisedButton(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(color: Colors.deepPurpleAccent)),
                   elevation: 3,
                   onPressed: () async {
                     final imagePicker = ImagePicker();
@@ -205,10 +202,8 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
             ),
             onSelected: (e) {
               if (title == 'Poster url: ') {
-                bloc.posterUrl(Tuple2(typeUrl, controller.text));
                 bloc.posterUrl(Tuple2(e, ''));
               } else {
-                bloc.posterUrl(Tuple2(typeUrl, controller.text));
                 bloc.trailerUrl(Tuple2(e, ''));
               }
             },
@@ -234,62 +229,57 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
   Widget _buildReleasedDayTextField() {
     return Row(
       children: [
+        SizedBox(width: 10),
         Text(
           'Released day: ',
           style: TextStyle(
             color: Colors.black,
-            fontSize: 15,
-            fontStyle: FontStyle.italic,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
           ),
         ),
-        Text(
-          'Pick date',
-          style: TextStyle(
-            decoration: TextDecoration.underline,
-            color: Colors.black,
-            fontSize: 15,
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-        DateTimeField(
-          format: releasedDateFormat,
-          readOnly: true,
-          controller: controllers[_RowTextType.RELEASED_DAY],
-          onShowPicker: (context, currentValue) {
-            return showDatePicker(
-              context: context,
-              firstDate: DateTime(1900),
-              initialDate: currentValue ?? DateTime.now(),
-              lastDate: DateTime(2100),
-              selectableDayPredicate: (date) => date.isBefore(DateTime.now()),
-            );
-          },
-          validator: (date) {
-            if (date == null) {
-              return null;
-            }
-            return date.isAfter(DateTime.now())
-                ? 'Invalid released date'
-                : null;
-          },
-          onChanged: (v) => releasedDay = v,
-          resetIcon: Icon(Icons.delete, color: Colors.white),
-          decoration: InputDecoration(
-            prefixIcon: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 8.0),
-              child: Icon(
-                Icons.date_range,
-                color: Colors.white,
+        Expanded(
+          child: DateTimeField(
+            format: releasedDateFormat,
+            readOnly: true,
+            controller: controllers[_RowTextType.RELEASED_DAY],
+            onShowPicker: (context, currentValue) {
+              return showDatePicker(
+                context: context,
+                firstDate: DateTime(1900),
+                initialDate: currentValue ?? DateTime.now(),
+                lastDate: DateTime(2100),
+                selectableDayPredicate: (date) => date.isBefore(DateTime.now()),
+              );
+            },
+            validator: (date) {
+              if (date == null) {
+                return null;
+              }
+              return date.isAfter(DateTime.now())
+                  ? 'Invalid released date'
+                  : null;
+            },
+            onChanged: (v) => releasedDay = v,
+            resetIcon: Icon(Icons.delete, color: Colors.white),
+            decoration: InputDecoration(
+              prefixIcon: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 8.0),
+                child: Icon(
+                  Icons.date_range,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            labelText: 'Released date',
-            labelStyle: TextStyle(color: Colors.white),
-            fillColor: Colors.white,
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
+              labelText: 'Released date',
+              labelStyle: TextStyle(color: Colors.black54),
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(color: Colors.deepPurpleAccent)),
             ),
           ),
         ),
+        SizedBox(width: 20)
       ],
     );
   }
@@ -313,35 +303,26 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
             ),
           ),
         ),
-        RaisedButton(
-          onPressed: () => showSearch(
-            context: context,
-            delegate: SearchPage<String>(
-              items: ['', '1', '13', '14'],
-              searchLabel: 'Search people',
-              suggestion: Center(
-                child: Text('Filter people by name, surname or age'),
-              ),
-              failure: Center(
-                child: Text('No person found :('),
-              ),
-              filter: (person) => [person],
-              builder: (person) => ListTile(
-                title: Text('12345'),
-              ),
-            ),
-          ),
-          child: Text(
-            '',
-            style: TextStyle(
-              backgroundColor: Colors.black12,
-              decoration: TextDecoration.overline,
-              color: Colors.black,
-              fontSize: 15,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ),
+        StreamBuilder<List<Person>>(
+            stream: bloc.showSearch$,
+            builder: (context, snapshot) {
+              return RaisedButton(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(color: Colors.deepPurpleAccent)),
+                onPressed: () {
+                  AppScaffold.of(context)
+                      .pushNamed(MultiPickPersonWidget.routeName);
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: snapshot.data?.length ?? 0 == 0
+                      ? Text('Search...')
+                      : Text(snapshot.data.length.toString() + ' person'),
+                ),
+              );
+            }),
       ],
     );
   }
@@ -375,7 +356,7 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
           textHint: 'Enter language',
         );
       case _RowTextType.RELEASED_DAY:
-        return null;
+        return _buildReleasedDayTextField();
       case _RowTextType.TRAILER_URL:
         return StreamBuilder<Tuple2<UrlType, String>>(
           stream: bloc.trailerUrlStream$,
@@ -407,35 +388,54 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
       case _RowTextType.CATEGORY:
         return _buildChoiceSearch(e);
       case _RowTextType.BUTTON_UPLOAD:
-        return _buildLoadingButton(ButtonState.idle);
+        return StreamBuilder<ButtonState>(
+            stream: bloc.stateStream$,
+            builder: (context, snapshot) {
+              if (snapshot.data == ButtonState.success) {
+                AppScaffold.of(context).pop();
+              }
+              return _buildLoadingButton(snapshot.data ?? ButtonState.idle);
+            });
       default:
         return Center(child: Text('Error'));
     }
   }
 
   Widget _buildLoadingButton(ButtonState state) {
-    return ProgressButton.icon(
-      iconedButtons: {
-        ButtonState.idle: IconedButton(
-            text: 'Update',
-            icon: Icon(Icons.update, color: Colors.white),
-            color: Colors.deepPurple.shade500),
-        ButtonState.loading:
-            IconedButton(text: 'Loading', color: Colors.deepPurple.shade700),
-        ButtonState.fail: IconedButton(
-            text: 'Failed',
-            icon: Icon(Icons.cancel, color: Colors.white),
-            color: Colors.red.shade300),
-        ButtonState.success: IconedButton(
-            text: 'Success',
-            icon: Icon(
-              Icons.check_circle,
-              color: Colors.white,
-            ),
-            color: Colors.green.shade400)
-      },
-      onPressed: () => bloc.uploadMovie(null),
-      state: state,
+    return Row(
+      children: [
+        SizedBox(
+          width: 32,
+        ),
+        Expanded(
+          child: ProgressButton.icon(
+            iconedButtons: {
+              ButtonState.idle: IconedButton(
+                  text: 'ADD',
+                  icon: Icon(Icons.update, color: Colors.white),
+                  color: Colors.deepPurple.shade500),
+              ButtonState.loading: IconedButton(
+                  text: 'Loading', color: Colors.deepPurple.shade700),
+              ButtonState.fail: IconedButton(
+                  text: 'Failed',
+                  icon: Icon(Icons.cancel, color: Colors.white),
+                  color: Colors.red.shade300),
+              ButtonState.success: IconedButton(
+                  text: 'Success',
+                  icon: Icon(
+                    Icons.check_circle,
+                    color: Colors.white,
+                  ),
+                  color: Colors.green.shade400)
+            },
+            onPressed: () => bloc.uploadMovie(null),
+            state: state,
+          ),
+        ),
+        SizedBox(
+          width: 32,
+        ),
+      ],
     );
   }
 }

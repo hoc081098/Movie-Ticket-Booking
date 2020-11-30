@@ -1,18 +1,16 @@
-import 'dart:js';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../app_scaffold.dart';
+import '../movies/upload_movie/movie_upload_bloc.dart';
 import '../movies/upload_movie/movie_upload_page.dart';
-import '../../utils/type_defs.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../domain/model/person.dart';
 
 class MultiPickPersonWidget extends StatefulWidget {
   static final String routeName = 'MultiPickPersonWidget';
-  final Function1<String, Future<List<Person>>> request;
+  final MovieUploadBloc bloc;
 
-  MultiPickPersonWidget(this.request);
+  MultiPickPersonWidget(this.bloc);
 
   @override
   _MultiPickPersonState createState() => _MultiPickPersonState();
@@ -21,30 +19,23 @@ class MultiPickPersonWidget extends StatefulWidget {
 class _MultiPickPersonState extends State<MultiPickPersonWidget> {
   final key = GlobalKey();
   final searchController = TextEditingController();
-  PublishSubject<String> searchSubject;
-  Stream<List<Person>> searchStream;
   List<Person> listPersonChoices = List.empty();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    searchSubject ??= PublishSubject<String>();
-    searchStream ??= searchSubject
-        .debounceTime(Duration(milliseconds: 200))
-        .exhaustMap((value) => Rx.defer(() async* {
-              final listPerson = await widget.request(value);
-              yield listPerson;
-            }))
-        .publish();
     searchController
-        .addListener(() => searchSubject.add(searchController.text));
+        .addListener(() => widget.bloc.loadPerson(searchController.text));
   }
 
   @override
   void dispose() {
     searchController?.dispose();
-    searchStream?.distinct();
-    searchSubject?.distinct();
     super.dispose();
   }
 
@@ -97,7 +88,7 @@ class _MultiPickPersonState extends State<MultiPickPersonWidget> {
 
   Widget _buildListView() {
     return StreamBuilder<List<Person>>(
-        stream: searchStream,
+        stream: widget.bloc.showSearch$,
         builder: (context, snapshot) {
           final listData = snapshot.data ?? List.empty();
           return ListView.builder(
