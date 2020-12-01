@@ -26,7 +26,7 @@ class MovieUploadInput {
       trailerVideoUrl: '',
       posterUrl: '',
       overview: '',
-      releasedDate: DateTime.now(),
+      releasedDate: '',
       duration: 0,
       directors: [],
       actors: [],
@@ -40,7 +40,7 @@ class MovieUploadInput {
   String trailerVideoUrl;
   String posterUrl;
   String overview;
-  DateTime releasedDate;
+  String releasedDate;
   int duration;
   List<Person> directors;
   List<Person> actors;
@@ -56,7 +56,7 @@ class MovieUploadInput {
       trailerVideoUrl: trailerVideoUrl,
       posterUrl: posterUrl,
       overview: overview,
-      releasedDate: releasedDate,
+      releasedDate: DateTime.parse(releasedDate).toLocal(),
       duration: duration,
       originalLanguage: originalLanguage,
       createdAt: null,

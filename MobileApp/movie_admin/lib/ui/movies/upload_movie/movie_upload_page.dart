@@ -5,6 +5,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_admin/domain/model/age_type.dart';
 import 'package:movie_admin/domain/model/movie.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/multi_pick_person.dart';
@@ -63,13 +64,14 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
       ),
       body: ListView(
         children: _RowTextType.values
-            .map((e) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  child: _typeToWidget(
-                        e,
-                      ) ??
-                      Text('11111'),
-                ))
+            .map((e) =>
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: _typeToWidget(
+                e,
+              ) ??
+                  Text('11111'),
+            ))
             .toList(),
       ),
     );
@@ -109,9 +111,9 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                 hintText: textHint,
                 border: maxLines == null || maxLines == 1
                     ? UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8))
+                    borderRadius: BorderRadius.circular(8))
                     : OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(8)),
                 contentPadding: EdgeInsets.all(5.0),
                 hintStyle: TextStyle(color: Colors.grey)),
           ),
@@ -143,48 +145,48 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
         Expanded(
           child: typeUrl == UrlType.FILE
               ? RaisedButton(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(color: Colors.deepPurpleAccent)),
-                  elevation: 3,
-                  onPressed: () async {
-                    final imagePicker = ImagePicker();
-                    if (title == 'Poster url: ') {
-                      final image = await imagePicker.getImage(
-                        source: ImageSource.gallery,
-                        maxWidth: 720,
-                        maxHeight: 720,
-                      );
-                      bloc.posterUrl(Tuple2(typeUrl, image.path));
-                    } else {
-                      final video = await imagePicker.getVideo(
-                        source: ImageSource.gallery,
-                      );
-                      bloc.trailerUrl(Tuple2(typeUrl, video.path));
-                    }
-                  },
-                  child: Text(
-                    controller.text.isEmpty ? 'Empty' : controller.text,
-                    style: TextStyle(
-                      decoration: TextDecoration.none,
-                      color: Colors.black,
-                      fontSize: 14,
-                    ),
-                  ),
-                )
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(color: Colors.deepPurpleAccent)),
+            elevation: 3,
+            onPressed: () async {
+              final imagePicker = ImagePicker();
+              if (title == 'Poster url: ') {
+                final image = await imagePicker.getImage(
+                  source: ImageSource.gallery,
+                  maxWidth: 720,
+                  maxHeight: 720,
+                );
+                bloc.posterUrl(Tuple2(typeUrl, image.path));
+              } else {
+                final video = await imagePicker.getVideo(
+                  source: ImageSource.gallery,
+                );
+                bloc.trailerUrl(Tuple2(typeUrl, video.path));
+              }
+            },
+            child: Text(
+              controller.text.isEmpty ? 'Empty' : controller.text,
+              style: TextStyle(
+                decoration: TextDecoration.none,
+                color: Colors.black,
+                fontSize: 14,
+              ),
+            ),
+          )
               : TextFormField(
-                  controller: controller,
-                  keyboardType: TextInputType.text,
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                      hintText: 'Url',
-                      border: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      contentPadding: EdgeInsets.all(5.0),
-                      hintStyle: TextStyle(color: Colors.grey)),
+            controller: controller,
+            keyboardType: TextInputType.text,
+            maxLines: 1,
+            decoration: InputDecoration(
+                hintText: 'Url',
+                border: UnderlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
+                contentPadding: EdgeInsets.all(5.0),
+                hintStyle: TextStyle(color: Colors.grey)),
+          ),
         ),
         SizedBox(width: 5),
         PopupMenuButton<UrlType>(
@@ -207,20 +209,22 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                 bloc.trailerUrl(Tuple2(e, ''));
               }
             },
-            itemBuilder: (context) => UrlType.values
-                .map(
-                  (e) => PopupMenuItem(
-                    value: e,
-                    child: Text(
-                      e.toString().split('.')[1],
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
+            itemBuilder: (context) =>
+                UrlType.values
+                    .map(
+                      (e) =>
+                      PopupMenuItem(
+                        value: e,
+                        child: Text(
+                          e.toString().split('.')[1],
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
                 )
-                .toList()),
+                    .toList()),
         SizedBox(width: 5),
       ],
     );
@@ -294,8 +298,8 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
             type == _RowTextType.CATEGORY
                 ? 'Category: '
                 : type == _RowTextType.ACTOR
-                    ? 'Actor: '
-                    : 'Director: ',
+                ? 'Actor: '
+                : 'Director: ',
             style: TextStyle(
               color: Colors.black,
               fontSize: 16,
@@ -382,7 +386,7 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
           },
         );
       case _RowTextType.AGE_TYPE:
-        return Text('');
+        return _buildAgeType();
       case _RowTextType.DIRECTOR:
       case _RowTextType.ACTOR:
       case _RowTextType.CATEGORY:
@@ -428,13 +432,82 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                   ),
                   color: Colors.green.shade400)
             },
-            onPressed: () => bloc.uploadMovie(null),
+            onPressed: () {
+              movieUploadInput.title = controllers[_RowTextType.TITLE].text;
+              movieUploadInput.overview =
+                  controllers[_RowTextType.OVERVIEW].text;
+              movieUploadInput.releasedDate =
+                  controllers[_RowTextType.RELEASED_DAY].text;
+              movieUploadInput.posterUrl =
+                  controllers[_RowTextType.POSTER_URL].text;
+              movieUploadInput.trailerVideoUrl =
+                  controllers[_RowTextType.TRAILER_URL].text;
+
+            },
             state: state,
           ),
         ),
         SizedBox(
           width: 32,
         ),
+      ],
+    );
+  }
+
+
+  Widget _buildAgeType() {
+    return Row(
+      crossAxisAlignment: 1
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(width: 10),
+        SizedBox(
+          width: 100,
+          child: Text(
+            'Age type',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        Container(
+          width: 200,
+          child: PopupMenuButton<AgeType>(
+              child: Row(
+                children: [
+                  Text(
+                    AgeType.C13.toString().split('.')[1],
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Icon(Icons.arrow_drop_down),
+                ],
+              ),
+              onSelected: (e) {
+                movieUploadInput.ageType = e;
+              },
+              itemBuilder: (context) =>
+                  AgeType.values
+                      .map(
+                        (e) =>
+                        PopupMenuItem(
+                          value: e,
+                          child: Text(
+                            e.toString().split('.')[1],
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                  ).toList()),
+        ),
+        SizedBox(width: 10),
       ],
     );
   }
