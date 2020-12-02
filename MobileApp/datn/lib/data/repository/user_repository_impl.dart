@@ -241,13 +241,8 @@ class UserRepositoryImpl implements UserRepository {
           .child('avatar_images')
           .child(currentUser.uid)
           .putFile(avatarFile);
-
-      await task.onComplete;
-
-      if (task.isSuccessful) {
-        updateBody['avatar'] =
-            (await task.lastSnapshot.ref.getDownloadURL()).toString();
-      }
+      await task;
+      updateBody['avatar'] = await task.snapshot.ref.getDownloadURL();
     }
 
     if (birthday != null) {
