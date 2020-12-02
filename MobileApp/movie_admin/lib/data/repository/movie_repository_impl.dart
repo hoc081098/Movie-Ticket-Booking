@@ -59,12 +59,14 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<List<Person>> getListSearchPerson(String name) async {
     try {
       final res = _authClient
-          .getBody(buildUrl('people/search/', {'name': name})) as List;
+          .getBody(buildUrl('people/search', {'name': name})) as List;
+      print('####### res: ' + res[0].toString());
       return res
           .map((e) => PersonResponse.fromJson(e))
           .map((e) => personResponseToPerson(e))
           .toList();
     } on ErrorResponse catch (e) {
+      print('######### error: ' + e.error.toString());
       if (e.statusCode == HttpStatus.notFound) {
         throw const NotCompletedManagerUserException();
       }

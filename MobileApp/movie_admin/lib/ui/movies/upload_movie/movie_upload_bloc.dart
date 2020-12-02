@@ -1,19 +1,15 @@
-import 'dart:io';
-
 import 'package:disposebag/disposebag.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
 import 'package:movie_admin/ui/widgets/loading_button.dart';
-import 'package:tuple/tuple.dart';
-import 'movie_upload_input.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../domain/repository/movie_repository.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/category.dart';
-import '../../../domain/model/movie.dart';
 import '../../../domain/model/person.dart';
+import '../../../domain/repository/movie_repository.dart';
 import '../../../utils/type_defs.dart';
+import 'movie_upload_input.dart';
 
 enum UrlType { URL, FILE }
 
@@ -51,7 +47,7 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
     final trailerTypeUrlSubject =
         BehaviorSubject.seeded(Tuple2(UrlType.FILE, ''));
     final loadCategorySubject = BehaviorSubject.seeded(0);
-    final loadPersonSubject = PublishSubject();
+    final loadPersonSubject = PublishSubject<String>();
 
     final posterStream = posterTypeUrlSubject
         .exhaustMap((value) => Rx.defer(() async* {
@@ -83,7 +79,10 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
         .publish();
 
     final personStream = loadPersonSubject
+        .where((event) => event.isNotEmpty)
+        .debounceTime(Duration(milliseconds: 300))
         .exhaustMap((value) => Rx.defer(() async* {
+              print('##### value:  ' + value);
               final result = await repository.getListSearchPerson(value);
               yield result;
             }))

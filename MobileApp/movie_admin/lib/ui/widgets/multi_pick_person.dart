@@ -41,19 +41,12 @@ class _MultiPickPersonState extends State<MultiPickPersonWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: key,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('Upload Movie'),
-      ),
-      body: Column(
-        children: [
-          _buildSearchView(),
-          Expanded(child: _buildListView()),
-          _buildButton(context)
-        ],
-      ),
+    return Column(
+      children: [
+        _buildSearchView(),
+        Expanded(child: _buildListView()),
+        _buildButton(context)
+      ],
     );
   }
 
@@ -91,6 +84,7 @@ class _MultiPickPersonState extends State<MultiPickPersonWidget> {
         stream: widget.bloc.showSearch$,
         builder: (context, snapshot) {
           final listData = snapshot.data ?? List.empty();
+          print('length list ' + listData.length.toString());
           return ListView.builder(
               itemCount: listData.length,
               itemBuilder: (context, index) {
