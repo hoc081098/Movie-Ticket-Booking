@@ -14,7 +14,6 @@ import 'movie_upload_input.dart';
 enum UrlType { URL, FILE }
 
 class MovieUploadBloc extends DisposeCallbackBaseBloc {
-  final Function1<int, void> loadCategory;
   final Function1<String, void> loadPerson;
   final Function1<MovieUploadInput, void> uploadMovie;
   final Function1<Tuple2<UrlType, String>, void> posterUrl;
@@ -29,7 +28,6 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
   MovieUploadBloc._({
     @required this.posterUrl,
     @required this.trailerUrl,
-    @required this.loadCategory,
     @required this.loadPerson,
     @required this.uploadMovie,
     @required this.fetchCategory$,
@@ -46,8 +44,8 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
         BehaviorSubject.seeded(Tuple2(UrlType.FILE, ''));
     final trailerTypeUrlSubject =
         BehaviorSubject.seeded(Tuple2(UrlType.FILE, ''));
-    final loadCategorySubject = BehaviorSubject.seeded(0);
-    final loadPersonSubject = PublishSubject<String>();
+    final loadCategorySubject = BehaviorSubject<String>();
+    final loadPersonSubject = BehaviorSubject.seeded('');
 
     final posterStream = posterTypeUrlSubject
         .exhaustMap((value) => Rx.defer(() async* {
@@ -72,6 +70,7 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
         .publish();
 
     final categoryStream = loadCategorySubject
+        .startWith('')
         .flatMap((value) => Rx.defer(() async* {
               final result = await repository.getListCategory();
               yield result;
@@ -79,12 +78,15 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
         .publish();
 
     final personStream = loadPersonSubject
-        .where((event) => event.isNotEmpty)
         .debounceTime(Duration(milliseconds: 300))
         .exhaustMap((value) => Rx.defer(() async* {
-              print('##### value:  ' + value);
-              final result = await repository.getListSearchPerson(value);
-              yield result;
+              if (value.isEmpty) {
+                yield <Person>[];
+              } else {
+                yield null;
+                final result = await repository.getListSearchPerson(value);
+                yield result;
+              }
             }))
         .publish();
 
@@ -120,7 +122,6 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
     ];
     return MovieUploadBloc._(
       dispose: DisposeBag([...controllers, ...streams]).dispose,
-      loadCategory: loadCategorySubject.add,
       loadPerson: loadPersonSubject.add,
       uploadMovie: uploadMovieSubject.add,
       fetchCategory$: categoryStream,

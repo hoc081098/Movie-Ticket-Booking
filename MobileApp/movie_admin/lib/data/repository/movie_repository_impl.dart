@@ -2,12 +2,10 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
-import 'package:movie_admin/data/remote/request/movie_request.dart';
-import 'package:movie_admin/data/remote/response/category_response.dart';
-import 'package:movie_admin/data/remote/response/person_response.dart';
-import 'package:movie_admin/domain/model/category.dart';
-import 'package:movie_admin/domain/model/person.dart';
-import 'package:movie_admin/domain/model/user.dart';
+import '../remote/response/category_response.dart';
+import '../remote/response/person_response.dart';
+import '../../domain/model/category.dart';
+import '../../domain/model/person.dart';
 
 import '../../domain/model/exception.dart';
 import '../../domain/model/movie.dart';
@@ -58,15 +56,13 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<List<Person>> getListSearchPerson(String name) async {
     try {
-      final res = _authClient
-          .getBody(buildUrl('people/search', {'name': name})) as List;
-      print('####### res: ' + res[0].toString());
+      final res = await _authClient
+          .getBody(buildUrl('people/search/', {'name': name})) as List;
       return res
           .map((e) => PersonResponse.fromJson(e))
           .map((e) => personResponseToPerson(e))
           .toList();
     } on ErrorResponse catch (e) {
-      print('######### error: ' + e.error.toString());
       if (e.statusCode == HttpStatus.notFound) {
         throw const NotCompletedManagerUserException();
       }
@@ -77,7 +73,7 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<List<Category>> getListCategory() async {
     try {
-      final res = _authClient.getBody(buildUrl('categories/')) as List;
+      final res = await _authClient.getBody(buildUrl('categories/')) as List;
       return res
           .map((e) => CategoryResponse.fromJson(e))
           .map((e) => categoryResponseToCategory(e))
