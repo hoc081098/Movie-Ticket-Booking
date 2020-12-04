@@ -4,6 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { SeatsService } from './seats.service';
 import { Seat } from './seat.schema';
 import { Ticket } from './ticket.schema';
+import { Roles, RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('seats')
 @UseGuards(AuthGuard)
@@ -28,6 +29,26 @@ export class SeatsController {
   @ApiOperation({
     description: 'Populated seat'
   })
+  @Get('tickets/show-times/:show_time_id')
+  getTicketsByShowTimeId(
+      @Param('show_time_id') showTimeId: string,
+  ): Promise<Ticket[]> {
+    return this.seatsService.getTicketsByShowTimeId(showTimeId);
+  }
+}
+
+@ApiTags('admin-seats')
+@UseGuards(AuthGuard, RolesGuard)
+@Controller('admin-seats')
+export class AdminSeatsController {
+  constructor(
+      private readonly seatsService: SeatsService,
+  ) {}
+
+  @ApiOperation({
+    description: 'Populated seat'
+  })
+  @Roles('ADMIN')
   @Get('tickets/show-times/:show_time_id')
   getTicketsByShowTimeId(
       @Param('show_time_id') showTimeId: string,
