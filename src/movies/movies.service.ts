@@ -260,4 +260,15 @@ export class MoviesService {
 
     return created;
   }
+
+  searchByTitle(title: string): Promise<Movie[]> {
+    return this.movieModel
+        .find({
+          title: {
+            $regex: title,
+            $options: 'i',
+          }
+        })
+        .exec();
+  }
 }

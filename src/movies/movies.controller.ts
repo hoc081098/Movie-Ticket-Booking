@@ -112,4 +112,13 @@ export class AdminMoviesController {
   ): Promise<Movie> {
     return this.moviesService.addMovie(dto);
   }
+
+  @ForAdmin()
+  @Roles('ADMIN')
+  @Get('search')
+  searchByTitle(
+      @Query('title') title: string,
+  ): Promise<Movie[]> {
+    return this.moviesService.searchByTitle(title);
+  }
 }
