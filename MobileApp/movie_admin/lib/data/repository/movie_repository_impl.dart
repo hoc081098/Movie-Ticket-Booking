@@ -97,17 +97,15 @@ class MovieRepositoryImpl implements MovieRepository {
           .putFile(
             File(path),
             identical(isVideo, true)
-                ? StorageMetadata(
+                ? SettableMetadata(
                     contentType: 'video/mp4',
                   )
                 : null,
           );
-      await task.onComplete;
-      if (task.isSuccessful) {
-        return (await task.lastSnapshot.ref.getDownloadURL()).toString();
-      }
-      throw const NotCompletedManagerUserException();
+      await task;
+      return await task.snapshot.ref.getDownloadURL();
     } on PlatformException catch (e) {
+      print(e);
       rethrow;
     }
   }

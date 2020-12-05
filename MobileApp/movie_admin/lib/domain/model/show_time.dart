@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:movie_admin/domain/model/movie.dart';
+
+import 'movie.dart';
 
 class ShowTime {
   final bool isActive;

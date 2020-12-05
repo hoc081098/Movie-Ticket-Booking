@@ -1,14 +1,14 @@
 import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_admin/domain/model/movie.dart';
-import 'package:movie_admin/ui/widgets/loading_button.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/model/category.dart';
+import '../../../domain/model/movie.dart';
 import '../../../domain/model/person.dart';
 import '../../../domain/repository/movie_repository.dart';
 import '../../../utils/utils.dart';
+import '../../widgets/loading_button.dart';
 import 'movie_upload_input.dart';
 
 enum UrlType { URL, FILE }
@@ -78,7 +78,8 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
             String trailer;
             if (input.trailerType == UrlType.FILE) {
               print('Start upload trailer: ${input.trailerFile}');
-              trailer = await repository.uploadUrl(input.trailerFile.path, true);
+              trailer =
+                  await repository.uploadUrl(input.trailerFile.path, true);
             } else {
               trailer = input.trailerVideoUrl;
             }

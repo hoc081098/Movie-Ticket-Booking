@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_admin/domain/model/theatre.dart';
+
+import '../../domain/model/theatre.dart';
 
 class SelectMoviePage extends StatefulWidget {
   static const routeName = '/home/show-times/select-movie';

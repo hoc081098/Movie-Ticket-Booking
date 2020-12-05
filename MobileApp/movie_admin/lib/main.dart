@@ -6,25 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_admin/data/repository/movie_repository_impl.dart';
-import 'package:movie_admin/data/repository/show_times_repository_impl.dart';
-import 'package:movie_admin/data/repository/theatres_repository_impl.dart';
-import 'package:movie_admin/data/repository/ticket_repository_impl.dart';
-import 'package:movie_admin/domain/repository/movie_repository.dart';
-import 'package:movie_admin/domain/repository/show_times_repository.dart';
-import 'package:movie_admin/domain/repository/theatres_repository.dart';
-import 'package:movie_admin/domain/repository/ticket_repo.dart';
-import 'data/repository/movie_repository_impl.dart';
-import 'data/repository/theatres_repository_impl.dart';
-import 'domain/repository/movie_repository.dart';
-import 'domain/repository/theatres_repository.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
+
+import './data/repository/movie_repository_impl.dart';
+import './data/repository/show_times_repository_impl.dart';
+import './data/repository/theatres_repository_impl.dart';
+import './data/repository/ticket_repository_impl.dart';
+import './domain/repository/movie_repository.dart';
+import './domain/repository/show_times_repository.dart';
+import './domain/repository/theatres_repository.dart';
+import './domain/repository/ticket_repo.dart';
 import 'data/local/user_local_source_impl.dart';
 import 'data/mappers.dart' as mappers;
 import 'data/remote/auth_client.dart';
 import 'data/repository/mannager_repository_impl.dart';
+import 'data/repository/movie_repository_impl.dart';
+import 'data/repository/theatres_repository_impl.dart';
 import 'data/repository/user_repository_impl.dart';
 import 'domain/repository/manager_repository.dart';
+import 'domain/repository/movie_repository.dart';
+import 'domain/repository/theatres_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
 import 'my_app.dart';
@@ -93,7 +94,8 @@ void main() async {
         Provider<ManagerRepository>(value: managerUsersRepository),
         Provider<MovieRepository>(value: movieRepository),
         Provider<TheatresRepository>(value: theatresRepository),
-        Provider<ShowTimesRepository>(value: ShowTimesRepositoryImpl(authClient)),
+        Provider<ShowTimesRepository>(
+            value: ShowTimesRepositoryImpl(authClient)),
         Provider<TicketRepository>(value: TicketRepositoryImpl(authClient)),
       ],
       child: MyApp(),

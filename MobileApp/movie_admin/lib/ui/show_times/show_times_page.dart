@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:movie_admin/domain/model/show_time.dart';
-import 'package:movie_admin/domain/model/theatre.dart';
-import 'package:movie_admin/domain/repository/show_times_repository.dart';
-import 'package:movie_admin/ui/app_scaffold.dart';
-import 'package:movie_admin/ui/show_times/select_movie_page.dart';
-import 'package:movie_admin/ui/widgets/empty_widget.dart';
-import 'package:movie_admin/ui/widgets/error_widget.dart';
-import 'package:movie_admin/utils/error.dart';
 
+import '../../domain/model/show_time.dart';
+import '../../domain/model/theatre.dart';
+import '../../domain/repository/show_times_repository.dart';
+import '../../ui/app_scaffold.dart';
+import '../../ui/show_times/select_movie_page.dart';
+import '../../ui/widgets/empty_widget.dart';
+import '../../ui/widgets/error_widget.dart';
+import '../../utils/error.dart';
 import 'list_item.dart';
 
 class ShowTimesPage extends StatefulWidget {

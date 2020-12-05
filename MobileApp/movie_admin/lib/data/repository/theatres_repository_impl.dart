@@ -86,12 +86,7 @@ class TheatresRepositoryImpl implements TheatresRepository {
         .child('theatre_images')
         .child(uuid.Uuid().v4())
         .putFile(file);
-    await task.onComplete;
-
-    if (task.isSuccessful) {
-      return (await task.lastSnapshot.ref.getDownloadURL()).toString();
-    } else {
-      throw 'Upload file error';
-    }
+    await task;
+    return await task.snapshot.ref.getDownloadURL();
   }
 }

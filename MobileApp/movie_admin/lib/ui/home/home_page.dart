@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:movie_admin/ui/movies/movies_page.dart';
-import 'package:movie_admin/ui/movies/upload_movie/movie_upload_page.dart';
-import 'package:movie_admin/ui/theatres/theatre_page.dart';
 
+import '../../ui/movies/movies_page.dart';
+import '../../ui/movies/upload_movie/movie_upload_page.dart';
+import '../../ui/theatres/theatre_page.dart';
 import '../../utils/type_defs.dart';
 import '../users/manager_users_page.dart';
+
+// ignore_for_file: prefer_single_quotes
 
 class HomePage extends StatefulWidget {
   @override

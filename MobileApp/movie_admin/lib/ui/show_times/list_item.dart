@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:movie_admin/domain/model/theatre.dart';
-import 'package:movie_admin/ui/app_scaffold.dart';
-import 'package:movie_admin/ui/show_times/ticket_page.dart';
 import 'package:octo_image/octo_image.dart';
 
 import '../../domain/model/show_time.dart';
+import '../../domain/model/theatre.dart';
+import '../app_scaffold.dart';
+import 'ticket_page.dart';
 
 class ShowTimeItem extends StatelessWidget {
   final ShowTime item;
-  final  Theatre theatre;
+  final Theatre theatre;
   static final showTimeDateFormat = DateFormat('dd/MM/yyyy, hh:mm a');
 
   ShowTimeItem({Key key, this.item, this.theatre}) : super(key: key);

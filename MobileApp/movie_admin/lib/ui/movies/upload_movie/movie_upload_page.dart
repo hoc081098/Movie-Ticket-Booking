@@ -466,7 +466,7 @@ class _UploadMoviePageState extends State<UploadMoviePage>
               updateDataForInput();
               print('cliced2');
 
-              print("############" + movieUploadInput.toString());
+              print('############' + movieUploadInput.toString());
               bloc.uploadMovie(movieUploadInput);
             },
             state: state,
