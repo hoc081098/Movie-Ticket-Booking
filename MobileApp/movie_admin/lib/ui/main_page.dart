@@ -4,6 +4,14 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:movie_admin/domain/repository/movie_repository.dart';
 import 'package:movie_admin/ui/movies/movie_info.dart';
+import 'package:movie_admin/ui/movies/upload_movie/movie_upload_bloc.dart';
+import 'package:movie_admin/ui/movies/upload_movie/movie_upload_page.dart';
+import 'package:movie_admin/ui/widgets/multi_pick_person.dart';
+import '../domain/repository/manager_repository.dart';
+import 'movies/movie_bloc.dart';
+import 'movies/movies_page.dart';
+import 'users/manager_users_bloc.dart';
+import 'users/manager_users_page.dart';
 import 'package:movie_admin/ui/theatres/add/add_theatre_page.dart';
 import 'package:movie_admin/ui/theatres/theatre_page.dart';
 
@@ -49,6 +57,13 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     MovieInfoPage.routeName: (context, setting) {
       return MovieInfoPage(movie: setting.arguments);
+    },
+    UploadMoviePage.routeName: (context, setting) {
+      final movieRepository = Provider.of<MovieRepository>(context);
+      return BlocProvider<MovieUploadBloc>(
+        child: UploadMoviePage(),
+        initBloc: () => MovieUploadBloc(movieRepository),
+      );
     },
     TheatresPage.routeName: (context, setting) {
       return TheatresPage();
