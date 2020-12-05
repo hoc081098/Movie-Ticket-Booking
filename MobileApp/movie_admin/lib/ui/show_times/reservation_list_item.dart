@@ -10,16 +10,13 @@ class ReservationListItem extends StatelessWidget {
   final NumberFormat currencyFormat;
   static final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
 
-  const ReservationListItem(
-      {Key key, this.item, this.currencyFormat})
+  const ReservationListItem({Key key, this.item, this.currencyFormat})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final showTime = item.showTime;
     final promotion = item.promotion;
-    final tickets= item.tickets ?? BuiltList.of(<Ticket>[]);
-
+    final tickets = item.tickets ?? BuiltList.of(<Ticket>[]);
 
     final textTheme = Theme.of(context).textTheme;
     final textStyle = textTheme.subtitle1.copyWith(
@@ -37,10 +34,10 @@ class ReservationListItem extends StatelessWidget {
     final accentColor = Theme.of(context).accentColor;
 
     final seatStyle = Theme.of(context).textTheme.caption.copyWith(
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: Colors.white,
-    );
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        );
 
     final seatSize = (MediaQuery.of(context).size.width - 16 - 9 * 8) / 8;
 
@@ -65,7 +62,7 @@ class ReservationListItem extends StatelessWidget {
           RichText(
             text: TextSpan(text: 'Email: ', style: textStyle, children: [
               TextSpan(
-                text:item.email,
+                text: item.email,
                 style: textStyle2,
               ),
             ]),
@@ -187,21 +184,5 @@ class ReservationListItem extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class HeaderWidget extends StatelessWidget {
-  final BuiltList<Ticket> tickets;
-  final Widget child;
-
-  HeaderWidget({
-    Key key,
-    this.tickets,
-    this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
   }
 }
