@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SeatsController } from './seats.controller';
+import { AdminSeatsController, SeatsController } from './seats.controller';
 import { SeatsService } from './seats.service';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
@@ -34,7 +34,7 @@ import { Ticket, TicketSchema } from './ticket.schema';
     UsersModule,
     ConfigModule,
   ],
-  controllers: [SeatsController],
+  controllers: [SeatsController, AdminSeatsController],
   providers: [SeatsService]
 })
 export class SeatsModule {}

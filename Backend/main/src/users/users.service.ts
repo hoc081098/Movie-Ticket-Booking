@@ -56,10 +56,11 @@ export class UsersService {
   update(user: UserPayload, updateUserDto: UpdateUserDto): Promise<User> {
     const update: Omit<UpdateUserDto, 'location'>
         & UserPayload
-        & { is_completed: boolean, location?: Location | number[] } = {
+        & { is_completed: boolean, location?: Location | number[], role: string } = {
       ...updateUserDto,
       ...user,
       'is_completed': true,
+      role: 'USER',
     };
 
     const numbers: number[] = updateUserDto.location;
@@ -219,6 +220,7 @@ export class UsersService {
   }
 
   seedUsers() {
+    return this.userModel.updateMany({role: null}, { role: 'USER' }).exec();
     // await this.userModel.updateMany({}, { favorite_movie_ids: {} }).exec();
     //
     // const users = await this.userModel
