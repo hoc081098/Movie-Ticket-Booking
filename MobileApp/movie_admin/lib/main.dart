@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_admin/data/repository/movie_repository_impl.dart';
-import 'package:movie_admin/data/repository/theatres_repository_impl.dart';
-import 'package:movie_admin/domain/repository/movie_repository.dart';
-import 'package:movie_admin/domain/repository/theatres_repository.dart';
+import 'data/repository/movie_repository_impl.dart';
+import 'data/repository/theatres_repository_impl.dart';
+import 'domain/repository/movie_repository.dart';
+import 'domain/repository/theatres_repository.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 import 'data/local/user_local_source_impl.dart';

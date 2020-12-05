@@ -131,11 +131,11 @@ MovieRequest movieDomainToRemote(Movie movie) {
     overview: movie.overview,
     releasedDate: movie.releasedDate.toIso8601String(),
     duration: movie.duration,
-    directorIds: movie.directors.map((e) => e.id),
-    actorIds: movie.actors.map((e) => e.id),
+    directorIds: movie.directors.map((e) => e.id).toList(),
+    actorIds: movie.actors.map((e) => e.id).toList(),
     originalLanguage: movie.originalLanguage,
     ageType: movie.ageType.toString().split('.')[1],
-    categoryIds: movie.categories.map((e) => e.id),
+    categoryIds: movie.categories.map((e) => e.id).toList(),
   );
 }
 
