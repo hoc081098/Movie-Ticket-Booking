@@ -55,8 +55,8 @@ class TheatreResponse {
         email: json["email"],
         openingHours: json["opening_hours"],
         roomSummary: json["room_summary"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        createdAt: DateTime.parse(json["createdAt"]).toLocal(),
+        updatedAt: DateTime.parse(json["updatedAt"]).toLocal(),
         cover: json["cover"],
         thumbnail: json["thumbnail"],
       );

@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
-import 'package:movie_admin/domain/repository/movie_repository.dart';
-import 'package:movie_admin/ui/movies/movie_info.dart';
-import 'package:movie_admin/ui/movies/upload_movie/movie_upload_bloc.dart';
-import 'package:movie_admin/ui/movies/upload_movie/movie_upload_page.dart';
-import 'package:movie_admin/ui/widgets/multi_pick_person.dart';
-import '../domain/repository/manager_repository.dart';
-import 'movies/movie_bloc.dart';
-import 'movies/movies_page.dart';
-import 'users/manager_users_bloc.dart';
-import 'users/manager_users_page.dart';
-import 'package:movie_admin/ui/theatres/add/add_theatre_page.dart';
-import 'package:movie_admin/ui/theatres/theatre_page.dart';
 
 import '../domain/model/user.dart';
 import '../domain/repository/manager_repository.dart';
+import '../domain/repository/movie_repository.dart';
 import '../domain/repository/user_repository.dart';
+import '../ui/movies/movie_info.dart';
+import '../ui/movies/upload_movie/movie_upload_bloc.dart';
+import '../ui/movies/upload_movie/movie_upload_page.dart';
+import '../ui/show_times/select_movie_page.dart';
+import '../ui/show_times/show_times_page.dart';
+import '../ui/show_times/ticket_page.dart';
+import '../ui/theatres/add/add_theatre_page.dart';
+import '../ui/theatres/theatre_page.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
 import 'home/home_page.dart';
@@ -66,7 +63,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       );
     },
     TheatresPage.routeName: (context, setting) {
-      return TheatresPage();
+      return TheatresPage(showTime: setting.arguments ?? false);
     },
     TheatreInfoPage.routeName: (context, settings) {
       return TheatreInfoPage(theatre: settings.arguments);
@@ -77,6 +74,16 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     SeatsPage.routeName: (context, settings) {
       return SeatsPage(seats: settings.arguments);
     },
+    ShowTimesPage.routeName: (context, settings) {
+      return ShowTimesPage(theatre: settings.arguments);
+    },
+    SelectMoviePage.routeName: (context, settings) {
+      return SelectMoviePage(theatre: settings.arguments);
+    },
+    TicketsPage.routeName: (ctx, settings) {
+      final args = settings.arguments as Map<String, dynamic>;
+      return TicketsPage(showTime: args['showTime'], theatre: args['theatre']);
+    }
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

@@ -1,16 +1,14 @@
 import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_admin/domain/model/movie.dart';
-import 'package:movie_admin/ui/widgets/loading_button.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/category.dart';
+import '../../../domain/model/movie.dart';
 import '../../../domain/model/person.dart';
 import '../../../domain/repository/movie_repository.dart';
 import '../../../utils/utils.dart';
+import '../../widgets/loading_button.dart';
 import 'movie_upload_input.dart';
 
 enum UrlType { URL, FILE }
@@ -65,57 +63,58 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
         .debug('11111111111111111')
         .where((e) => e.isHasData())
         .debug('22222222222222')
-        .exhaustMap(
-          (input)  async* {
-            yield ButtonState.loading;
+        .exhaustMap((input) async* {
+          yield ButtonState.loading;
 
-            try {
-              String poster;
-              if (input.posterType == UrlType.FILE) {
-                poster = await repository.uploadUrl(input.posterFile.path);
-              } else {
-                poster = input.posterUrl;
-              }
-
-              String trailer;
-              if (input.trailerType == UrlType.FILE) {
-                trailer = await repository.uploadUrl(input.trailerFile.path);
-              } else {
-                trailer = input.trailerVideoUrl;
-              }
-              await repository.uploadMovie(
-                Movie(
-                  posterUrl: poster,
-                  trailerVideoUrl: trailer,
-                  id: null,
-                  isActive: null,
-                  title: input.title,
-                  overview: input.overview,
-                  releasedDate: input.releasedDate.toUtc(),
-                  duration: input.duration,
-                  originalLanguage: input.originalLanguage,
-                  createdAt: null,
-                  updatedAt: null,
-                  ageType: input.ageType,
-                  actors: input.actors,
-                  directors: input.directors,
-                  categories: input.categorys,
-                  rateStar: null,
-                  totalFavorite: null,
-                  totalRate: null,
-                ),
-              );
-              print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>RES');
-              yield ButtonState.success;
-            } catch (e, s) {
-              print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ERROR');
-              errorS.add(e);
-              print(e);
-              print(s);
-              yield ButtonState.fail;
+          try {
+            String poster;
+            if (input.posterType == UrlType.FILE) {
+              print('Start upload poster: ${input.posterFile}');
+              poster = await repository.uploadUrl(input.posterFile.path);
+            } else {
+              poster = input.posterUrl;
             }
+
+            String trailer;
+            if (input.trailerType == UrlType.FILE) {
+              print('Start upload trailer: ${input.trailerFile}');
+              trailer =
+                  await repository.uploadUrl(input.trailerFile.path, true);
+            } else {
+              trailer = input.trailerVideoUrl;
+            }
+            await repository.uploadMovie(
+              Movie(
+                posterUrl: poster,
+                trailerVideoUrl: trailer,
+                id: null,
+                isActive: null,
+                title: input.title,
+                overview: input.overview,
+                releasedDate: input.releasedDate.toUtc(),
+                duration: input.duration,
+                originalLanguage: input.originalLanguage,
+                createdAt: null,
+                updatedAt: null,
+                ageType: input.ageType,
+                actors: input.actors,
+                directors: input.directors,
+                categories: input.categorys,
+                rateStar: null,
+                totalFavorite: null,
+                totalRate: null,
+              ),
+            );
+            print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>RES');
+            yield ButtonState.success;
+          } catch (e, s) {
+            print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ERROR');
+            errorS.add(e);
+            print(e);
+            print(s);
+            yield ButtonState.fail;
           }
-        )
+        })
         .debug('33333333333333333333333')
         .publish();
 

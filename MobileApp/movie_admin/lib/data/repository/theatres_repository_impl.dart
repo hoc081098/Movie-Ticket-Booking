@@ -2,17 +2,18 @@ import 'dart:io';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_admin/data/remote/response/theatre_response.dart';
-import 'package:movie_admin/domain/model/location.dart';
-import 'package:movie_admin/ui/theatres/seat.dart';
 import 'package:uuid/uuid.dart' as uuid;
 
+import '../../domain/model/location.dart';
 import '../../domain/model/theatre.dart';
 import '../../domain/repository/theatres_repository.dart';
+import '../../ui/theatres/seat.dart';
 import '../mappers.dart' as mappers;
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
+import '../remote/response/theatre_response.dart';
 
 class TheatresRepositoryImpl implements TheatresRepository {
   final AuthClient _authClient;
@@ -85,12 +86,7 @@ class TheatresRepositoryImpl implements TheatresRepository {
         .child('theatre_images')
         .child(uuid.Uuid().v4())
         .putFile(file);
-    await task.onComplete;
-
-    if (task.isSuccessful) {
-      return (await task.lastSnapshot.ref.getDownloadURL()).toString();
-    } else {
-      throw 'Upload file error';
-    }
+    await task;
+    return await task.snapshot.ref.getDownloadURL();
   }
 }

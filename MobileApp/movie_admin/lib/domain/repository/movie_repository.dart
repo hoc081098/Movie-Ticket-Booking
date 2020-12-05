@@ -12,5 +12,5 @@ abstract class MovieRepository {
 
   Future<void> uploadMovie(Movie movie);
 
-  Future<String> uploadUrl(String path);
+  Future<String> uploadUrl(String path, [bool isVideo]);
 }

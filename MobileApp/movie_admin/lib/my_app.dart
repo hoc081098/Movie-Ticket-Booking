@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
-import 'ui/movies/upload_movie/movie_upload_page.dart';
 
 import 'domain/repository/user_repository.dart';
 import 'ui/login/login_bloc.dart';

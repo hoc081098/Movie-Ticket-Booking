@@ -1,9 +1,9 @@
 import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_admin/data/remote/response/error_response.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../data/remote/response/error_response.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repository/manager_repository.dart';
 import '../../utils/utils.dart';

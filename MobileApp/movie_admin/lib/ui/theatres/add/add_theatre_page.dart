@@ -6,12 +6,12 @@ import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:image_picker/image_picker.dart';
-import 'package:movie_admin/domain/model/location.dart';
-import 'package:movie_admin/domain/repository/theatres_repository.dart';
-import 'package:movie_admin/ui/theatres/add/seats_page.dart';
-import 'package:movie_admin/ui/theatres/seat.dart';
 
+import '../../../domain/model/location.dart';
+import '../../../domain/repository/theatres_repository.dart';
 import '../../../env_manager.dart';
+import '../../../ui/theatres/add/seats_page.dart';
+import '../../../ui/theatres/seat.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 

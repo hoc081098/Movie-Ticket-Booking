@@ -5,14 +5,8 @@ extension ShowSnackbarGlobalKeyScaffoldStateExtension
   void showSnackBar(
     String message, [
     Duration duration = const Duration(seconds: 2),
-  ]) {
-    currentState?.showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: duration,
-      ),
-    );
-  }
+  ]) =>
+      currentContext?.showSnackBar(message, duration);
 }
 
 extension ShowSnackBarBuildContextExtension on BuildContext {
@@ -20,11 +14,19 @@ extension ShowSnackBarBuildContextExtension on BuildContext {
     String message, [
     Duration duration = const Duration(seconds: 2),
   ]) {
-    Scaffold.of(this).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: duration,
-      ),
-    );
+    ScaffoldMessengerState messengerState;
+    try {
+      messengerState = ScaffoldMessenger.maybeOf(this);
+      if (messengerState == null) {
+        return;
+      }
+      messengerState.hideCurrentSnackBar();
+      messengerState.showSnackBar(
+        SnackBar(
+          content: Text(message),
+          duration: duration,
+        ),
+      );
+    } catch (_) {}
   }
 }

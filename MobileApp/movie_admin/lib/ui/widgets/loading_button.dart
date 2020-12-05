@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 enum ButtonState { idle, loading, success, fail }
 
 class IconedButton {
@@ -9,7 +8,7 @@ class IconedButton {
   final Color color;
 
   const IconedButton({
-    this.text = "",
+    this.text = '',
     this.icon,
     @required this.color,
   });
@@ -67,14 +66,14 @@ class ProgressButton extends StatefulWidget {
     this.progressIndicatorAligment = MainAxisAlignment.spaceBetween,
     this.padding = EdgeInsets.zero,
   })  : assert(
-  stateWidgets != null &&
-      stateWidgets.keys.toSet().containsAll(ButtonState.values.toSet()),
-  'Must be non-null widgetds provided in map of stateWidgets. Missing keys => ${ButtonState.values.toSet().difference(stateWidgets.keys.toSet())}',
-  ),
+          stateWidgets != null &&
+              stateWidgets.keys.toSet().containsAll(ButtonState.values.toSet()),
+          'Must be non-null widgetds provided in map of stateWidgets. Missing keys => ${ButtonState.values.toSet().difference(stateWidgets.keys.toSet())}',
+        ),
         assert(
-        stateColors != null &&
-            stateColors.keys.toSet().containsAll(ButtonState.values.toSet()),
-        'Must be non-null widgetds provided in map of stateWidgets. Missing keys => ${ButtonState.values.toSet().difference(stateColors.keys.toSet())}',
+          stateColors != null &&
+              stateColors.keys.toSet().containsAll(ButtonState.values.toSet()),
+          'Must be non-null widgetds provided in map of stateWidgets. Missing keys => ${ButtonState.values.toSet().difference(stateColors.keys.toSet())}',
         ),
         super(key: key);
 
@@ -88,27 +87,25 @@ class ProgressButton extends StatefulWidget {
     Function onPressed,
     ButtonState state = ButtonState.idle,
     Function animationEnd,
-    maxWidth: 170.0,
-    minWidth: 58.0,
-    height: 53.0,
-    radius: 100.0,
-    double iconPadding: 4.0,
+    maxWidth = 170.0,
+    minWidth = 58.0,
+    height = 53.0,
+    radius = 100.0,
+    double iconPadding = 4.0,
     TextStyle textStyle,
     CircularProgressIndicator progressIndicator,
     MainAxisAlignment progressIndicatorAligment,
     EdgeInsets padding = EdgeInsets.zero,
   }) {
     assert(
-    iconedButtons != null &&
-        iconedButtons.keys.toSet().containsAll(ButtonState.values.toSet()),
-    'Must be non-null widgets provided in map of stateWidgets. Missing keys => ${ButtonState.values.toSet().difference(iconedButtons.keys.toSet())}',
+      iconedButtons != null &&
+          iconedButtons.keys.toSet().containsAll(ButtonState.values.toSet()),
+      'Must be non-null widgets provided in map of stateWidgets. Missing keys => ${ButtonState.values.toSet().difference(iconedButtons.keys.toSet())}',
     );
 
-    if (textStyle == null) {
-      textStyle = TextStyle(color: Colors.white, fontWeight: FontWeight.w500);
-    }
+    textStyle ??= TextStyle(color: Colors.white, fontWeight: FontWeight.w500);
 
-    Map<ButtonState, Widget> stateWidgets = {
+    final stateWidgets = <ButtonState, Widget>{
       ButtonState.idle: buildChildWithIcon(
           iconedButtons[ButtonState.idle], iconPadding, textStyle),
       ButtonState.loading: Column(),
@@ -118,7 +115,7 @@ class ProgressButton extends StatefulWidget {
           iconedButtons[ButtonState.success], iconPadding, textStyle)
     };
 
-    Map<ButtonState, Color> stateColors = {
+    final stateColors = <ButtonState, Color>{
       ButtonState.idle: iconedButtons[ButtonState.idle].color,
       ButtonState.loading: iconedButtons[ButtonState.loading].color,
       ButtonState.fail: iconedButtons[ButtonState.fail].color,
@@ -150,8 +147,8 @@ class _ProgressButtonState extends State<ProgressButton>
   Widget progressIndicator;
 
   void startAnimations(ButtonState oldState, ButtonState newState) {
-    Color begin = widget.stateColors[oldState];
-    Color end = widget.stateColors[newState];
+    final begin = widget.stateColors[oldState];
+    final end = widget.stateColors[newState];
     if (newState == ButtonState.loading) {
       width = widget.minWidth;
     } else {
@@ -209,7 +206,7 @@ class _ProgressButtonState extends State<ProgressButton>
   }
 
   Widget getButtonChild(bool visibility) {
-    Widget buttonChild = widget.stateWidgets[widget.state];
+    final buttonChild = widget.stateWidgets[widget.state];
     if (widget.state == ButtonState.loading) {
       return Row(
         mainAxisAlignment: widget.progressIndicatorAligment,

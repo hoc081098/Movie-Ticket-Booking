@@ -236,10 +236,8 @@ class _LoginPageState extends State<LoginPage>
     if (message is LoginSuccessMessage) {
       scaffoldKey.showSnackBar('Login successfully');
 
-      navigator.pushNamedAndRemoveUntil(
-        MainPage.routeName,
-        (route) => false,
-      );
+      navigator.popUntil((route) => false);
+      navigator.pushNamed(MainPage.routeName);
       print('>>>>>>>>>>>>> SignIn to home >>');
       return;
     }
@@ -248,10 +246,8 @@ class _LoginPageState extends State<LoginPage>
       scaffoldKey.showSnackBar(message.message);
 
       if (message.error is NotCompletedLoginException) {
-        navigator.pushNamedAndRemoveUntil(
-          UpdateProfilePage.routeName,
-          (route) => false,
-        );
+        navigator.popUntil((route) => false);
+        navigator.pushNamed(UpdateProfilePage.routeName);
         print('>>>>>>>>>>>>> SignIn to update >>');
       }
 

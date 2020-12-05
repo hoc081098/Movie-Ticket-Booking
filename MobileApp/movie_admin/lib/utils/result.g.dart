@@ -48,9 +48,7 @@ class SuccessBuilder<T> implements Builder<Success<T>, SuccessBuilder<T>> {
   _$Success<T> _$v;
 
   T _result;
-
   T get result => _$this._result;
-
   set result(T result) => _$this._result = result;
 
   SuccessBuilder();
@@ -133,15 +131,11 @@ class FailureBuilder<T> implements Builder<Failure<T>, FailureBuilder<T>> {
   _$Failure<T> _$v;
 
   String _message;
-
   String get message => _$this._message;
-
   set message(String message) => _$this._message = message;
 
   Object _error;
-
   Object get error => _$this._error;
-
   set error(Object error) => _$this._error = error;
 
   FailureBuilder();

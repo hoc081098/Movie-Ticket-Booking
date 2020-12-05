@@ -2,14 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:movie_admin/ui/app_scaffold.dart';
-import 'package:movie_admin/ui/movies/movie_info.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../domain/model/movie.dart';
 import '../../utils/utils.dart';
+import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import 'movie_bloc.dart';
+import 'movie_info.dart';
 
 class MoviePage extends StatefulWidget {
   static const routeName = '/movie_page_route';

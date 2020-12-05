@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:movie_admin/ui/movies/movies_page.dart';
-import 'package:movie_admin/ui/movies/upload_movie/movie_upload_page.dart';
-import 'package:movie_admin/ui/theatres/theatre_page.dart';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
+
+import '../../ui/movies/movies_page.dart';
+import '../../ui/movies/upload_movie/movie_upload_page.dart';
+import '../../ui/theatres/theatre_page.dart';
 import '../../utils/type_defs.dart';
 import '../users/manager_users_page.dart';
+
+// ignore_for_file: prefer_single_quotes
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,29 +31,40 @@ class _HomePageState extends State<HomePage> {
           card(
             Icons.supervised_user_circle_rounded,
             'Manager users',
-            '5 notifiction',
+            '${Random().nextInt(10) + 1} notifications',
             Colors.red,
             () => Navigator.of(context).pushNamed(ManagerUsersPage.routeName),
           ),
           card(
             Icons.movie_filter_outlined,
             "Manager movie",
-            "5 notifiction",
+            "${Random().nextInt(10) + 1} notifications",
             Colors.red,
             () => Navigator.of(context).pushNamed(MoviePage.routeName),
           ),
           card(
             Icons.add_box_rounded,
             "Upload movie",
-            "5 notifiction",
-            Colors.red, () => Navigator.of(context).pushNamed(UploadMoviePage.routeName),
+            "${Random().nextInt(10) + 1} notifications",
+            Colors.red,
+            () => Navigator.of(context).pushNamed(UploadMoviePage.routeName),
           ),
           card(
             Icons.theaters,
             "Manager theatre",
-            "5 notifiction",
+            "${Random().nextInt(10) + 1} notifications",
             Colors.red,
             () => Navigator.of(context).pushNamed(TheatresPage.routeName),
+          ),
+          card(
+            Icons.movie_creation,
+            "Manager show time",
+            "${Random().nextInt(10) + 1} notifications",
+            Colors.red,
+            () => Navigator.of(context).pushNamed(
+              TheatresPage.routeName,
+              arguments: true,
+            ),
           )
         ],
       ),

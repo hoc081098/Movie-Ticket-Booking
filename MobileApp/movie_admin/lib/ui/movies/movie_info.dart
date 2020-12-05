@@ -1,16 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:stream_loader/stream_loader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../domain/model/movie.dart';
 import '../../domain/model/person.dart';
-import '../../utils/type_defs.dart';
 import '../../utils/utils.dart';
 import '../widgets/age_type.dart';
 
@@ -294,6 +290,7 @@ class DetailAppBar extends StatelessWidget {
                 alignment: AlignmentDirectional.center,
                 child: InkWell(
                   onTap: () async {
+                    print(movie.trailerVideoUrl);
                     if (await canLaunch(movie.trailerVideoUrl)) {
                       await launch(movie.trailerVideoUrl);
                     } else {

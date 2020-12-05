@@ -4,9 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'manage_user_state.dart';
 
 import '../../domain/model/user.dart';
+import '../../utils/snackbar.dart';
+import 'manage_user_state.dart';
 import 'manager_users_bloc.dart';
 
 class ManagerUsersPage extends StatefulWidget {
@@ -52,11 +53,7 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     if (_bloc == null) {
       _bloc = BlocProvider.of<ManagerUsersBloc>(context);
       _bloc.loadUsers(_listUsers.length);
-      _bloc.showSnackBar$.listen((text) {
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(text),
-        ));
-      });
+      _bloc.showSnackBar$.listen((text) => context.showSnackBar(text));
     }
   }
 

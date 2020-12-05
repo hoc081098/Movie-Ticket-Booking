@@ -9,3 +9,7 @@ class NotCompletedManagerUserException implements Exception {
 class NotLoggedInException implements Exception {
   const NotLoggedInException();
 }
+
+class WrongRoleException implements Exception {
+  const WrongRoleException();
+}

@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:movie_admin/ui/app_scaffold.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../domain/model/theatre.dart';
 import '../../domain/repository/theatres_repository.dart';
+import '../../ui/app_scaffold.dart';
+import '../../ui/show_times/show_times_page.dart';
 import '../../utils/error.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
@@ -16,6 +17,9 @@ import 'theatre_info_page.dart';
 
 class TheatresPage extends StatefulWidget {
   static const routeName = '/home/theatres';
+  final bool showTime;
+
+  const TheatresPage({Key key, this.showTime = false}) : super(key: key);
 
   @override
   _TheatresPageState createState() => _TheatresPageState();
@@ -105,10 +109,17 @@ class _TheatresPageState extends State<TheatresPage> {
                     ),
                     child: InkWell(
                       onTap: () {
-                        AppScaffold.of(context).pushNamed(
-                          TheatreInfoPage.routeName,
-                          arguments: item,
-                        );
+                        if (widget.showTime) {
+                          AppScaffold.of(context).pushNamed(
+                            ShowTimesPage.routeName,
+                            arguments: item,
+                          );
+                        } else {
+                          AppScaffold.of(context).pushNamed(
+                            TheatreInfoPage.routeName,
+                            arguments: item,
+                          );
+                        }
                       },
                       borderRadius: BorderRadius.circular(6),
                       child: Padding(
@@ -162,17 +173,19 @@ class _TheatresPageState extends State<TheatresPage> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final added = await AppScaffold.of(context).pushNamed(
-            AddTheatrePage.routeName,
-          );
-          if (added != null) {
-            await bloc.refresh();
-          }
-        },
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: widget.showTime
+          ? const SizedBox()
+          : FloatingActionButton(
+              onPressed: () async {
+                final added = await AppScaffold.of(context).pushNamed(
+                  AddTheatrePage.routeName,
+                );
+                if (added != null) {
+                  await bloc.refresh();
+                }
+              },
+              child: Icon(Icons.add),
+            ),
     );
   }
 }
