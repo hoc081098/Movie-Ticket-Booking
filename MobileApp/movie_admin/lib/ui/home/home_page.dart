@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:movie_admin/ui/movies/movies_page.dart';
 import 'package:movie_admin/ui/movies/upload_movie/movie_upload_page.dart';
@@ -27,34 +29,35 @@ class _HomePageState extends State<HomePage> {
           card(
             Icons.supervised_user_circle_rounded,
             'Manager users',
-            '5 notifiction',
+            '${Random().nextInt(10) + 1} notifications',
             Colors.red,
             () => Navigator.of(context).pushNamed(ManagerUsersPage.routeName),
           ),
           card(
             Icons.movie_filter_outlined,
             "Manager movie",
-            "5 notifiction",
+            "${Random().nextInt(10) + 1} notifications",
             Colors.red,
             () => Navigator.of(context).pushNamed(MoviePage.routeName),
           ),
           card(
             Icons.add_box_rounded,
             "Upload movie",
-            "5 notifiction",
-            Colors.red, () => Navigator.of(context).pushNamed(UploadMoviePage.routeName),
+            "${Random().nextInt(10) + 1} notifications",
+            Colors.red,
+            () => Navigator.of(context).pushNamed(UploadMoviePage.routeName),
           ),
           card(
             Icons.theaters,
             "Manager theatre",
-            "5 notifiction",
+            "${Random().nextInt(10) + 1} notifications",
             Colors.red,
             () => Navigator.of(context).pushNamed(TheatresPage.routeName),
           ),
           card(
-            Icons.theaters,
+            Icons.movie_creation,
             "Manager show time",
-            "5 notifiction",
+            "${Random().nextInt(10) + 1} notifications",
             Colors.red,
             () => Navigator.of(context).pushNamed(
               TheatresPage.routeName,

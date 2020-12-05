@@ -9,9 +9,11 @@ import 'package:http/http.dart' as http;
 import 'package:movie_admin/data/repository/movie_repository_impl.dart';
 import 'package:movie_admin/data/repository/show_times_repository_impl.dart';
 import 'package:movie_admin/data/repository/theatres_repository_impl.dart';
+import 'package:movie_admin/data/repository/ticket_repository_impl.dart';
 import 'package:movie_admin/domain/repository/movie_repository.dart';
 import 'package:movie_admin/domain/repository/show_times_repository.dart';
 import 'package:movie_admin/domain/repository/theatres_repository.dart';
+import 'package:movie_admin/domain/repository/ticket_repo.dart';
 import 'data/repository/movie_repository_impl.dart';
 import 'data/repository/theatres_repository_impl.dart';
 import 'domain/repository/movie_repository.dart';
@@ -92,6 +94,7 @@ void main() async {
         Provider<MovieRepository>(value: movieRepository),
         Provider<TheatresRepository>(value: theatresRepository),
         Provider<ShowTimesRepository>(value: ShowTimesRepositoryImpl(authClient)),
+        Provider<TicketRepository>(value: TicketRepositoryImpl(authClient)),
       ],
       child: MyApp(),
     ),

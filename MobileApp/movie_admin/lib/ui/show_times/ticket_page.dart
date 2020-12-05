@@ -128,7 +128,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                         print('Tapped $ticket');
                       },
                     ),
-                    const LegendsWidget(),
+                     LegendsWidget( tickets: state.content),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -487,7 +487,9 @@ class SeatWidget extends StatelessWidget {
 }
 
 class LegendsWidget extends StatelessWidget {
-  const LegendsWidget({Key key}) : super(key: key);
+  final BuiltList<Ticket> tickets;
+
+  const LegendsWidget({Key key, this.tickets}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

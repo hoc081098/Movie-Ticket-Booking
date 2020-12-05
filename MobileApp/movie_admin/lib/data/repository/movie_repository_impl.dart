@@ -2,19 +2,20 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
-import '../remote/response/category_response.dart';
-import '../remote/response/person_response.dart';
-import '../../domain/model/category.dart';
-import '../../domain/model/person.dart';
+import 'package:uuid/uuid.dart' as uuid;
 
+import '../../domain/model/category.dart';
 import '../../domain/model/exception.dart';
 import '../../domain/model/movie.dart';
+import '../../domain/model/person.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../mappers.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
+import '../remote/response/category_response.dart';
 import '../remote/response/error_response.dart';
 import '../remote/response/movie_response.dart';
+import '../remote/response/person_response.dart';
 
 class MovieRepositoryImpl implements MovieRepository {
   final AuthClient _authClient;
@@ -87,13 +88,20 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<String> uploadUrl(String path) async {
+  Future<String> uploadUrl(String path, [bool isVideo]) async {
     try {
       final task = FirebaseStorage.instance
           .ref()
-          .child('trailer_images')
-          .child(path + '_movie_admin')
-          .putFile(File(path));
+          .child('movies')
+          .child(uuid.Uuid().v4())
+          .putFile(
+            File(path),
+            identical(isVideo, true)
+                ? StorageMetadata(
+                    contentType: 'video/mp4',
+                  )
+                : null,
+          );
       await task.onComplete;
       if (task.isSuccessful) {
         return (await task.lastSnapshot.ref.getDownloadURL()).toString();

@@ -10,7 +10,7 @@ import '../../domain/model/show_time.dart';
 class ShowTimeItem extends StatelessWidget {
   final ShowTime item;
   final  Theatre theatre;
-  static final showTimeDateFormat = DateFormat('hh:mm a');
+  static final showTimeDateFormat = DateFormat('dd/MM/yyyy, hh:mm a');
 
   ShowTimeItem({Key key, this.item, this.theatre}) : super(key: key);
 

@@ -294,6 +294,7 @@ class DetailAppBar extends StatelessWidget {
                 alignment: AlignmentDirectional.center,
                 child: InkWell(
                   onTap: () async {
+                    print(movie.trailerVideoUrl);
                     if (await canLaunch(movie.trailerVideoUrl)) {
                       await launch(movie.trailerVideoUrl);
                     } else {
