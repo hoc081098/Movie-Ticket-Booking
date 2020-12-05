@@ -27,12 +27,14 @@ import '../../app_scaffold.dart';
 import '../../widgets/age_type.dart';
 import '../../widgets/error_widget.dart';
 import '../detail/movie_detail_page.dart';
+import '../showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'combo_page.dart';
 
 class TicketsCountDownTimerBlocProvider {
   static TicketsCountDownTimerBlocProvider _instance;
 
   TicketsCountDownTimerBloc _bloc;
+  bool _fromDetailPage;
   var _destroyed = false;
   var _initialized = false;
 
@@ -41,8 +43,9 @@ class TicketsCountDownTimerBlocProvider {
   factory TicketsCountDownTimerBlocProvider.shared() =>
       _instance ??= TicketsCountDownTimerBlocProvider._();
 
-  void _init(TicketsCountDownTimerBloc bloc) {
+  void _init(TicketsCountDownTimerBloc bloc, bool fromDetailPage) {
     _bloc = bloc;
+    _fromDetailPage = fromDetailPage;
     _initialized = true;
   }
 
@@ -52,8 +55,15 @@ class TicketsCountDownTimerBlocProvider {
     return _bloc;
   }
 
+  bool get fromDetailPage {
+    if (!_initialized) throw StateError('Not init');
+    if (_destroyed || _fromDetailPage == null) throw StateError('Destroyed');
+    return _fromDetailPage;
+  }
+
   void _destroy() {
     _bloc = null;
+    _fromDetailPage = null;
     _destroyed = true;
     _instance = null;
   }
@@ -116,12 +126,14 @@ class TicketsPage extends StatefulWidget {
   final ShowTime showTime;
   final Theatre theatre;
   final Movie movie;
+  final bool fromMovieDetail;
 
   const TicketsPage({
     Key key,
     @required this.showTime,
     @required this.movie,
     @required this.theatre,
+    @required this.fromMovieDetail,
   }) : super(key: key);
 
   @override
@@ -138,7 +150,10 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   void initState() {
     super.initState();
     selectedTicketIdsS.disposedBy(bag);
-    TicketsCountDownTimerBlocProvider.shared()._init(countDownTimerBloc);
+    TicketsCountDownTimerBlocProvider.shared()._init(
+      countDownTimerBloc,
+      widget.fromMovieDetail,
+    );
   }
 
   @override
@@ -222,8 +237,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               onPressed: () {
                 Navigator.of(dialogContext).pop();
 
-                AppScaffold.ofIndex(context, 0)
-                    .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+                if (widget.fromMovieDetail) {
+                  AppScaffold.ofIndex(context, 0)
+                      .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+                } else {
+                  AppScaffold.ofIndex(context, 0).popUntil(
+                      ModalRoute.withName(ShowTimesByTheatrePage.routeName));
+                }
               },
             ),
           ],
@@ -704,13 +724,24 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
     }
 
     x--;
-    final ticket = ticketByCoordinates[SeatCoordinates.from(x: x, y: y)];
+    final coordinates = SeatCoordinates.from(x: x, y: y);
+    final ticket = ticketByCoordinates[coordinates];
     if (ticket == null) {
-      final prevCount =
-          ticketByCoordinates[SeatCoordinates.from(x: x - 1, y: y)]
-              ?.seat
-              ?.count;
-      return prevCount != null && prevCount > 1
+      int prevCount;
+      SeatCoordinates prevCoords;
+      var prevX = x - 1;
+      while (prevX >= 0) {
+        prevCoords = SeatCoordinates.from(x: prevX, y: y);
+        prevCount = ticketByCoordinates[prevCoords]?.seat?.count;
+        if (prevCount != null) {
+          break;
+        }
+        prevX--;
+      }
+
+      return prevCount != null &&
+              prevCount > 1 &&
+              (coordinates.x - prevCoords.x + 1) <= prevCount
           ? const SizedBox(width: 0, height: 0)
           : Container(
               margin: const EdgeInsets.all(0.5),

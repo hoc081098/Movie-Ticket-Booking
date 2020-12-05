@@ -5,6 +5,9 @@ import 'package:flutter/material.dart' hide Notification;
 import 'package:intl/intl.dart';
 
 import '../../domain/model/notification.dart';
+import '../../utils/type_defs.dart';
+import '../app_scaffold.dart';
+import '../profile/reservation_detail/reservation_detail_page.dart';
 import '../widgets/age_type.dart';
 
 class NotificationItemWidget extends StatelessWidget {
@@ -12,14 +15,16 @@ class NotificationItemWidget extends StatelessWidget {
 
   final Notification item;
   final DateFormat dateFormat;
+  final Function1<Notification, void> onDelete;
 
-  NotificationItemWidget(this.item, this.dateFormat);
+  NotificationItemWidget(this.item, this.dateFormat, this.onDelete);
 
   @override
   Widget build(BuildContext context) {
-    final showTime = item.reservation.showTime;
-    final movie = item.reservation.showTime.movie;
-    final theatre = item.reservation.showTime.theatre;
+    final reservation = item.reservation;
+    final showTime = reservation.showTime;
+    final movie = reservation.showTime.movie;
+    final theatre = reservation.showTime.theatre;
 
     final textTheme = Theme.of(context).textTheme;
     final titleStyle = textTheme.headline6.copyWith(
@@ -44,124 +49,164 @@ class NotificationItemWidget extends StatelessWidget {
       fontWeight: FontWeight.w600,
     );
 
-    return Container(
-      margin: const EdgeInsets.only(
-        top: 8,
-        left: 8,
-        right: 8,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade400,
-            offset: Offset(2, 4),
-            blurRadius: 10,
-            spreadRadius: 2,
-          )
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          height: 186,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: CachedNetworkImage(
-                  imageUrl: movie.posterUrl ?? '',
-                  fit: BoxFit.cover,
-                  placeholder: (_, __) => Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
+    return InkWell(
+      onTap: () {
+        AppScaffold.of(context, newTabIndex: 3).pushNamed(
+          ReservationDetailPage.routeName,
+          arguments: reservation,
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(
+          top: 8,
+          left: 8,
+          right: 8,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              offset: Offset(2, 2),
+              blurRadius: 4,
+              spreadRadius: 2,
+            )
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            height: 186,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: CachedNetworkImage(
+                    imageUrl: movie.posterUrl ?? '',
+                    fit: BoxFit.cover,
+                    placeholder: (_, __) => Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+                    errorWidget: (_, __, ___) => const SizedBox.shrink(),
+                  ),
+                ),
+                Positioned.fill(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                    child: Container(
+                      color: Colors.black45,
                     ),
                   ),
-                  errorWidget: (_, __, ___) => const SizedBox.shrink(),
                 ),
-              ),
-              Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                  child: Container(
-                    color: Colors.black45,
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  left: 8,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        item.title,
+                        style: titleStyle,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        item.body,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: textStyle,
+                      ),
+                      const SizedBox(height: 8),
+                      RichText(
+                        text: TextSpan(
+                            text: 'Start at: ',
+                            style: textStyle,
+                            children: [
+                              TextSpan(
+                                text:
+                                    startTimeFormat.format(showTime.start_time),
+                                style: textStyle2,
+                              ),
+                            ]),
+                      ),
+                      const SizedBox(height: 8),
+                      RichText(
+                        text: TextSpan(
+                            text: 'Theatre: ',
+                            style: textStyle,
+                            children: [
+                              TextSpan(
+                                text: theatre.name,
+                                style: textStyle2,
+                              ),
+                              TextSpan(
+                                text: ' Room: ',
+                                style: textStyle,
+                              ),
+                              TextSpan(
+                                text: showTime.room,
+                                style: textStyle2,
+                              ),
+                            ]),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              Positioned(
-                top: 8,
-                right: 8,
-                left: 8,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      item.title,
-                      style: titleStyle,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      item.body,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: textStyle,
-                    ),
-                    const SizedBox(height: 8),
-                    RichText(
-                      text: TextSpan(
-                          text: 'Start at: ',
-                          style: textStyle,
-                          children: [
-                            TextSpan(
-                              text: startTimeFormat.format(showTime.start_time),
-                              style: textStyle2,
-                            ),
-                          ]),
-                    ),
-                    const SizedBox(height: 8),
-                    RichText(
-                      text: TextSpan(
-                          text: 'Theatre: ',
-                          style: textStyle,
-                          children: [
-                            TextSpan(
-                              text: theatre.name,
-                              style: textStyle2,
-                            ),
-                            TextSpan(
-                              text: ' Room: ',
-                              style: textStyle,
-                            ),
-                            TextSpan(
-                              text: showTime.room,
-                              style: textStyle2,
-                            ),
-                          ]),
-                    ),
-                  ],
+                Positioned(
+                  left: 8,
+                  bottom: 8,
+                  right: 8,
+                  child: Text(
+                    dateFormat.format(item.createdAt),
+                    style: timeStyle,
+                  ),
                 ),
-              ),
-              Positioned(
-                left: 8,
-                bottom: 8,
-                right: 8,
-                child: Text(
-                  dateFormat.format(item.createdAt),
-                  style: timeStyle,
+                Positioned(
+                  bottom: 8,
+                  right: 8,
+                  child: Row(
+                    children: [
+                      AgeTypeWidget(
+                        ageType: movie.ageType,
+                      ),
+                      const SizedBox(width: 8),
+                      Material(
+                        color: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(15),
+                          onTap: () => onDelete(item),
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white70,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Positioned(
-                bottom: 8,
-                right: 8,
-                child: AgeTypeWidget(
-                  ageType: movie.ageType,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -34,27 +34,47 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor;
+    final tabBar = TabBar(
+      tabs: [
+        Tab(
+          text: 'Showtimes',
+          iconMargin: const EdgeInsets.only(bottom: 8),
+        ),
+        Tab(
+          text: 'Comments',
+          iconMargin: const EdgeInsets.only(bottom: 8),
+        ),
+        Tab(
+          text: 'Information',
+          iconMargin: const EdgeInsets.only(bottom: 8),
+        ),
+      ],
+      indicator: UnderlineTabIndicator(
+        borderSide: BorderSide(width: 2, color: primaryColor),
+      ),
+      labelColor: primaryColor,
+      unselectedLabelStyle: Theme.of(context).textTheme.caption.copyWith(
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+          ),
+      labelStyle: Theme.of(context).textTheme.caption.copyWith(
+            fontWeight: FontWeight.w500,
+            fontSize: 13,
+          ),
+      unselectedLabelColor: const Color(0xff4A4B57),
+    );
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                icon: Icon(Icons.date_range),
-              ),
-              Tab(
-                icon: Icon(Icons.comment),
-              ),
-              Tab(
-                icon: Icon(Icons.info_outlined),
-              ),
-            ],
-          ),
+          elevation: 0,
+          bottom: CustomTabBar(tabBar: tabBar),
           title: Text(
             widget.movie.title,
             style: Theme.of(context).textTheme.headline6.copyWith(
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Colors.white,
                 ),
           ),
@@ -63,4 +83,33 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       ),
     );
   }
+}
+
+class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
+  final TabBar tabBar;
+
+  const CustomTabBar({Key key, this.tabBar}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: tabBar.preferredSize.height - 8,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: Material(
+        child: tabBar,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(tabBar.preferredSize.height - 8);
 }

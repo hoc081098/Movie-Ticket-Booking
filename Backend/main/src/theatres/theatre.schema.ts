@@ -51,6 +51,12 @@ export class Theatre extends Document {
 
   @Prop({ default: true })
   is_active: boolean;
+
+  @Prop()
+  thumbnail?: string | null;
+
+  @Prop()
+  cover?: string | null;
 }
 
 export const TheatreSchema = SchemaFactory.createForClass(Theatre);

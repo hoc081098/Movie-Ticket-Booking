@@ -7,6 +7,7 @@ import '../domain/model/comment.dart';
 import '../domain/model/comments.dart';
 import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
+import '../domain/model/movie_and_showtimes.dart';
 import '../domain/model/notification.dart';
 import '../domain/model/person.dart';
 import '../domain/model/product.dart';
@@ -26,6 +27,7 @@ import 'remote/response/category_response.dart';
 import 'remote/response/comment_response.dart';
 import 'remote/response/comments_response.dart';
 import 'remote/response/full_reservation_response.dart';
+import 'remote/response/movie_and_show_time_response.dart';
 import 'remote/response/movie_detail_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/notification_response.dart';
@@ -147,7 +149,10 @@ Theatre theatreResponseToTheatre(TheatreResponse response) {
       ..opening_hours = response.opening_hours
       ..room_summary = response.room_summary
       ..createdAt = response.createdAt
-      ..updatedAt = response.updatedAt;
+      ..updatedAt = response.updatedAt
+      ..distance = response.distance
+      ..thumbnail = response.thumbnail ?? ''
+      ..cover = response.cover ?? '';
   });
 }
 
@@ -537,4 +542,44 @@ Reservation fullReservationResponseToReservation(
       ..promotionId = promotion?.id
       ..promotion = promotionBuilder;
   });
+}
+
+BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>
+    movieAndShowTimeResponsesToMovieAndShowTimes(
+        BuiltList<MovieAndShowTimeResponse> res) {
+  MapEntry<DateTime, BuiltList<MovieAndShowTimes>> toMovieAndShowTimes(
+    DateTime day,
+    List<MovieAndShowTimeResponse> response,
+  ) {
+    final movieAndShowTimeResponses = response
+        .groupBy((v) => v.movie, (v) => v)
+        .entries
+        .map(
+          (entry) => MovieAndShowTimes(
+            (b) {
+              final movieAndShowTimeResponses = entry.value;
+
+              final showTimesBuilder = b.showTimes
+                ..addAll(movieAndShowTimeResponses
+                    .map((e) => showTimeResponseToShowTime(e.show_time)))
+                ..sort((l, r) => l.start_time.compareTo(r.start_time));
+
+              final movieBuilder = b.movie
+                ..replace(movieResponseToMovie(
+                    movieAndShowTimeResponses.first.movie));
+
+              return b
+                ..movie = movieBuilder
+                ..showTimes = showTimesBuilder;
+            },
+          ),
+        )
+        .toBuiltList();
+    return MapEntry(day, movieAndShowTimeResponses);
+  }
+
+  return res
+      .groupBy((v) => startOfDay(v.show_time.start_time), (v) => v)
+      .map(toMovieAndShowTimes)
+      .build();
 }

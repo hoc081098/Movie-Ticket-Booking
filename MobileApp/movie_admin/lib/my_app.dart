@@ -86,7 +86,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  static const minSplashDuration = Duration(seconds: 2, milliseconds: 500);
+  static const minSplashDuration = Duration(seconds: 2);
   Future<AuthState> checkAuthFuture;
 
   @override
@@ -95,11 +95,11 @@ class _SplashPageState extends State<SplashPage> {
 
     checkAuthFuture ??= () async {
       final stopwatch = Stopwatch()..start();
-      final authState = Provider.of<UserRepository>(context).checkAuth();
+      final authState = await Provider.of<UserRepository>(context).checkAuth();
       stopwatch.stop();
 
       final extraDelay = minSplashDuration - stopwatch.elapsed;
-      print('>> extraDelay=$extraDelay');
+      print('>> extraDelay=${extraDelay.inMilliseconds}');
       if (extraDelay > Duration.zero) {
         await Future.delayed(extraDelay);
       }

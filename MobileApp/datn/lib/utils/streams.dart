@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart' hide Notification;
 import 'package:rxdart/rxdart.dart';
 
 extension DebugMapStreamsExtension on Map<String, Stream<dynamic>> {
@@ -17,7 +18,7 @@ extension NotificationExt<T> on Notification<T> {
       case Kind.OnDone:
         return 'done';
       case Kind.OnError:
-        return 'error($error, $stackTrace)';
+        return 'error(${errorAndStackTrace.error}, ${errorAndStackTrace.stackTrace})';
     }
     return '';
   }
@@ -55,4 +56,34 @@ extension MapNotNullStreamExt<T> on Stream<T> {
       handleDone: (sink) => sink.close(),
     ));
   }
+}
+
+extension ListenNullStreamExt<T> on Stream<T> {
+  StreamSubscription<T> listenNull() => listen(null);
+}
+
+extension ScrollPositionStreamExt on ScrollController {
+  Stream<ScrollController> scroll$() {
+    StreamController<ScrollController> controller;
+    VoidCallback listener;
+
+    controller = StreamController<ScrollController>(
+      sync: true,
+      onListen: () => addListener(listener = () => controller.add(this)),
+      onCancel: () {
+        try {
+          removeListener(listener);
+          listener = null;
+        } catch (_) {}
+      },
+    );
+
+    return controller.stream;
+  }
+
+  Stream<void> nearBottomEdge$() => scroll$()
+      .debounceTime(const Duration(milliseconds: 100))
+      .mapNotNull((sc) => sc.hasClients
+          ? sc.offset + 56 * 2 >= sc.position.maxScrollExtent
+          : null);
 }

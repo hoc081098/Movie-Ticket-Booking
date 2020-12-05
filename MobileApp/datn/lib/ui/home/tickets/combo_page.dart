@@ -6,6 +6,7 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/movie.dart';
@@ -205,10 +206,23 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                           '${currencyFormat.format(product.price)} VND',
                           style: priceStyle,
                         ),
-                        leading: Image.network(
-                          product.image,
+                        leading: OctoImage(
+                          image: NetworkImage(product.image),
                           width: 64,
                           height: 64,
+                          fit: BoxFit.cover,
+                          progressIndicatorBuilder: (context, event) {
+                            return const Center(
+                              child: SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (_, __, ___) => const SizedBox(),
                         ),
                         childrenPadding: const EdgeInsets.all(8.0),
                         children: [

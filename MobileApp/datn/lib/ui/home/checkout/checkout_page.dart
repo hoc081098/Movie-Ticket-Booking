@@ -20,6 +20,7 @@ import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../detail/movie_detail_page.dart';
+import '../showtimes_by_theatre/show_time_by_theatre_page.dart';
 import '../tickets/ticket_page.dart';
 import 'widgets/bottom.dart';
 import 'widgets/card.dart';
@@ -202,7 +203,6 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
   final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   Object token;
 
   @override
@@ -224,7 +224,6 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
         .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Checkout'),
         actions: [
@@ -302,19 +301,24 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
 
   void handleMessage(Message message) async {
     if (message is CheckoutSuccess) {
-      scaffoldKey.showSnackBar(
+      context.showSnackBar(
           'Checkout successfully. Please check email to get ticket');
       await delay(700);
 
-      AppScaffold.ofIndex(context, 0)
-          .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+      if (TicketsCountDownTimerBlocProvider.shared().fromDetailPage) {
+        AppScaffold.ofIndex(context, 0)
+            .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+      } else {
+        AppScaffold.ofIndex(context, 0)
+            .popUntil(ModalRoute.withName(ShowTimesByTheatrePage.routeName));
+      }
     }
     if (message is CheckoutFailure) {
-      scaffoldKey
+      context
           .showSnackBar('Checkout failed: ${getErrorMessage(message.error)}');
     }
     if (message is MissingRequiredInfo) {
-      scaffoldKey.showSnackBar('Missing required fields');
+      context.showSnackBar('Missing required fields');
     }
   }
 }

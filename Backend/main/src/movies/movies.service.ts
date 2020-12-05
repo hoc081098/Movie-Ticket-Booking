@@ -1,13 +1,16 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from './movie.schema';
-import { Model } from 'mongoose';
+import { CreateDocumentDefinition, Model } from 'mongoose';
 import { ShowTime } from '../show-times/show-time.schema';
 import * as dayjs from 'dayjs';
 import { Theatre } from '../theatres/theatre.schema';
 import { constants, getSkipLimit } from '../common/utils';
 import { PaginationDto } from '../common/pagination.dto';
 import { Category } from '../categories/category.schema';
+import { AddMovieDto } from './movie.dto';
+import { MovieCategory } from './movie-category.schema';
+import { Person } from '../people/person.schema';
 
 @Injectable()
 export class MoviesService {
@@ -17,6 +20,9 @@ export class MoviesService {
       @InjectModel(Movie.name) private readonly movieModel: Model<Movie>,
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
+      @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
+      @InjectModel(MovieCategory.name) private readonly movieCategoryModel: Model<MovieCategory>,
+      @InjectModel(Person.name) private readonly personModel: Model<Person>,
   ) {}
 
   async getAll(dto: PaginationDto): Promise<Movie[]> {
@@ -197,5 +203,61 @@ export class MoviesService {
 
     (movie as any).categories = movie.categories.map(c => c.category_id);
     return movie;
+  }
+
+  async getMostFavorite(paginationDto: PaginationDto): Promise<Movie[]> {
+    const { skip, limit } = getSkipLimit(paginationDto);
+    return this.movieModel
+        .find({})
+        .sort({ total_favorite: -1, rate_star: -1 })
+        .skip(skip)
+        .limit(limit)
+  }
+
+  async getMostRate(paginationDto: PaginationDto): Promise<Movie[]> {
+    const { skip, limit } = getSkipLimit(paginationDto);
+    return this.movieModel
+        .find({})
+        .sort({ rate_star: -1, total_favorite: -1 })
+        .skip(skip)
+        .limit(limit);
+  }
+
+  async addMovie(dto: AddMovieDto): Promise<Movie> {
+    const [actors, directors, categories] = await Promise.all([
+      this.personModel.find({ _id: { $in: dto.actor_ids } }, { _id: 1 }),
+      this.personModel.find({ _id: { $in: dto.director_ids } }, { _id: 1 }),
+      this.categoryModel.find({ _id: { $in: dto.category_ids } }, { _id: 1 }),
+    ]);
+
+    const doc: Omit<CreateDocumentDefinition<Movie>, '_id'> = {
+      actors: actors.map(p => p._id),
+      age_type: dto.age_type,
+      directors: directors.map(p => p._id),
+      duration: dto.duration,
+      is_active: true,
+      original_language: dto.original_language,
+      overview: dto.overview,
+      poster_url: dto.poster_url,
+      rate_star: 0,
+      released_date: dto.released_date,
+      title: dto.title,
+      total_favorite: 0,
+      total_rate: 0,
+      trailer_video_url: dto.trailer_video_url,
+    };
+    const created = await this.movieModel.create(doc);
+
+    await this.movieCategoryModel.create(
+        categories.map(cat => {
+          const doc: Omit<CreateDocumentDefinition<MovieCategory>, '_id'> = {
+            category_id: cat._id,
+            movie_id: created._id,
+          };
+          return doc;
+        }),
+    );
+
+    return created;
   }
 }

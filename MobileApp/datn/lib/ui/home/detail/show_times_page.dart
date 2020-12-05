@@ -5,6 +5,7 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
@@ -111,6 +112,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
         children: [
           Card(
             elevation: 5,
+            shadowColor: Colors.white,
             child: Column(
               children: [
                 const SelectCityWidget(),
@@ -317,28 +319,55 @@ class ShowTimeItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return ExpansionTile(
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      title: Row(
         children: [
-          Text(theatre.name),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              Icon(
-                Icons.map_rounded,
-                color: Colors.grey.shade500,
-                size: 20,
-              ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Text(
-                  theatre.address,
-                  style: textTheme.caption.copyWith(fontSize: 14),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+          ClipOval(
+            child: OctoImage(
+              image: NetworkImage(theatre.thumbnail ?? ''),
+              width: 54,
+              height: 54,
+              fit: BoxFit.cover,
+              progressIndicatorBuilder: (context, event) {
+                return const Center(
+                  child: SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (_, __, ___) => const SizedBox(),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(theatre.name),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.map_rounded,
+                      color: Colors.grey.shade500,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        theatre.address,
+                        style: textTheme.caption.copyWith(fontSize: 12),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

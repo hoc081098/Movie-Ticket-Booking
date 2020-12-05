@@ -13,8 +13,10 @@ import 'package:stream_loader/stream_loader.dart';
 import '../../domain/model/movie.dart';
 import '../../domain/repository/favorites_repository.dart';
 import '../../utils/error.dart';
+import '../../utils/snackbar.dart';
 import '../../utils/type_defs.dart';
 import '../app_scaffold.dart';
+import '../home/detail/movie_detail_page.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
@@ -58,6 +60,8 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    final repo = Provider.of<FavoritesRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Favorites'),
@@ -101,7 +105,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
               );
             }
 
-            return FavoritesList(items);
+            return FavoritesList(items, repo.refresh);
           },
         ),
       ),
@@ -111,8 +115,9 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
 
 class FavoritesList extends StatefulWidget {
   final BuiltList<Movie> items;
+  final Future<void> Function() onRefresh;
 
-  FavoritesList(this.items);
+  FavoritesList(this.items, this.onRefresh);
 
   @override
   _FavoritesListState createState() => _FavoritesListState();
@@ -136,8 +141,18 @@ class _FavoritesListState extends State<FavoritesList> with DisposeBagMixin {
       final repo = Provider.of<FavoritesRepository>(context);
       toggleS
           .groupBy((movie) => movie.id)
-          .flatMap((movie$) =>
-              movie$.exhaustMap((movie) => repo.toggleFavorite(movie.id)))
+          .flatMap((movie$) => movie$.exhaustMap((movie) {
+                final title = movie.title.length > 24
+                    ? '${movie.title.substring(0, 24)}...'
+                    : movie.title;
+
+                return repo
+                    .toggleFavorite(movie.id)
+                    .doOnData((_) =>
+                        context.showSnackBar('Removed successfully: ${title}'))
+                    .doOnError((e, s) =>
+                        context.showSnackBar('Removed failed: ${title}'));
+              }))
           .listen(null)
           .disposedBy(bag);
 
@@ -147,12 +162,15 @@ class _FavoritesListState extends State<FavoritesList> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) => FavoriteItem(
-        widget.items[index],
-        toggleS.add,
+    return RefreshIndicator(
+      onRefresh: widget.onRefresh,
+      child: ListView.builder(
+        itemBuilder: (context, index) => FavoriteItem(
+          widget.items[index],
+          toggleS.add,
+        ),
+        itemCount: widget.items.length,
       ),
-      itemCount: widget.items.length,
     );
   }
 }
@@ -179,138 +197,147 @@ class FavoriteItem extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(
-        left: 6,
+        left: 8,
         right: 8,
         top: 8,
-        bottom: 12,
+        bottom: 8,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.shade300,
-            offset: Offset(2, 4),
-            blurRadius: 10,
+            color: Colors.grey.shade200,
+            offset: Offset(2, 2),
+            blurRadius: 4,
             spreadRadius: 2,
           )
         ],
       ),
       clipBehavior: Clip.antiAlias,
-      child: Slidable(
-        actionPane: SlidableDrawerActionPane(),
-        actionExtentRatio: 0.25,
-        secondaryActions: [
-          IconSlideAction(
-            caption: 'Delete',
-            color: Colors.red,
-            icon: Icons.delete,
-            onTap: () => onToggle(item),
+      child: Material(
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+          onTap: () => AppScaffold.of(context, newTabIndex: 0).pushNamed(
+            MovieDetailPage.routeName,
+            arguments: item,
           ),
-        ],
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                width: imageWidth,
-                height: imageHeight,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: CachedNetworkImage(
-                        imageUrl: item.posterUrl ?? '',
-                        fit: BoxFit.cover,
-                        placeholder: (_, __) => Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        ),
-                        errorWidget: (_, __, ___) => Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.error,
-                                color: Theme.of(context).accentColor,
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Load image error',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2
-                                    .copyWith(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 8,
-                      right: 8,
-                      child: AgeTypeWidget(
-                        ageType: item.ageType,
-                      ),
-                    ),
-                  ],
-                ),
+          child: Slidable(
+            actionPane: SlidableDrawerActionPane(),
+            actionExtentRatio: 0.25,
+            secondaryActions: [
+              IconSlideAction(
+                caption: 'Delete',
+                color: Colors.red,
+                icon: Icons.delete,
+                onTap: () => onToggle(item),
               ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 8),
-                  Text(
-                    item.title,
-                    style: titleStyle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${item.duration} minutes',
-                    style: durationStyle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star_rate_rounded,
-                        size: 32,
-                        color: Color(0xff8690A0),
-                      ),
-                      const SizedBox(width: 4),
-                      RichText(
-                        text: TextSpan(
-                          text: item.rateStar.toStringAsFixed(2),
-                          style: rateStyle,
-                          children: [
-                            TextSpan(
-                              text: ' / 5',
-                              style: durationStyle,
+            ],
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    width: imageWidth,
+                    height: imageHeight,
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: CachedNetworkImage(
+                            imageUrl: item.posterUrl ?? '',
+                            fit: BoxFit.cover,
+                            placeholder: (_, __) => Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
                             ),
-                          ],
+                            errorWidget: (_, __, ___) => Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.error,
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    'Load image error',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
+                        Positioned(
+                          bottom: 8,
+                          right: 8,
+                          child: AgeTypeWidget(
+                            ageType: item.ageType,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 8),
+                      Text(
+                        item.title,
+                        style: titleStyle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '${item.duration} minutes',
+                        style: durationStyle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star_rate_rounded,
+                            size: 32,
+                            color: Color(0xff8690A0),
+                          ),
+                          const SizedBox(width: 4),
+                          RichText(
+                            text: TextSpan(
+                              text: item.rateStar.toStringAsFixed(2),
+                              style: rateStyle,
+                              children: [
+                                TextSpan(
+                                  text: ' / 5',
+                                  style: durationStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '${item.totalRate} reviews',
+                        style: durationStyle,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${item.totalRate} reviews',
-                    style: durationStyle,
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 8),
+              ],
             ),
-            const SizedBox(width: 8),
-          ],
+          ),
         ),
       ),
     );

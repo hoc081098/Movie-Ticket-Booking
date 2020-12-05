@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { auth, driver, Driver, Transaction } from 'neo4j-driver';
 import { ConfigKey, ConfigService } from '../config/config.service';
 import { DocumentDefinition, Model } from 'mongoose';
@@ -11,11 +11,13 @@ import { ShowTime } from '../show-times/show-time.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import { Reservation } from '../reservations/reservation.schema';
 import { LocationDto } from '../common/location.dto';
-import { exhaustMap, first, map, shareReplay, toArray } from 'rxjs/operators';
-import { concat, defer, identity, merge, Observable, partition } from 'rxjs';
+import { catchError, exhaustMap, first, map, shareReplay, tap, toArray } from 'rxjs/operators';
+import { concat, defer, identity, merge, Observable, of, partition, throwError } from 'rxjs';
 import { UserPayload } from '../auth/get-user.decorator';
 import { checkCompletedLogin, constants, getCoordinates } from '../common/utils';
 import { Parameters } from 'neo4j-driver/types/query-runner';
+import { SearchMoviesDto } from './search-movies.dto';
+import { Person } from '../people/person.schema';
 
 const FAVORITE_SCORE = 1;
 const COMMENT_SCORE = (comment: DocumentDefinition<Comment>) => comment.rate_star;
@@ -43,6 +45,8 @@ type IdAndRest = {
 
 type IdAndMap = { ids: string[]; restById: Map<string, Record<string, any>> };
 
+export type MovieAndExtraInfo = DocumentDefinition<Movie> & Record<string, any>;
+
 @Injectable()
 export class Neo4jService {
   private readonly logger = new Logger(Neo4jService.name);
@@ -57,6 +61,7 @@ export class Neo4jService {
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
+      @InjectModel(Person.name) private readonly personModel: Model<Person>,
   ) {
     try {
       this.driver = driver(
@@ -87,6 +92,7 @@ export class Neo4jService {
     );
 
     await this.addCategories();
+    await this.addPeople();
     await this.addMovies();
     await this.addUsers();
     await this.addComments();
@@ -269,7 +275,7 @@ export class Neo4jService {
             },
         );
       }
-    }, `[MOVIES] ${movies.length}`);
+    }, `[MOVIES] [1] ${movies.length}`);
 
     await this.runTransaction(async txc => {
       for (const mov of movies) {
@@ -290,7 +296,43 @@ export class Neo4jService {
           );
         }
       }
-    }, `[MOVIES] ${movies.length}`);
+    }, `[MOVIES] [2] ${movies.length}`);
+
+    await this.runTransaction(async txc => {
+      for (const mov of movies) {
+        const actors: string[] = mov.actors.map(i => i.toString());
+        for (const p_id of actors) {
+          await txc.run(
+              `
+                MATCH (p: PERSON { _id: $p_id  })
+                MATCH (mov: MOVIE { _id: $mov_id })
+                MERGE (p)-[r:ACTED_IN]->(mov)
+                RETURN mov.title, p.full_name
+            `,
+              {
+                p_id,
+                mov_id: mov._id.toString(),
+              },
+          );
+        }
+
+        const directors: string[] = mov.directors.map(i => i.toString());
+        for (const p_id of directors) {
+          await txc.run(
+              `
+                MATCH (p: PERSON { _id: $p_id  })
+                MATCH (mov: MOVIE { _id: $mov_id })
+                MERGE (p)-[r:DIRECTED]->(mov)
+                RETURN mov.title, p.full_name
+            `,
+              {
+                p_id,
+                mov_id: mov._id.toString(),
+              },
+          );
+        }
+      }
+    }, `[MOVIES] [3] ${movies.length}`);
   }
 
   private async addCategories(): Promise<void> {
@@ -480,6 +522,28 @@ export class Neo4jService {
     );
   }
 
+  private async addPeople() {
+    const people = await this.personModel.find({}).lean();
+
+    await this.runTransaction(async txc => {
+      for (const person of people) {
+        await txc.run(
+            `
+              MERGE(cat: PERSON { _id: $_id })
+              ON CREATE SET
+                cat.full_name = $name
+              ON MATCH SET
+                cat.full_name = $name
+            `,
+            {
+              _id: person._id.toString(),
+              name: person.full_name,
+            },
+        );
+      }
+    }, `[PEOPLE] ${people.length}`);
+  }
+
   ///
   /// END TRANSFER DATA
   ///
@@ -491,7 +555,7 @@ export class Neo4jService {
   getRecommendedMovies(
       dto: LocationDto,
       userPayload: UserPayload
-  ): Observable<(DocumentDefinition<Movie> & Record<string, any>)[]> {
+  ): Observable<MovieAndExtraInfo[]> {
     const center: [number, number] | null = getCoordinates(dto);
     const user = checkCompletedLogin(userPayload);
 
@@ -505,11 +569,11 @@ export class Neo4jService {
           MATCH (u1:USER { _id: $id })-[r1:INTERACTIVE]->(m:MOVIE)
           WITH u1, avg(r1.score) AS u1_mean
           
-          MATCH (u1:USER)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
+          MATCH (u1)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
           WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS iteractions WHERE size(iteractions) > 1
           
-          MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE)
-          WITH u1, u1_mean, u2, avg(r.score) AS u2_mean, iteractions
+          MATCH (u2)-[r2:INTERACTIVE]->(m:MOVIE)
+          WITH u1, u1_mean, u2, avg(r2.score) AS u2_mean, iteractions
           
           UNWIND iteractions AS r
           
@@ -575,11 +639,11 @@ export class Neo4jService {
           MATCH (u1:USER { _id: $id })-[r1:INTERACTIVE]->(m:MOVIE)
           WITH u1, avg(r1.score) AS u1_mean
           
-          MATCH (u1:USER)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
+          MATCH (u1)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
           WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS iteractions WHERE size(iteractions) > 1
           
-          MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE)
-          WITH u1, u1_mean, u2, avg(r.score) AS u2_mean, iteractions
+          MATCH (u2)-[r2:INTERACTIVE]->(m:MOVIE)
+          WITH u1, u1_mean, u2, avg(r2.score) AS u2_mean, iteractions
           
           UNWIND iteractions AS r
           
@@ -760,7 +824,7 @@ export class Neo4jService {
     )
   }
 
-  private findMoviesInIds({ ids, restById }: IdAndMap): Observable<(DocumentDefinition<Movie> & Record<string, any>)[]> {
+  private findMoviesInIds({ ids, restById }: IdAndMap): Observable<MovieAndExtraInfo[]> {
     return defer(() => this.movieModel.find({ _id: { $in: ids } }))
         .pipe(
             map(movies =>
@@ -777,4 +841,309 @@ export class Neo4jService {
   ///
   /// END RECOMMENDED
   ///
+
+  searchMovies(userPayload: UserPayload, dto: SearchMoviesDto): Observable<MovieAndExtraInfo[]> {
+    this.logger.debug(dto.category_ids);
+
+    return defer(() =>
+        dto.category_ids
+            ? this.categoryModel.find({ _id: { $in: dto.category_ids } })
+            : this.categoryModel.find({})
+    ).pipe(
+        exhaustMap(cats =>
+            dto.category_ids ?
+                (
+                    cats.length != dto.category_ids.length
+                        ? throwError(new BadRequestException(`Invalid category ids`))
+                        : of(cats)
+                )
+                : of(cats),
+        ),
+        catchError(e =>
+            e instanceof HttpException
+                ? throwError(e)
+                : throwError(new BadRequestException(e.message ?? 'Error'))
+        ),
+        tap(cats => this.logger.debug(`Cats.length: ${cats.length}`)),
+        exhaustMap(cats => {
+          dto.category_ids = cats.map(c => c._id.toString());
+          const [query, parameters] = Neo4jService.buildQueryAndParams(checkCompletedLogin(userPayload), dto);
+          this.logger.debug(dto);
+
+          return this
+              .getMovies(query, parameters)
+              .pipe(map(movies => [...movies].sort((l, r) => r.recommendation - l.recommendation)));
+        }),
+    );
+  }
+
+  private static buildQueryAndParams(user: User, dto: SearchMoviesDto): [string, Record<string, any>] {
+    // return [
+    //   `
+    //   MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+    //   WITH m,
+    //           st,
+    //           ('(?i).*' + $query + '.*') AS query
+    //   WHERE (
+    //             m.title =~ query
+    //             OR m.overview =~ query
+    //             OR st.room =~ query
+    //             OR t.name =~ query
+    //             OR t.address =~ query
+    //           )
+    //   RETURN m._id as _id, query
+    //   `,
+    //   {
+    //     query: dto.query,
+    //   }
+    // ];
+
+    const center = getCoordinates(dto);
+
+    if (center) {
+      return [
+        `
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE), (m)-[r3:IN_CATEGORY]->(c:CATEGORY)
+          WHERE c._id IN $cat_ids
+          WITH m,
+              st,
+              datetime({ epochMillis: st.start_time }) AS startTime,
+              datetime({ epochMillis: st.end_time }) AS endTime,
+              datetime({epochMillis: m.released_date}) AS released_date,
+              datetime($search_start_time) AS search_start_time,
+              datetime($search_end_time) AS search_end_time,
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance,
+              ('(?i).*' + $query + '.*') AS query,
+              datetime($min_released_date) AS min_released_date,
+              datetime($max_released_date) AS max_released_date
+          WHERE (
+                m.title =~ query
+                OR m.overview =~ query
+                OR st.room =~ query
+                OR t.name =~ query
+                OR t.address =~ query
+              )
+              AND $min_duration <= m.duration AND m.duration <= $max_duration
+              AND m.age_type = $age_type
+              AND 0 <= distance AND distance <= $max_distance
+              AND min_released_date <= released_date AND released_date <= max_released_date
+              AND search_start_time <= startTime AND endTime <= search_end_time
+              AND m.is_active = true
+           
+          OPTIONAL MATCH (u: USER { _id: $uid })-[r:INTERACTIVE]->(m: MOVIE)
+          WITH DISTINCT m, sum(r.score) AS recommendation, st
+          RETURN m._id AS _id, recommendation
+          ORDER BY recommendation DESC, st.start_time ASC
+          LIMIT 100
+         `,
+        {
+          search_start_time: dto.search_start_time.toISOString(),
+          search_end_time: dto.search_end_time.toISOString(),
+          lng: center[0],
+          lat: center[1],
+          query: dto.query,
+          min_released_date: dto.min_released_date.toISOString(),
+          max_released_date: dto.max_released_date.toISOString(),
+          min_duration: dto.min_duration,
+          max_duration: dto.max_duration,
+          age_type: dto.age_type,
+          max_distance: constants.maxDistanceInMeters,
+          uid: user._id,
+          cat_ids: dto.category_ids,
+        },
+      ];
+    }
+
+    return [
+      `
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE), (m)-[r3:IN_CATEGORY]->(c:CATEGORY)
+          WHERE c._id IN $cat_ids
+          WITH m,
+              st,
+              datetime({ epochMillis: st.start_time }) AS startTime,
+              datetime({ epochMillis: st.end_time }) AS endTime,
+              datetime({epochMillis: m.released_date}) AS released_date,
+              datetime($search_start_time) AS search_start_time,
+              datetime($search_end_time) AS search_end_time,
+              ('(?i).*' + $query + '.*') AS query,
+              datetime($min_released_date) AS min_released_date,
+              datetime($max_released_date) AS max_released_date
+          WHERE (
+                m.title =~ query
+                OR m.overview =~ query
+                OR st.room =~ query
+                OR t.name =~ query
+                OR t.address =~ query
+              )
+              AND $min_duration <= m.duration AND m.duration <= $max_duration
+              AND m.age_type = $age_type
+              AND min_released_date <= released_date AND released_date <= max_released_date
+              AND search_start_time <= startTime AND endTime <= search_end_time
+              AND m.is_active = TRUE
+           
+          OPTIONAL MATCH (u: USER { _id: $uid })-[r:INTERACTIVE]->(m: MOVIE)
+          WITH DISTINCT m, sum(r.score) AS recommendation, st
+          RETURN m._id AS _id, recommendation
+          ORDER BY recommendation DESC, st.start_time ASC
+          LIMIT 100
+         `,
+      {
+        search_start_time: dto.search_start_time.toISOString(),
+        search_end_time: dto.search_end_time.toISOString(),
+        query: dto.query,
+        min_released_date: dto.min_released_date.toISOString(),
+        max_released_date: dto.max_released_date.toISOString(),
+        min_duration: dto.min_duration,
+        max_duration: dto.max_duration,
+        age_type: dto.age_type,
+        uid: user._id,
+        cat_ids: dto.category_ids,
+      },
+    ];
+  }
+
+  getRelatedMovies(movieId: string) {
+    return defer(() => this.movieModel.findById(movieId)).pipe(
+        exhaustMap(movie => {
+          if (!movie) {
+            return throwError(new NotFoundException(`Not found movie with id ${movieId}`));
+          }
+
+          this.logger.debug(`getRelatedMovies ${movie.title}`);
+
+          const query = `
+              MATCH (m:MOVIE {_id: $id })-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(c)<-[:IN_CATEGORY|:DIRECTED|ACTED_IN]-(other:MOVIE)
+              WITH m, other, count(c) AS intersection, collect(c._id) AS i
+              
+              MATCH (m)-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(mg)
+              WITH m, other, intersection, i, collect(mg._id) AS s1
+              
+              MATCH (other)-[:IN_CATEGORY|:DIRECTED|ACTED_IN]->(og)
+              WITH m, other, intersection, i, s1, collect(og._id) AS s2
+              
+              WITH m, other, intersection, s1, s2
+              WITH m, other, intersection, s1+[x IN s2 WHERE NOT x IN s1] AS union, s1, s2
+              
+              RETURN other._id AS _id, ((1.0 * intersection) / size(union)) AS jaccard, s1, s2
+              ORDER BY jaccard DESC
+              LIMIT 16
+          `;
+          const parameters = {
+            id: movieId,
+          };
+
+          return this
+              .getMovies(query, parameters)
+              .pipe(map(movies => [...movies].sort((l, r) => r.jaccard - l.jaccard)));
+        }),
+        catchError(e =>
+            e instanceof HttpException
+                ? throwError(e)
+                : throwError(new BadRequestException(e.message ?? 'Error'))
+        )
+    );
+  }
+
+  private getMovies(query: string, parameters: Record<string, any>): Observable<MovieAndExtraInfo[]> {
+    const session = this.driver.rxSession();
+
+    return concat(
+        session
+            .run(query, parameters)
+            .records()
+            .pipe(
+                map(record =>
+                    ({
+                      ...record.toObject(),
+                      _id: record.get('_id') as string,
+                    })
+                ),
+                toArray(),
+                map(splitIdAndRests),
+                exhaustMap(idAndMap => this.findMoviesInIds(idAndMap)),
+            ),
+        session.close() as Observable<never>,
+    );
+  }
+
+  test(id: string) {
+    const session = this.driver.rxSession();
+
+    return concat(
+        session
+            .run(
+                `
+                    MATCH (u1:USER { _id: $id })-[r1:INTERACTIVE]->(m:MOVIE)
+                    WITH u1, avg(r1.score) AS u1_mean
+                    
+                    MATCH (u1)-[r1:INTERACTIVE]->(m:MOVIE)<-[r2:INTERACTIVE]-(u2:USER)
+                    WITH u1, u1_mean, u2, collect({ r1: r1, r2: r2 }) AS interactions
+                    
+                    MATCH (u2)-[r2:INTERACTIVE]->(m:MOVIE)
+                    WITH u1, u1_mean, u2, avg(r2.score) AS u2_mean, interactions
+                    
+                    UNWIND interactions AS r
+                    
+                    WITH sum( (r.r1.score - u1_mean) * (r.r2.score - u2_mean) ) AS nom,
+                         sqrt( sum((r.r1.score - u1_mean) ^ 2) * sum((r.r2.score - u2_mean) ^ 2) ) AS denom,
+                         u1, u2 WHERE denom <> 0
+                      
+                    WITH u1, u2, nom / denom AS pearson
+                    ORDER BY pearson DESC LIMIT 30
+                    
+                    MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
+                    RETURN m, sum(pearson * r.score) AS recommendation, pearson, r.score AS score
+                    ORDER BY recommendation DESC LIMIT 64
+                  `,
+                {
+                  id
+                }
+            )
+            .records()
+            .pipe(
+                map(record => record.toObject()),
+                toArray(),
+            ),
+        session.close() as Observable<never>,
+    );
+  }
 }
+
+`
+
+          OPTIONAL MATCH (u2)-[r:INTERACTIVE]->(m:MOVIE) WHERE NOT exists( (u1)-[:INTERACTIVE]->(m) )
+          WITH m, pearson, r
+          RETURN m._id AS _id, sum(pearson * r.score) AS recommendation, pearson, r.score AS score
+          ORDER BY recommendation DESC LIMIT 24`;
+
+`
+          MATCH (m: MOVIE)-[r1:HAS_SHOW_TIME]->(st:SHOW_TIME)<-[r2:HAS_SHOW_TIME]-(t:THEATRE)
+          WITH m,
+              st,
+              datetime({ epochMillis: st.start_time }) AS startTime,
+              datetime({ epochMillis: st.end_time }) AS endTime,
+              datetime($search_start_time) AS search_start_time,
+              datetime($search_end_time) AS search_end_time,
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance,
+              ('(?i).*' + $query + '.*') AS query,
+              datetime($min_released_date) AS min_released_date,
+              datetime($max_released_date) AS max_released_date
+          WHERE $min_duration <= m.duration AND m.duration <= $max_duration
+              AND m.age_type = $age_type
+              AND min_released_date <= m.released_date AND m.released_date <= max_released_date
+              AND 0 <= distance AND distance <= $max_distance
+              AND search_start_time <= startTime AND endTime <= search_end_time
+              AND (
+                m.title =~ query
+                OR m.overview =~ query
+                OR st.room =~ query
+                OR t.name =~ query
+                OR t.address =~ query
+              )
+           
+          OPTIONAL MATCH (u: USER { _id: $uid })-[r:INTERACTIVE]->(m: MOVIE)
+          WITH DISTINCT m, sum(r.score) AS recommendation, st
+          RETURN m._id AS _id, recommendation
+          ORDER BY recommendation DESC, st.start_time ASC
+          LIMIT 100
+         `;

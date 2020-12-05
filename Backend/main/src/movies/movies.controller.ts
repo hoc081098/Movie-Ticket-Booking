@@ -5,10 +5,12 @@ import { Movie } from './movie.schema';
 import { getCoordinates } from '../common/utils';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../common/pagination.dto';
-import { GetNowShowingMoviesDto } from './movie.dto';
+import { AddMovieDto, GetNowShowingMoviesDto } from './movie.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { Roles, RolesGuard } from '../auth/roles.guard';
 import { ForAdmin } from '../common/swagger.decorator';
+import { range } from "rxjs";
+import { concatMap, map, toArray } from "rxjs/operators";
 
 @ApiTags('movies')
 @UseGuards(AuthGuard)
@@ -23,8 +25,20 @@ export class MoviesController {
 
   @ApiOperation({ summary: 'PRIVATE' })
   @Post('seed')
-  seed(@Body() { query, page, year }: { query: string, page: number, year: number }) {
-    return this.movieDbService.seed(query, page, year);
+  seed(/*@Body() { query, page, year }: { query: string, page: number, year: number }*/) {
+    const query = 'Love';
+
+    return range(0, 10)
+        .pipe(
+            map(i => 2020 - i),
+            concatMap(year =>
+                range(1, 20).pipe(map(page => ({ page, year })))
+            ),
+            concatMap(({ year, page }) => this.movieDbService.seed(query, page, year)),
+            toArray(),
+        );
+
+    // return this.movieDbService.seed(query, page, year);
   }
 
   @ApiOperation({ summary: 'PRIVATE' })
@@ -51,6 +65,20 @@ export class MoviesController {
     return this.moviesService.getComingSoonMovies(paginationDto);
   }
 
+  @Get('most-favorite')
+  getMostFavorite(
+      @Query() paginationDto: PaginationDto,
+  ): Promise<Movie[]> {
+    return this.moviesService.getMostFavorite(paginationDto);
+  }
+
+  @Get('most-rate')
+  getMostRate(
+      @Query() paginationDto: PaginationDto,
+  ): Promise<Movie[]> {
+    return this.moviesService.getMostRate(paginationDto);
+  }
+
   @Get(':id')
   getDetail(
       @Param('id') id: string,
@@ -74,5 +102,14 @@ export class AdminMoviesController {
       @Query() dto: PaginationDto,
   ): Promise<Movie[]> {
     return this.moviesService.getAll(dto);
+  }
+
+  @ForAdmin()
+  @Roles('ADMIN')
+  @Post()
+  addMovie(
+      @Body() dto: AddMovieDto,
+  ): Promise<Movie> {
+    return this.moviesService.addMovie(dto);
   }
 }

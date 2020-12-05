@@ -19,7 +19,7 @@ export class MovieDbService {
   private readonly personByFullName = new Map<string, Person>();
 
   private readonly days = Array
-      .from({ length: 7 * 5 }, (_, i) => i)
+      .from({ length: 7 * 32 }, (_, i) => i)
       .map(i => dayjs(new Date()).add(i - 7, 'day').toDate());
   private dayCount = 0;
 
@@ -156,6 +156,11 @@ export class MovieDbService {
 
   private async saveMovieDetail(v: MovieDetailResponseResult, c: MovieCreditsResponseResult) {
     this.logger.debug('Start save movie detail');
+
+    if (await this.movieModel.findOne({ title: v.title })) {
+      this.logger.debug('End save movie detail [found]');
+      return;
+    }
 
     this.dayCount = (this.dayCount + 1) % this.days.length;
 

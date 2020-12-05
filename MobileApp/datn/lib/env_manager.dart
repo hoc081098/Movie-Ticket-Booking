@@ -24,22 +24,25 @@ extension on EnvPath {
   }
 }
 
+EnvKey _fromString(s) =>
+    EnvKey.values.firstWhere((v) => v.toString().split('.')[1] == s);
+
 class EnvManager {
-  final _envKeyNames = Map.fromEntries(
-    EnvKey.values.map(
-      (e) => MapEntry(
-        e,
-        e.toString().split('.')[1],
-      ),
-    ),
-  );
-
   final _dotEnv = DotEnv();
+  final _map = <EnvKey, String>{};
 
-  Future<void> config(EnvPath path) =>
-      _dotEnv.load(path.fileName).then((_) => print('[ENV] ${_dotEnv.env}'));
+  Future<void> config(EnvPath path, Map<EnvKey, String> remote) async {
+    await _dotEnv.load(path.fileName);
+    final local =
+        _dotEnv.env.map((key, value) => MapEntry(_fromString(key), value));
+    _map.addAll({...local, ...remote});
 
-  String get(EnvKey key) => _dotEnv.env[_envKeyNames[key]];
+    print('[ENV_LOCAL] $local');
+    print('[FROM_REMOTE] $remote');
+    print('[ENV] $_map');
+  }
+
+  String get(EnvKey key) => _map[key];
 
   //
   //

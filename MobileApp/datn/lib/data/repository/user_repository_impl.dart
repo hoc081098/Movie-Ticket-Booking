@@ -77,7 +77,9 @@ class UserRepositoryImpl implements UserRepository {
 
     return local == null
         ? AuthState.notLoggedIn
-        : local.isCompleted ? AuthState.loggedIn : AuthState.notCompletedLogin;
+        : local.isCompleted
+            ? AuthState.loggedIn
+            : AuthState.notCompletedLogin;
   }
 
   Future<AuthState> _checkAuthInternal() async {
@@ -153,6 +155,9 @@ class UserRepositoryImpl implements UserRepository {
         headers: await _fcmTokenHeaders,
       );
       userResponse = UserResponse.fromJson(json);
+      if (userResponse.role != 'USER') {
+        throw const WrongRoleException();
+      }
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
         throw const NotCompletedLoginException();
@@ -246,7 +251,7 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     if (birthday != null) {
-      updateBody['birthday'] = birthday.toIso8601String();
+      updateBody['birthday'] = birthday.toUtc().toIso8601String();
     }
     if (location != null) {
       updateBody['location'] = [

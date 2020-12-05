@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_admin/ui/movies/movies_page.dart';
 import 'package:movie_admin/ui/movies/upload_movie/movie_upload_page.dart';
+import 'package:movie_admin/ui/theatres/theatre_page.dart';
+
 import '../../utils/type_defs.dart';
 import '../users/manager_users_page.dart';
 
@@ -41,6 +43,13 @@ class _HomePageState extends State<HomePage> {
             "Upload movie",
             "5 notifiction",
             Colors.red, () => Navigator.of(context).pushNamed(UploadMoviePage.routeName),
+          ),
+          card(
+            Icons.theaters,
+            "Manager theatre",
+            "5 notifiction",
+            Colors.red,
+            () => Navigator.of(context).pushNamed(TheatresPage.routeName),
           )
         ],
       ),

@@ -1,16 +1,17 @@
 import 'package:movie_admin/data/remote/request/movie_request.dart';
+import 'package:movie_admin/data/remote/response/theatre_response.dart';
+import 'package:movie_admin/domain/model/theatre.dart';
 
+import '../domain/model/age_type.dart';
+import '../domain/model/category.dart';
+import '../domain/model/location.dart';
+import '../domain/model/movie.dart';
+import '../domain/model/person.dart';
+import '../domain/model/user.dart';
+import 'local/user_local.dart';
 import 'remote/response/category_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
-import '../domain/model/age_type.dart';
-import '../domain/model/category.dart';
-import '../domain/model/movie.dart';
-import '../domain/model/person.dart';
-
-import '../domain/model/location.dart';
-import '../domain/model/user.dart';
-import 'local/user_local.dart';
 import 'remote/response/user_response.dart';
 
 UserLocal userResponseToUserLocal(UserResponse response) {
@@ -167,4 +168,31 @@ extension AgeTypeExtension on String {
           : this == 'C16'
               ? AgeType.C16
               : AgeType.C18;
+}
+
+Location locationResponseToLocation(LocationResponse response) {
+  return Location(
+    latitude: response.latitude,
+    longitude: response.longitude,
+  );
+}
+
+Theatre theatreResponseToTheatre(TheatreResponse response) {
+  return Theatre(
+    id: response.id,
+    location: locationResponseToLocation(response.location),
+    isActive: response.isActive ?? true,
+    rooms: response.rooms,
+    name: response.name,
+    address: response.address,
+    phoneNumber: response.phoneNumber,
+    description: response.description,
+    email: response.email,
+    openingHours: response.openingHours,
+    roomSummary: response.roomSummary,
+    createdAt: response.createdAt,
+    updatedAt: response.updatedAt,
+    thumbnail: response.thumbnail ?? '',
+    cover: response.cover ?? '',
+  );
 }

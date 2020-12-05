@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ShowTimesController } from './show-times.controller';
+import { AdminShowTimesController, ShowTimesController } from './show-times.controller';
 import { ShowTimesService } from './show-times.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ShowTime, ShowTimeSchema } from './show-time.schema';
@@ -8,6 +8,8 @@ import { Movie, MovieSchema } from '../movies/movie.schema';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '../config/config.module';
+import { Ticket, TicketSchema } from "../seats/ticket.schema";
+import { Seat, SeatSchema } from "../seats/seat.schema";
 
 @Module({
   imports: [
@@ -24,12 +26,20 @@ import { ConfigModule } from '../config/config.module';
         name: Movie.name,
         schema: MovieSchema,
       },
+      {
+        name: Ticket.name,
+        schema: TicketSchema,
+      },
+      {
+        name: Seat.name,
+        schema: SeatSchema,
+      }
     ]),
     AuthModule,
     UsersModule,
     ConfigModule,
   ],
-  controllers: [ShowTimesController],
+  controllers: [ShowTimesController, AdminShowTimesController],
   providers: [ShowTimesService]
 })
 export class ShowTimesModule {}

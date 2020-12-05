@@ -144,6 +144,16 @@ export class NotificationsService {
 
     return notification;
   }
+
+  async deleteById(id: string): Promise<Notification> {
+    const result = await this.notificationModel.findByIdAndDelete(id);
+
+    if (result == null) {
+      throw new NotFoundException(`Not found notification with id: ${id}`);
+    }
+
+    return result;
+  }
 }
 
 declare global {

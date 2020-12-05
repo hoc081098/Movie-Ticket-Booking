@@ -1,7 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Theatre } from './theatre.schema';
 import { CreateDocumentDefinition, Model } from 'mongoose';
+import { LocationDto } from "../common/location.dto";
+import { constants, getCoordinates } from "../common/utils";
+import { AddTheatreDto, SeatDto } from "./theatre.dto";
+import { Seat } from "../seats/seat.schema";
 
 const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
   {
@@ -26,7 +30,9 @@ const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
       '2D 6',
       '2D 7',
       '3D',
-    ]
+    ],
+    cover: '',
+    thumbnail: '',
   },
   {
     name: 'Starlight Đà Nẵng',
@@ -46,7 +52,9 @@ const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
       '2D 2',
       '2D 3',
       '2D 4',
-    ]
+    ],
+    cover: 'https://s3img.vcdn.vn/123phim/2017/07/starlight-da-nang-14999290721876.jpg',
+    thumbnail: 'https://s3img.vcdn.vn/123phim/2018/09/16b811ab4773065c15eb0e9be67527b3.png',
   },
   {
     name: 'Lotte Cinema Đà Nẵng',
@@ -66,7 +74,9 @@ const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
       '2D 2',
       '2D 3',
       '2D 4',
-    ]
+    ],
+    cover: 'https://s3img.vcdn.vn/123phim/2017/07/lotte-cinema-da-nang-14999146022923.jpg',
+    thumbnail: 'https://s3img.vcdn.vn/123phim/2018/09/404b8c4b80d77732e7426cdb7e24be20.png',
   }
 ];
 
@@ -74,12 +84,105 @@ const seedTheatres: Omit<CreateDocumentDefinition<Theatre>, '_id'>[] = [
 export class TheatresService {
   constructor(
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
+      @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
   ) {}
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   async seed(): Promise<string | Theatre[]> {
+    const theatres = await this.theatreModel.find({});
+    for (const theatre of theatres) {
+      const data = seedTheatres.find(e => e.name === theatre.name);
+      await this.theatreModel.updateOne(
+          { _id: theatre._id },
+          { cover: data.cover, thumbnail: data.thumbnail }
+      ).exec();
+    }
+    return;
+
     if (await this.theatreModel.estimatedDocumentCount().exec() > 0) {
       return 'Nice';
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
     return await this.theatreModel.create(seedTheatres);
+  }
+
+  async getNearbyTheatres(dto?: LocationDto): Promise<Theatre[]> {
+    const center = getCoordinates(dto);
+    if (!center) {
+      return this.theatreModel.find({}).sort({ name: 1 });
+    }
+
+    return this.theatreModel.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: 'Point',
+            coordinates: center,
+          },
+          distanceField: 'distance',
+          includeLocs: 'location',
+          maxDistance: constants.maxDistanceInMeters,
+          spherical: true,
+        },
+      },
+      { $match: { is_active: true } },
+    ]).exec();
+  }
+
+  async addTheatre(dto: AddTheatreDto): Promise<Theatre> {
+    const coordinates = getCoordinates(dto);
+    if (!coordinates) {
+      throw new BadRequestException(`Required lat and lng`);
+    }
+
+    const theatreDoc: Omit<CreateDocumentDefinition<Theatre>, '_id'> = {
+      address: dto.address,
+      cover: dto.cover,
+      description: dto.description,
+      email: dto.email,
+      is_active: true,
+      location: {
+        type: 'Point',
+        coordinates,
+      },
+      name: dto.name,
+      opening_hours: '8:30 - 23:30',
+      phone_number: dto.phone_number,
+      room_summary: '1 2D',
+      rooms: ['2D1'],
+      thumbnail: dto.thumbnail,
+    };
+
+    const theatre = await this.theatreModel.create(theatreDoc);
+
+    const seatsMap = new Map<string, SeatDto[]>();
+    dto.seats.forEach(s => {
+      const row = seatsMap.get(s.row) ?? [];
+      seatsMap.set(s.row, [...row, s]);
+    });
+
+    for (const [_, v] of seatsMap) {
+      await this.seatModel
+          .create(
+              v.sort((l, r) => l.coordinates[0] - r.coordinates[0])
+                  .map((seat, index) => {
+                    const doc: Omit<CreateDocumentDefinition<Seat>, '_id'> = {
+                      column: index + 1,
+                      coordinates: seat.coordinates,
+                      count: seat.count,
+                      is_active: true,
+                      room: '2D1',
+                      row: seat.row,
+                      theatre: theatre._id,
+                    };
+                    return doc;
+                  })
+          );
+    }
+
+
+    return theatre;
   }
 }

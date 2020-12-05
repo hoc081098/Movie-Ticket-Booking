@@ -20,7 +20,7 @@ abstract class State implements Built<State, StateBuilder> {
   bool get isFirstPage => page == 0;
 
   bool get canLoadNextPage =>
-      !isLoading && error == null && items.isNotEmpty && page > 0;
+      !isLoading && error == null && items.isNotEmpty && page > 0 && !loadedAll;
 
   bool get canRetry => !isLoading && error != null;
 

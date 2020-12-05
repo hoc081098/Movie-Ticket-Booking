@@ -145,8 +145,9 @@ export class ReservationsService {
   }
 
   private static calculateOriginalPrice(products: { product: Product; quantity: number }[], tickets: Ticket[]) {
-    return tickets.reduce((acc, e) => acc + e.price, 0) +
+    const price = tickets.reduce((acc, e) => acc + e.price, 0) +
         products.reduce((acc, e) => acc + e.product.price * e.quantity, 0);
+    return Math.ceil(price);
   }
 
   private async saveAndUpdate(
@@ -184,6 +185,8 @@ export class ReservationsService {
         doc.promotion_id = promotion._id;
       }
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
       let reservation = await this.reservationModel.create(
           [doc],
           { session },
@@ -414,5 +417,27 @@ export class ReservationsService {
           user_id: checkCompletedLogin(userPayload)._id.toHexString(),
         }
     )
+  }
+
+  async seed() {
+    const rs: Reservation[] = await this.reservationModel
+        .find({}, { original_price: 1, total_price: 1 })
+        .exec();
+
+    return rs;
+
+    // for (const r of rs) {
+    //   if (Number.isSafeInteger(r.original_price) && Number.isSafeInteger(r.total_price)) {
+    //     continue;
+    //   }
+    //
+    //   this.logger.debug(r);
+    //   await this.reservationModel.updateOne({_id: r._id}, {
+    //     original_price: Math.ceil(r.original_price),
+    //     total_price: Math.ceil(r.total_price),
+    //   });
+    // }
+    //
+    // return 'DONE';
   }
 }

@@ -30,10 +30,13 @@ class _$SingleMessageErrorResponseSerializer
       'statusCode',
       serializers.serialize(object.statusCode,
           specifiedType: const FullType(int)),
-      'error',
-      serializers.serialize(object.error,
-          specifiedType: const FullType(String)),
     ];
+    if (object.error != null) {
+      result
+        ..add('error')
+        ..add(serializers.serialize(object.error,
+            specifiedType: const FullType(String)));
+    }
     if (object.message != null) {
       result
         ..add('message')
@@ -92,10 +95,13 @@ class _$MultipleMessagesErrorResponseSerializer
       'statusCode',
       serializers.serialize(object.statusCode,
           specifiedType: const FullType(int)),
-      'error',
-      serializers.serialize(object.error,
-          specifiedType: const FullType(String)),
     ];
+    if (object.error != null) {
+      result
+        ..add('error')
+        ..add(serializers.serialize(object.error,
+            specifiedType: const FullType(String)));
+    }
     if (object.messages != null) {
       result
         ..add('message')
@@ -156,9 +162,6 @@ class _$SingleMessageErrorResponse extends SingleMessageErrorResponse {
     if (statusCode == null) {
       throw new BuiltValueNullFieldError(
           'SingleMessageErrorResponse', 'statusCode');
-    }
-    if (error == null) {
-      throw new BuiltValueNullFieldError('SingleMessageErrorResponse', 'error');
     }
   }
 
@@ -266,10 +269,6 @@ class _$MultipleMessagesErrorResponse extends MultipleMessagesErrorResponse {
     if (statusCode == null) {
       throw new BuiltValueNullFieldError(
           'MultipleMessagesErrorResponse', 'statusCode');
-    }
-    if (error == null) {
-      throw new BuiltValueNullFieldError(
-          'MultipleMessagesErrorResponse', 'error');
     }
   }
 

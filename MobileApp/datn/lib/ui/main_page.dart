@@ -30,9 +30,12 @@ import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
+import 'home/search/search_page.dart';
+import 'home/showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'home/tickets/combo_bloc.dart';
 import 'home/tickets/combo_page.dart';
 import 'home/tickets/ticket_page.dart';
+import 'home/view_all/view_all_page.dart';
 import 'login/login_page.dart';
 import 'login_update_profile/login_update_profile_page.dart';
 import 'notifications/notifications_page.dart';
@@ -70,6 +73,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         theatre: arguments['theatre'],
         showTime: arguments['showTime'],
         movie: arguments['movie'],
+        fromMovieDetail: arguments['fromMovieDetail'] ?? true,
       );
     },
     ComboPage.routeName: (context, settings) {
@@ -149,6 +153,14 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         child: DiscountsPage(showTimeId: settings.arguments as String),
       );
     },
+    ViewAllPage.routeName: (context, settings) {
+      return ViewAllPage(movieType: settings.arguments);
+    },
+    ShowTimesByTheatrePage.routeName: (context, settings) {
+      return ShowTimesByTheatrePage(theatre: settings.arguments);
+    },
+    SearchPage.routeName: (context, settings) =>
+        SearchPage(query: settings.arguments),
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{
@@ -203,19 +215,19 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_rounded),
-          title: Text('Home'),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_rounded),
-          title: Text('Favorites'),
+          label: 'Favorites',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.notifications),
-          title: Text('Notification'),
+          label: 'Notification',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_rounded),
-          title: Text('Profile'),
+          label: 'Profile',
         ),
       ],
     );
