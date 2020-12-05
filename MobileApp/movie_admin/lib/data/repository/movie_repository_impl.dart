@@ -38,13 +38,13 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Movie> uploadMovie(Movie movie) async {
+  Future<void> uploadMovie(Movie movie) async {
     try {
       final movieRes = await _authClient.postBody(
         buildUrl('admin_movies/'),
         body: movieDomainToRemote(movie).toJson(),
-      ) as Map<String, dynamic>;
-      return movieRemoteToDomain(MovieResponse.fromJson(movieRes));
+      );
+      print(movieRes);
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
         throw const NotCompletedManagerUserException();

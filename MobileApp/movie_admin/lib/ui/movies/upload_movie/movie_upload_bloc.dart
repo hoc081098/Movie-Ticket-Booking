@@ -1,6 +1,8 @@
 import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meta/meta.dart';
+import 'package:movie_admin/domain/model/movie.dart';
 import 'package:movie_admin/ui/widgets/loading_button.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
@@ -8,7 +10,7 @@ import 'package:tuple/tuple.dart';
 import '../../../domain/model/category.dart';
 import '../../../domain/model/person.dart';
 import '../../../domain/repository/movie_repository.dart';
-import '../../../utils/type_defs.dart';
+import '../../../utils/utils.dart';
 import 'movie_upload_input.dart';
 
 enum UrlType { URL, FILE }
@@ -16,69 +18,38 @@ enum UrlType { URL, FILE }
 class MovieUploadBloc extends DisposeCallbackBaseBloc {
   final Function1<String, void> loadPerson;
   final Function1<MovieUploadInput, void> uploadMovie;
-  final Function1<Tuple2<UrlType, String>, void> posterUrl;
-  final Function1<Tuple2<UrlType, String>, void> trailerUrl;
 
   final Stream<List<Category>> fetchCategory$;
   final Stream<List<Person>> showSearch$;
   final Stream<ButtonState> stateStream$;
-  final Stream<Tuple2<UrlType, String>> posterUrlStream$;
-  final Stream<Tuple2<UrlType, String>> trailerUrlStream$;
+  final Stream<Object> error$;
 
   MovieUploadBloc._({
-    @required this.posterUrl,
-    @required this.trailerUrl,
     @required this.loadPerson,
     @required this.uploadMovie,
     @required this.fetchCategory$,
     @required this.showSearch$,
     @required this.stateStream$,
-    @required this.trailerUrlStream$,
-    @required this.posterUrlStream$,
+    @required this.error$,
     @required Function0<void> dispose,
   }) : super(dispose);
 
   factory MovieUploadBloc(MovieRepository repository) {
     final uploadMovieSubject = PublishSubject<MovieUploadInput>();
-    final posterTypeUrlSubject =
-        BehaviorSubject.seeded(Tuple2(UrlType.FILE, ''));
-    final trailerTypeUrlSubject =
-        BehaviorSubject.seeded(Tuple2(UrlType.FILE, ''));
-    final loadCategorySubject = BehaviorSubject<String>();
+    final loadCategorySubject = BehaviorSubject.seeded('');
     final loadPersonSubject = BehaviorSubject.seeded('');
-
-    final posterStream = posterTypeUrlSubject
-        .exhaustMap((value) => Rx.defer(() async* {
-              if (value.item1 == UrlType.FILE && value.item2.isNotEmpty) {
-                final result = await repository.uploadUrl(value.item2);
-                yield Tuple2(value.item1, result);
-              } else {
-                yield value;
-              }
-            }))
-        .publish();
-
-    final trailerStream = trailerTypeUrlSubject
-        .exhaustMap((value) => Rx.defer(() async* {
-              if (value.item1 == UrlType.FILE && value.item2.isNotEmpty) {
-                final result = await repository.uploadUrl(value.item2);
-                yield Tuple2(value.item1, result);
-              } else {
-                yield value;
-              }
-            }))
-        .publish();
+    final errorS = PublishSubject<String>(sync: true);
 
     final categoryStream = loadCategorySubject
-        .startWith('')
         .flatMap((value) => Rx.defer(() async* {
               final result = await repository.getListCategory();
               yield result;
             }))
-        .publish();
+        .publishValue();
 
     final personStream = loadPersonSubject
         .debounceTime(Duration(milliseconds: 300))
+        .distinct((p, e) => p == e)
         .exhaustMap((value) => Rx.defer(() async* {
               if (value.isEmpty) {
                 yield <Person>[];
@@ -91,34 +62,73 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
         .publish();
 
     final uploadStream = uploadMovieSubject
+        .debug('11111111111111111')
         .where((e) => e.isHasData())
+        .debug('22222222222222')
         .exhaustMap(
-          (input) => Rx.defer(() async* {
+          (input)  async* {
             yield ButtonState.loading;
-            final movie = await repository.uploadMovie(input.toMovie());
-            if (movie.id != null) {
+
+            try {
+              String poster;
+              if (input.posterType == UrlType.FILE) {
+                poster = await repository.uploadUrl(input.posterFile.path);
+              } else {
+                poster = input.posterUrl;
+              }
+
+              String trailer;
+              if (input.trailerType == UrlType.FILE) {
+                trailer = await repository.uploadUrl(input.trailerFile.path);
+              } else {
+                trailer = input.trailerVideoUrl;
+              }
+              await repository.uploadMovie(
+                Movie(
+                  posterUrl: poster,
+                  trailerVideoUrl: trailer,
+                  id: null,
+                  isActive: null,
+                  title: input.title,
+                  overview: input.overview,
+                  releasedDate: input.releasedDate.toUtc(),
+                  duration: input.duration,
+                  originalLanguage: input.originalLanguage,
+                  createdAt: null,
+                  updatedAt: null,
+                  ageType: input.ageType,
+                  actors: input.actors,
+                  directors: input.directors,
+                  categories: input.categorys,
+                  rateStar: null,
+                  totalFavorite: null,
+                  totalRate: null,
+                ),
+              );
+              print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>RES');
               yield ButtonState.success;
-            } else {
+            } catch (e, s) {
+              print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ERROR');
+              errorS.add(e);
+              print(e);
+              print(s);
               yield ButtonState.fail;
             }
-          }),
+          }
         )
-        .where((movie) => movie != null)
+        .debug('33333333333333333333333')
         .publish();
 
     final controllers = [
       loadPersonSubject,
       loadCategorySubject,
       uploadMovieSubject,
-      posterTypeUrlSubject,
-      trailerTypeUrlSubject,
+      errorS,
     ];
     final streams = [
       uploadStream.connect(),
       personStream.connect(),
       categoryStream.connect(),
-      trailerStream.connect(),
-      posterStream.connect(),
     ];
     return MovieUploadBloc._(
       dispose: DisposeBag([...controllers, ...streams]).dispose,
@@ -127,10 +137,7 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
       fetchCategory$: categoryStream,
       showSearch$: personStream,
       stateStream$: uploadStream,
-      trailerUrl: trailerTypeUrlSubject.add,
-      posterUrl: posterTypeUrlSubject.add,
-      trailerUrlStream$: trailerStream,
-      posterUrlStream$: posterStream,
+      error$: errorS,
     );
   }
 }
