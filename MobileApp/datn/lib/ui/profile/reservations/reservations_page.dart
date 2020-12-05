@@ -6,6 +6,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/repository/reservation_repository.dart';
 import '../../../utils/utils.dart';
@@ -28,7 +29,7 @@ class _ReservationsPageState extends State<ReservationsPage>
   final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
 
   RxReduxStore<ReservationsAction, ReservationsState> store;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final scrollController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -39,14 +40,21 @@ class _ReservationsPageState extends State<ReservationsPage>
           Provider.of<ReservationRepository>(context).getReservation);
       subscribe(s);
       s.dispatch(const LoadFirstPageAction());
+
+      scrollController
+          .nearBottomEdge$()
+          .mapTo<ReservationsAction>(const LoadNextPageAction())
+          .dispatchTo(s);
+
       return s;
     }();
   }
 
   @override
   void dispose() {
-    store.dispose();
     super.dispose();
+    store.dispose();
+    scrollController.dispose();
   }
 
   void subscribe(RxReduxStore<ReservationsAction, ReservationsState> store) {
@@ -56,13 +64,13 @@ class _ReservationsPageState extends State<ReservationsPage>
 
     store.actionStream.listen((action) {
       if (action is FailureAction) {
-        scaffoldKey.showSnackBar(
+        context.showSnackBar(
           'Error occurred: ${getErrorMessage(action.error)}',
         );
       }
       if (action is SuccessAction) {
         if (action.reservations.isEmpty) {
-          scaffoldKey.showSnackBar('Loaded all reservations');
+          context.showSnackBar('Loaded all reservations');
         }
       }
     }).disposedBy(bag);
@@ -71,7 +79,6 @@ class _ReservationsPageState extends State<ReservationsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Your reservations'),
       ),
@@ -120,6 +127,7 @@ class _ReservationsPageState extends State<ReservationsPage>
               return completer.future;
             },
             child: ListView.builder(
+              controller: scrollController,
               itemCount: items.length + (state.isFirstPage ? 0 : 1),
               itemBuilder: (context, index) {
                 if (index < items.length) {
@@ -157,33 +165,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                 if (state.loadedAll) {
                   return const SizedBox(width: 0, height: 0);
                 }
-
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 12,
-                    top: 12,
-                  ),
-                  child: Center(
-                    child: SizedBox(
-                      width: 128,
-                      height: 48,
-                      child: RaisedButton(
-                        onPressed: () =>
-                            store.dispatch(const LoadNextPageAction()),
-                        child: Text('Next page'),
-                        elevation: 8,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          side: BorderSide(
-                            color: Theme.of(context).primaryColor,
-                            width: 1,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                );
+                return const SizedBox(width: 0, height: 56);
               },
             ),
           );

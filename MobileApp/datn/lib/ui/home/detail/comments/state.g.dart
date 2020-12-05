@@ -19,6 +19,8 @@ class _$State extends State {
   final bool isLoading;
   @override
   final Object error;
+  @override
+  final bool loadedAll;
 
   factory _$State([void Function(StateBuilder) updates]) =>
       (new StateBuilder()..update(updates)).build();
@@ -29,7 +31,8 @@ class _$State extends State {
       this.total,
       this.items,
       this.isLoading,
-      this.error})
+      this.error,
+      this.loadedAll})
       : super._() {
     if (page == null) {
       throw new BuiltValueNullFieldError('State', 'page');
@@ -45,6 +48,9 @@ class _$State extends State {
     }
     if (isLoading == null) {
       throw new BuiltValueNullFieldError('State', 'isLoading');
+    }
+    if (loadedAll == null) {
+      throw new BuiltValueNullFieldError('State', 'loadedAll');
     }
   }
 
@@ -64,7 +70,8 @@ class _$State extends State {
         total == other.total &&
         items == other.items &&
         isLoading == other.isLoading &&
-        error == other.error;
+        error == other.error &&
+        loadedAll == other.loadedAll;
   }
 
   @override
@@ -72,11 +79,13 @@ class _$State extends State {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, page.hashCode), average.hashCode),
-                    total.hashCode),
-                items.hashCode),
-            isLoading.hashCode),
-        error.hashCode));
+                $jc(
+                    $jc($jc($jc(0, page.hashCode), average.hashCode),
+                        total.hashCode),
+                    items.hashCode),
+                isLoading.hashCode),
+            error.hashCode),
+        loadedAll.hashCode));
   }
 
   @override
@@ -87,7 +96,8 @@ class _$State extends State {
           ..add('total', total)
           ..add('items', items)
           ..add('isLoading', isLoading)
-          ..add('error', error))
+          ..add('error', error)
+          ..add('loadedAll', loadedAll))
         .toString();
   }
 }
@@ -120,6 +130,10 @@ class StateBuilder implements Builder<State, StateBuilder> {
   Object get error => _$this._error;
   set error(Object error) => _$this._error = error;
 
+  bool _loadedAll;
+  bool get loadedAll => _$this._loadedAll;
+  set loadedAll(bool loadedAll) => _$this._loadedAll = loadedAll;
+
   StateBuilder();
 
   StateBuilder get _$this {
@@ -130,6 +144,7 @@ class StateBuilder implements Builder<State, StateBuilder> {
       _items = _$v.items?.toBuilder();
       _isLoading = _$v.isLoading;
       _error = _$v.error;
+      _loadedAll = _$v.loadedAll;
       _$v = null;
     }
     return this;
@@ -159,7 +174,8 @@ class StateBuilder implements Builder<State, StateBuilder> {
               total: total,
               items: items.build(),
               isLoading: isLoading,
-              error: error);
+              error: error,
+              loadedAll: loadedAll);
     } catch (_) {
       String _$failedField;
       try {

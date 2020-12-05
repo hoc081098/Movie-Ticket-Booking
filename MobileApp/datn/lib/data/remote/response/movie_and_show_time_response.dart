@@ -1,8 +1,8 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:datn/data/remote/response/movie_response.dart';
 
 import '../../serializers.dart';
+import 'movie_response.dart';
 import 'show_time_response.dart';
 
 part 'movie_and_show_time_response.g.dart';

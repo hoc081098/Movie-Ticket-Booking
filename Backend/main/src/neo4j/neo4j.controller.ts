@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { MovieAndExtraInfo, Neo4jService } from './neo4j.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
@@ -37,5 +37,17 @@ export class Neo4jController {
       @GetUser() userPayload: UserPayload,
   ): Observable<MovieAndExtraInfo[]> {
     return this.neo4jService.searchMovies(userPayload, dto);
+  }
+
+  @Get('related-movies/:movie_id')
+  getRelatedMovies(
+      @Param('movie_id') movieId: string
+  ) {
+    return this.neo4jService.getRelatedMovies(movieId);
+  }
+
+  @Post('seed/:id')
+  seed(@Param('id') id: string) {
+    return this.neo4jService.test(id);
   }
 }

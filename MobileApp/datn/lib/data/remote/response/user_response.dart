@@ -72,6 +72,8 @@ abstract class UserResponse
   @nullable
   bool get isActive;
 
+  String get role;
+
   UserResponse._();
 
   factory UserResponse([void Function(UserResponseBuilder) updates]) =

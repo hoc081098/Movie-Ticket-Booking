@@ -7,4 +7,6 @@ abstract class NotificationRepository {
     @required int page,
     @required int perPage,
   });
+
+  Future<void> deleteNotificationById(String id);
 }

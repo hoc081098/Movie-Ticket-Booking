@@ -12,6 +12,7 @@ import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
@@ -36,7 +37,6 @@ class UpdateProfilePage extends StatefulWidget {
 
 class _UpdateProfilePageState extends State<UpdateProfilePage>
     with SingleTickerProviderStateMixin, DisposeBagMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
   final birthDayDateFormat = intl.DateFormat.yMMMd();
 
@@ -177,7 +177,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Update profile'),
       ),
@@ -590,7 +589,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     final isValid = formKey.currentState?.validate() == true;
 
     if (!isValid) {
-      scaffoldKey.showSnackBar('Invalid information');
+      context.showSnackBar('Invalid information');
       return;
     }
 
@@ -609,7 +608,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         birthday: birthday,
         avatarFile: avatarFile$.value,
       );
-      scaffoldKey.showSnackBar('Update profile successfully');
+      context.showSnackBar('Update profile successfully');
       if (widget.user == null) {
         await Navigator.pushNamedAndRemoveUntil(
           context,
@@ -621,10 +620,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       }
     } catch (e, s) {
       print('loginUpdateProfile $e $s');
-      scaffoldKey.showSnackBar('Update profile failed: ${getErrorMessage(e)}');
+      context.showSnackBar('Update profile failed: ${getErrorMessage(e)}');
     } finally {
       isLoading = false;
-      loginButtonController.reverse();
+      unawaited(loginButtonController.reverse());
     }
   }
 

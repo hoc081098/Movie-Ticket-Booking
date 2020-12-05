@@ -1,8 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:datn/domain/model/movie.dart';
-import 'package:datn/domain/model/show_time.dart';
+
+import 'movie.dart';
+import 'show_time.dart';
 
 part 'movie_and_showtimes.g.dart';
 

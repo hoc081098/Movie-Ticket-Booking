@@ -1,9 +1,8 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/data/remote/response/category_response.dart';
-import 'package:datn/domain/model/category.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../domain/model/category.dart';
 import '../../domain/model/location.dart';
 import '../../domain/model/movie.dart';
 import '../../domain/model/movie_and_showtimes.dart';
@@ -14,6 +13,7 @@ import '../../utils/utils.dart';
 import '../local/search_keyword_source.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
+import '../remote/response/category_response.dart';
 import '../remote/response/movie_and_show_time_response.dart';
 import '../remote/response/movie_detail_response.dart';
 import '../remote/response/movie_response.dart';
@@ -306,5 +306,17 @@ class MovieRepositoryImpl implements MovieRepository {
     };
     return Rx.fromCallable(
         () => _authClient.getBody(buildUrl('/categories')).then(mapResult));
+  }
+
+  @override
+  Stream<BuiltList<Movie>> getRelatedMovies(String movieId) {
+    if (movieId == null) {
+      return Stream.error(ArgumentError.notNull('movieId'));
+    }
+    return Rx.fromCallable(
+      () => _authClient
+          .getBody(buildUrl('/neo4j/related-movies/$movieId'))
+          .then(mapResult),
+    );
   }
 }

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:datn/domain/model/movie.dart';
 
+import '../../../domain/model/movie.dart';
 import '../../../utils/iterable.dart';
 
 part 'view_all_state.g.dart';

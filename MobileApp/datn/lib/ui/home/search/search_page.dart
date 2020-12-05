@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/domain/model/category.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -12,6 +11,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
+import '../../../domain/model/category.dart';
 import '../../../domain/model/movie.dart';
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';

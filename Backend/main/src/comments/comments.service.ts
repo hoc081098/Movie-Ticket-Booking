@@ -9,6 +9,7 @@ import { checkCompletedLogin, getSkipLimit } from '../common/utils';
 import { PaginationDto } from '../common/pagination.dto';
 import { CommentsAndRatingSummary, CreateCommentDto } from './comment.dto';
 import { UserPayload } from '../auth/get-user.decorator';
+import { MoviesService } from '../movies/movies.service';
 
 const rateStars = [1, 2, 3, 4, 5];
 
@@ -37,9 +38,10 @@ export class CommentsService {
       @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
       @InjectModel(Movie.name) private readonly movieModel: Model<Movie>,
       @InjectModel(User.name) private readonly userModel: Model<User>,
+      private readonly moviesService: MoviesService,
   ) {}
 
-  async seed(): Promise<Comment[]> {
+  async seed() {
     // const list = await this.movieModel.find({});
     // for (const m of list) {
     //   const com = await this.commentModel.find({ movie: m._id });
@@ -52,15 +54,40 @@ export class CommentsService {
     // }
     // this.logger.debug(`Seed comments done`);
     // return;
-    this.logger.debug(`Seed comments start`);
+    await this.seedNowPlayingMovies();
+    await this.seedComingSoonMovies();
+  }
 
-    const users = await this.userModel.find({});
-    const movies = await this.movieModel.find({});
+  private async seedComingSoonMovies() {
+    this.logger.debug(`Seed comments start`, '2');
+    const count = await this.userModel.estimatedDocumentCount();
 
-    const comments: Comment[] = [];
+    const movies = await Promise.all([
+      await this.moviesService.getComingSoonMovies((() => {
+            const paginationDto = new PaginationDto();
+            paginationDto.page = 1;
+            paginationDto.per_page = 10;
+            return paginationDto;
+          })()
+      ),
+      await this.moviesService.getComingSoonMovies((() => {
+            const paginationDto = new PaginationDto();
+            paginationDto.page = 3;
+            paginationDto.per_page = 10;
+            return paginationDto;
+          })()
+      ),
+    ]).then(([a, b]) => [...a, ...b]);
+    this.logger.debug(movies.length, 'MOVIES.LENGTH');
 
+    let createdCount = 0;
     for (const movie of movies) {
-      for (let i = 0; i < 20; i++) {
+      const skip = Math.floor(Math.random() * count);
+      const users = await this.userModel.find({})
+          .skip(skip)
+          .limit(20);
+
+      for (let i = 0; i < 5; i++) {
         for (const user of users) {
           const doc: Omit<DocumentDefinition<Comment>, '_id'> = {
             content: `${faker.hacker.phrase()} ${emojiRandom()}`,
@@ -69,14 +96,63 @@ export class CommentsService {
             user: user._id,
             is_active: true,
           };
-          const created = await this.commentModel.create(doc);
-          comments.push(created);
+          await this.commentModel.create(doc);
+          createdCount++;
         }
       }
     }
 
-    this.logger.debug(`Seed comments done`);
-    return comments;
+
+    this.logger.debug(createdCount, '2');
+    this.logger.debug(`Seed comments done`, '2');
+  }
+
+  private async seedNowPlayingMovies() {
+    this.logger.debug(`Seed comments start`, '1');
+    const count = await this.userModel.estimatedDocumentCount();
+
+    const movies = await Promise.all([
+      await this.moviesService.getNowShowingMovies(null, (() => {
+            const paginationDto = new PaginationDto();
+            paginationDto.page = 1;
+            paginationDto.per_page = 10;
+            return paginationDto;
+          })()
+      ),
+      await this.moviesService.getNowShowingMovies(null, (() => {
+            const paginationDto = new PaginationDto();
+            paginationDto.page = 3;
+            paginationDto.per_page = 10;
+            return paginationDto;
+          })()
+      ),
+    ]).then(([a, b]) => [...a, ...b]);
+    this.logger.debug(movies.length, 'MOVIES.LENGTH');
+
+    let createdCount = 0;
+    for (const movie of movies) {
+      const skip = Math.floor(Math.random() * count);
+      const users = await this.userModel.find({})
+          .skip(skip)
+          .limit(20);
+
+      for (let i = 0; i < 5; i++) {
+        for (const user of users) {
+          const doc: Omit<DocumentDefinition<Comment>, '_id'> = {
+            content: `${faker.hacker.phrase()} ${emojiRandom()}`,
+            rate_star: randomStar(),
+            movie: movie._id,
+            user: user._id,
+            is_active: true,
+          };
+          await this.commentModel.create(doc);
+          createdCount++;
+        }
+      }
+    }
+
+    this.logger.debug(createdCount, '1');
+    this.logger.debug(`Seed comments done`, '1');
   }
 
   async getCommentsByMovieId(

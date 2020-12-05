@@ -1,6 +1,5 @@
 import 'package:built_collection/src/list.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../domain/model/movie.dart';
 import '../../domain/repository/favorites_repository.dart';
@@ -12,17 +11,43 @@ import '../remote/response/favorite_response.dart';
 import '../remote/response/movie_response.dart';
 import '../serializers.dart';
 
+abstract class _Change {}
+
+class _Toggled implements _Change {
+  final Movie movie;
+  final bool favorite;
+
+  _Toggled(this.movie, this.favorite);
+}
+
+class _Refreshed implements _Change {
+  final BuiltList<Movie> _movies;
+
+  _Refreshed(this._movies);
+}
+
 class FavoritesRepositoryImpl implements FavoritesRepository {
   final AuthClient _authClient;
   final Function1<MovieResponse, Movie> _movieResponseToMovie;
-  final _changes = PublishSubject<Tuple2<Movie, bool>>(sync: true);
+  final _changes = PublishSubject<_Change>(sync: true);
 
   FavoritesRepositoryImpl(this._authClient, this._movieResponseToMovie);
 
   @override
   Stream<bool> checkFavorite(String movieId) {
-    final change$ = _changes
-        .mapNotNull((tuple) => tuple.item1.id == movieId ? tuple.item2 : null);
+    final change$ = _changes.mapNotNull((change) {
+      if (change is _Toggled) {
+        return change.movie.id == movieId ? change.favorite : null;
+      }
+      if (change is _Refreshed) {
+        return change._movies.firstWhere(
+              (m) => m.id == movieId,
+              orElse: () => null,
+            ) !=
+            null;
+      }
+      throw StateError('Unknown change $change');
+    });
 
     return Rx.fromCallable(
             () => _authClient.getBody(buildUrl('/favorites/${movieId}')))
@@ -37,38 +62,55 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
             .postBody(buildUrl('/favorites'), body: {'movie_id': movieId}))
         .map((json) => FavoriteResponse.fromJson(json))
         .map(
-          (res) => Tuple2(
+          (res) => _Toggled(
             _movieResponseToMovie(res.movie),
             res.is_favorite,
           ),
         )
-        .doOnData(_changes.add);
+        .doOnData(_changes.add)
+        .mapTo<void>(null);
   }
 
   @override
   Stream<BuiltList<Movie>> favoritesMovie() {
-    final jsonToMovies = (dynamic json) {
-      final responses = serializers.deserialize(
-        json,
-        specifiedType: builtListMovieResponse,
-      ) as BuiltList<MovieResponse>;
-
-      return [for (final res in responses) _movieResponseToMovie(res)].build();
-    };
-
     return Rx.fromCallable(() => _authClient.getBody(buildUrl('/favorites')))
-        .map(jsonToMovies)
+        .map(_jsonToMovies)
         .exhaustMap(
-          (initial) => _changes
-              .scan<BuiltList<Movie>>(
-                (acc, change, _) => acc.rebuild(
-                  (b) => change.item2
-                      ? b.add(change.item1)
-                      : b.removeWhere((item) => item.id == change.item1.id),
-                ),
-                initial,
-              )
-              .startWith(initial),
+          (initial) => _changes.scan<BuiltList<Movie>>(
+            (acc, change, _) {
+              if (change is _Toggled) {
+                return acc.rebuild((b) {
+                  change.favorite
+                      ? b.add(change.movie)
+                      : b.removeWhere((item) => item.id == change.movie.id);
+                });
+              }
+              if (change is _Refreshed) {
+                return change._movies;
+              }
+              throw StateError('Unknown change $change');
+            },
+            initial,
+          ).startWith(initial),
         );
+  }
+
+  @override
+  Future<void> refresh() {
+    return _authClient
+        .getBody(buildUrl('/favorites'))
+        .then(_jsonToMovies)
+        .then((value) => _Refreshed(value))
+        .then(_changes.add)
+        .then<void>((value) => null);
+  }
+
+  BuiltList<Movie> _jsonToMovies(dynamic json) {
+    final responses = serializers.deserialize(
+      json,
+      specifiedType: builtListMovieResponse,
+    ) as BuiltList<MovieResponse>;
+
+    return [for (final res in responses) _movieResponseToMovie(res)].build();
   }
 }

@@ -17,7 +17,6 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage>
     with SingleTickerProviderStateMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   DisposeBag disposeBag;
 
   AnimationController buttonController;
@@ -84,7 +83,6 @@ class _RegisterPageState extends State<RegisterPage>
     final loginBloc = BlocProvider.of<RegisterBloc>(context);
 
     return Scaffold(
-      key: scaffoldKey,
       body: Stack(
         children: [
           Positioned.fill(
@@ -160,16 +158,16 @@ class _RegisterPageState extends State<RegisterPage>
 
   void handleMessage(message) async {
     if (message is RegisterSuccessMessage) {
-      scaffoldKey.showSnackBar(
+      context.showSnackBar(
           'Register successfully. Please check your email inbox to verify this account.');
       await delay(1000);
       await Navigator.of(context).pop(message.email);
     }
     if (message is RegisterErrorMessage) {
-      scaffoldKey.showSnackBar(message.message);
+      context.showSnackBar(message.message);
     }
     if (message is InvalidInformationMessage) {
-      scaffoldKey.showSnackBar('Invalid information');
+      context.showSnackBar('Invalid information');
     }
   }
 

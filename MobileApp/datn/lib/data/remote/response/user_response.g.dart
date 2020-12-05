@@ -81,6 +81,8 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
       'is_completed',
       serializers.serialize(object.isCompleted,
           specifiedType: const FullType(bool)),
+      'role',
+      serializers.serialize(object.role, specifiedType: const FullType(String)),
     ];
     if (object.phoneNumber != null) {
       result
@@ -176,6 +178,10 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
         case 'is_active':
           result.isActive = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'role':
+          result.role = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
       }
     }
@@ -299,6 +305,8 @@ class _$UserResponse extends UserResponse {
   final bool isCompleted;
   @override
   final bool isActive;
+  @override
+  final String role;
 
   factory _$UserResponse([void Function(UserResponseBuilder) updates]) =>
       (new UserResponseBuilder()..update(updates)).build();
@@ -314,7 +322,8 @@ class _$UserResponse extends UserResponse {
       this.birthday,
       this.location,
       this.isCompleted,
-      this.isActive})
+      this.isActive,
+      this.role})
       : super._() {
     if (uid == null) {
       throw new BuiltValueNullFieldError('UserResponse', 'uid');
@@ -330,6 +339,9 @@ class _$UserResponse extends UserResponse {
     }
     if (isCompleted == null) {
       throw new BuiltValueNullFieldError('UserResponse', 'isCompleted');
+    }
+    if (role == null) {
+      throw new BuiltValueNullFieldError('UserResponse', 'role');
     }
   }
 
@@ -354,7 +366,8 @@ class _$UserResponse extends UserResponse {
         birthday == other.birthday &&
         location == other.location &&
         isCompleted == other.isCompleted &&
-        isActive == other.isActive;
+        isActive == other.isActive &&
+        role == other.role;
   }
 
   @override
@@ -368,17 +381,19 @@ class _$UserResponse extends UserResponse {
                             $jc(
                                 $jc(
                                     $jc(
-                                        $jc($jc(0, uid.hashCode),
-                                            email.hashCode),
-                                        phoneNumber.hashCode),
-                                    fullName.hashCode),
-                                gender.hashCode),
-                            avatar.hashCode),
-                        address.hashCode),
-                    birthday.hashCode),
-                location.hashCode),
-            isCompleted.hashCode),
-        isActive.hashCode));
+                                        $jc(
+                                            $jc($jc(0, uid.hashCode),
+                                                email.hashCode),
+                                            phoneNumber.hashCode),
+                                        fullName.hashCode),
+                                    gender.hashCode),
+                                avatar.hashCode),
+                            address.hashCode),
+                        birthday.hashCode),
+                    location.hashCode),
+                isCompleted.hashCode),
+            isActive.hashCode),
+        role.hashCode));
   }
 
   @override
@@ -394,7 +409,8 @@ class _$UserResponse extends UserResponse {
           ..add('birthday', birthday)
           ..add('location', location)
           ..add('isCompleted', isCompleted)
-          ..add('isActive', isActive))
+          ..add('isActive', isActive)
+          ..add('role', role))
         .toString();
   }
 }
@@ -448,6 +464,10 @@ class UserResponseBuilder
   bool get isActive => _$this._isActive;
   set isActive(bool isActive) => _$this._isActive = isActive;
 
+  String _role;
+  String get role => _$this._role;
+  set role(String role) => _$this._role = role;
+
   UserResponseBuilder();
 
   UserResponseBuilder get _$this {
@@ -463,6 +483,7 @@ class UserResponseBuilder
       _location = _$v.location?.toBuilder();
       _isCompleted = _$v.isCompleted;
       _isActive = _$v.isActive;
+      _role = _$v.role;
       _$v = null;
     }
     return this;
@@ -497,7 +518,8 @@ class UserResponseBuilder
               birthday: birthday,
               location: _location?.build(),
               isCompleted: isCompleted,
-              isActive: isActive);
+              isActive: isActive,
+              role: role);
     } catch (_) {
       String _$failedField;
       try {

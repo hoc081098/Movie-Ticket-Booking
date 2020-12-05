@@ -1,4 +1,4 @@
-import 'package:built_collection/src/list.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,7 @@ import '../../../../utils/error.dart';
 import '../../../../utils/utils.dart';
 import '../../../widgets/age_type.dart';
 import '../../../widgets/error_widget.dart';
+import 'related_movies.dart';
 
 class MovieInfoPage extends StatefulWidget {
   final String movieId;
@@ -34,8 +35,8 @@ class _MovieInfoPageState extends State<MovieInfoPage>
     with AutomaticKeepAliveClientMixin, DisposeBagMixin {
   LoaderBloc<Movie> bloc;
   LoaderBloc<bool> favBloc;
+  LoaderBloc<BuiltList<Movie>> relatedBloc;
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   final releaseDateFormat = DateFormat('dd/MM/yy');
   final toggleS = PublishSubject<void>(sync: true);
   Object token;
@@ -55,13 +56,10 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       final repo = Provider.of<FavoritesRepository>(context);
       final loaderFunction = () => repo.checkFavorite(widget.movieId);
 
-      final loaderBloc = LoaderBloc(
+      return LoaderBloc(
         loaderFunction: loaderFunction,
         enableLogger: true,
       )..fetch();
-      loaderBloc.message$.listen(handleFavMessage).disposedBy(bag);
-
-      return loaderBloc;
     }();
 
     bloc ??= () {
@@ -80,18 +78,34 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       final repo = Provider.of<FavoritesRepository>(context);
 
       toggleS
-          .exhaustMap((_) => repo.toggleFavorite(widget.movieId))
+          .exhaustMap((_) => repo
+              .toggleFavorite(widget.movieId)
+              .doOnData((_) => context.showSnackBar('Toggled successfully'))
+              .doOnError((e, s) =>
+                  context.showSnackBar('Failed: ${getErrorMessage(e)}')))
           .listen(null)
           .disposedBy(bag);
 
       return const Object();
     }();
+
+    relatedBloc ??= () {
+      final repository = Provider.of<MovieRepository>(context);
+
+      return LoaderBloc(
+        loaderFunction: () => repository.getRelatedMovies(widget.movieId),
+        initialContent: null,
+        enableLogger: true,
+      )..fetch();
+    }();
   }
 
   @override
   void dispose() {
-    bloc.dispose();
     super.dispose();
+    bloc.dispose();
+    favBloc.dispose();
+    relatedBloc.dispose();
   }
 
   @override
@@ -101,7 +115,6 @@ class _MovieInfoPageState extends State<MovieInfoPage>
     final themeData = Theme.of(context);
 
     return Scaffold(
-      key: scaffoldKey,
       body: RxStreamBuilder<LoaderState<Movie>>(
         stream: bloc.state$,
         builder: (context, snapshot) {
@@ -253,10 +266,21 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                       ),
                       const SizedBox(height: 12),
                       PeopleList(people: movie.directors),
+                      Text(
+                        'RELATED MOVIES',
+                        maxLines: 1,
+                        style: themeData.textTheme.headline6.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff687189),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
                     ],
                   ),
                 ),
-              )
+              ),
+              RelatedMovies(bloc: relatedBloc),
             ],
           );
         },
@@ -266,22 +290,6 @@ class _MovieInfoPageState extends State<MovieInfoPage>
 
   @override
   bool get wantKeepAlive => true;
-
-  void handleFavMessage(LoaderMessage<bool> msg) {
-    msg.fold(
-      onFetchFailure: (e, s) =>
-          scaffoldKey.showSnackBar('Failed: ${getErrorMessage(e)}'),
-      onFetchSuccess: (data) {
-        if (firstMsg) {
-          firstMsg = false;
-        } else {
-          scaffoldKey.showSnackBar('Toggled successfully');
-        }
-      },
-      onRefreshFailure: (e, s) {},
-      onRefreshSuccess: (data) {},
-    );
-  }
 }
 
 class DetailAppBar extends StatelessWidget {

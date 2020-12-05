@@ -1,5 +1,12 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
+import '../remote/response/category_response.dart';
+import '../remote/response/person_response.dart';
+import '../../domain/model/category.dart';
+import '../../domain/model/person.dart';
+
 import '../../domain/model/exception.dart';
 import '../../domain/model/movie.dart';
 import '../../domain/repository/movie_repository.dart';
@@ -26,6 +33,73 @@ class MovieRepositoryImpl implements MovieRepository {
       if (e.statusCode == HttpStatus.notFound) {
         throw const NotCompletedManagerUserException();
       }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Movie> uploadMovie(Movie movie) async {
+    try {
+      final movieRes = await _authClient.postBody(
+        buildUrl('admin_movies/'),
+        body: movieDomainToRemote(movie).toJson(),
+      ) as Map<String, dynamic>;
+      return movieRemoteToDomain(MovieResponse.fromJson(movieRes));
+    } on ErrorResponse catch (e) {
+      if (e.statusCode == HttpStatus.notFound) {
+        throw const NotCompletedManagerUserException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Person>> getListSearchPerson(String name) async {
+    try {
+      final res = await _authClient
+          .getBody(buildUrl('people/search/', {'name': name})) as List;
+      return res
+          .map((e) => PersonResponse.fromJson(e))
+          .map((e) => personResponseToPerson(e))
+          .toList();
+    } on ErrorResponse catch (e) {
+      if (e.statusCode == HttpStatus.notFound) {
+        throw const NotCompletedManagerUserException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Category>> getListCategory() async {
+    try {
+      final res = await _authClient.getBody(buildUrl('categories/')) as List;
+      return res
+          .map((e) => CategoryResponse.fromJson(e))
+          .map((e) => categoryResponseToCategory(e))
+          .toList();
+    } on ErrorResponse catch (e) {
+      if (e.statusCode == HttpStatus.notFound) {
+        throw const NotCompletedManagerUserException();
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> uploadUrl(String path) async {
+    try {
+      final task = FirebaseStorage.instance
+          .ref()
+          .child('trailer_images')
+          .child(path + '_movie_admin')
+          .putFile(File(path));
+      await task.onComplete;
+      if (task.isSuccessful) {
+        return (await task.lastSnapshot.ref.getDownloadURL()).toString();
+      }
+      throw const NotCompletedManagerUserException();
+    } on PlatformException catch (e) {
       rethrow;
     }
   }

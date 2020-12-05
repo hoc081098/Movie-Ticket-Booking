@@ -1,8 +1,8 @@
 import 'package:movie_admin/data/remote/response/show_time_response.dart';
+import 'package:movie_admin/data/remote/request/movie_request.dart';
 import 'package:movie_admin/data/remote/response/theatre_response.dart';
 import 'package:movie_admin/domain/model/show_time.dart';
 import 'package:movie_admin/domain/model/theatre.dart';
-
 import '../domain/model/age_type.dart';
 import '../domain/model/category.dart';
 import '../domain/model/location.dart';
@@ -121,6 +121,22 @@ Movie movieRemoteToDomain(MovieResponse response) {
     rateStar: response.rateStar,
     totalFavorite: response.totalFavorite,
     totalRate: response.totalRate,
+  );
+}
+
+MovieRequest movieDomainToRemote(Movie movie) {
+  return MovieRequest(
+    title: movie.title,
+    trailerVideoUrl: movie.trailerVideoUrl,
+    posterUrl: movie.posterUrl,
+    overview: movie.overview,
+    releasedDate: movie.releasedDate.toIso8601String(),
+    duration: movie.duration,
+    directorIds: movie.directors.map((e) => e.id),
+    actorIds: movie.actors.map((e) => e.id),
+    originalLanguage: movie.originalLanguage,
+    ageType: movie.ageType.toString().split('.')[1],
+    categoryIds: movie.categories.map((e) => e.id),
   );
 }
 

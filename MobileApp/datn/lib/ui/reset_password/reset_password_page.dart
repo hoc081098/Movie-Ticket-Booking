@@ -15,7 +15,6 @@ class ResetPasswordPage extends StatefulWidget {
 
 class _ResetPasswordPageState extends State<ResetPasswordPage>
     with SingleTickerProviderStateMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   DisposeBag disposeBag;
 
   AnimationController buttonController;
@@ -82,7 +81,6 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
     final loginBloc = BlocProvider.of<ResetPasswordBloc>(context);
 
     return Scaffold(
-      key: scaffoldKey,
       body: Stack(
         children: [
           Positioned.fill(
@@ -156,16 +154,16 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
 
   void handleMessage(message) async {
     if (message is SuccessMessage) {
-      scaffoldKey.showSnackBar(
+      context.showSnackBar(
           'Reset successfully. Please check your email to reset password!');
       await delay(1000);
       await Navigator.of(context).pop(message.email);
     }
     if (message is ErrorMessage) {
-      scaffoldKey.showSnackBar(message.message);
+      context.showSnackBar(message.message);
     }
     if (message is InvalidInformationMessage) {
-      scaffoldKey.showSnackBar('Invalid information');
+      context.showSnackBar('Invalid information');
     }
   }
 

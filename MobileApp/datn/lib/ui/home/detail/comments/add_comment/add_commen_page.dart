@@ -42,7 +42,7 @@ class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
         child: Column(
           children: [
             const SizedBox(height: 32),
-            RatingBar(
+            RatingBar.builder(
               initialRating: 5,
               itemCount: 5,
               allowHalfRating: false,

@@ -4,8 +4,9 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/rxdart.dart' hide Notification;
 
+import '../../domain/model/notification.dart';
 import '../../domain/repository/notification_repository.dart';
 import '../../fcm_notification.dart';
 import '../../utils/error.dart';
@@ -28,7 +29,6 @@ class _NotificationsPageState extends State<NotificationsPage>
   final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
 
   RxReduxStore<Action, st.State> store;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   final listController = ScrollController();
 
   @override
@@ -63,15 +63,21 @@ class _NotificationsPageState extends State<NotificationsPage>
           .listen(onNewNotification)
           .disposedBy(bag);
 
+      listController
+          .nearBottomEdge$()
+          .mapTo<Action>(const LoadNextPageAction())
+          .dispatchTo(s);
+
       return s;
     }();
   }
 
   @override
   void dispose() {
-    store.dispose();
-    listController.dispose();
     super.dispose();
+    store.dispose();
+    store = null;
+    listController.dispose();
   }
 
   void subscribe(RxReduxStore<Action, st.State> store) {
@@ -81,13 +87,13 @@ class _NotificationsPageState extends State<NotificationsPage>
 
     store.actionStream.listen((action) {
       if (action is FailureAction) {
-        scaffoldKey.showSnackBar(
+        context.showSnackBar(
           'Error occurred: ${getErrorMessage(action.error)}',
         );
       }
       if (action is SuccessAction) {
         if (action.notifications.isEmpty) {
-          scaffoldKey.showSnackBar('Loaded all notifications');
+          context.showSnackBar('Loaded all notifications');
         }
       }
     }).disposedBy(bag);
@@ -96,7 +102,6 @@ class _NotificationsPageState extends State<NotificationsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Notifications'),
       ),
@@ -138,75 +143,96 @@ class _NotificationsPageState extends State<NotificationsPage>
 
           final items = state.items;
 
-          return ListView.builder(
-            controller: listController,
-            itemCount: items.length + (state.isFirstPage ? 0 : 1),
-            itemBuilder: (context, index) {
-              if (index < items.length) {
-                return NotificationItemWidget(
-                  items[index],
-                  dateFormat,
-                );
-              }
-
-              if (state.error != null) {
-                return Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: MyErrorWidget(
-                    errorText:
-                        'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
-                    onPressed: () => store.dispatch(const RetryAction()),
-                  ),
-                );
-              }
-
-              if (state.isLoading) {
-                return Center(
-                  child: SizedBox(
-                    width: 56,
-                    height: 56,
-                    child: LoadingIndicator(
-                      color: Theme.of(context).accentColor,
-                      indicatorType: Indicator.ballScaleMultiple,
-                    ),
-                  ),
-                );
-              }
-
-              if (state.loadedAll) {
-                return const SizedBox(width: 0, height: 0);
-              }
-
-              return Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 12,
-                  top: 12,
-                ),
-                child: Center(
-                  child: SizedBox(
-                    width: 128,
-                    height: 48,
-                    child: RaisedButton(
-                      onPressed: () =>
-                          store.dispatch(const LoadNextPageAction()),
-                      child: Text('Next page'),
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        side: BorderSide(
-                          color: Theme.of(context).primaryColor,
-                          width: 1,
-                        ),
-                      ),
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              );
+          return RefreshIndicator(
+            onRefresh: () {
+              final action = RefreshAction();
+              store.dispatch(action);
+              return action.onDone;
             },
+            child: ListView.builder(
+              controller: listController,
+              itemCount: items.length + (state.isFirstPage ? 0 : 1),
+              itemBuilder: (context, index) {
+                if (index < items.length) {
+                  return NotificationItemWidget(
+                    items[index],
+                    dateFormat,
+                    onDelete,
+                  );
+                }
+
+                if (state.error != null) {
+                  return Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: MyErrorWidget(
+                      errorText:
+                          'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
+                      onPressed: () => store.dispatch(const RetryAction()),
+                    ),
+                  );
+                }
+
+                if (state.isLoading) {
+                  return Center(
+                    child: SizedBox(
+                      width: 56,
+                      height: 56,
+                      child: LoadingIndicator(
+                        color: Theme.of(context).accentColor,
+                        indicatorType: Indicator.ballScaleMultiple,
+                      ),
+                    ),
+                  );
+                }
+
+                if (state.loadedAll) {
+                  return const SizedBox(width: 0, height: 0);
+                }
+                return const SizedBox(width: 0, height: 56);
+              },
+            ),
           );
         },
       ),
     );
+  }
+
+  void onDelete(Notification item) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete notification'),
+          content: Text('Are you sure you want to delete this notification?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            TextButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (!identical(ok, true)) {
+      return;
+    }
+
+    try {
+      await Provider.of<NotificationRepository>(context)
+          .deleteNotificationById(item.id);
+      context.showSnackBar('Delete successfully');
+
+      store?.dispatch(RemovedNotificationAction(item));
+    } catch (e, s) {
+      print(e);
+      print(s);
+      context.showSnackBar('Error: ${getErrorMessage(e)}');
+    }
   }
 }

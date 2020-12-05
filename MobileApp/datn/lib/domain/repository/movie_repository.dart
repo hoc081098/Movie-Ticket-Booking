@@ -38,6 +38,8 @@ abstract class MovieRepository {
 
   Stream<Movie> getMovieDetail(String movieId);
 
+  Stream<BuiltList<Movie>> getRelatedMovies(String movieId);
+
   Stream<BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>>
       getShowTimesByTheatreId(String theatreId);
 

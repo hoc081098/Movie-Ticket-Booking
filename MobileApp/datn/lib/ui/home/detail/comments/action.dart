@@ -117,7 +117,8 @@ class SuccessAction implements Action {
           ..page = state.page + (items.isEmpty ? 0 : 1)
           ..items = listBuilder
           ..error = null
-          ..isLoading = false;
+          ..isLoading = false
+          ..loadedAll = items.isEmpty;
       },
     );
   }
