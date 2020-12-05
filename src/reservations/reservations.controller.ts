@@ -6,6 +6,8 @@ import { CreateReservationDto } from './reservation.dto';
 import { ReservationsService } from './reservations.service';
 import { Reservation } from './reservation.schema';
 import { PaginationDto } from '../common/pagination.dto';
+import { RolesGuard, Roles } from 'src/auth/roles.guard';
+import { ForAdmin } from 'src/common/swagger.decorator';
 
 @ApiTags('reservations')
 @UseGuards(AuthGuard)
@@ -52,5 +54,26 @@ export class ReservationsController {
   @Get('seed')
   seed() {
     return this.reservationsService.seed();
+  }
+}
+
+
+@ApiTags('admin-reservations')
+@UseGuards(AuthGuard, RolesGuard)
+@Controller('admin-reservations')
+export class AdminReservationsController {
+  constructor(
+    private readonly reservationsService: ReservationsService,
+  ) {}
+
+  @ForAdmin()
+  @Roles('ADMIN')
+  @Get('show-times/:show_time_id')
+  getReservationsByShowTimeId(
+    @Param('show_time_id') show_time_id: string,
+  ) {
+    return this.reservationsService.getReservationsByShowTimeId(
+      show_time_id
+    );
   }
 }
