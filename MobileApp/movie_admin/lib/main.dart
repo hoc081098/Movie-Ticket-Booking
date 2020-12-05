@@ -12,8 +12,11 @@ import 'package:movie_admin/data/repository/theatres_repository_impl.dart';
 import 'package:movie_admin/domain/repository/movie_repository.dart';
 import 'package:movie_admin/domain/repository/show_times_repository.dart';
 import 'package:movie_admin/domain/repository/theatres_repository.dart';
+import 'data/repository/movie_repository_impl.dart';
+import 'data/repository/theatres_repository_impl.dart';
+import 'domain/repository/movie_repository.dart';
+import 'domain/repository/theatres_repository.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
-
 import 'data/local/user_local_source_impl.dart';
 import 'data/mappers.dart' as mappers;
 import 'data/remote/auth_client.dart';

@@ -1,13 +1,15 @@
+import 'dart:io';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:movie_admin/domain/model/category.dart';
+import '../../../domain/model/category.dart';
+import '../../../utils/utils.dart';
 import '../../../domain/model/age_type.dart';
-import 'package:tuple/tuple.dart';
 
-import '../../../domain/model/person.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/loading_button.dart';
 import '../../widgets/multi_pick_person.dart';
@@ -21,27 +23,29 @@ class UploadMoviePage extends StatefulWidget {
   _UploadMoviePageState createState() => _UploadMoviePageState();
 }
 
-class _UploadMoviePageState extends State<UploadMoviePage> {
+class _UploadMoviePageState extends State<UploadMoviePage>
+    with DisposeBagMixin {
   final releasedDateFormat = DateFormat.yMMMd();
-  DateTime releasedDay = DateTime(2020);
-  final key = GlobalKey();
-  _RowTextType showSearch = null;
+  final key = GlobalKey<ScaffoldState>();
+  _RowTextType showSearch;
   final controllers = {
     _RowTextType.TITLE: TextEditingController(),
     _RowTextType.ORIGIN_LANG: TextEditingController(),
     _RowTextType.OVERVIEW: TextEditingController(),
     _RowTextType.DURATION: TextEditingController(),
-    _RowTextType.POSTER_URL: TextEditingController(),
-    _RowTextType.TRAILER_URL: TextEditingController(),
     _RowTextType.RELEASED_DAY: TextEditingController(),
   };
   MovieUploadInput movieUploadInput = MovieUploadInput.init();
 
   MovieUploadBloc bloc;
+  Object listen;
 
   @override
   void didChangeDependencies() {
     bloc ??= BlocProvider.of<MovieUploadBloc>(context);
+    listen ??= bloc.error$.listen((event) {
+      key.showSnackBar('Error ${getErrorMessage(event)}');
+    }).disposedBy(bag);
     super.didChangeDependencies();
   }
 
@@ -155,9 +159,9 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
 
   Widget _buildUrlOption({
     @required String title,
-    @required TextEditingController controller,
     @required UrlType typeUrl,
   }) {
+    final isPoster = title == 'Poster url: ';
     return Row(
       children: <Widget>[
         SizedBox(width: 10),
@@ -182,22 +186,27 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                   elevation: 3,
                   onPressed: () async {
                     final imagePicker = ImagePicker();
-                    if (title == 'Poster url: ') {
+                    if (isPoster) {
                       final image = await imagePicker.getImage(
                         source: ImageSource.gallery,
                         maxWidth: 720,
                         maxHeight: 720,
                       );
-                      bloc.posterUrl(Tuple2(typeUrl, image.path));
+                      if (image == null) return;
+                      movieUploadInput.posterFile = File(image.path);
                     } else {
                       final video = await imagePicker.getVideo(
                           source: ImageSource.gallery,
                           maxDuration: Duration(minutes: 30));
-                      bloc.trailerUrl(Tuple2(typeUrl, video.path));
+                      if (video == null) return;
+                      movieUploadInput.trailerFile = File(video.path);
                     }
+                    setState(() {});
                   },
                   child: Text(
-                    controller.text.isEmpty ? 'Empty' : controller.text,
+                    isPoster
+                        ? movieUploadInput.posterFile?.toString() ?? 'Empty'
+                        : movieUploadInput.trailerFile?.toString() ?? 'Empty',
                     style: TextStyle(
                       decoration: TextDecoration.none,
                       color: Colors.black,
@@ -206,7 +215,12 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                   ),
                 )
               : TextFormField(
-                  controller: controller,
+                  initialValue: isPoster
+                      ? movieUploadInput.posterUrl
+                      : movieUploadInput.trailerVideoUrl,
+                  onChanged: (value) => isPoster
+                      ? movieUploadInput.posterUrl = value
+                      : movieUploadInput.trailerVideoUrl = value,
                   keyboardType: TextInputType.text,
                   maxLines: 1,
                   decoration: InputDecoration(
@@ -233,11 +247,12 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
               ],
             ),
             onSelected: (e) {
-              if (title == 'Poster url: ') {
-                bloc.posterUrl(Tuple2(e, ''));
+              if (isPoster) {
+                movieUploadInput.posterType = e;
               } else {
-                bloc.trailerUrl(Tuple2(e, ''));
+                movieUploadInput.trailerType = e;
               }
+              setState(() {});
             },
             itemBuilder: (context) => UrlType.values
                 .map(
@@ -272,9 +287,9 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
         ),
         Expanded(
           child: DateTimeField(
+            initialValue: movieUploadInput.releasedDate,
             format: releasedDateFormat,
             readOnly: true,
-            controller: controllers[_RowTextType.RELEASED_DAY],
             onShowPicker: (context, currentValue) {
               return showDatePicker(
                 context: context,
@@ -292,7 +307,7 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                   ? 'Invalid released date'
                   : null;
             },
-            onChanged: (v) => releasedDay = v,
+            onChanged: (v) => movieUploadInput.releasedDate = v,
             resetIcon: Icon(Icons.delete, color: Colors.deepPurpleAccent),
             decoration: InputDecoration(
               prefixIcon: Padding(
@@ -350,7 +365,7 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                 ? Text('Search...')
                 : Text(
                     length.toString() +
-                        (type == _RowTextType.ACTOR ? ' Actor' : ' Director'),
+                        (type == _RowTextType.ACTOR ? ' Actors' : ' Directors'),
                   ),
           ),
         ),
@@ -389,28 +404,14 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
       case _RowTextType.RELEASED_DAY:
         return _buildReleasedDayTextField();
       case _RowTextType.TRAILER_URL:
-        return StreamBuilder<Tuple2<UrlType, String>>(
-          stream: bloc.trailerUrlStream$,
-          builder: (context, snapshot) {
-            controllers[e].text = snapshot.data?.item2 ?? '';
-            return _buildUrlOption(
-              title: 'Trailer url: ',
-              controller: controllers[e],
-              typeUrl: snapshot.data?.item1 ?? UrlType.FILE,
-            );
-          },
+        return _buildUrlOption(
+          title: 'Trailer url: ',
+          typeUrl: movieUploadInput.trailerType,
         );
       case _RowTextType.POSTER_URL:
-        return StreamBuilder<Tuple2<UrlType, String>>(
-          stream: bloc.posterUrlStream$,
-          builder: (context, snapshot) {
-            controllers[e].text = snapshot.data?.item2 ?? '';
-            return _buildUrlOption(
-              title: 'Poster url: ',
-              controller: controllers[e],
-              typeUrl: snapshot.data?.item1 ?? UrlType.FILE,
-            );
-          },
+        return _buildUrlOption(
+          title: 'Poster url: ',
+          typeUrl: movieUploadInput.posterType,
         );
       case _RowTextType.AGE_TYPE:
         return _buildAgeType();
@@ -461,15 +462,12 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                   color: Colors.green.shade400)
             },
             onPressed: () {
-              movieUploadInput.title = controllers[_RowTextType.TITLE].text;
-              movieUploadInput.overview =
-                  controllers[_RowTextType.OVERVIEW].text;
-              movieUploadInput.releasedDate =
-                  controllers[_RowTextType.RELEASED_DAY].text;
-              movieUploadInput.posterUrl =
-                  controllers[_RowTextType.POSTER_URL].text;
-              movieUploadInput.trailerVideoUrl =
-                  controllers[_RowTextType.TRAILER_URL].text;
+              print('cliced');
+              updateDataForInput();
+              print('cliced2');
+
+              print("############" + movieUploadInput.toString());
+              bloc.uploadMovie(movieUploadInput);
             },
             state: state,
           ),
@@ -510,6 +508,12 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
                     title: Text('Country List'),
                     content: _PickCategoryWidget(
                       bloc: bloc,
+                      onSelectedCategory: (listCategory) {
+                        setState(() {
+                          movieUploadInput.categorys = listCategory;
+                          Navigator.of(context).pop();
+                        });
+                      },
                     ),
                   );
                 });
@@ -518,8 +522,8 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
             padding: EdgeInsets.all(10),
             child: movieUploadInput.categorys.isEmpty
                 ? Text('Pick...')
-                : Text(
-                    movieUploadInput.categorys.length.toString() + ' category'),
+                : Text(movieUploadInput.categorys.length.toString() +
+                    ' categories'),
           ),
         ),
         SizedBox(width: 10),
@@ -582,6 +586,15 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
       ],
     );
   }
+
+  void updateDataForInput() {
+    movieUploadInput.title = controllers[_RowTextType.TITLE].text;
+    movieUploadInput.overview = controllers[_RowTextType.OVERVIEW].text;
+    movieUploadInput.duration =
+        int.tryParse(controllers[_RowTextType.DURATION].text);
+    movieUploadInput.originalLanguage =
+        controllers[_RowTextType.ORIGIN_LANG].text;
+  }
 }
 
 enum _RowTextType {
@@ -601,35 +614,119 @@ enum _RowTextType {
 
 class _PickCategoryWidget extends StatefulWidget {
   final MovieUploadBloc bloc;
+  final Function1<List<Category>, void> onSelectedCategory;
 
-  const _PickCategoryWidget({Key key, @required this.bloc}) : super(key: key);
+  const _PickCategoryWidget({
+    Key key,
+    @required this.bloc,
+    @required this.onSelectedCategory,
+  }) : super(key: key);
 
   @override
   _PickCategoryState createState() => _PickCategoryState();
 }
 
 class _PickCategoryState extends State<_PickCategoryWidget> {
+  final listCategoryChoices = <Category>[];
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 500.0, // Change as per your requirement
+      height: 400.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement
       child: StreamBuilder<List<Category>>(
         stream: widget.bloc.fetchCategory$,
         builder: (context, snapshot) {
           final listData = snapshot.data ?? List.empty();
-          print("##############" + listData.length.toString());
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: listData.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text(listData[index].name),
-              );
-            },
+          return Column(
+            children: <Widget>[
+              buildListView(listData),
+              SizedBox(height: 10),
+              _buildButton(context),
+            ],
           );
         },
       ),
+    );
+  }
+
+  Widget buildListView(List<Category> listData) {
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: listData.length,
+        itemBuilder: (BuildContext context, int index) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                listCategoryChoices.contains(listData[index])
+                    ? listCategoryChoices.remove(listData[index])
+                    : listCategoryChoices.add(listData[index]);
+              });
+            },
+            child: Container(
+              margin: EdgeInsets.all(5),
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Text(
+                listData[index].name,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: listCategoryChoices.contains(listData[index])
+                      ? Colors.blue
+                      : Colors.black,
+                ),
+              ),
+              decoration: ShapeDecoration(
+                color: listCategoryChoices.contains(listData[index])
+                    ? Colors.lightBlueAccent.withOpacity(0.15)
+                    : Colors.black.withOpacity(0.15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    width: 1,
+                    color: listCategoryChoices.contains(listData[index])
+                        ? Colors.deepPurple.withOpacity(0.4)
+                        : Colors.white,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildButton(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(width: 50),
+        Expanded(
+          child: RaisedButton(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              'Pick category',
+              style: TextStyle(fontSize: 14),
+            ),
+            onPressed: () =>
+                widget.onSelectedCategory(listCategoryChoices.toList()),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              side: BorderSide(
+                color: Colors.blueAccent,
+                style: BorderStyle.solid,
+                width: 2,
+              ),
+            ),
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(width: 50),
+      ],
     );
   }
 }

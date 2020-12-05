@@ -10,7 +10,7 @@ abstract class MovieRepository {
 
   Future<List<Person>> getListSearchPerson(String name);
 
-  Future<Movie> uploadMovie(Movie movie);
+  Future<void> uploadMovie(Movie movie);
 
   Future<String> uploadUrl(String path);
 }

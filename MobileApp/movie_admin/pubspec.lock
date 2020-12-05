@@ -207,9 +207,11 @@ packages:
   distinct_value_connectable_stream:
     dependency: "direct main"
     description:
-      name: distinct_value_connectable_stream
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: rxdart_master
+      resolved-ref: "5c311f9e6b746ee57f1c99833e27b603a232b760"
+      url: "https://github.com/hoc081098/distinct_value_connectable_stream.git"
+    source: git
     version: "1.2.0-beta01"
   expandable:
     dependency: "direct main"
@@ -677,9 +679,11 @@ packages:
   rxdart:
     dependency: "direct main"
     description:
-      name: rxdart
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "8f400da59cb9ed6874b2ce818aebbac70742f3ef"
+      url: "https://github.com/ReactiveX/rxdart.git"
+    source: git
     version: "0.25.0-beta3"
   shared_preferences:
     dependency: transitive

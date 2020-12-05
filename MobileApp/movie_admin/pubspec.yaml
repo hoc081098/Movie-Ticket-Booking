@@ -69,7 +69,14 @@ dev_dependencies:
     sdk: flutter
 
 dependency_overrides:
-  rxdart: 0.25.0-beta3
+  rxdart:
+    git:
+      url: 'https://github.com/ReactiveX/rxdart.git'
+      ref: 'master'
+  distinct_value_connectable_stream:
+    git:
+      url: 'https://github.com/hoc081098/distinct_value_connectable_stream.git'
+      ref: 'rxdart_master'
   disposebag: 1.3.2
 
 flutter:
