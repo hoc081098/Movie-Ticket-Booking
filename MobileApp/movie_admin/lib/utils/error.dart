@@ -20,6 +20,9 @@ String getErrorMessage(dynamic error) {
   if (error is NotLoggedInException) {
     return 'Not logged in';
   }
+  if (error is WrongRoleException) {
+    return 'Only ADMIN or STAFF role is allowed';
+  }
 
   // server error
   if (error is SingleMessageErrorResponse) {

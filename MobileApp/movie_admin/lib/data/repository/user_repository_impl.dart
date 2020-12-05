@@ -130,6 +130,9 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final json = await _authClient.getBody(buildUrl('users/me'));
       userResponse = UserResponse.fromJson(json);
+      if (userResponse.role == Role.USER.string()) {
+        throw const WrongRoleException();
+      }
     } on ErrorResponse catch (e) {
       if (e.statusCode == HttpStatus.notFound) {
         throw const NotCompletedLoginException();
