@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_admin/domain/model/category.dart';
 import '../../../domain/model/age_type.dart';
 import 'package:tuple/tuple.dart';
 
@@ -24,7 +25,7 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
   final releasedDateFormat = DateFormat.yMMMd();
   DateTime releasedDay = DateTime(2020);
   final key = GlobalKey();
-  bool showSearch = false;
+  _RowTextType showSearch = null;
   final controllers = {
     _RowTextType.TITLE: TextEditingController(),
     _RowTextType.ORIGIN_LANG: TextEditingController(),
@@ -61,24 +62,48 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             setState(() {
-              showSearch ? showSearch = false : AppScaffold.of(context).pop();
+              showSearch != null
+                  ? showSearch = null
+                  : AppScaffold.of(context).pop();
             });
           },
         ),
       ),
-      body: showSearch
-          ? MultiPickPersonWidget(bloc)
-          : ListView(
-              children: _RowTextType.values
-                  .map((e) => Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: _typeToWidget(
-                              e,
-                            ) ??
-                            Text('11111'),
-                      ))
-                  .toList(),
-            ),
+      body: WillPopScope(
+        onWillPop: () async {
+          if (showSearch != null) {
+            setState(() {
+              showSearch = null;
+            });
+            return false;
+          }
+          return true;
+        },
+        child: showSearch != null
+            ? MultiPickPersonWidget(
+                bloc: bloc,
+                onPickPerson: (persons) {
+                  if (showSearch == _RowTextType.DIRECTOR) {
+                    movieUploadInput.directors = persons;
+                  } else {
+                    movieUploadInput.actors = persons;
+                  }
+                  setState(() {
+                    showSearch = null;
+                  });
+                })
+            : ListView(
+                children: _RowTextType.values
+                    .map((e) => Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: _typeToWidget(
+                                e,
+                              ) ??
+                              Text('11111'),
+                        ))
+                    .toList(),
+              ),
+      ),
     );
   }
 
@@ -316,14 +341,17 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
               side: BorderSide(color: Colors.deepPurpleAccent)),
           onPressed: () {
             setState(() {
-              showSearch = true;
+              showSearch = type;
             });
           },
           child: Padding(
             padding: EdgeInsets.all(10),
             child: length == 0
                 ? Text('Search...')
-                : Text(length.toString() + ' person'),
+                : Text(
+                    length.toString() +
+                        (type == _RowTextType.ACTOR ? ' Actor' : ' Director'),
+                  ),
           ),
         ),
       ],
@@ -386,9 +414,10 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
         );
       case _RowTextType.AGE_TYPE:
         return _buildAgeType();
+      case _RowTextType.CATEGORY:
+        return _buildChoiceCategory();
       case _RowTextType.DIRECTOR:
       case _RowTextType.ACTOR:
-      case _RowTextType.CATEGORY:
         return _buildChoiceSearch(e);
       case _RowTextType.BUTTON_UPLOAD:
         return StreamBuilder<ButtonState>(
@@ -448,6 +477,52 @@ class _UploadMoviePageState extends State<UploadMoviePage> {
         SizedBox(
           width: 32,
         ),
+      ],
+    );
+  }
+
+  Widget _buildChoiceCategory() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(width: 10),
+        SizedBox(
+          width: 100,
+          child: Text(
+            'Category: ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        RaisedButton(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(color: Colors.deepPurpleAccent)),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Country List'),
+                    content: _PickCategoryWidget(
+                      bloc: bloc,
+                    ),
+                  );
+                });
+          },
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: movieUploadInput.categorys.isEmpty
+                ? Text('Pick...')
+                : Text(
+                    movieUploadInput.categorys.length.toString() + ' category'),
+          ),
+        ),
+        SizedBox(width: 10),
       ],
     );
   }
@@ -517,9 +592,44 @@ enum _RowTextType {
   TRAILER_URL,
   POSTER_URL,
   AGE_TYPE,
+  CATEGORY,
   DIRECTOR,
   ACTOR,
   ORIGIN_LANG,
-  CATEGORY,
   BUTTON_UPLOAD
+}
+
+class _PickCategoryWidget extends StatefulWidget {
+  final MovieUploadBloc bloc;
+
+  const _PickCategoryWidget({Key key, @required this.bloc}) : super(key: key);
+
+  @override
+  _PickCategoryState createState() => _PickCategoryState();
+}
+
+class _PickCategoryState extends State<_PickCategoryWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 500.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: StreamBuilder<List<Category>>(
+        stream: widget.bloc.fetchCategory$,
+        builder: (context, snapshot) {
+          final listData = snapshot.data ?? List.empty();
+          print("##############" + listData.length.toString());
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: listData.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text(listData[index].name),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
 }
