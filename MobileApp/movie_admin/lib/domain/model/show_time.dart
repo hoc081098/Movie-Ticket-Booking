@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 
 import 'movie.dart';
+import 'theatre.dart';
 
 class ShowTime {
   final bool isActive;
@@ -13,6 +14,7 @@ class ShowTime {
   final DateTime startTime;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final Theatre theatre;
 
   ShowTime({
     @required this.isActive,
@@ -25,6 +27,7 @@ class ShowTime {
     @required this.startTime,
     @required this.createdAt,
     @required this.updatedAt,
+    @required this.theatre,
   });
 
   @override
@@ -41,7 +44,8 @@ class ShowTime {
           endTime == other.endTime &&
           startTime == other.startTime &&
           createdAt == other.createdAt &&
-          updatedAt == other.updatedAt;
+          updatedAt == other.updatedAt &&
+          theatre == other.theatre;
 
   @override
   int get hashCode =>
@@ -54,10 +58,13 @@ class ShowTime {
       endTime.hashCode ^
       startTime.hashCode ^
       createdAt.hashCode ^
-      updatedAt.hashCode;
+      updatedAt.hashCode ^
+      theatre.hashCode;
 
   @override
-  String toString() => 'ShowTime{isActive: $isActive, id: $id, movie: $movie,'
-      ' movieId: $movieId, theatreId: $theatreId, room: $room, endTime: $endTime'
-      ', startTime: $startTime, createdAt: $createdAt, updatedAt: $updatedAt}';
+  String toString() {
+    return 'ShowTime{isActive: $isActive, id: $id, movie: $movie, movieId: $movieId,'
+        ' theatreId: $theatreId, room: $room, endTime: $endTime, startTime: $startTime,'
+        ' createdAt: $createdAt, updatedAt: $updatedAt, theatre: $theatre}';
+  }
 }

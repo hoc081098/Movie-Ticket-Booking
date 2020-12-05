@@ -7,8 +7,35 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$_serializers = (new Serializers().toBuilder()
+      ..add(FullReservationResponse.serializer)
+      ..add(ProductAndQuantityResponse.serializer)
+      ..add(ProductResponse.serializer)
+      ..add(PromotionResponse.serializer)
+      ..add(Res_LocationResponse.serializer)
+      ..add(Res_MovieResponse.serializer)
+      ..add(Res_TheatreResponse.serializer)
       ..add(SeatResponse.serializer)
+      ..add(ShowTimeFullResponse.serializer)
       ..add(TicketResponse.serializer)
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(ProductAndQuantityResponse)]),
+          () => new ListBuilder<ProductAndQuantityResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(TicketResponse)]),
+          () => new ListBuilder<TicketResponse>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(double)]),
+          () => new ListBuilder<double>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(int)]),
           () => new ListBuilder<int>()))

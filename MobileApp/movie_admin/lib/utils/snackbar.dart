@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-@Deprecated('Using ShowSnackBarBuildContextExtension instead')
 extension ShowSnackbarGlobalKeyScaffoldStateExtension
     on GlobalKey<ScaffoldState> {
-  @Deprecated('Using context.showSnackBar instead')
   void showSnackBar(
     String message, [
     Duration duration = const Duration(seconds: 2),

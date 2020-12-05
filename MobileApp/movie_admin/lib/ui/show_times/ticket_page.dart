@@ -10,6 +10,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../domain/model/movie.dart';
+import '../../domain/model/reservation.dart';
 import '../../domain/model/seat.dart';
 import '../../domain/model/show_time.dart';
 import '../../domain/model/theatre.dart';
@@ -20,7 +21,9 @@ import '../../utils/type_defs.dart';
 import '../../utils/utils.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
+import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
+import 'reservation_list_item.dart';
 
 class TicketsPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets';
@@ -40,6 +43,7 @@ class TicketsPage extends StatefulWidget {
 
 class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   LoaderBloc<BuiltList<Ticket>> bloc;
+  LoaderBloc<BuiltList<Reservation>> resBloc;
 
   @override
   void initState() {
@@ -50,15 +54,21 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    bloc ??= () {
-      final ticketRepository = Provider.of<TicketRepository>(context);
+    final ticketRepository = Provider.of<TicketRepository>(context);
 
+    bloc ??= () {
       return LoaderBloc(
         loaderFunction: () =>
             ticketRepository.getTicketsByShowTimeId(widget.showTime.id),
         enableLogger: true,
       )..fetch();
     }();
+
+    resBloc ??= LoaderBloc(
+      loaderFunction: () =>
+          ticketRepository.getReservationsByShowTimeId(widget.showTime.id),
+      enableLogger: true,
+    )..fetch();
   }
 
   @override
@@ -128,7 +138,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                         print('Tapped $ticket');
                       },
                     ),
-                     LegendsWidget( tickets: state.content),
+                    LegendsWidget(tickets: state.content),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -144,6 +154,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                       showTime: widget.showTime,
                       tickets: builtMap,
                     ),
+                    ResList(bloc: resBloc),
                   ],
                 ),
               ),
@@ -181,8 +192,9 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
 
   @override
   void dispose() {
-    bloc.dispose();
     super.dispose();
+    bloc.dispose();
+    resBloc.dispose();
   }
 }
 
@@ -433,15 +445,17 @@ class SeatWidget extends StatelessWidget {
     final width = widthPerSeat * seat.count + (seat.count - 1) * 1;
 
     if (ticket.reservationId != null) {
+      final accentColor = Theme.of(context).accentColor;
+
       return Container(
         margin: const EdgeInsets.all(0.5),
         width: width,
         height: widthPerSeat,
         decoration: BoxDecoration(
-          color: const Color(0xffCBD7E9),
+          color: accentColor,
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: const Color(0xffCBD7E9),
+            color: accentColor,
             width: 1,
           ),
         ),
@@ -493,6 +507,9 @@ class LegendsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final avai = tickets.count((e) => e.reservationId == null);
+    final taken = tickets.length - avai;
+
     final widthPerSeat = MediaQuery.of(context).size.width / 12;
     final accentColor = Theme.of(context).accentColor;
     final textStyle = Theme.of(context).textTheme.subtitle2.copyWith(
@@ -516,25 +533,6 @@ class LegendsWidget extends StatelessWidget {
                   width: widthPerSeat,
                   height: widthPerSeat,
                   decoration: BoxDecoration(
-                    color: accentColor,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  'Select',
-                  style: textStyle,
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(0.5),
-                  width: widthPerSeat,
-                  height: widthPerSeat,
-                  decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
@@ -545,7 +543,7 @@ class LegendsWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Available',
+                  '${avai} Available',
                   style: textStyle,
                 ),
               ],
@@ -558,13 +556,13 @@ class LegendsWidget extends StatelessWidget {
                   width: widthPerSeat,
                   height: widthPerSeat,
                   decoration: BoxDecoration(
-                    color: const Color(0xffCBD7E9),
+                    color: accentColor,
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Taken',
+                  '${taken} Taken',
                   style: textStyle,
                 ),
               ],
@@ -700,6 +698,92 @@ class BottomWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+extension _CountExt<T> on Iterable<T> {
+  int count(bool Function(T) test) {
+    var c = 0;
+    for (final e in this) {
+      if (test(e)) c++;
+    }
+    return c;
+  }
+}
+
+class ResList extends StatelessWidget {
+  static final currencyFormat =
+      NumberFormat.currency(locale: 'vi_VN', symbol: '');
+  final LoaderBloc<BuiltList<Reservation>> bloc;
+
+  ResList({Key key, @required this.bloc}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RxStreamBuilder<LoaderState<BuiltList<Reservation>>>(
+      stream: bloc.state$,
+      builder: (context, snapshot) {
+        final state = snapshot.data;
+
+        if (state.error != null) {
+          return SliverToBoxAdapter(
+            child: Container(
+              color: Color(0xFFFCFCFC),
+              constraints: BoxConstraints.expand(height: 250),
+              child: MyErrorWidget(
+                errorText: 'Error: ${getErrorMessage(state.error)}',
+                onPressed: bloc.fetch,
+              ),
+            ),
+          );
+        }
+
+        if (state.isLoading) {
+          return SliverToBoxAdapter(
+            child: Container(
+              color: Color(0xFFFCFCFC),
+              constraints: BoxConstraints.expand(height: 250),
+              child: Center(
+                child: SizedBox(
+                  width: 64,
+                  height: 64,
+                  child: LoadingIndicator(
+                    indicatorType: Indicator.ballClipRotatePulse,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        final movies = state.content;
+
+        if (movies.isEmpty) {
+          return SliverToBoxAdapter(
+            child: Container(
+              color: Color(0xFFFCFCFC),
+              constraints: BoxConstraints.expand(height: 250),
+              child: Center(
+                child: EmptyWidget(message: 'Empty reservation'),
+              ),
+            ),
+          );
+        }
+
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final item = movies[index];
+              return ReservationListItem(
+                item: item,
+                currencyFormat: currencyFormat,
+              );
+            },
+            childCount: movies.length,
+          ),
+        );
+      },
     );
   }
 }

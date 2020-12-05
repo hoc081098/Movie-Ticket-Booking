@@ -1,13 +1,20 @@
+import '../data/remote/response/full_reservation_response.dart';
+import '../data/remote/response/product_response.dart';
+import '../data/remote/response/promotion_response.dart';
 import '../domain/model/age_type.dart';
 import '../domain/model/category.dart';
 import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/person.dart';
+import '../domain/model/product.dart';
+import '../domain/model/promotion.dart';
+import '../domain/model/reservation.dart';
 import '../domain/model/seat.dart';
 import '../domain/model/show_time.dart';
 import '../domain/model/theatre.dart';
 import '../domain/model/ticket.dart';
 import '../domain/model/user.dart';
+import '../utils/utils.dart';
 import 'local/user_local.dart';
 import 'remote/request/movie_request.dart';
 import 'remote/response/category_response.dart';
@@ -233,6 +240,7 @@ ShowTime showTimeResponseToShowTime(ShowTimeResponse r) {
     startTime: r.startTime,
     createdAt: r.createdAt,
     updatedAt: r.updatedAt,
+    theatre: null,
   );
 }
 
@@ -263,4 +271,140 @@ Ticket ticketResponseToTicket(TicketResponse response) {
     updatedAt: response.updatedAt,
     reservation: null,
   );
+}
+
+Product productResponseToProduct(ProductResponse response) {
+  return Product.from(
+    id: response.id,
+    description: response.description,
+    image: response.image,
+    is_active: response.is_active ?? true,
+    name: response.name,
+    price: response.price,
+    createdAt: response.createdAt,
+    updatedAt: response.updatedAt,
+  );
+}
+
+ShowTime showTimeFullResponseToShowTime(ShowTimeFullResponse r) {
+  final movie = res_movieResponseToMovie(r.movie);
+  final theatre = res_theatreResponseToTheatre(r.theatre);
+
+  return ShowTime(
+    isActive: r.is_active ?? true,
+    id: r.id,
+    movie: movie,
+    movieId: r.movie.id,
+    theatreId: r.theatre.id,
+    room: r.room,
+    endTime: r.end_time,
+    startTime: r.start_time,
+    createdAt: r.createdAt,
+    updatedAt: r.updatedAt,
+    theatre: theatre,
+  );
+}
+
+Theatre res_theatreResponseToTheatre(Res_TheatreResponse r) {
+  assert(r.location != null);
+
+  return Theatre(
+    location: Location(
+      latitude: r.location.latitude,
+      longitude: r.location.longitude,
+    ),
+    isActive: r.is_active ?? true,
+    rooms: r.rooms.asList(),
+    id: r.id,
+    name: r.name,
+    address: r.address,
+    phoneNumber: r.phone_number,
+    description: r.description,
+    email: r.email,
+    openingHours: r.opening_hours,
+    roomSummary: r.room_summary,
+    createdAt: r.createdAt,
+    updatedAt: r.updatedAt,
+    cover: r.cover,
+    thumbnail: r.thumbnail,
+  );
+}
+
+Movie res_movieResponseToMovie(Res_MovieResponse r) {
+  return Movie(
+    id: r.id,
+    isActive: r.is_active ?? true,
+    title: r.title,
+    trailerVideoUrl: r.trailer_video_url,
+    posterUrl: r.poster_url,
+    overview: r.overview,
+    releasedDate: r.released_date,
+    duration: r.duration,
+    originalLanguage: r.original_language,
+    createdAt: r.createdAt,
+    updatedAt: r.updatedAt,
+    ageType: r.age_type.ageType(),
+    actors: null,
+    directors: null,
+    categories: null,
+    rateStar: r.rate_star,
+    totalFavorite: r.total_favorite,
+    totalRate: r.total_rate,
+  );
+}
+
+Promotion promotionResponseToPromotion(PromotionResponse response) {
+  return Promotion(
+    (b) => b
+      ..id = response.id
+      ..code = response.code
+      ..discount = response.discount
+      ..endTime = response.end_time
+      ..isActive = response.is_active ?? true
+      ..name = response.name
+      ..startTime = response.start_time
+      ..creator = response.creator
+      ..showTime = response.show_time
+      ..createdAt = response.createdAt
+      ..updatedAt = response.updatedAt,
+  );
+}
+
+Reservation fullReservationResponseToReservation(
+    FullReservationResponse response) {
+  return Reservation((b) {
+    final productIds = response.products.map(
+      (p) => ProductAndQuantity.from(
+        id: p.product.id,
+        quantity: p.quantity,
+        product: productResponseToProduct(p.product),
+      ),
+    );
+    final productIdWithCountsBuilder = b.productIdWithCounts
+      ..safeReplace(productIds);
+    final ticketsBuilder = b.tickets
+      ..safeReplace(response.tickets.map((t) => ticketResponseToTicket(t)));
+
+    final promotion = response.promotion_id;
+    final promotionBuilder = promotion == null
+        ? null
+        : (b.promotion..replace(promotionResponseToPromotion(promotion)));
+
+    return b
+      ..id = response.id
+      ..createdAt = response.createdAt
+      ..email = response.email
+      ..isActive = response.is_active ?? true
+      ..originalPrice = response.original_price
+      ..paymentIntentId = response.payment_intent_id
+      ..phoneNumber = response.phone_number
+      ..productIdWithCounts = productIdWithCountsBuilder
+      ..showTimeId = response.show_time.id
+      ..showTime = showTimeFullResponseToShowTime(response.show_time)
+      ..totalPrice = response.total_price
+      ..updatedAt = response.updatedAt
+      ..tickets = ticketsBuilder
+      ..promotionId = promotion?.id
+      ..promotion = promotionBuilder;
+  });
 }
