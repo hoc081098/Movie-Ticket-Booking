@@ -1,18 +1,21 @@
-import 'package:movie_admin/data/remote/response/show_time_response.dart';
-import 'package:movie_admin/data/remote/request/movie_request.dart';
-import 'package:movie_admin/data/remote/response/theatre_response.dart';
-import 'package:movie_admin/domain/model/show_time.dart';
-import 'package:movie_admin/domain/model/theatre.dart';
 import '../domain/model/age_type.dart';
 import '../domain/model/category.dart';
 import '../domain/model/location.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/person.dart';
+import '../domain/model/seat.dart';
+import '../domain/model/show_time.dart';
+import '../domain/model/theatre.dart';
+import '../domain/model/ticket.dart';
 import '../domain/model/user.dart';
 import 'local/user_local.dart';
+import 'remote/request/movie_request.dart';
 import 'remote/response/category_response.dart';
 import 'remote/response/movie_response.dart';
 import 'remote/response/person_response.dart';
+import 'remote/response/show_time_response.dart';
+import 'remote/response/theatre_response.dart';
+import 'remote/response/ticket_response.dart';
 import 'remote/response/user_response.dart';
 
 UserLocal userResponseToUserLocal(UserResponse response) {
@@ -230,5 +233,34 @@ ShowTime showTimeResponseToShowTime(ShowTimeResponse r) {
     startTime: r.startTime,
     createdAt: r.createdAt,
     updatedAt: r.updatedAt,
+  );
+}
+
+Ticket ticketResponseToTicket(TicketResponse response) {
+  final seat = response.seat;
+  return Ticket.from(
+    id: response.id,
+    is_active: response.is_active ?? true,
+    price: response.price,
+    reservationId: response.reservation,
+    seat: Seat.from(
+      is_active: seat.is_active ?? true,
+      coordinates: SeatCoordinates.from(
+        x: seat.coordinates[0],
+        y: seat.coordinates[1],
+      ),
+      id: seat.id,
+      room: seat.room,
+      theatre: seat.theatre,
+      column: seat.column,
+      row: seat.row,
+      count: seat.count,
+      createdAt: seat.createdAt,
+      updatedAt: seat.updatedAt,
+    ),
+    show_time: response.show_time,
+    createdAt: response.createdAt,
+    updatedAt: response.updatedAt,
+    reservation: null,
   );
 }

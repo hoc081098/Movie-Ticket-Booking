@@ -164,7 +164,10 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
       itemCount: list.length + (page == 0 ? 0 : 1),
       itemBuilder: (context, index) {
         if (index < list.length) {
-          return ShowTimeItem(item: list[index]);
+          return ShowTimeItem(
+            item: list[index],
+            theatre: widget.theatre,
+          );
         }
 
         if (error != null) {
