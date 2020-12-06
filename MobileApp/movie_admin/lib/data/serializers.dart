@@ -31,6 +31,7 @@ const builtListFullReservationResponse = FullType(
 final Serializers _serializers = _$_serializers;
 
 final Serializers serializers = (_serializers.toBuilder()
+      ..add(UserResponseSerializer())
       ..addBuilderFactory(
         builtListTicketResponse,
         () => ListBuilder<TicketResponse>(),

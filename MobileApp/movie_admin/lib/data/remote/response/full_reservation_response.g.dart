@@ -65,7 +65,8 @@ class _$FullReservationResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
       'user',
-      serializers.serialize(object.user, specifiedType: const FullType(String)),
+      serializers.serialize(object.user,
+          specifiedType: const FullType(UserResponse)),
       'tickets',
       serializers.serialize(object.tickets,
           specifiedType: const FullType(
@@ -147,7 +148,7 @@ class _$FullReservationResponseSerializer
           break;
         case 'user':
           result.user = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(UserResponse)) as UserResponse;
           break;
         case 'tickets':
           result.tickets.replace(serializers.deserialize(value,
@@ -736,7 +737,7 @@ class _$FullReservationResponse extends FullReservationResponse {
   @override
   final DateTime updatedAt;
   @override
-  final String user;
+  final UserResponse user;
   @override
   final BuiltList<TicketResponse> tickets;
   @override
@@ -942,9 +943,9 @@ class FullReservationResponseBuilder
   DateTime get updatedAt => _$this._updatedAt;
   set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
 
-  String _user;
-  String get user => _$this._user;
-  set user(String user) => _$this._user = user;
+  UserResponse _user;
+  UserResponse get user => _$this._user;
+  set user(UserResponse user) => _$this._user = user;
 
   ListBuilder<TicketResponse> _tickets;
   ListBuilder<TicketResponse> get tickets =>

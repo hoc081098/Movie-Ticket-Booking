@@ -405,6 +405,7 @@ Reservation fullReservationResponseToReservation(
       ..updatedAt = response.updatedAt
       ..tickets = ticketsBuilder
       ..promotionId = promotion?.id
-      ..promotion = promotionBuilder;
+      ..promotion = promotionBuilder
+      ..user = userResponseToUserDomain(response.user);
   });
 }

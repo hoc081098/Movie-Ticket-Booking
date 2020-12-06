@@ -60,6 +60,27 @@ class ReservationListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           RichText(
+            text:
+                TextSpan(text: 'User full name: ', style: textStyle, children: [
+              TextSpan(
+                text: item.user?.fullName ?? 'N/A',
+                style: textStyle2,
+              ),
+            ]),
+          ),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(text: 'User email: ', style: textStyle, children: [
+              TextSpan(
+                text: item.user?.email ?? 'N/A',
+                style: textStyle2,
+              ),
+            ]),
+          ),
+          const SizedBox(height: 6),
+          const Divider(),
+          const SizedBox(height: 4),
+          RichText(
             text: TextSpan(text: 'Email: ', style: textStyle, children: [
               TextSpan(
                 text: item.email,
@@ -77,15 +98,7 @@ class ReservationListItem extends StatelessWidget {
             ]),
           ),
           const SizedBox(height: 8),
-          RichText(
-            text: TextSpan(text: 'User: ', style: textStyle, children: [
-              TextSpan(
-                text: item.user?.fullName ?? 'N/A',
-                style: textStyle2,
-              ),
-            ]),
-          ),
-          const SizedBox(height: 8),
+
           RichText(
             text: TextSpan(text: 'Booked when: ', style: textStyle, children: [
               TextSpan(
