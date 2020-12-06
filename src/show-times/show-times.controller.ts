@@ -76,4 +76,14 @@ export class AdminShowTimesController {
   ): Promise<ShowTime[]> {
     return this.showTimesService.getShowTimesByTheatreIdAdmin(theatreId, dto);
   }
+
+  @ForAdmin()
+  @Roles('ADMIN')
+  @Get('available-periods')
+  getAvailablePeriods(
+    @Query('theatre_id') theatreId: string,
+    @Query('day') day: string,
+  ) {
+    return this.showTimesService.getAvailablePeriods(theatreId, day);
+  }
 }

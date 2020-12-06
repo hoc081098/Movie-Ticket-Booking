@@ -7,7 +7,7 @@ import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
 import { defer, forkJoin, from, Observable } from 'rxjs';
-import { bufferCount, concatMap, filter, pairwise, take, tap } from 'rxjs/operators';
+import { bufferCount, concatMap, filter, pairwise, take, tap, reduce, startWith, scan, map } from 'rxjs/operators';
 import { constants, getSkipLimit } from '../common/utils';
 import { AddShowTimeDto, TicketDto } from './show-time.dto';
 import { PaginationDto } from "../common/pagination.dto";
@@ -137,7 +137,7 @@ export class ShowTimesService {
           start_time: { $gte: thStartTime.toDate() },
           end_time: { $lte: thEndTime.toDate() },
         })
-        .sort({ start_time: 'asc' });
+        .sort({ start_time: 1 });
 
     if (showTimes.length == 1) {
       if (startTime.isBefore(showTimes[0].end_time) && endTime.isAfter(showTimes[0].start_time)
@@ -337,7 +337,7 @@ export class ShowTimesService {
 
     const seats = await from(dto.tickets)
         .pipe(
-            bufferCount(8),
+            bufferCount(16),
             concatMap(dtos => {
               const tasks: Array<Observable<{ seat: Seat, dto: TicketDto }>> = dtos.map(dto => {
                 return defer(async () => {
@@ -350,8 +350,10 @@ export class ShowTimesService {
               });
               return forkJoin(tasks);
             }),
+            reduce((acc, e) => acc.concat(e), [] as { seat: Seat, dto: TicketDto }[]),
         )
         .toPromise();
+    this.logger.debug(`dto.tickets ${dto.tickets.length} ... ${seats.length}`);
 
     const startTime: dayjs.Dayjs = dayjs(dto.start_time);
     const endTime: dayjs.Dayjs = startTime.add(movie.duration, 'minute');
@@ -376,12 +378,15 @@ export class ShowTimesService {
     const showTimes = await this.showTimeModel
         .find({
           theatre: theatre._id,
-          room: '2D1',
+          room: '2D 1',
           is_active: true,
           start_time: { $gte: thStartTime.toDate() },
           end_time: { $lte: thEndTime.toDate() },
         })
-        .sort({ start_time: 'asc' });
+        .sort({ start_time: 1 });
+    this.logger.debug(`showTimes ${showTimes.length}`);
+    showTimes.forEach(s => this.logger.debug(`${s.start_time} -> ${s.end_time}`));
+
     if (showTimes.length == 1) {
       const found = showTimes[0];
       if (startTime.isBefore(found.end_time) && endTime.isAfter(found.start_time)) {
@@ -389,17 +394,32 @@ export class ShowTimesService {
       }
     }
     if (showTimes.length >= 2) {
-      const pair: [ShowTime, ShowTime] | undefined = showTimes.pairwise().find(([prev, next]) =>
-          (startTime as any).isBetween(prev.end_time, next.start_time)
-          && (endTime as any).isBetween(prev.end_time, next.start_time)
-          && (startTime as any).isBetween(thStartTime, thEndTime)
-          && (endTime as any).isBetween(thStartTime, thEndTime)
-      );
+      const pairwises = [
+        null,
+        ...showTimes,
+        null,
+      ].pairwise();
+      this.logger.debug(pairwises.map(([p, n]) => [p?.id, n?.id]));
+
+      const pair: [ShowTime, ShowTime] | undefined = pairwises.find(([prev, next]) => {
+        if (prev && next) {
+          return (startTime as any).isBetween(prev.end_time, next.start_time)
+            && (endTime as any).isBetween(prev.end_time, next.start_time);
+        }
+
+        if (prev === null) {
+          return (startTime as any).isBetween(thStartTime, next.start_time)
+            && (endTime as any).isBetween(thStartTime, next.start_time);
+        }
+
+        return (startTime as any).isBetween(prev.end_time, thEndTime)
+          && (endTime as any).isBetween(prev.end_time, thEndTime);
+      });
 
       if (pair === undefined) {
         throw new BadRequestException(`There's no more free time to create a new showtime`);
       }
-      this.logger.debug(`Found pair ${pair[0].start_time}:${pair[0].end_time} -> ${pair[1].start_time}:${pair[1].end_time}`);
+      this.logger.debug(`Found pair ${pair[0]?.start_time}:${pair[0]?.end_time} -> ${pair[1]?.start_time}:${pair[1]?.end_time}`);
     }
 
     const doc: Omit<CreateDocumentDefinition<ShowTime>, '_id'> = {
@@ -412,7 +432,7 @@ export class ShowTimesService {
     };
     const showTime = await this.showTimeModel.create(doc);
 
-    await from(seats)
+    const rr = await from(seats)
         .pipe(
             bufferCount(16),
             concatMap(seats => {
@@ -431,8 +451,11 @@ export class ShowTimesService {
               return forkJoin(tasks);
             }),
             tap(tickets => this.logger.debug(`Created ${tickets.length} tickets`)),
+            map(tickets => tickets.length),
+            reduce((acc, e) => acc + e, 0),
         )
         .toPromise();
+    this.logger.debug(`Total Created ${rr} tickets`)
 
     return showTime;
   }
@@ -446,6 +469,55 @@ export class ShowTimesService {
         .limit(limit)
         .populate('movie')
         .exec();
+  }
+
+  async getAvailablePeriods(theatreId: string, dayStr: string) {
+    const theatre = await this.theatreModel.findById(theatreId).then(v => {
+      if (!v) {
+        throw new NotFoundException(`Theatre with id ${theatreId}`);
+      }
+      return v;
+    });
+    const day = dayjs(dayStr).startOf('day');
+    this.logger.debug(day.toDate(), 'day');
+
+    const [startHString, endHString]: string[] = theatre.opening_hours.split(' - ');
+    const [startH, startM]: number[] = startHString.split(':').map(x => +x);
+    const [endH, endM]: number[] = endHString.split(':').map(x => +x);
+    const thStartTime: dayjs.Dayjs = day.set('hour', startH).set('minute', startM);
+    const thEndTime: dayjs.Dayjs = day.set('hour', endH).set('minute', endM);
+
+    const showTimes = await this.showTimeModel
+        .find({
+          theatre: theatre._id,
+          room: '2D 1',
+          is_active: true,
+          start_time: { $gte: thStartTime.toDate() },
+          end_time: { $lte: thEndTime.toDate() },
+        })
+        .sort({ start_time: 1 });
+
+
+        this.logger.debug(showTimes.map(e => e.start_time));
+
+        const a = [
+          {
+            start_time: null as Date,
+            end_time:  thStartTime.toDate(),
+          },
+          ...showTimes,
+          {
+            start_time: thEndTime.toDate(),
+            end_time: null as Date,
+          },
+        ];
+
+        return a.pairwise().map(([prev, next])=> {
+          return {
+            start: prev.end_time,
+            end: next.start_time,
+          };
+        });
   }
 }
 
@@ -461,11 +533,13 @@ Array.prototype.pairwise = function <T>(this: T[]): [T, T][] {
     return [];
   }
 
-  let prev: T | null = null;
+  let prev: T;
+  let hasPrev = false;
   for (const cur of this) {
-    if (prev !== null) {
+    if (hasPrev) {
       result.push([prev, cur]);
     }
+    hasPrev = true;
     prev = cur;
   }
   return result;
