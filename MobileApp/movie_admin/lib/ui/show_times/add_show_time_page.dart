@@ -309,7 +309,8 @@ class _AppShowTimePageState extends State<AppShowTimePage>
                               ...[
                                 Row(
                                   children: [
-                                    Icon(Icons.clock),
+                                    Icon(Icons.access_time ),
+                                    const SizedBox(width: 8),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.stretch,
