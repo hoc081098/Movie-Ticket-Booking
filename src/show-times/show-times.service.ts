@@ -405,7 +405,7 @@ export class ShowTimesService {
     const doc: Omit<CreateDocumentDefinition<ShowTime>, '_id'> = {
       movie: movie._id,
       theatre: theatre._id,
-      room: '2D1',
+      room: '2D 1',
       is_active: true,
       end_time: endTime.toDate(),
       start_time: startTime.toDate(),

@@ -185,6 +185,14 @@ export class SeatsService {
         .exec();
 
   }
+
+  getSeatsByTheatreId(theatre_id: string): Promise<Seat[]> {
+    return this.seatModel.find({
+      theatre: theatre_id,
+      room: '2D 1',
+      is_active: true,
+    }).exec();
+  }
 }
 
 declare global {
