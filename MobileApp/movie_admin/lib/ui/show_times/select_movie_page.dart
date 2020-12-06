@@ -48,7 +48,6 @@ class _SelectMoviePageState extends State<SelectMoviePage>
 
     state$ ??= () {
       final repo = Provider.of<MovieRepository>(context);
-      final init = SearchState(null, null, true);
 
       return termS.stream
           .where((event) => event.trim().isNotEmpty)
@@ -59,9 +58,9 @@ class _SelectMoviePageState extends State<SelectMoviePage>
             (value) => Rx.fromCallable(() => repo.search(value))
                 .map((movies) => SearchState(movies, null, false))
                 .onErrorReturnWith((error) => SearchState(null, error, false))
-                .startWith(init),
+                .startWith(SearchState(null, null, true)),
           )
-          .shareValueDistinct(init)
+          .shareValueDistinct(SearchState(<Movie>[].build(), null, false))
             ..listen(null).disposedBy(bag);
     }();
   }

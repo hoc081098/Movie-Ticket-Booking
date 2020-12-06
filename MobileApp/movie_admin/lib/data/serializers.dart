@@ -21,6 +21,11 @@ const builtListFullReservationResponse = FullType(
   [FullType(FullReservationResponse)],
 );
 
+const builtListSeatResponse = FullType(
+  BuiltList,
+  [FullType(SeatResponse)],
+);
+
 @SerializersFor([
   TicketResponse,
   SeatResponse,
@@ -39,6 +44,10 @@ final Serializers serializers = (_serializers.toBuilder()
       ..addBuilderFactory(
         builtListFullReservationResponse,
         () => ListBuilder<FullReservationResponse>(),
+      )
+      ..addBuilderFactory(
+        builtListSeatResponse,
+        () => ListBuilder<SeatResponse>(),
       )
       ..add(CustomIso8601DateTimeSerializer())
       ..addPlugin(StandardJsonPlugin()))

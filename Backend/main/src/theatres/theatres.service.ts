@@ -173,7 +173,7 @@ export class TheatresService {
                       coordinates: seat.coordinates,
                       count: seat.count,
                       is_active: true,
-                      room: '2D1',
+                      room: '2D 1',
                       row: seat.row,
                       theatre: theatre._id,
                     };
