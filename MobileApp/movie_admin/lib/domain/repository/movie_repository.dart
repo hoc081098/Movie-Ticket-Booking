@@ -1,3 +1,5 @@
+import 'package:built_collection/built_collection.dart';
+
 import '../model/category.dart';
 import '../model/person.dart';
 
@@ -13,4 +15,6 @@ abstract class MovieRepository {
   Future<void> uploadMovie(Movie movie);
 
   Future<String> uploadUrl(String path, [bool isVideo]);
+
+  Future<BuiltList<Movie>> search(String title);
 }
