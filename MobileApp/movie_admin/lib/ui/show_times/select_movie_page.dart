@@ -34,6 +34,7 @@ class _SelectMoviePageState extends State<SelectMoviePage>
     with DisposeBagMixin {
   final searchController = TextEditingController();
   final termS = StreamController<String>(sync: true);
+  final retryS = StreamController<String>(sync: true);
 
   DistinctValueStream<SearchState> state$;
 
@@ -53,6 +54,7 @@ class _SelectMoviePageState extends State<SelectMoviePage>
           .where((event) => event.trim().isNotEmpty)
           .debounceTime(const Duration(milliseconds: 400))
           .distinct()
+          .mergeWith([retryS.stream])
           .debug('TERM')
           .switchMap(
             (value) => Rx.fromCallable(() => repo.search(value))
@@ -144,7 +146,10 @@ class _SelectMoviePageState extends State<SelectMoviePage>
           return Center(
             child: MyErrorWidget(
               errorText: 'Error: ${getErrorMessage(state.error)}',
-              onPressed: () {},
+              onPressed: () {
+                print('Retry ${searchController.text}');
+                retryS.add(searchController.text);
+              },
             ),
           );
         }

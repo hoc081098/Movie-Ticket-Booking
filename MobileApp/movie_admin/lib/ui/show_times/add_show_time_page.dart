@@ -2,12 +2,21 @@ import 'dart:math' as math;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:movie_admin/domain/repository/show_times_repository.dart';
+import 'package:movie_admin/ui/show_times/show_times_page.dart';
+import 'package:movie_admin/ui/widgets/empty_widget.dart';
+import 'package:movie_admin/ui/widgets/loading_button.dart';
+import 'package:movie_admin/utils/date_time.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../domain/model/movie.dart';
 import '../../domain/model/seat.dart';
@@ -32,18 +41,42 @@ class AppShowTimePage extends StatefulWidget {
   _AppShowTimePageState createState() => _AppShowTimePageState();
 }
 
-class _AppShowTimePageState extends State<AppShowTimePage> {
+class _AppShowTimePageState extends State<AppShowTimePage>
+    with DisposeBagMixin {
+  final startTimeFormat = DateFormat('dd/MM/yyyy, EE, hh:mm a');
+
   LoaderBloc<BuiltList<Seat>> bloc;
+  DateTime startTime;
+  final buttonStateS = BehaviorSubject.seeded(ButtonState.idle);
+  final prices = BehaviorSubject<List<Tuple2<Seat, int>>>.seeded(null);
+
+  @override
+  void initState() {
+    super.initState();
+    buttonStateS.disposedBy(bag);
+    prices.disposedBy(bag);
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    bloc ??= LoaderBloc(
-      loaderFunction: () => Provider.of<TicketRepository>(context)
-          .getSeatsByTheatreId(widget.theatre.id),
-      enableLogger: true,
-    )..fetch();
+    bloc ??= () {
+      final b = LoaderBloc(
+        loaderFunction: () => Provider.of<TicketRepository>(context)
+            .getSeatsByTheatreId(widget.theatre.id),
+        enableLogger: true,
+      );
+
+      b.state$.listen((event) {
+        final tuples = event.content
+            ?.map((s) => Tuple2(s, 50000 * (s.count ?? 1)))
+            ?.toList(growable: false);
+        prices.add(tuples);
+      }).disposedBy(bag);
+
+      return b..fetch();
+    }();
   }
 
   @override
@@ -88,13 +121,12 @@ class _AppShowTimePageState extends State<AppShowTimePage> {
             ),
           );
 
-          final buttonHeight = 54.0;
           final marginTop = MediaQuery.of(context).padding.top + 8;
 
           return Stack(
             children: [
               Positioned.fill(
-                bottom: buttonHeight,
+                bottom: 0,
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
@@ -105,8 +137,8 @@ class _AppShowTimePageState extends State<AppShowTimePage> {
                       ),
                     ),
                     const ScreenWidget(),
-                    SliverToBoxAdapter(
-                      child: const SizedBox(
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
                         height: 16,
                       ),
                     ),
@@ -120,10 +152,10 @@ class _AppShowTimePageState extends State<AppShowTimePage> {
                       },
                     ),
                     LegendsWidget(),
-                    SliverToBoxAdapter(
+                    const SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const Divider(
+                        padding: EdgeInsets.all(8.0),
+                        child: Divider(
                           height: 1,
                           color: Color(0xffD1DBE2),
                         ),
@@ -133,6 +165,30 @@ class _AppShowTimePageState extends State<AppShowTimePage> {
                       movie: widget.movie,
                       theatre: widget.theatre,
                       tickets: builtMap,
+                    ),
+                    _buildReleasedDayTextField(),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 16,
+                      ),
+                    ),
+                    _buildAvai(),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 8,
+                      ),
+                    ),
+                    _buildChangeAllPrices(),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 16,
+                      ),
+                    ),
+                    _buildListTickets(),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 72,
+                      ),
                     ),
                   ],
                 ),
@@ -162,10 +218,494 @@ class _AppShowTimePageState extends State<AppShowTimePage> {
                   ),
                 ),
               ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: _buildLoadingButton(),
+              ),
             ],
           );
         },
       ),
+    );
+  }
+
+  Widget _buildAvai() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 64),
+        child: RaisedButton(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(color: Colors.deepPurpleAccent)),
+          onPressed: () {
+            final startTime = this.startTime;
+            print(startTime);
+            if (startTime == null || !startTime.isAfter(DateTime.now())) {
+              context.showSnackBar('Invalid start time');
+              return;
+            }
+
+            final repo = Provider.of<ShowTimesRepository>(context);
+            final id = widget.theatre.id;
+            final day = startTime;
+
+            showDialog<void>(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext dialogContext) {
+                return AlertDialog(
+                  title: Text('Available periods'),
+                  content: LoaderWidget<List<Tuple2<DateTime, DateTime>>>(
+                    builder: (context, state, bloc) {
+
+                      if (state.error != null) {
+                        return Container(
+                          color: Color(0xFFFCFCFC),
+                          constraints: BoxConstraints.expand(height: 250),
+                          child: MyErrorWidget(
+                            errorText: 'Error: ${getErrorMessage(state.error)}',
+                            onPressed: bloc.fetch,
+                          ),
+                        );
+                      }
+
+                      if (state.isLoading) {
+                        return Container(
+                          color: Color(0xFFFCFCFC),
+                          constraints: BoxConstraints.expand(height: 250),
+                          child: Center(
+                            child: SizedBox(
+                              width: 64,
+                              height: 64,
+                              child: LoadingIndicator(
+                                indicatorType: Indicator.ballClipRotatePulse,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+
+                      final movies = state.content;
+
+                      if (movies.isEmpty) {
+                        return Container(
+                          color: Color(0xFFFCFCFC),
+                          constraints: BoxConstraints.expand(height: 250),
+                          child: Center(
+                            child: EmptyWidget(message: 'Empty available period'),
+                          ),
+                        );
+                      }
+
+                      final startTimeFormat = DateFormat('hh:mm a, dd/MM/yyyy');
+                      return SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            for(final i in movies)
+                              ...[
+                                Row(
+                                  children: [
+                                    Icon(Icons.clock),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        children: [
+                                          Text('From ${startTimeFormat.format(i.item1)}', style: TextStyle(fontSize: 13),),
+                                         const SizedBox(height: 6),
+                                         Text('From ${startTimeFormat.format(i.item2)}',style: TextStyle(fontSize: 13),),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(),
+                              ]
+                          ],
+                        ),
+                      );
+                    },
+                    blocProvider: () => LoaderBloc(
+                      loaderFunction: () =>
+                          Rx.fromCallable(() => repo.availablePeriods(id, day)),
+                      enableLogger: true,
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(dialogContext)
+                            .pop(); // Dismiss alert dialog
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: Padding(
+              padding: EdgeInsets.all(10), child: Text('Available periods')),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChangeAllPrices() {
+    return RxStreamBuilder<List<Tuple2<Seat, int>>>(
+        stream: prices,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SliverToBoxAdapter(child: SizedBox.shrink());
+          }
+
+          return SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 64),
+              child: RaisedButton(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(color: Colors.deepPurpleAccent)),
+                onPressed: () async {
+                  final price =
+                      await pickPrice(snapshot.requireData.first.item2);
+                  if (price == null) {
+                    return;
+                  }
+
+                  prices.add([
+                    for (final t in prices.value) Tuple2(t.item1, price),
+                  ]);
+                },
+                child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text('Change all fares')),
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget _buildReleasedDayTextField() {
+    return SliverToBoxAdapter(
+      child: Row(
+        children: [
+          SizedBox(width: 8),
+          Text(
+            'Start time: ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Expanded(
+            child: DateTimeField(
+              initialValue: startTime,
+              format: startTimeFormat,
+              readOnly: true,
+              onShowPicker: (context, currentValue) async {
+                final now = DateTime.now();
+
+                final date = await showDatePicker(
+                  context: context,
+                  firstDate: DateTime(1900),
+                  initialDate:
+                      currentValue ?? now.add(const Duration(minutes: 5)),
+                  lastDate: DateTime(2100),
+                  selectableDayPredicate: (date) => date.isAfter(
+                      startOfDay(now).subtract(const Duration(days: 1))),
+                );
+
+                if (date == null) {
+                  return null;
+                }
+
+                final time = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.fromDateTime(date),
+                );
+
+                if (time == null) {
+                  return null;
+                }
+
+                return DateTime(
+                  date.year,
+                  date.month,
+                  date.day,
+                  time.hour,
+                  time.minute,
+                );
+              },
+              validator: (date) {
+                if (date == null) {
+                  return 'Missing start time';
+                }
+                if (date.isAfter(DateTime.now())) {
+                  return null;
+                }
+                return 'Invalid start time';
+              },
+              onChanged: (v) => startTime = v,
+              resetIcon: Icon(Icons.delete, color: Colors.deepPurpleAccent),
+              decoration: InputDecoration(
+                  prefixIcon: Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 8.0),
+                    child: Icon(
+                      Icons.date_range,
+                      color: Colors.deepPurpleAccent,
+                      size: 16,
+                    ),
+                  ),
+                  labelText: 'Start time',
+                  labelStyle: TextStyle(color: Colors.black54, fontSize: 13),
+                  fillColor: Colors.deepPurpleAccent,
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Colors.deepPurpleAccent)),
+                  errorStyle: TextStyle(color: Colors.redAccent, fontSize: 13)),
+            ),
+          ),
+          SizedBox(width: 8)
+        ],
+      ),
+    );
+  }
+
+  void submit() async {
+    final startTime = this.startTime;
+    print(startTime);
+    if (startTime == null || !startTime.isAfter(DateTime.now())) {
+      context.showSnackBar('Invalid start time');
+      return;
+    }
+    final tickets = prices.value;
+    if (!tickets.every((element) => element.item2 > 0)) {
+      context.showSnackBar('Invalid price');
+      return;
+    }
+
+    final repo = Provider.of<ShowTimesRepository>(context);
+    buttonStateS.add(ButtonState.loading);
+
+    try {
+      await repo.addShowTime(
+        movieId: widget.movie.id,
+        theatreId: widget.theatre.id,
+        startTime: startTime,
+        tickets: [for (final t in tickets) Tuple2(t.item1.id, t.item2)],
+      );
+      if (mounted) {
+        buttonStateS.add(ButtonState.success);
+      }
+      context.showSnackBar('Added successfully!');
+      await delay(500);
+      await AppScaffold.of(context)
+          .popUntil(ModalRoute.withName(ShowTimesPage.routeName));
+    } catch (e, s) {
+      print(e);
+      print(s);
+
+      context.showSnackBar('Error ${getErrorMessage(e)}');
+
+      if (mounted) {
+        buttonStateS.add(ButtonState.fail);
+        await delay(3000);
+        buttonStateS.add(ButtonState.idle);
+      }
+    }
+  }
+
+  Widget _buildLoadingButton() {
+    return RxStreamBuilder(
+      stream: buttonStateS,
+      builder: (ctx, snap) {
+        return Container(
+          height: 72,
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 2,
+            ),
+          ]),
+          child: Center(
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 32,
+                ),
+                Expanded(
+                  child: ProgressButton.icon(
+                    iconedButtons: {
+                      ButtonState.idle: IconedButton(
+                        text: 'ADD',
+                        icon: Icon(
+                          Icons.update,
+                          color: Colors.white,
+                        ),
+                        color: Colors.deepPurple.shade500,
+                      ),
+                      ButtonState.loading: IconedButton(
+                        text: 'Loading',
+                        color: Colors.deepPurple.shade700,
+                      ),
+                      ButtonState.fail: IconedButton(
+                        text: 'Failed',
+                        icon: Icon(Icons.cancel, color: Colors.white),
+                        color: Colors.red.shade300,
+                      ),
+                      ButtonState.success: IconedButton(
+                        text: 'Success',
+                        icon: Icon(
+                          Icons.check_circle,
+                          color: Colors.white,
+                        ),
+                        color: Colors.green.shade400,
+                      )
+                    },
+                    onPressed: submit,
+                    state: snap.data,
+                  ),
+                ),
+                SizedBox(
+                  width: 32,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
+
+  Widget _buildListTickets() {
+    return RxStreamBuilder<List<Tuple2<Seat, int>>>(
+      stream: prices,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const SliverToBoxAdapter(child: SizedBox.shrink());
+        }
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final item = snapshot.requireData[index];
+              return ListTile(
+                title: Text.rich(
+                  TextSpan(
+                    text: 'Seat ',
+                    children: [
+                      TextSpan(
+                          text: item.item1.row,
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.primaries[
+                                (item.item1.row.codeUnitAt(0) -
+                                        'A'.codeUnitAt(0)) %
+                                    Colors.primaries.length],
+                          )),
+                      TextSpan(
+                          text: item.item1.column.toString(),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.primaries[
+                                item.item1.column % Colors.primaries.length],
+                          )),
+                    ],
+                  ),
+                ),
+                subtitle:
+                    Text('Price: ${currencyFormat.format(item.item2)} VND'),
+                isThreeLine: false,
+                trailing: IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () async {
+                    final price = await pickPrice(item.item2);
+
+                    if (price == null) {
+                      return;
+                    }
+
+                    prices.add([
+                      for (final t in prices.value)
+                        if (t.item1.id == item.item1.id)
+                          t
+                        else
+                          Tuple2(t.item1, price),
+                    ]);
+                  },
+                ),
+              );
+            },
+            childCount: snapshot.requireData.length,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<int> pickPrice(int initPrice) {
+    return showDialog<int>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        int price;
+
+        return AlertDialog(
+          title: Text('Edit price'),
+          content: TextFormField(
+            autovalidateMode: AutovalidateMode.always,
+            initialValue: initPrice.toString(),
+            autocorrect: true,
+            keyboardType: TextInputType.number,
+            maxLines: 1,
+            onChanged: (v) => price = int.tryParse(v),
+            validator: (v) {
+              final p = int.tryParse(v);
+              if (p == null || p <= 0) {
+                return 'Invalid price';
+              }
+              return null;
+            },
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              prefixIcon: const Padding(
+                padding: EdgeInsetsDirectional.only(end: 8.0),
+                child: Icon(Icons.money),
+              ),
+              labelText: 'Ticket price',
+              border: const OutlineInputBorder(),
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                if (price == null || price <= 0) {
+                  Navigator.of(dialogContext).pop();
+                  return;
+                }
+
+                Navigator.of(dialogContext).pop(price);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -484,7 +1024,6 @@ class BottomWidget extends StatelessWidget {
       fontWeight: FontWeight.w500,
       color: const Color(0xff687189),
     );
-
 
     return SliverToBoxAdapter(
       child: Padding(

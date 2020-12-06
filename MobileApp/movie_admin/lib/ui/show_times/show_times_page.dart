@@ -113,7 +113,7 @@ class _ShowTimesPageState extends State<ShowTimesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Show times'),
+        title: Text(widget.theatre.name),
       ),
       body: buildBody(),
       floatingActionButton: FloatingActionButton(

@@ -151,7 +151,7 @@ export class TheatresService {
       opening_hours: '8:30 - 23:30',
       phone_number: dto.phone_number,
       room_summary: '1 2D',
-      rooms: ['2D1'],
+      rooms: ['2D 1'],
       thumbnail: dto.thumbnail,
     };
 
