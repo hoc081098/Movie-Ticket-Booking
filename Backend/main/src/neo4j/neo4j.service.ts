@@ -227,7 +227,10 @@ export class Neo4jService {
         });
 
     await this.runTransaction(async txc => {
+      let i = 0;
+
       for (const mov of movies) {
+        this.logger.debug(`movies1 ${i++}/${movies.length}`);
         await txc.run(
             `
               MERGE(mov: MOVIE { _id: $_id })
@@ -278,7 +281,11 @@ export class Neo4jService {
     }, `[MOVIES] [1] ${movies.length}`);
 
     await this.runTransaction(async txc => {
+      let i = 0;
+
       for (const mov of movies) {
+        this.logger.debug(`movies2 ${i++}/${movies.length}`);
+
         const ids: string[] = (mov as any).categories.map(c => c.category_id._id.toString());
 
         for (const cat_id of ids) {
@@ -299,7 +306,11 @@ export class Neo4jService {
     }, `[MOVIES] [2] ${movies.length}`);
 
     await this.runTransaction(async txc => {
+      let i = 0;
+
       for (const mov of movies) {
+        this.logger.debug(`movies3 ${i++}/${movies.length}`);
+
         const actors: string[] = mov.actors.map(i => i.toString());
         for (const p_id of actors) {
           await txc.run(
@@ -369,7 +380,11 @@ export class Neo4jService {
 
     await this.runTransaction(
         async txc => {
+          let i = 0;
+
           for (const comment of comments) {
+            this.logger.debug(`comments ${i++}/${comments.length}`);
+
             await txc.run(
                 `
                   MATCH (mov: MOVIE { _id: $movie_id })
@@ -396,7 +411,11 @@ export class Neo4jService {
 
     await this.runTransaction(
         async txc => {
+          let i = 0;
+
           for (const st of showTimes) {
+            this.logger.debug(`show-times1 ${i++}/${showTimes.length}`);
+
             await txc.run(
                 `
                   MERGE(st: SHOW_TIME { _id: $id })
@@ -423,7 +442,11 @@ export class Neo4jService {
 
     await this.runTransaction(
         async txc => {
+          let i = 0;
+
           for (const st of showTimes) {
+            this.logger.debug(`show-times2 ${i++}/${showTimes.length}`);
+
             await txc.run(
                 `
                       MATCH (st: SHOW_TIME { _id: $id })
@@ -524,12 +547,12 @@ export class Neo4jService {
 
   private async addPeople() {
     const people = await this.personModel.find({}).lean();
-    this.logger.debug(people.length, 'people.length');
 
-    let i = 0;
     await this.runTransaction(async txc => {
+      let i = 0;
+      
       for (const person of people) {
-        this.logger.debug(i++);
+        this.logger.debug(`people ${i++}/${people.length}`);
         await txc.run(
             `
               MERGE(cat: PERSON { _id: $_id })
@@ -593,7 +616,7 @@ export class Neo4jService {
               datetime({ epochMillis: st.start_time }) AS startTime,
               datetime({ epochMillis: st.end_time }) AS endTime,
               datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay,
-              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1.0) AS distance
           WHERE
               0 <= distance AND distance <= $max_distance
               AND startTime >= startOfDay
@@ -619,7 +642,7 @@ export class Neo4jService {
                datetime({ epochMillis: st.start_time }) AS startTime,
                datetime({ epochMillis: st.end_time }) AS endTime,
                datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay,
-               coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance
+               coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1.0) AS distance
           WHERE
               0 <= distance AND distance <= $max_distance
               AND startTime >= startOfDay
@@ -708,7 +731,7 @@ export class Neo4jService {
                 datetime({ epochMillis: st.start_time }) AS startTime,
                 datetime({ epochMillis: st.end_time }) AS endTime,
                 datetime.truncate('hour', datetime(), { minute: 0, second: 0, millisecond: 0, microsecond: 0 }) AS startOfDay,
-                coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance
+                coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1.0) AS distance
             WHERE
                 0 <= distance AND distance <= $max_distance
                 AND startTime >= startOfDay
@@ -915,7 +938,7 @@ export class Neo4jService {
               datetime({epochMillis: m.released_date}) AS released_date,
               datetime($search_start_time) AS search_start_time,
               datetime($search_end_time) AS search_end_time,
-              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance,
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1.0) AS distance,
               ('(?i).*' + $query + '.*') AS query,
               datetime($min_released_date) AS min_released_date,
               datetime($max_released_date) AS max_released_date
@@ -1127,7 +1150,7 @@ export class Neo4jService {
               datetime({ epochMillis: st.end_time }) AS endTime,
               datetime($search_start_time) AS search_start_time,
               datetime($search_end_time) AS search_end_time,
-              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1) AS distance,
+              coalesce(distance(point({ latitude: $lat, longitude: $lng }), t.location), -1.0) AS distance,
               ('(?i).*' + $query + '.*') AS query,
               datetime($min_released_date) AS min_released_date,
               datetime($max_released_date) AS max_released_date
