@@ -133,7 +133,7 @@ export class Neo4jService {
                     ON CREATE SET r.score = 1
                     ON MATCH SET r.score = r.score + 1
                     
-                    WITH user, o, coalesce(distance(user.location, o.location), -1) AS d
+                    WITH user, o, coalesce(distance(user.location, o.location), -1.0) AS d
                     WHERE 0 <= d AND d <= $max_distance
                     WITH user, o
                     MERGE (user)-[r:SIMILAR_LOCATION]-(o)
@@ -524,9 +524,12 @@ export class Neo4jService {
 
   private async addPeople() {
     const people = await this.personModel.find({}).lean();
+    this.logger.debug(people.length, 'people.length');
 
+    let i = 0;
     await this.runTransaction(async txc => {
       for (const person of people) {
+        this.logger.debug(i++);
         await txc.run(
             `
               MERGE(cat: PERSON { _id: $_id })
