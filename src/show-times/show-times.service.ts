@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ShowTime } from './show-time.schema';
 import * as mongoose from 'mongoose';
@@ -7,16 +13,21 @@ import { Movie } from '../movies/movie.schema';
 import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
 import { defer, forkJoin, from, Observable } from 'rxjs';
-import { bufferCount, concatMap, filter, pairwise, take, tap, reduce, startWith, scan, map } from 'rxjs/operators';
+import { bufferCount, concatMap, filter, pairwise, take, tap, reduce, map } from 'rxjs/operators';
 import { constants, getSkipLimit } from '../common/utils';
 import { AddShowTimeDto, TicketDto } from './show-time.dto';
 import { PaginationDto } from "../common/pagination.dto";
 import { Ticket } from "../seats/ticket.schema";
 import { Seat } from "../seats/seat.schema";
 
-// eslint-disable-next-line
-const isBetween = require('dayjs/plugin/isBetween');
+import * as isBetween from 'dayjs/plugin/isBetween';
+import * as utc from 'dayjs/plugin/utc';
+import * as timezone from 'dayjs/plugin/timezone';
+import { SeatsService } from "../seats/seats.service";
+
 dayjs.extend(isBetween);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type RawShowTimeAndTheatre = {
   theatre: Theatre;
@@ -39,6 +50,7 @@ export class ShowTimesService {
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
       @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
+      private readonly seatsService: SeatsService,
   ) {}
 
   async seed() {
@@ -66,9 +78,11 @@ export class ShowTimesService {
       const hours: number[] = Array.from({ length: endH - startH + 1 }, (_, i) => i + startH);
       this.logger.debug(`Hours for ${theatre.name} are ${JSON.stringify(hours)} -- ${startH}:${startM} -> ${endH}:${endM}`);
 
+      const startDay = current.utcOffset(current.utcOffset(), false).startOf('day');
+
       for (const room of theatre.rooms) {
         for (let dDate = -1; dDate <= 10; dDate++) {
-          const day = current.startOf('day').add(dDate, 'day');
+          const day = startDay.add(dDate, 'day');
 
           const thStartTime = day.set('hour', startH).set('minute', startM);
           const thEndTime = day.set('hour', endH).set('minute', endM);
@@ -115,13 +129,74 @@ export class ShowTimesService {
       room: string,
       thStartTime: dayjs.Dayjs,
       thEndTime: dayjs.Dayjs
-  ): Promise<0 | 1 | 2 | 3> {
+  ): Promise<"Start time must be not before movie released date" |
+      "Start time must be not before theatre start time" |
+      "End time must be not after theatre end time" |
+      "Already have 1 showtime in this time period" |
+      "There's no more free time to create a new showtime" | 'Successfully'> {
     const startTime = day
         .set('hour', hour)
         .set('minute', 0)
         .set('second', 0)
         .set('millisecond', 0);
+    const endTime = startTime.add(movie.duration, 'minute');
+    this.logger.debug(`Start saving show time: ${theatre.name} -- ${room} <> ${thStartTime.toDate()}-${thEndTime.toDate()} <> ${startTime.toDate()}-${endTime.toDate()}`);
+
     if (startTime.isBefore(movie.released_date)) {
+      return `Start time must be not before movie released date`;
+    }
+    if (startTime.isBefore(thStartTime)) {
+      return `Start time must be not before theatre start time`;
+    }
+    if (endTime.isAfter(thEndTime)) {
+      return `End time must be not after theatre end time`;
+    }
+
+    const showTimes = await this.showTimeModel
+        .find({
+          theatre: theatre._id,
+          room,
+          is_active: true,
+          start_time: { $gte: thStartTime.toDate() },
+          end_time: { $lte: thEndTime.toDate() },
+        })
+        .sort({ start_time: 1 });
+    this.logger.debug(`showTimes ${showTimes.length}`);
+    showTimes.forEach(s => this.logger.debug(`${s.start_time} -> ${s.end_time}`));
+
+    if (showTimes.length == 1) {
+      const found = showTimes[0];
+      if (startTime.isBefore(found.end_time) && endTime.isAfter(found.start_time)) {
+        return `Already have 1 showtime in this time period`;
+      }
+    }
+    if (showTimes.length >= 2) {
+      const pair: [ShowTime, ShowTime] | undefined = [
+        null,
+        ...showTimes,
+        null,
+      ].pairwise().find(([prev, next]) => {
+        if (prev && next) {
+          return startTime.isBetween(prev.end_time, next.start_time)
+              && endTime.isBetween(prev.end_time, next.start_time);
+        }
+
+        if (prev === null) {
+          return startTime.isBetween(thStartTime, next.start_time)
+              && endTime.isBetween(thStartTime, next.start_time);
+        }
+
+        return startTime.isBetween(prev.end_time, thEndTime)
+            && endTime.isBetween(prev.end_time, thEndTime);
+      });
+
+      if (pair === undefined) {
+        return `There's no more free time to create a new showtime`;
+      }
+      this.logger.debug(`Found pair ${pair[0]?.start_time}:${pair[0]?.end_time} -> ${pair[1]?.start_time}:${pair[1]?.end_time}`);
+    }
+
+    /*if (startTime.isBefore(movie.released_date)) {
       return 0;
     }
 
@@ -165,7 +240,7 @@ export class ShowTimesService {
       }
 
       this.logger.debug(`>>> Array ${array}`);
-    }
+    }*/
 
     const doc: Omit<CreateDocumentDefinition<ShowTime>, '_id'> = {
       movie: movie._id,
@@ -176,9 +251,10 @@ export class ShowTimesService {
       start_time: startTime.toDate(),
     };
     const showTime = await this.showTimeModel.create(doc);
+    await this.seatsService.seedTicketsForSingleShowTime(showTime);
 
     this.logger.debug(`Saved show time: ${JSON.stringify(showTime)}`);
-    return 3;
+    return 'Successfully';
   }
 
   private async randomMovie(day: dayjs.Dayjs): Promise<Movie | undefined> {
@@ -320,6 +396,8 @@ export class ShowTimesService {
   }
 
   async addShowTime(dto: AddShowTimeDto): Promise<ShowTime> {
+    const room = '2D 1';
+
     const [movie, theatre]: [Movie, Theatre] = await Promise.all([
       this.movieModel.findById(dto.movie).then(v => {
         if (!v) {
@@ -337,11 +415,11 @@ export class ShowTimesService {
 
     const seats = await from(dto.tickets)
         .pipe(
-            bufferCount(16),
+            bufferCount(32),
             concatMap(dtos => {
               const tasks: Array<Observable<{ seat: Seat, dto: TicketDto }>> = dtos.map(dto => {
                 return defer(async () => {
-                  const seat = await this.seatModel.findById(dto.seat);
+                  const seat = await this.seatModel.findOne({ _id: dto.seat, room, theatre: theatre._id });
                   if (!seat) {
                     throw new NotFoundException(`Seat with id ${dto.seat}`);
                   }
@@ -355,7 +433,7 @@ export class ShowTimesService {
         .toPromise();
     this.logger.debug(`dto.tickets ${dto.tickets.length} ... ${seats.length}`);
 
-    const startTime: dayjs.Dayjs = dayjs(dto.start_time);
+    /*const startTime: dayjs.Dayjs = dayjs(dto.start_time);
     const endTime: dayjs.Dayjs = startTime.add(movie.duration, 'minute');
     const day: dayjs.Dayjs = startTime.startOf('day');
 
@@ -363,22 +441,52 @@ export class ShowTimesService {
     const [startH, startM]: number[] = startHString.split(':').map(x => +x);
     const [endH, endM]: number[] = endHString.split(':').map(x => +x);
     const thStartTime: dayjs.Dayjs = day.set('hour', startH).set('minute', startM);
-    const thEndTime: dayjs.Dayjs = day.set('hour', endH).set('minute', endM);
+    const thEndTime: dayjs.Dayjs = day.set('hour', endH).set('minute', endM);*/
 
-    if (startTime.isBefore(movie.released_date)) {
+    const start_time_date = dto.start_time;
+    this.logger.debug(start_time_date.toISOString() + ' '.repeat(26) + '[1] start_time_date');
+    this.logger.debug(start_time_date.toString() + '[1] start_time_date');
+
+    const start_time: dayjs.Dayjs = dayjs(start_time_date);
+    this.logger.debug(start_time.toISOString() + ' '.repeat(26) + '[2] start_time');
+    this.logger.debug(start_time.toDate().toString() + '[2] start_time');
+
+    const startTimeLocal = start_time.utcOffset(start_time.utcOffset(), false);
+    this.logger.debug(startTimeLocal.toISOString() + ' '.repeat(26) + '[3] startTimeLocal');
+    this.logger.debug(startTimeLocal.toDate().toString() + '[3] startTimeLocal');
+    const endTimeLocal: dayjs.Dayjs = startTimeLocal.add(movie.duration, 'minute');
+    this.logger.debug(endTimeLocal.toISOString() + ' '.repeat(26) + '[4] endTimeLocal');
+    this.logger.debug(endTimeLocal.toDate().toString() + '[4] endTimeLocal');
+
+    const [startHString, endHString]: string[] = theatre.opening_hours.split(' - ');
+    const [startH, startM]: number[] = startHString.split(':').map(x => +x);
+    const [endH, endM]: number[] = endHString.split(':').map(x => +x);
+
+    const startOfDayLocal: dayjs.Dayjs = startTimeLocal.startOf('day');
+    this.logger.debug(startOfDayLocal.toISOString() + ' '.repeat(26) + '[5] startOfDayLocal');
+    this.logger.debug(startOfDayLocal.toDate().toString() + '[5] startOfDayLocal');
+    const thStartTime: dayjs.Dayjs = startOfDayLocal.set('hour', startH).set('minute', startM);
+    const thEndTime: dayjs.Dayjs = startOfDayLocal.set('hour', endH).set('minute', endM);
+
+    this.logger.debug(thStartTime.toISOString() + ' '.repeat(26) + '[6] thStartTime');
+    this.logger.debug(thStartTime.toDate().toString() + '[6] thStartTime');
+    this.logger.debug(thEndTime.toISOString() + ' '.repeat(26) + '[7] thEndTime');
+    this.logger.debug(thEndTime.toDate().toString() + '[7] thEndTime');
+
+    if (startTimeLocal.isBefore(movie.released_date)) {
       throw new BadRequestException(`Start time must be not before movie released date`);
     }
-    if (startTime.isBefore(thStartTime)) {
+    if (startTimeLocal.isBefore(thStartTime)) {
       throw new BadRequestException(`Start time must be not before theatre start time`);
     }
-    if (endTime.isAfter(thEndTime)) {
+    if (endTimeLocal.isAfter(thEndTime)) {
       throw new BadRequestException(`End time must be not after theatre end time`);
     }
 
     const showTimes = await this.showTimeModel
         .find({
           theatre: theatre._id,
-          room: '2D 1',
+          room,
           is_active: true,
           start_time: { $gte: thStartTime.toDate() },
           end_time: { $lte: thEndTime.toDate() },
@@ -389,7 +497,7 @@ export class ShowTimesService {
 
     if (showTimes.length == 1) {
       const found = showTimes[0];
-      if (startTime.isBefore(found.end_time) && endTime.isAfter(found.start_time)) {
+      if (startTimeLocal.isBefore(found.end_time) && endTimeLocal.isAfter(found.start_time)) {
         throw new BadRequestException(`Already have 1 showtime in this time period`);
       }
     }
@@ -403,17 +511,17 @@ export class ShowTimesService {
 
       const pair: [ShowTime, ShowTime] | undefined = pairwises.find(([prev, next]) => {
         if (prev && next) {
-          return (startTime as any).isBetween(prev.end_time, next.start_time)
-            && (endTime as any).isBetween(prev.end_time, next.start_time);
+          return startTimeLocal.isBetween(prev.end_time, next.start_time)
+              && endTimeLocal.isBetween(prev.end_time, next.start_time);
         }
 
         if (prev === null) {
-          return (startTime as any).isBetween(thStartTime, next.start_time)
-            && (endTime as any).isBetween(thStartTime, next.start_time);
+          return startTimeLocal.isBetween(thStartTime, next.start_time)
+              && endTimeLocal.isBetween(thStartTime, next.start_time);
         }
 
-        return (startTime as any).isBetween(prev.end_time, thEndTime)
-          && (endTime as any).isBetween(prev.end_time, thEndTime);
+        return startTimeLocal.isBetween(prev.end_time, thEndTime)
+            && endTimeLocal.isBetween(prev.end_time, thEndTime);
       });
 
       if (pair === undefined) {
@@ -427,14 +535,14 @@ export class ShowTimesService {
       theatre: theatre._id,
       room: '2D 1',
       is_active: true,
-      end_time: endTime.toDate(),
-      start_time: startTime.toDate(),
+      end_time: endTimeLocal.toDate(),
+      start_time: startTimeLocal.toDate(),
     };
     const showTime = await this.showTimeModel.create(doc);
 
     const rr = await from(seats)
         .pipe(
-            bufferCount(16),
+            bufferCount(32),
             concatMap(seats => {
               const tasks: Observable<Ticket>[] = seats.map(({ seat, dto }) => {
                 return defer(async () => {
@@ -478,14 +586,34 @@ export class ShowTimesService {
       }
       return v;
     });
-    const day = dayjs(dayStr).startOf('day');
+    /*const day = dayjs(dayStr).startOf('day');
     this.logger.debug(day.toDate(), 'day');
 
     const [startHString, endHString]: string[] = theatre.opening_hours.split(' - ');
     const [startH, startM]: number[] = startHString.split(':').map(x => +x);
     const [endH, endM]: number[] = endHString.split(':').map(x => +x);
     const thStartTime: dayjs.Dayjs = day.set('hour', startH).set('minute', startM);
-    const thEndTime: dayjs.Dayjs = day.set('hour', endH).set('minute', endM);
+    const thEndTime: dayjs.Dayjs = day.set('hour', endH).set('minute', endM);*/
+
+    const start_time: dayjs.Dayjs = dayjs(dayStr);
+    this.logger.debug(start_time.toISOString() + ' '.repeat(26) + '[2] start_time');
+    this.logger.debug(start_time.toDate().toString() + '[2] start_time');
+
+    const [startHString, endHString]: string[] = theatre.opening_hours.split(' - ');
+    const [startH, startM]: number[] = startHString.split(':').map(x => +x);
+    const [endH, endM]: number[] = endHString.split(':').map(x => +x);
+
+    const startTimeLocal = start_time.utcOffset(start_time.utcOffset(), false);
+    const startOfDayLocal: dayjs.Dayjs = startTimeLocal.startOf('day');
+    this.logger.debug(startOfDayLocal.toISOString() + ' '.repeat(26) + '[5] startOfDayLocal');
+    this.logger.debug(startOfDayLocal.toDate().toString() + '[5] startOfDayLocal');
+    const thStartTime: dayjs.Dayjs = startOfDayLocal.set('hour', startH).set('minute', startM);
+    const thEndTime: dayjs.Dayjs = startOfDayLocal.set('hour', endH).set('minute', endM);
+
+    this.logger.debug(thStartTime.toISOString() + ' '.repeat(26) + '[6] thStartTime');
+    this.logger.debug(thStartTime.toDate().toString() + '[6] thStartTime');
+    this.logger.debug(thEndTime.toISOString() + ' '.repeat(26) + '[7] thEndTime');
+    this.logger.debug(thEndTime.toDate().toString() + '[7] thEndTime');
 
     const showTimes = await this.showTimeModel
         .find({
@@ -498,26 +626,33 @@ export class ShowTimesService {
         .sort({ start_time: 1 });
 
 
-        this.logger.debug(showTimes.map(e => e.start_time));
+    this.logger.debug(showTimes.map(e => ({ start_time: e.start_time, end_time: e.end_time })));
 
-        const a = [
-          {
-            start_time: null as Date,
-            end_time:  thStartTime.toDate(),
-          },
-          ...showTimes,
-          {
-            start_time: thEndTime.toDate(),
-            end_time: null as Date,
-          },
-        ];
+    const times: { start_time: Date | null, end_time: Date | null }[] = [
+      {
+        start_time: null as Date,
+        end_time: thStartTime.toDate(),
+      },
+      ...showTimes,
+      {
+        start_time: thEndTime.toDate(),
+        end_time: null as Date,
+      },
+    ];
 
-        return a.pairwise().map(([prev, next])=> {
-          return {
-            start: prev.end_time,
-            end: next.start_time,
-          };
-        });
+    const res =  times.pairwise().map(([prev, next]) => {
+      if (prev.end_time === null || next.start_time === null) {
+        throw new InternalServerErrorException();
+      }
+
+      return {
+        start: prev.end_time,
+        end: next.start_time,
+      };
+    });
+    this.logger.debug(res);
+
+    return res;
   }
 }
 

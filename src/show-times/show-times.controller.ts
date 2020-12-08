@@ -9,9 +9,13 @@ import { Roles, RolesGuard } from '../auth/roles.guard';
 import { ForAdmin } from '../common/swagger.decorator';
 import { PaginationDto } from "../common/pagination.dto";
 import { ShowTime } from "./show-time.schema";
+
 import * as dayjs from "dayjs";
 import * as utc from 'dayjs/plugin/utc';
 import * as timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 @ApiTags('show-times')
 @UseGuards(AuthGuard)
@@ -24,7 +28,7 @@ export class ShowTimesController {
   ) {
   }
 
-  @ApiOperation({summary: 'PRIVATE'})
+  @ApiOperation({ summary: 'PRIVATE' })
   @Post('seed')
   seed() {
     return this.showTimesService.seed();
@@ -92,25 +96,42 @@ export class AdminShowTimesController {
     return this.showTimesService.getAvailablePeriods(theatreId, day);
   }
 
+  @Get('test2')
+  test2() {
+    const now = dayjs('2020-12-07T20:01:06.827Z');
+    const add1 = now.add(1, 'second');
+    const sub1 = now.add(-1, 'second');
+
+    Logger.debug(`${sub1.isBefore(now)} .. ${add1.isAfter(now)}`);
+    Logger.debug(add1.toDate().toISOString());
+    Logger.debug(add1.toDate().toString());
+    Logger.debug(add1.startOf('day').toDate().toISOString());
+
+    const add1Local = add1.utcOffset(add1.utcOffset(), false);
+    const sub1Local = sub1.utcOffset(sub1.utcOffset(), false);
+
+    Logger.debug(`${sub1Local.isBefore(now)} .. ${add1Local.isAfter(now)}`);
+    Logger.debug(`${sub1Local.isSame(sub1)} .. ${add1Local.isSame(add1)}`);
+    Logger.debug(add1Local.toDate().toISOString());
+    Logger.debug(add1Local.startOf('day').toDate().toISOString());
+  }
+
   @Get('test')
   test() {
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-
-    const start_time_date: Date = new Date('2020-12-07T17:48:28.262Z');
-    Logger.debug(start_time_date.toISOString() + '[1] start_time_date');
+    const start_time_date: Date = new Date('2020-12-08T03:00:26.703Z');
+    Logger.debug(start_time_date.toISOString() + ' '.repeat(26) + '[1] start_time_date');
     Logger.debug(start_time_date.toString() + '[1] start_time_date');
 
     const duration = 90;
     const start_time: dayjs.Dayjs = dayjs(start_time_date);
-    Logger.debug(start_time.toISOString() + '[2] start_time');
+    Logger.debug(start_time.toISOString() + ' '.repeat(26) + '[2] start_time');
     Logger.debug(start_time.toDate().toString() + '[2] start_time');
 
     const startTimeLocal = start_time.utcOffset(start_time.utcOffset(), false);
-    Logger.debug(startTimeLocal.toISOString() + '[3] startTimeLocal');
+    Logger.debug(startTimeLocal.toISOString() + ' '.repeat(26) + '[3] startTimeLocal');
     Logger.debug(startTimeLocal.toDate().toString() + '[3] startTimeLocal');
     const endTimeLocal: dayjs.Dayjs = startTimeLocal.add(duration, 'minute');
-    Logger.debug(endTimeLocal.toISOString() + '[4] endTimeLocal');
+    Logger.debug(endTimeLocal.toISOString() + ' '.repeat(26) + '[4] endTimeLocal');
     Logger.debug(endTimeLocal.toDate().toString() + '[4] endTimeLocal');
 
     const [startHString, endHString]: string[] = '9:00 - 23:00'.split(' - ');
@@ -118,14 +139,14 @@ export class AdminShowTimesController {
     const [endH, endM]: number[] = endHString.split(':').map(x => +x);
 
     const startOfDayLocal: dayjs.Dayjs = startTimeLocal.startOf('day');
-    Logger.debug(startOfDayLocal.toISOString() + '[5] startOfDayLocal');
+    Logger.debug(startOfDayLocal.toISOString() + ' '.repeat(26) + '[5] startOfDayLocal');
     Logger.debug(startOfDayLocal.toDate().toString() + '[5] startOfDayLocal');
     const thStartTime: dayjs.Dayjs = startOfDayLocal.set('hour', startH).set('minute', startM);
     const thEndTime: dayjs.Dayjs = startOfDayLocal.set('hour', endH).set('minute', endM);
 
-    Logger.debug(thStartTime.toISOString() + '[6] thStartTime');
+    Logger.debug(thStartTime.toISOString() + ' '.repeat(26) + '[6] thStartTime');
     Logger.debug(thStartTime.toDate().toString() + '[6] thStartTime');
-    Logger.debug(thEndTime.toISOString() + '[7] thEndTime');
+    Logger.debug(thEndTime.toISOString() + ' '.repeat(26) + '[7] thEndTime');
     Logger.debug(thEndTime.toDate().toString() + '[7] thEndTime');
   }
 }

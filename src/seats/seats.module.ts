@@ -35,6 +35,7 @@ import { Ticket, TicketSchema } from './ticket.schema';
     ConfigModule,
   ],
   controllers: [SeatsController, AdminSeatsController],
-  providers: [SeatsService]
+  providers: [SeatsService],
+  exports: [SeatsService],
 })
 export class SeatsModule {}
