@@ -12,6 +12,9 @@ import { ShowTime, ShowTimeSchema } from '../show-times/show-time.schema';
 import { Theatre, TheatreSchema } from '../theatres/theatre.schema';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
+import { Ticket, TicketSchema } from "../seats/ticket.schema";
+import { CommentSchema, Comment } from "../comments/comment.schema";
+import { Reservation, ReservationSchema } from "../reservations/reservation.schema";
 
 @Module({
   imports: [
@@ -39,7 +42,19 @@ import { UsersModule } from '../users/users.module';
       {
         name: Theatre.name,
         schema: TheatreSchema,
-      }
+      },
+      {
+        name: Ticket.name,
+        schema: TicketSchema,
+      },
+      {
+        name: Comment.name,
+        schema: CommentSchema,
+      },
+      {
+        name: Reservation.name,
+        schema: ReservationSchema,
+      },
     ]),
     HttpModule,
     ConfigModule,
@@ -51,4 +66,5 @@ import { UsersModule } from '../users/users.module';
   controllers: [MoviesController, AdminMoviesController],
   exports: [MoviesService],
 })
-export class MoviesModule {}
+export class MoviesModule {
+}
