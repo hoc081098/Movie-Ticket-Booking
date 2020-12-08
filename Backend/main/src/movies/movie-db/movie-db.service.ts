@@ -10,6 +10,12 @@ import { Person } from '../../people/person.schema';
 import { fromArray } from 'rxjs/internal/observable/fromArray';
 import { InjectModel } from '@nestjs/mongoose';
 import dayjs = require('dayjs');
+import * as fs from 'fs';
+import { ShowTime } from "../../show-times/show-time.schema";
+import { Theatre } from "../../theatres/theatre.schema";
+import { Comment } from "../../comments/comment.schema";
+import { Ticket } from "../../seats/ticket.schema";
+import { Reservation } from "../../reservations/reservation.schema";
 
 @Injectable()
 export class MovieDbService {
@@ -30,7 +36,13 @@ export class MovieDbService {
       @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
       @InjectModel(MovieCategory.name) private readonly movieCategoryModel: Model<MovieCategory>,
       @InjectModel(Person.name) private readonly personModel: Model<Person>,
-  ) {}
+      @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
+      @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
+      @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
+      @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
+      @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
+  ) {
+  }
 
   seed(query: string, page: number, year: number) {
     return this.search(query, page, year)
@@ -228,10 +240,14 @@ export class MovieDbService {
   }
 
   removeAdultMovies() {
+    const array: { detail: MovieDetailResponseResult, found: string | undefined }[] = [];
+
     return defer(() => this.movieModel.find({}).sort({ createdAt: -1 })).pipe(
         tap(a => this.logger.debug(`All ${a.length} movies`)),
         mergeMap(from),
         concatMap((movie: Movie, index: number): Observable<Movie> => {
+          this.logger.debug(index);
+
           return this
               .search(movie.title, 1, null)
               .pipe(
@@ -240,37 +256,32 @@ export class MovieDbService {
                   mergeMap(id => this.detail(id)),
                   filter(d => {
                     const removed = d.adult || (() => {
+                      delete d.adult;
                       const s = JSON.stringify(d).toLowerCase();
-                      return [
+
+                      const found = [
                         'sex',
                         'gay',
                         'adult',
-                        'law',
                         'mother',
-                        'in-law',
+                        'mother-in-law',
                         'porn',
-                        '18+',
                         'sexuality',
                         'unfaithfulness',
-                        'medical research',
-                        'historical drama',
                         'sexologist',
-                        'small town',
-                        'england',
-                        'sex therapy',
+                        'sex',
                         'school',
-                        'teenage sexuality',
+                        'teenage',
                         'lgbt',
-                        'lgbt teen',
-                        'sex comedy',
-                        'black lgbt',
-                        'sex therapist',
-                        'teenage protagonist',
-                        'sex scandal',
-                        'cartoon sex',
-                        'anal sex',
-                        'sex pistols',
-                        'gay sex',
+                        'teen',
+                        'black',
+                        'teenage',
+                        'protagonist',
+                        'sex',
+                        'scandal',
+                        'anal',
+                        'pistols',
+                        'sex',
                         'rough sex',
                         'phone sex',
                         'artistic sex',
@@ -302,25 +313,90 @@ export class MovieDbService {
                         'forced sex',
                         'simulated sex',
                         'sex assignment',
-                        'sex life',
-                        'meat sex',
-                        'sex cult',
-                        'animated sex',
-                      ].map(v => v.split(' '))
-                          .reduce((acc, e) => acc.concat(e), [])
-                          .some(v => s.includes(v.toLowerCase()));
+                        'pornography',
+                        'porn actor',
+                        'pornographic video',
+                        'porn star',
+                        'porn director',
+                        'internet porn',
+                        'porn industry',
+                        'porn parody',
+                        'porn actress',
+                        'pornographer',
+                        'porn magazine',
+                        'feature porn',
+                        'torture porn',
+                        'roman porno',
+                        'porn producer',
+                        'gay pornography',
+                        'porn tape',
+                        'food porn',
+                        'porno industry',
+                        'pornochanchada',
+                        'adult education center',
+                        'becoming an adult',
+                        'adult humor',
+                        'adult animation',
+                        'child as an adult',
+                        'disbelieving adult',
+                        'adult filmmaking',
+                        'adult as a child',
+                        'young adult',
+                        'adult in college',
+                        'adult illiteracy',
+                        'adult child friendship',
+                        'adult children',
+                        'based on young adult novel',
+                        'adult babies',
+                        'adult theatre',
+                        'adult magazine',
+                        'adult',
+                        'adult swim: made in spain',
+                        'adult movie star',
+                      ]
+                          .find(v => s.includes(v.toLowerCase()));
+
+                      array.push({
+                        detail: d,
+                        found,
+                      });
+
+                      return found;
                     })();
-                    this.logger.debug(`${index}-${movie.title}-${movie._id} is adult? ${removed}`);
-                    return removed;
+                    // this.logger.debug(`${index}-${movie.title}-${movie._id} is adult? ${removed}`);
+                    return !!removed;
                   }),
                   mapTo(movie),
                   catchError(() => EMPTY),
               );
         }),
         toArray(),
-        mergeMap(movies => {
+        mergeMap(async movies => {
+          this.logger.debug(array.length);
+
+          await new Promise(((resolve, reject) => {
+            fs.writeFile('./movie.json', JSON.stringify(array), {}, (e) => {
+              if (e) reject(e)
+              else resolve();
+            });
+          }));
+
+          const ids = movies.map(m => m._id);
+
+          const inIds = { $in: ids };
+          await this.movieModel.deleteMany({ _id: inIds });
+          await this.movieCategoryModel.deleteMany({ movie_id: inIds });
+          await this.commentModel.deleteMany({ movie: inIds })
+
+          const st = await this.showTimeModel.find({ movie: inIds });
+          const relSt = { show_time: { $in: st.map(s => s._id) } };
+
+          await this.showTimeModel.deleteMany({ movie: inIds });
+          await this.ticketModel.deleteMany(relSt);
+          await this.reservationModel.deleteMany(relSt);
+
           this.logger.debug(movies.length);
-          return of(movies.length);
+          return movies.length;
         }),
     )
   }
