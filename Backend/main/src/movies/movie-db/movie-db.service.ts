@@ -1,7 +1,7 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { ConfigKey, ConfigService } from '../../config/config.service';
-import { concatMap, filter, ignoreElements, map, mergeMap, tap } from 'rxjs/operators';
-import { defer, from, Observable, zip } from 'rxjs';
+import { catchError, concatMap, filter, ignoreElements, map, mapTo, mergeMap, tap, toArray } from 'rxjs/operators';
+import { defer, EMPTY, from, Observable, of, zip } from 'rxjs';
 import { Movie } from '../movie.schema';
 import { CreateDocumentDefinition, Model } from 'mongoose';
 import { Category } from '../../categories/category.schema';
@@ -225,6 +225,104 @@ export class MovieDbService {
             ),
             tap({ complete: () => this.logger.debug(`Done update video url`) }),
         );
+  }
+
+  removeAdultMovies() {
+    return defer(() => this.movieModel.find({}).sort({ createdAt: -1 })).pipe(
+        tap(a => this.logger.debug(`All ${a.length} movies`)),
+        mergeMap(from),
+        concatMap((movie: Movie, index: number): Observable<Movie> => {
+          return this
+              .search(movie.title, 1, null)
+              .pipe(
+                  map(searchResults => searchResults.results?.find(i => i.title === movie.title)?.id),
+                  filter(id => !!id),
+                  mergeMap(id => this.detail(id)),
+                  filter(d => {
+                    const removed = d.adult || (() => {
+                      const s = JSON.stringify(d).toLowerCase();
+                      return [
+                        'sex',
+                        'gay',
+                        'adult',
+                        'law',
+                        'mother',
+                        'in-law',
+                        'porn',
+                        '18+',
+                        'sexuality',
+                        'unfaithfulness',
+                        'medical research',
+                        'historical drama',
+                        'sexologist',
+                        'small town',
+                        'england',
+                        'sex therapy',
+                        'school',
+                        'teenage sexuality',
+                        'lgbt',
+                        'lgbt teen',
+                        'sex comedy',
+                        'black lgbt',
+                        'sex therapist',
+                        'teenage protagonist',
+                        'sex scandal',
+                        'cartoon sex',
+                        'anal sex',
+                        'sex pistols',
+                        'gay sex',
+                        'rough sex',
+                        'phone sex',
+                        'artistic sex',
+                        'sex fiend',
+                        'sex tourism',
+                        'sex game',
+                        'oral sex',
+                        'sex video',
+                        'sex club',
+                        'sex class',
+                        'sex pest',
+                        'sex robot',
+                        'car sex',
+                        'sex',
+                        'sex positive',
+                        'sex-shop',
+                        'group sex',
+                        'sex therapy',
+                        'public sex',
+                        'sex talk',
+                        'unprotected sex',
+                        'sex industry',
+                        'telephone sex',
+                        'taboo sex',
+                        'kinky sex',
+                        'sex show',
+                        'sex performer',
+                        'sex work',
+                        'forced sex',
+                        'simulated sex',
+                        'sex assignment',
+                        'sex life',
+                        'meat sex',
+                        'sex cult',
+                        'animated sex',
+                      ].map(v => v.split(' '))
+                          .reduce((acc, e) => acc.concat(e), [])
+                          .some(v => s.includes(v.toLowerCase()));
+                    })();
+                    this.logger.debug(`${index}-${movie.title}-${movie._id} is adult? ${removed}`);
+                    return removed;
+                  }),
+                  mapTo(movie),
+                  catchError(() => EMPTY),
+              );
+        }),
+        toArray(),
+        mergeMap(movies => {
+          this.logger.debug(movies.length);
+          return of(movies.length);
+        }),
+    )
   }
 }
 

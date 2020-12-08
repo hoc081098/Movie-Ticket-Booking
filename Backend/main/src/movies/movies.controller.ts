@@ -93,6 +93,7 @@ export class MoviesController {
 export class AdminMoviesController {
   constructor(
       private readonly moviesService: MoviesService,
+      private readonly movieDbService: MovieDbService,
   ) {}
 
   @ForAdmin()
@@ -120,5 +121,11 @@ export class AdminMoviesController {
       @Query('title') title: string,
   ): Promise<Movie[]> {
     return this.moviesService.searchByTitle(title);
+  }
+
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Post('seed')
+  removeAdultMovies() {
+    return this.movieDbService.removeAdultMovies();
   }
 }
