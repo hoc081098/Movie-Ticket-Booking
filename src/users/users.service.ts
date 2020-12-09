@@ -202,6 +202,7 @@ export class UsersService {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
+        .populate('theatre')
         .exec();
   }
 
@@ -210,7 +211,9 @@ export class UsersService {
         { uid, role: { $ne: 'ADMIN' } },
         { is_active: false },
         { new: true },
-    ).exec();
+    )
+        .populate('theatre')
+        .exec();
   }
 
   updateFcmToken(user: User, fcmToken: string): Promise<User> {
@@ -304,7 +307,9 @@ export class UsersService {
         { uid, role: { $ne: 'ADMIN' } },
         { is_active: true },
         { new: true },
-    ).exec();
+    )
+        .populate('theatre')
+        .exec();
   }
 
   async toStaffRole(uid: string, theatre_id: string): Promise<User> {
@@ -327,7 +332,7 @@ export class UsersService {
     if (!updatedUser) {
       throw new BadRequestException(`User is not found or user is blocked!`);
     }
-    return updatedUser;
+    return updatedUser.populate('theatre').execPopulate();
   }
 
   async toUserRole(uid: string): Promise<User> {
@@ -338,6 +343,8 @@ export class UsersService {
         },
         { role: 'USER', theatre: null },
         { new: true },
-    ).exec();
+    )
+        .populate('theatre')
+        .exec();
   }
 }
