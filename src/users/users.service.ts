@@ -52,7 +52,9 @@ export class UsersService {
   }
 
   findByUid(uid: string): Promise<User | undefined> {
-    return this.userModel.findOne({ uid }).exec();
+    return this.userModel.findOne({ uid })
+        .populate('theatre')
+        .exec();
   }
 
   update(user: UserPayload, updateUserDto: UpdateUserDto): Promise<User> {
@@ -154,7 +156,7 @@ export class UsersService {
   }
 
   async delete(uid: string): Promise<User> {
-    const result = await this.userModel.findOneAndDelete({ uid, role: { $ne: 'ADMIN' } });
+    const result = await this.userModel.findOneAndDelete({ uid, role: { $ne: 'ADMIN' } }).populate('theatre');
 
     if (result == null) {
       throw new NotFoundException(`User with uid ${uid} not found`);
