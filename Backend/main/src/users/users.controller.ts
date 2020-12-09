@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -135,7 +136,11 @@ export class AdminUsersController {
   @Put('to_staff_role/:uid')
   toStaffRole(
       @Param('uid') uid: string,
+      @Body('theatre_id') theatre_id: string,
   ): Promise<User> {
-    return this.usersService.toStaffRole(uid);
+    if (!theatre_id) {
+      throw new BadRequestException(`Require theatre_id`);
+    }
+    return this.usersService.toStaffRole(uid, theatre_id);
   }
 }
