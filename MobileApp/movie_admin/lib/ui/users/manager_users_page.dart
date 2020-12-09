@@ -3,7 +3,12 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:movie_admin/domain/model/theatre.dart';
+import 'package:movie_admin/ui/app_scaffold.dart';
+import 'package:movie_admin/ui/theatres/theatre_page.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../domain/model/user.dart';
 import '../../utils/snackbar.dart';
@@ -17,7 +22,7 @@ class ManagerUsersPage extends StatefulWidget {
   _ManagerUsersPageState createState() => _ManagerUsersPageState();
 }
 
-class _ManagerUsersPageState extends State<ManagerUsersPage> {
+class _ManagerUsersPageState extends State<ManagerUsersPage> with DisposeBagMixin{
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isOpeningSlide = false;
   ScrollController _listUserController;
@@ -53,8 +58,14 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
     if (_bloc == null) {
       _bloc = BlocProvider.of<ManagerUsersBloc>(context);
       _bloc.loadUsers(_listUsers.length);
-      _bloc.showSnackBar$.listen((text) => context.showSnackBar(text));
+      _bloc.showSnackBar$.listen((text) => context.showSnackBar(text)).disposedBy(bag);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 
   Widget _buildSearchUser() {
@@ -159,8 +170,26 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
                                 ? Icons.arrow_circle_up
                                 : Icons.arrow_circle_down,
                             onTap: () async {
+                              Theatre theatre;
+
+                              if (user.role == Role.USER) {
+                                theatre =
+                                    await AppScaffold.of(context).pushNamed(
+                                  TheatresPage.routeName,
+                                  arguments: TheatresMode.pick,
+                                ) as Theatre;
+                                if (theatre == null) {
+                                  return;
+                                }
+                              }
+
+                              print(theatre);
                               _bloc.destroyUser(
-                                MapEntry(user, DestroyUserType.CHANGE_ROLE),
+                                Tuple3(
+                                  user,
+                                  DestroyUserType.CHANGE_ROLE,
+                                  theatre?.id,
+                                ),
                               );
                             },
                           );
@@ -188,11 +217,15 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
                                     : 'User will be unblock ',
                               );
                               if (isDismiss) {
-                                _bloc.destroyUser(MapEntry(
+                                _bloc.destroyUser(
+                                  Tuple3(
                                     user,
                                     user.isActive
                                         ? DestroyUserType.BLOCK
-                                        : DestroyUserType.UNBLOCK));
+                                        : DestroyUserType.UNBLOCK,
+                                    null,
+                                  ),
+                                );
                               }
                             },
                           );
@@ -208,8 +241,11 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
                                 'User will be deleted ',
                               );
                               if (isDismiss) {
-                                _bloc.destroyUser(
-                                    MapEntry(user, DestroyUserType.REMOVE));
+                                _bloc.destroyUser(Tuple3(
+                                  user,
+                                  DestroyUserType.REMOVE,
+                                  null,
+                                ));
                               }
                             },
                           );
@@ -223,37 +259,40 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> {
 
   void _listenStateChange(
       BuildContext context, AsyncSnapshot<ManageUserState> snapshot) {
-    if (snapshot.data is LoadUserSuccess) {
-      final data = snapshot.data as LoadUserSuccess;
+    final state = snapshot.data;
+    print('##### $state');
+    if (state is LoadUserSuccess) {
+      final data = state as LoadUserSuccess;
       _listUsers.addAll(
         data.users.where(
           (user) => !_isHasUserInList(user, _listUsers),
         ),
       );
     }
-    if (snapshot.data is DeleteUserSuccess) {
-      final data = snapshot.data as DeleteUserSuccess;
+    if (state is DeleteUserSuccess) {
+      final data = state as DeleteUserSuccess;
       _listUsers.removeWhere((e) => e.uid == data.idUserDelete);
     }
-    if (snapshot.data is BlockUserSuccess) {
-      final data = snapshot.data as BlockUserSuccess;
+    if (state is BlockUserSuccess) {
+      final data = state as BlockUserSuccess;
       final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
       if (index != -1) {
         _listUsers.removeAt(index);
         _listUsers.insert(index, data.user);
       }
     }
-    if (snapshot.data is UnblockUserSuccess) {
-      final data = snapshot.data as UnblockUserSuccess;
+    if (state is UnblockUserSuccess) {
+      final data = state as UnblockUserSuccess;
       final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
       if (index != -1) {
         _listUsers.removeAt(index);
         _listUsers.insert(index, data.user);
       }
     }
-    if (snapshot.data is ChangeRoleSuccess) {
-      final data = snapshot.data as ChangeRoleSuccess;
+    if (state is ChangeRoleSuccess) {
+      final data = state as ChangeRoleSuccess;
       final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
+      print(index);
       if (index != -1) {
         _listUsers.removeAt(index);
         _listUsers.insert(index, data.user);
@@ -276,25 +315,29 @@ class UserItemWidget extends StatelessWidget {
           : slide?.close(),
       child: Container(
           color: Colors.white,
+          height: 96,
           child: Row(
+            mainAxisSize: MainAxisSize.max,
             children: [
               _buildAvatar(70, context),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    user.fullName,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8),
-                  Text(user.email),
-                  SizedBox(height: 5),
-                  _buildStatusRoleUser(user.isActive),
-                ],
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.fullName,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Text(user.email),
+                    SizedBox(height: 5),
+                    _buildStatusRoleUser(user.isActive),
+                  ],
+                ),
               )
             ],
           )),
@@ -365,7 +408,6 @@ class UserItemWidget extends StatelessWidget {
 
   Widget _buildStatusRoleUser(bool isActive) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
@@ -394,12 +436,28 @@ class UserItemWidget extends StatelessWidget {
                       ? Colors.cyanAccent
                       : Colors.lightGreenAccent,
               borderRadius: BorderRadius.circular(2)),
-          child: Text(user.role.string().toLowerCase(),
+          child: Text(
+            user.role.string().toLowerCase(),
+            style: TextStyle(
+              fontSize: 8,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+        if (user.role == Role.STAFF) ...[
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              user.theatre?.name ?? '',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 8,
-                fontWeight: FontWeight.w800,
-              )),
-        )
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

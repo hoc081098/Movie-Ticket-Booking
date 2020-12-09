@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:movie_admin/data/remote/response/theatre_response.dart';
 
 class LocationResponse {
   final List<double> coordinates;
@@ -48,6 +49,8 @@ class UserResponse {
 
   final String role;
 
+  final TheatreResponse theatre;
+
   UserResponse({
     @required this.uid,
     @required this.email,
@@ -61,9 +64,11 @@ class UserResponse {
     @required this.is_completed,
     @required this.is_active,
     @required this.role,
+    @required this.theatre,
   });
 
   factory UserResponse.fromJson(Map map) {
+    final theatre = map['theatre'];
     return UserResponse(
       uid: map['uid'],
       email: map['email'],
@@ -81,6 +86,7 @@ class UserResponse {
       is_completed: map['is_completed'],
       is_active: map['is_active'],
       role: map['role'],
+      theatre: theatre == null ? null : TheatreResponse.fromJson(theatre),
     );
   }
 }

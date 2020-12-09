@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       );
     },
     TheatresPage.routeName: (context, setting) {
-      return TheatresPage(showTime: setting.arguments ?? false);
+      return TheatresPage(mode: setting.arguments);
     },
     TheatreInfoPage.routeName: (context, settings) {
       return TheatreInfoPage(theatre: settings.arguments);

@@ -54,7 +54,10 @@ class _HomePageState extends State<HomePage> {
             "Manager theatre",
             "${Random().nextInt(10) + 1} notifications",
             Colors.red,
-            () => Navigator.of(context).pushNamed(TheatresPage.routeName),
+            () => Navigator.of(context).pushNamed(
+              TheatresPage.routeName,
+              arguments: TheatresMode.theatreInfo,
+            ),
           ),
           card(
             Icons.movie_creation,
@@ -63,7 +66,7 @@ class _HomePageState extends State<HomePage> {
             Colors.red,
             () => Navigator.of(context).pushNamed(
               TheatresPage.routeName,
-              arguments: true,
+              arguments: TheatresMode.showTimes,
             ),
           )
         ],

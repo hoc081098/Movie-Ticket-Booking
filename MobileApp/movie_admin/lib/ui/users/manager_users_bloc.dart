@@ -2,6 +2,7 @@ import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../data/remote/response/error_response.dart';
 import '../../domain/model/user.dart';
@@ -12,7 +13,7 @@ import 'manage_user_state.dart';
 class ManagerUsersBloc extends DisposeCallbackBaseBloc {
   /// Input functions
   final Function1<int, void> loadUsers;
-  final Function1<MapEntry<User, DestroyUserType>, void> destroyUser;
+  final Function1<Tuple3<User, DestroyUserType, String>, void> destroyUser;
 
   /// Streams
   final Stream<ManageUserState> renderListStream$;
@@ -32,7 +33,7 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
     assert(managerRepository != null);
     final getUsersController = BehaviorSubject<int>();
     final removeUserController =
-        PublishSubject<MapEntry<User, DestroyUserType>>();
+        PublishSubject<Tuple3<User, DestroyUserType, String>>();
     final isLoadingController = BehaviorSubject<bool>.seeded(false);
     final removingUserIds =
         BehaviorSubject<Map<String, DestroyUserType>>.seeded({});
@@ -46,60 +47,66 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
     ];
 
     final removeUserStream = removeUserController.stream
-        .where((entry) => !removingUserIds.value.containsKey(entry.key.uid))
-        .flatMap(
-          (entry) => Rx.defer(
-            () async* {
-              try {
-                final user = entry.key;
-                final type = entry.value;
-                switch (type) {
-                  case DestroyUserType.REMOVE:
-                    {
-                      removingUserIds.add(removingUserIds.value
-                        ..addAll({user.uid: DestroyUserType.REMOVE}));
-                      yield await managerRepository.deleteUser(user);
-                      showSnackBarController
-                          .add('Remove user id ${user.uid} success');
-                      break;
-                    }
-                  case DestroyUserType.BLOCK:
-                    {
-                      removingUserIds.add(removingUserIds.value
-                        ..addAll({user.uid: DestroyUserType.BLOCK}));
-                      yield await managerRepository.blockUser(user);
-                      showSnackBarController
-                          .add('Block user id ${user.uid} success');
-                      break;
-                    }
-                  case DestroyUserType.UNBLOCK:
-                    {
-                      removingUserIds.add(removingUserIds.value
-                        ..addAll({user.uid: DestroyUserType.UNBLOCK}));
-                      yield await managerRepository.unblockUser(user);
-                      showSnackBarController
-                          .add('Unblock user id ${user.uid} success');
-                      break;
-                    }
-                  case DestroyUserType.CHANGE_ROLE:
-                    {
-                      removingUserIds.add(removingUserIds.value
-                        ..addAll({user.uid: DestroyUserType.CHANGE_ROLE}));
-                      yield await managerRepository.changeRoleUser(user);
-                      showSnackBarController
-                          .add('Change role user id ${user.uid} success');
-                      break;
-                    }
+        .where((entry) => !removingUserIds.value.containsKey(entry.item1.uid))
+        .flatMap((entry) => Rx.defer(
+              () async* {
+                try {
+                  final user = entry.item1;
+                  final type = entry.item2;
+                  final theatre_id = entry.item3;
+                  switch (type) {
+                    case DestroyUserType.REMOVE:
+                      {
+                        removingUserIds.add(removingUserIds.value
+                          ..addAll({user.uid: DestroyUserType.REMOVE}));
+                        yield await managerRepository.deleteUser(user);
+                        showSnackBarController
+                            .add('Remove user id ${user.uid} success');
+                        break;
+                      }
+                    case DestroyUserType.BLOCK:
+                      {
+                        removingUserIds.add(removingUserIds.value
+                          ..addAll({user.uid: DestroyUserType.BLOCK}));
+                        yield await managerRepository.blockUser(user);
+                        showSnackBarController
+                            .add('Block user id ${user.uid} success');
+                        break;
+                      }
+                    case DestroyUserType.UNBLOCK:
+                      {
+                        removingUserIds.add(removingUserIds.value
+                          ..addAll({user.uid: DestroyUserType.UNBLOCK}));
+                        yield await managerRepository.unblockUser(user);
+                        showSnackBarController
+                            .add('Unblock user id ${user.uid} success');
+                        break;
+                      }
+                    case DestroyUserType.CHANGE_ROLE:
+                      {
+                        removingUserIds.add(removingUserIds.value
+                          ..addAll({user.uid: DestroyUserType.CHANGE_ROLE}));
+                        print('>>>>>>>>>>>');
+                        print(user.uid);
+                        print(theatre_id);
+                        yield await managerRepository.changeRoleUser(
+                            user, theatre_id);
+                        showSnackBarController
+                            .add('Change role user id ${user.uid} success');
+                        print('<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>');
+                        print(user.uid);
+                        print(theatre_id);
+                        break;
+                      }
+                  }
+                } on SingleMessageErrorResponse catch (e) {
+                  showSnackBarController.add(e.message);
+                } finally {
+                  removingUserIds
+                      .add(removingUserIds.value..remove(entry.item1.uid));
                 }
-              } on SingleMessageErrorResponse catch (e) {
-                showSnackBarController.add(e.message);
-                removingUserIds
-                    .add(removingUserIds.value..remove(entry.key.uid));
-              }
-            },
-          ).map((user) => MapEntry(user, entry.value)).doOnData((data) =>
-              removingUserIds.add(removingUserIds.value..remove(data.key.uid))),
-        );
+              },
+            ).map((user) => MapEntry(user, entry.item2)).debug('acccccccacac'));
 
     final renderListStream = Rx.merge<ManageUserState>([
       getUsersController.stream
@@ -117,13 +124,19 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
       isLoadingController.stream
           .where((event) => event)
           .map((_) => LoadingUsersState()),
-      removeUserStream.map((entry) => entry.value == DestroyUserType.REMOVE
-          ? DeleteUserSuccess(idUserDelete: entry.key.uid)
-          : entry.value == DestroyUserType.BLOCK
-              ? BlockUserSuccess(user: entry.key)
-              : entry.value == DestroyUserType.UNBLOCK
-                  ? UnblockUserSuccess(user: entry.key)
-                  : ChangeRoleSuccess(user: entry.key))
+      removeUserStream.map((entry) {
+        print('Entry =$entry');
+        switch (entry.value) {
+          case DestroyUserType.REMOVE:
+            return DeleteUserSuccess(idUserDelete: entry.key.uid);
+          case DestroyUserType.BLOCK:
+            return BlockUserSuccess(user: entry.key);
+          case DestroyUserType.UNBLOCK:
+            return UnblockUserSuccess(user: entry.key);
+          case DestroyUserType.CHANGE_ROLE:
+            return ChangeRoleSuccess(user: entry.key);
+        }
+      })
     ]).publish();
 
     final subscriptions = [renderListStream.connect()];
