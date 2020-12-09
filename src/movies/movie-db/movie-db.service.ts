@@ -16,6 +16,7 @@ import { Theatre } from "../../theatres/theatre.schema";
 import { Comment } from "../../comments/comment.schema";
 import { Ticket } from "../../seats/ticket.schema";
 import { Reservation } from "../../reservations/reservation.schema";
+import { Notification } from "../../notifications/notification.schema";
 
 @Injectable()
 export class MovieDbService {
@@ -41,6 +42,7 @@ export class MovieDbService {
       @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
+      @InjectModel(Notification.name) private readonly notificationModel: Model<Notification>,
   ) {
   }
 

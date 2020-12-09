@@ -22,7 +22,8 @@ export class NotificationsService {
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
       @InjectModel(Notification.name) private readonly notificationModel: Model<Notification>,
       private readonly firebaseMessagingService: FirebaseMessagingService,
-  ) {}
+  ) {
+  }
 
   async pushNotification(user: User, reservation: CreatedReservation): Promise<void> {
     const tokens = user.tokens;
@@ -153,6 +154,20 @@ export class NotificationsService {
     }
 
     return result;
+  }
+
+  async seed() {
+    const ns = await this.notificationModel.find({});
+    for (const n of ns) {
+      const [r, u] = await Promise.all([
+        this.reservationModel.findById(n.reservation),
+        this.userModel.findById(n.to_user),
+      ]);
+      if (!r || !u) {
+        await this.notificationModel.deleteOne({ _id: n._id });
+        this.logger.debug(`Delete ${n._id}`);
+      }
+    }
   }
 }
 
