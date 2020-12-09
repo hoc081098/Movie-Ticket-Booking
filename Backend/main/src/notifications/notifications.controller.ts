@@ -89,6 +89,12 @@ export class NotificationsController {
     }
   }
 
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Post('seed')
+  seed() {
+    return this.notificationsService.seed();
+  }
+
   @Get()
   getNotifications(
       @GetUser() userPayload: UserPayload,
