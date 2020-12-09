@@ -6,6 +6,7 @@ import { AdminUsersController, UsersController } from './users.controller';
 import { ConfigModule } from '../config/config.module';
 import { CardsController } from './cards/cards.controller';
 import { Movie, MovieSchema } from "../movies/movie.schema";
+import { Theatre, TheatreSchema } from "../theatres/theatre.schema";
 
 @Module({
   imports: [
@@ -16,7 +17,11 @@ import { Movie, MovieSchema } from "../movies/movie.schema";
       },
       {
         name: Movie.name,
-        schema:MovieSchema,
+        schema: MovieSchema,
+      },
+      {
+        name: Theatre.name,
+        schema: TheatreSchema,
       }
     ]),
     ConfigModule,

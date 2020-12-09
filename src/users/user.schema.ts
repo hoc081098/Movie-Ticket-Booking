@@ -78,6 +78,13 @@ export class User extends Document {
     default: [],
   })
   tokens: string[];
+
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Theatre',
+    default: null,
+  })
+  theatre?: any | null;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
