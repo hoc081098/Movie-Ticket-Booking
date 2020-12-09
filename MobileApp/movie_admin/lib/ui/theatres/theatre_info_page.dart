@@ -9,8 +9,11 @@ class TheatreInfoPage extends StatelessWidget {
   static const routeName = '/home/theatres/info';
 
   final Theatre theatre;
+  final bool automaticallyImplyLeading;
 
-  TheatreInfoPage({Key key, this.theatre}) : super(key: key);
+  TheatreInfoPage(
+      {Key key, @required this.theatre, this.automaticallyImplyLeading})
+      : super(key: key);
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final releaseDateFormat = DateFormat('dd/MM/yy');
@@ -30,7 +33,10 @@ class TheatreInfoPage extends StatelessWidget {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          DetailAppBar(theatre: theatre),
+          DetailAppBar(
+            theatre: theatre,
+            automaticallyImplyLeading: automaticallyImplyLeading,
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -116,7 +122,7 @@ class TheatreInfoPage extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          theatre.phoneNumber,
+                          theatre.phoneNumber ?? 'N/A',
                           style: textStyle,
                         ),
                       ),
@@ -187,18 +193,25 @@ class TheatreInfoPage extends StatelessWidget {
 }
 
 class DetailAppBar extends StatelessWidget {
-  const DetailAppBar({Key key, @required this.theatre}) : super(key: key);
+  final bool automaticallyImplyLeading;
+
+  const DetailAppBar(
+      {Key key, @required this.theatre, this.automaticallyImplyLeading})
+      : super(key: key);
 
   final Theatre theatre;
 
   @override
   Widget build(BuildContext context) {
+    final b = identical(automaticallyImplyLeading, true);
+
     return SliverAppBar(
       expandedHeight: 300,
       pinned: true,
       floating: true,
       stretch: true,
-      leading: BackButton(),
+      leading: b ? null : BackButton(),
+      automaticallyImplyLeading: false,
       title: Text(theatre.name),
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
@@ -270,7 +283,6 @@ class DetailAppBar extends StatelessWidget {
           ),
         ),
       ),
-      automaticallyImplyLeading: false,
     );
   }
 }

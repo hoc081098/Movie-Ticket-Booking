@@ -1,6 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_provider/flutter_provider.dart';
+import 'package:movie_admin/domain/model/exception.dart';
+import 'package:movie_admin/domain/model/user.dart';
+import 'package:movie_admin/domain/repository/user_repository.dart';
+import 'package:movie_admin/ui/theatres/theatre_info_page.dart';
 
 import '../../ui/movies/movies_page.dart';
 import '../../ui/movies/upload_movie/movie_upload_page.dart';
@@ -18,60 +23,77 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
-      body: GridView.count(
-        primary: false,
-        childAspectRatio: 1.5,
-        crossAxisCount: 2,
-        physics: ClampingScrollPhysics(),
-        children: <Widget>[
-          card(
-            Icons.supervised_user_circle_rounded,
-            'Manager users',
-            '${Random().nextInt(10) + 1} notifications',
-            Colors.red,
-            () => Navigator.of(context).pushNamed(ManagerUsersPage.routeName),
-          ),
-          card(
-            Icons.movie_filter_outlined,
-            "Manager movie",
-            "${Random().nextInt(10) + 1} notifications",
-            Colors.red,
-            () => Navigator.of(context).pushNamed(MoviePage.routeName),
-          ),
-          card(
-            Icons.add_box_rounded,
-            "Upload movie",
-            "${Random().nextInt(10) + 1} notifications",
-            Colors.red,
-            () => Navigator.of(context).pushNamed(UploadMoviePage.routeName),
-          ),
-          card(
-            Icons.theaters,
-            "Manager theatre",
-            "${Random().nextInt(10) + 1} notifications",
-            Colors.red,
-            () => Navigator.of(context).pushNamed(
-              TheatresPage.routeName,
-              arguments: TheatresMode.theatreInfo,
+    final userOptional = Provider.of<UserRepository>(context).user$.value;
+    assert(userOptional != null);
+    final user =
+        userOptional.fold(() => throw const NotLoggedInException(), (v) => v);
+
+    final role = user.role;
+    print('?????? role=$role');
+
+    if (role == Role.ADMIN) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Home'),
+        ),
+        body: GridView.count(
+          primary: false,
+          childAspectRatio: 1.5,
+          crossAxisCount: 2,
+          physics: ClampingScrollPhysics(),
+          children: <Widget>[
+            card(
+              Icons.supervised_user_circle_rounded,
+              'Manager users',
+              '${Random().nextInt(10) + 1} notifications',
+              Colors.red,
+              () => Navigator.of(context).pushNamed(ManagerUsersPage.routeName),
             ),
-          ),
-          card(
-            Icons.movie_creation,
-            "Manager show time",
-            "${Random().nextInt(10) + 1} notifications",
-            Colors.red,
-            () => Navigator.of(context).pushNamed(
-              TheatresPage.routeName,
-              arguments: TheatresMode.showTimes,
+            card(
+              Icons.movie_filter_outlined,
+              "Manager movie",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(MoviePage.routeName),
             ),
-          )
-        ],
-      ),
-    );
+            card(
+              Icons.add_box_rounded,
+              "Upload movie",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(UploadMoviePage.routeName),
+            ),
+            card(
+              Icons.theaters,
+              "Manager theatre",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(
+                TheatresPage.routeName,
+                arguments: TheatresMode.theatreInfo,
+              ),
+            ),
+            card(
+              Icons.movie_creation,
+              "Manager show time",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(
+                TheatresPage.routeName,
+                arguments: TheatresMode.showTimes,
+              ),
+            )
+          ],
+        ),
+      );
+    } else {
+      assert(user.theatre != null);
+      print(user.theatre);
+      return TheatreInfoPage(
+        theatre: user.theatre,
+        automaticallyImplyLeading: true,
+      );
+    }
   }
 
   Widget card(

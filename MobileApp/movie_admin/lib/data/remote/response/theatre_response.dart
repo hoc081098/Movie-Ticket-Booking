@@ -60,4 +60,31 @@ class TheatreResponse {
         cover: json["cover"],
         thumbnail: json["thumbnail"],
       );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'location': {
+        'coordinates': location.longitude == null || location.latitude == null
+            ? null
+            : [
+                location.longitude,
+                location.latitude,
+              ]
+      },
+      'is_active': isActive,
+      'rooms': rooms,
+      '_id': id,
+      'name': name,
+      'address': address,
+      'phone_number': phoneNumber,
+      'description': description,
+      'email': email,
+      'opening_hours': openingHours,
+      'room_summary': roomSummary,
+      'createdAt': createdAt.toUtc().toIso8601String(),
+      'updatedAt':updatedAt.toUtc().toIso8601String(),
+      'cover': cover,
+      'thumbnail': thumbnail,
+    };
+  }
 }

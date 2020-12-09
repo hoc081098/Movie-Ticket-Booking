@@ -46,6 +46,7 @@ export class UsersController {
     if (fcmToken) {
       user = await this.usersService.updateFcmToken(user, fcmToken);
     }
+    this.logger.debug(user, 'user');
     return user;
   }
 
