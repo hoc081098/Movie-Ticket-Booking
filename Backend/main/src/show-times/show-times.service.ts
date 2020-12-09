@@ -78,7 +78,7 @@ export class ShowTimesService {
       const hours: number[] = Array.from({ length: endH - startH + 1 }, (_, i) => i + startH);
       this.logger.debug(`Hours for ${theatre.name} are ${JSON.stringify(hours)} -- ${startH}:${startM} -> ${endH}:${endM}`);
 
-      const startDay = current.utcOffset(current.utcOffset(), false).startOf('day');
+      const startDay = current.utcOffset(420, false).startOf('day');
 
       for (const room of theatre.rooms) {
         for (let dDate = -1; dDate <= 10; dDate++) {
@@ -261,7 +261,7 @@ export class ShowTimesService {
     const count = this.movieCount = this.movieCount ?? await this.movieModel.count({});
     const skip = Math.floor(count * Math.random());
 
-    return await this.movieModel.find({ released_date: { $lte: day.startOf('day').toDate() } })
+    return await this.movieModel.find({ released_date: { $lte: day.toDate() } })
         .skip(skip)
         .limit(1)
         .exec()
@@ -451,7 +451,7 @@ export class ShowTimesService {
     this.logger.debug(start_time.toISOString() + ' '.repeat(26) + '[2] start_time');
     this.logger.debug(start_time.toDate().toString() + '[2] start_time');
 
-    const startTimeLocal = start_time.utcOffset(start_time.utcOffset(), false);
+    const startTimeLocal = start_time.utcOffset(420, false);
     this.logger.debug(startTimeLocal.toISOString() + ' '.repeat(26) + '[3] startTimeLocal');
     this.logger.debug(startTimeLocal.toDate().toString() + '[3] startTimeLocal');
     const endTimeLocal: dayjs.Dayjs = startTimeLocal.add(movie.duration, 'minute');
@@ -603,7 +603,7 @@ export class ShowTimesService {
     const [startH, startM]: number[] = startHString.split(':').map(x => +x);
     const [endH, endM]: number[] = endHString.split(':').map(x => +x);
 
-    const startTimeLocal = start_time.utcOffset(start_time.utcOffset(), false);
+    const startTimeLocal = start_time.utcOffset(420, false);
     const startOfDayLocal: dayjs.Dayjs = startTimeLocal.startOf('day');
     this.logger.debug(startOfDayLocal.toISOString() + ' '.repeat(26) + '[5] startOfDayLocal');
     this.logger.debug(startOfDayLocal.toDate().toString() + '[5] startOfDayLocal');
