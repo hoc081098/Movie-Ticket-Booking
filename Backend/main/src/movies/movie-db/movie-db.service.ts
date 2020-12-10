@@ -451,6 +451,18 @@ export class MovieDbService {
       'Marianne & Leonard: Words of Love',
       'Almost Love',
       'A Secret Love',
+      'Victim of Love',
+      'Love, Loss, and What I Wore',
+      'With Love – Volume One 1987-1996',
+      'Love Mooning',
+      'Love Aaj Kal',
+      'Love Aaj Kal Porshu',
+      'Joy House',
+      'All Things Fair',
+      'Aqours 5th LoveLive! ～Next SPARKLING!!～',
+      'Mektoub, My Love: Canto Uno',
+      'Love Me Not',
+      'Mektoub, My Love: Intermezzo',
     ];
     this.logger.debug(`Start ${$in.length}`);
     const movies = await this.movieModel.find({
