@@ -134,4 +134,16 @@ export class AdminMoviesController {
   seed() {
     return this.movieDbService.removeMovies();
   }
+
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Post('seed3')
+  seed3() {
+    return this.movieDbService.removeDup();
+  }
+
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Post('seed4')
+  seed4() {
+    return this.movieDbService.removeShort();
+  }
 }
