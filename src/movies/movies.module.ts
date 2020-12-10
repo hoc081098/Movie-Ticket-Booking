@@ -16,6 +16,7 @@ import { Ticket, TicketSchema } from "../seats/ticket.schema";
 import { CommentSchema, Comment } from "../comments/comment.schema";
 import { Reservation, ReservationSchema } from "../reservations/reservation.schema";
 import { Notification, NotificationSchema } from "../notifications/notification.schema";
+import { User, UserSchema } from "../users/user.schema";
 
 @Module({
   imports: [
@@ -59,6 +60,10 @@ import { Notification, NotificationSchema } from "../notifications/notification.
       {
         name: Notification.name,
         schema: NotificationSchema,
+      },
+      {
+        name: User.name,
+        schema: UserSchema,
       }
     ]),
     HttpModule,

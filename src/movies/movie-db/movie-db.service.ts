@@ -1,7 +1,7 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { ConfigKey, ConfigService } from '../../config/config.service';
 import { catchError, concatMap, filter, ignoreElements, map, mapTo, mergeMap, tap, toArray } from 'rxjs/operators';
-import { defer, EMPTY, from, Observable, of, zip } from 'rxjs';
+import { defer, EMPTY, from, Observable, zip } from 'rxjs';
 import { Movie } from '../movie.schema';
 import { CreateDocumentDefinition, Model } from 'mongoose';
 import { Category } from '../../categories/category.schema';
@@ -9,7 +9,6 @@ import { MovieCategory } from '../movie-category.schema';
 import { Person } from '../../people/person.schema';
 import { fromArray } from 'rxjs/internal/observable/fromArray';
 import { InjectModel } from '@nestjs/mongoose';
-import dayjs = require('dayjs');
 import * as fs from 'fs';
 import { ShowTime } from "../../show-times/show-time.schema";
 import { Theatre } from "../../theatres/theatre.schema";
@@ -17,6 +16,8 @@ import { Comment } from "../../comments/comment.schema";
 import { Ticket } from "../../seats/ticket.schema";
 import { Reservation } from "../../reservations/reservation.schema";
 import { Notification } from "../../notifications/notification.schema";
+import dayjs = require('dayjs');
+import { User } from "../../users/user.schema";
 
 @Injectable()
 export class MovieDbService {
@@ -43,6 +44,7 @@ export class MovieDbService {
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
       @InjectModel(Notification.name) private readonly notificationModel: Model<Notification>,
+      @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {
   }
 
@@ -339,15 +341,11 @@ export class MovieDbService {
                         'becoming an adult',
                         'adult humor',
                         'adult animation',
-                        'child as an adult',
                         'disbelieving adult',
                         'adult filmmaking',
-                        'adult as a child',
                         'young adult',
                         'adult in college',
                         'adult illiteracy',
-                        'adult child friendship',
-                        'adult children',
                         'based on young adult novel',
                         'adult babies',
                         'adult theatre',
@@ -383,24 +381,83 @@ export class MovieDbService {
             });
           }));
 
-          const ids = movies.map(m => m._id);
-
-          const inIds = { $in: ids };
-          await this.movieModel.deleteMany({ _id: inIds });
-          await this.movieCategoryModel.deleteMany({ movie_id: inIds });
-          await this.commentModel.deleteMany({ movie: inIds })
-
-          const st = await this.showTimeModel.find({ movie: inIds });
-          const relSt = { show_time: { $in: st.map(s => s._id) } };
-
-          await this.showTimeModel.deleteMany({ movie: inIds });
-          await this.ticketModel.deleteMany(relSt);
-          await this.reservationModel.deleteMany(relSt);
+          await this.deleteAllByMovieIds(movies.map(m => m._id));
 
           this.logger.debug(movies.length);
           return movies.length;
         }),
     )
+  }
+
+  private async deleteAllByMovieIds(ids: any[]) {
+    const inIds = { $in: ids };
+    await this.movieModel.deleteMany({ _id: inIds });
+    await this.movieCategoryModel.deleteMany({ movie_id: inIds });
+    await this.commentModel.deleteMany({ movie: inIds })
+
+    const st = await this.showTimeModel.find({ movie: inIds });
+    const relSt = { show_time: { $in: st.map(s => s._id) } };
+
+    await this.showTimeModel.deleteMany({ movie: inIds });
+    await this.ticketModel.deleteMany(relSt);
+
+    const reservations = await this.reservationModel.find(relSt);
+    await this.reservationModel.deleteMany(relSt);
+    await this.notificationModel.deleteMany({ reservation: { $in: reservations.map(r => r._id) } });
+
+    const users = await this.userModel.find({});
+    for (const user of users) {
+      const favorite_movie_ids = user.favorite_movie_ids ?? {};
+      let changed = false;
+
+      for (const movieId of ids) {
+        if (favorite_movie_ids[movieId]) {
+          delete favorite_movie_ids[movieId];
+          changed = true;
+        }
+      }
+      if (changed) {
+        await this.userModel.updateOne({ _id: user._id }, { favorite_movie_ids });
+      }
+    }
+  }
+
+  async removeMovies() {
+    const $in = [
+      'Love Shots',
+      'Proof Of Love',
+      'RDX Love',
+      "A Brother's Love",
+      'Love Blooms',
+      'swiping compressed filtered love (et enfin, permettre l’incontrôlable)',
+      'The Only Thing I Love More Than You Is Ranch Dressing',
+      'If You Know Me Is To Love Me',
+      'Bears Love Me!',
+      'Muffin Top: A Love Story',
+      'Ovid and the Art of Love',
+      'Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? OVA',
+      'Loveless',
+      'Love to Our Fathers’ Sacred Graves. Echo of Port Arthur',
+      'I love Everything I Hate About You',
+      'The Killing of Two Lovers',
+      'Why Do You Love Me?',
+      'My Wife\'s Lover 3',
+      'Doggy Love',
+      'A Brother’s Love',
+      'Love Without Size',
+      'Love and Lies',
+      'I Love You I Miss You I Hope I See You Before I Die',
+      'Like Love',
+      'Marianne & Leonard: Words of Love',
+      'Almost Love',
+    ];
+    this.logger.debug(`Start ${$in.length}`);
+    const movies = await this.movieModel.find({
+      title: { $in }
+    });
+    this.logger.debug(`Movies ${movies.length}`);
+    await this.deleteAllByMovieIds(movies.map(m => m._id));
+    this.logger.debug('Done');
   }
 }
 
