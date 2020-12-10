@@ -128,4 +128,10 @@ export class AdminMoviesController {
   removeAdultMovies() {
     return this.movieDbService.removeAdultMovies();
   }
+
+  @ApiOperation({ summary: 'PRIVATE' })
+  @Post('seed2')
+  seed() {
+    return this.movieDbService.removeMovies();
+  }
 }
