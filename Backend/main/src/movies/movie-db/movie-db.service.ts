@@ -450,6 +450,7 @@ export class MovieDbService {
       'Like Love',
       'Marianne & Leonard: Words of Love',
       'Almost Love',
+      'A Secret Love',
     ];
     this.logger.debug(`Start ${$in.length}`);
     const movies = await this.movieModel.find({
@@ -458,6 +459,28 @@ export class MovieDbService {
     this.logger.debug(`Movies ${movies.length}`);
     await this.deleteAllByMovieIds(movies.map(m => m._id));
     this.logger.debug('Done');
+  }
+
+  async removeDup() {
+    const ms = await this.movieModel.find({});
+    let i = 0;
+    for (const m of ms) {
+      const dups = await this.movieModel.find({ title: m.title, _id: { $ne: m._id } });
+      if (dups.length > 0) {
+        this.logger.debug(`${m.title} dup ${dups.length}`);
+        await this.deleteAllByMovieIds(dups.map(d => d._id));
+      }
+      this.logger.debug(`${i++}/${ms.length}`);
+    }
+  }
+
+  async removeShort() {
+    const ms = await this.movieModel.find({ duration: { $lt: 30 } });
+    let i = 0;
+    for (const m of ms) {
+      await this.deleteAllByMovieIds([m._id]);
+      this.logger.debug(`${i++}/${ms.length}`);
+    }
   }
 }
 
