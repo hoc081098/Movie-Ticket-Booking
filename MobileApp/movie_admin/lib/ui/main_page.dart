@@ -23,6 +23,7 @@ import 'login_update_profile/login_update_profile_page.dart';
 import 'movies/movie_bloc.dart';
 import 'movies/movies_page.dart';
 import 'profile/profile_page.dart';
+import 'show_times/add_show_time_page.dart';
 import 'theatres/add/seats_page.dart';
 import 'theatres/theatre_info_page.dart';
 import 'users/manager_users_bloc.dart';
@@ -63,7 +64,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       );
     },
     TheatresPage.routeName: (context, setting) {
-      return TheatresPage(showTime: setting.arguments ?? false);
+      return TheatresPage(mode: setting.arguments);
     },
     TheatreInfoPage.routeName: (context, settings) {
       return TheatreInfoPage(theatre: settings.arguments);
@@ -83,7 +84,14 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     TicketsPage.routeName: (ctx, settings) {
       final args = settings.arguments as Map<String, dynamic>;
       return TicketsPage(showTime: args['showTime'], theatre: args['theatre']);
-    }
+    },
+    AppShowTimePage.routeName: (ctx, s) {
+      final args = s.arguments as Map<String, dynamic>;
+      return AppShowTimePage(
+        theatre: args['theatre'],
+        movie: args['movie'],
+      );
+    },
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

@@ -86,6 +86,7 @@ class UserRepositoryImpl implements UserRepository {
 
     try {
       final json = await _authClient.getBody(buildUrl('users/me'));
+      print(json);
       final userLocal = _userResponseToUserLocal(UserResponse.fromJson(json));
       await _userLocalSource.saveUser(userLocal);
 

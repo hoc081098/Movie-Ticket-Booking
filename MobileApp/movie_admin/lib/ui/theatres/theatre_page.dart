@@ -15,11 +15,17 @@ import '../widgets/error_widget.dart';
 import 'add/add_theatre_page.dart';
 import 'theatre_info_page.dart';
 
+enum TheatresMode {
+  showTimes,
+  theatreInfo,
+  pick,
+}
+
 class TheatresPage extends StatefulWidget {
   static const routeName = '/home/theatres';
-  final bool showTime;
+  final TheatresMode mode;
 
-  const TheatresPage({Key key, this.showTime = false}) : super(key: key);
+  const TheatresPage({Key key, @required this.mode}) : super(key: key);
 
   @override
   _TheatresPageState createState() => _TheatresPageState();
@@ -109,16 +115,50 @@ class _TheatresPageState extends State<TheatresPage> {
                     ),
                     child: InkWell(
                       onTap: () {
-                        if (widget.showTime) {
-                          AppScaffold.of(context).pushNamed(
-                            ShowTimesPage.routeName,
-                            arguments: item,
-                          );
-                        } else {
-                          AppScaffold.of(context).pushNamed(
-                            TheatreInfoPage.routeName,
-                            arguments: item,
-                          );
+                        switch (widget.mode) {
+                          case TheatresMode.showTimes:
+                            AppScaffold.of(context).pushNamed(
+                              ShowTimesPage.routeName,
+                              arguments: item,
+                            );
+                            break;
+                          case TheatresMode.theatreInfo:
+                            AppScaffold.of(context).pushNamed(
+                              TheatreInfoPage.routeName,
+                              arguments: item,
+                            );
+                            break;
+                          case TheatresMode.pick:
+                            showDialog<bool>(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext dialogContext) {
+                                return AlertDialog(
+                                  title: Text('Select this theatre'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Cancel'),
+                                      onPressed: () {
+                                        Navigator.of(dialogContext)
+                                            .pop(false); // Dismiss alert dialog
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(dialogContext)
+                                            .pop(true); // Dismiss alert dialog
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            ).then((value) {
+                              if (identical(value, true)) {
+                                AppScaffold.of(context).pop(item);
+                              }
+                            });
+                            break;
                         }
                       },
                       borderRadius: BorderRadius.circular(6),
@@ -173,9 +213,8 @@ class _TheatresPageState extends State<TheatresPage> {
           },
         ),
       ),
-      floatingActionButton: widget.showTime
-          ? const SizedBox()
-          : FloatingActionButton(
+      floatingActionButton: widget.mode == TheatresMode.theatreInfo
+          ? FloatingActionButton(
               onPressed: () async {
                 final added = await AppScaffold.of(context).pushNamed(
                   AddTheatrePage.routeName,
@@ -185,7 +224,8 @@ class _TheatresPageState extends State<TheatresPage> {
                 }
               },
               child: Icon(Icons.add),
-            ),
+            )
+          : const SizedBox(),
     );
   }
 }

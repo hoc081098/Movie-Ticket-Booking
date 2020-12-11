@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../data/remote/response/full_reservation_response.dart';
 import '../data/remote/response/product_response.dart';
 import '../data/remote/response/promotion_response.dart';
@@ -27,44 +29,52 @@ import 'remote/response/user_response.dart';
 
 UserLocal userResponseToUserLocal(UserResponse response) {
   return UserLocal(
-      uid: response.uid,
-      email: response.email,
-      phone_number: response.phone_number,
-      full_name: response.full_name,
-      gender: response.gender,
-      avatar: response.avatar,
-      address: response.address,
-      birthday: response.birthday,
-      location: response.location == null
-          ? null
-          : LocationLocal(
-              latitude: response.location.latitude,
-              longitude: response.location.longitude,
-            ),
-      is_completed: response.is_completed,
-      is_active: response.is_active ?? true,
-      role: response.role);
+    uid: response.uid,
+    email: response.email,
+    phone_number: response.phone_number,
+    full_name: response.full_name,
+    gender: response.gender,
+    avatar: response.avatar,
+    address: response.address,
+    birthday: response.birthday,
+    location: response.location == null
+        ? null
+        : LocationLocal(
+            latitude: response.location.latitude,
+            longitude: response.location.longitude,
+          ),
+    is_completed: response.is_completed,
+    is_active: response.is_active ?? true,
+    role: response.role,
+    theatreResponseString:
+        response.theatre == null ? null : jsonEncode(response.theatre),
+  );
 }
 
 User userLocalToUserDomain(UserLocal local) {
   return User(
-      uid: local.uid,
-      email: local.email,
-      phoneNumber: local.phone_number,
-      fullName: local.full_name,
-      gender: stringToGender(local.gender),
-      avatar: local.avatar,
-      address: local.address,
-      birthday: local.birthday,
-      location: local.location == null
-          ? null
-          : Location(
-              latitude: local.location.latitude,
-              longitude: local.location.longitude,
-            ),
-      isCompleted: local.is_completed,
-      isActive: local.is_active ?? true,
-      role: local.role.parseToRole());
+    uid: local.uid,
+    email: local.email,
+    phoneNumber: local.phone_number,
+    fullName: local.full_name,
+    gender: stringToGender(local.gender),
+    avatar: local.avatar,
+    address: local.address,
+    birthday: local.birthday,
+    location: local.location == null
+        ? null
+        : Location(
+            latitude: local.location.latitude,
+            longitude: local.location.longitude,
+          ),
+    isCompleted: local.is_completed,
+    isActive: local.is_active ?? true,
+    role: local.role.parseToRole(),
+    theatre: local.theatreResponseString == null
+        ? null
+        : theatreResponseToTheatre(
+            TheatreResponse.fromRawJson(local.theatreResponseString)),
+  );
 }
 
 Gender stringToGender(String s) {
@@ -106,6 +116,9 @@ User userResponseToUserDomain(UserResponse response) {
     isCompleted: response.is_completed,
     isActive: response.is_active ?? true,
     role: response.role.parseToRole(),
+    theatre: response.theatre == null
+        ? null
+        : theatreResponseToTheatre(response.theatre),
   );
 }
 
@@ -405,6 +418,7 @@ Reservation fullReservationResponseToReservation(
       ..updatedAt = response.updatedAt
       ..tickets = ticketsBuilder
       ..promotionId = promotion?.id
-      ..promotion = promotionBuilder;
+      ..promotion = promotionBuilder
+      ..user = userResponseToUserDomain(response.user);
   });
 }

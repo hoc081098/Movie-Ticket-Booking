@@ -9,5 +9,5 @@ abstract class ManagerRepository {
 
   Future<User> unblockUser(User user);
 
-  Future<User> changeRoleUser(User user);
+  Future<User> changeRoleUser(User user, String theatre_id);
 }

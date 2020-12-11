@@ -55,7 +55,7 @@ void main() async {
   final userLocalSource = UserLocalSourceImpl(preferences);
 
   final client = http.Client();
-  const httpTimeout = Duration(seconds: 15);
+  const httpTimeout = Duration(seconds: 30);
 
   final normalClient = NormalClient(client, httpTimeout);
   print(normalClient);
@@ -102,3 +102,6 @@ void main() async {
     ),
   );
 }
+
+// BASE_URL=datn-081098.herokuapp.com
+// WS_URL=datn-081098.herokuapp.com

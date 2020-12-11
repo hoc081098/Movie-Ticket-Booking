@@ -151,7 +151,7 @@ export class TheatresService {
       opening_hours: '8:30 - 23:30',
       phone_number: dto.phone_number,
       room_summary: '1 2D',
-      rooms: ['2D1'],
+      rooms: ['2D 1'],
       thumbnail: dto.thumbnail,
     };
 
@@ -173,7 +173,7 @@ export class TheatresService {
                       coordinates: seat.coordinates,
                       count: seat.count,
                       is_active: true,
-                      room: '2D1',
+                      room: '2D 1',
                       row: seat.row,
                       theatre: theatre._id,
                     };

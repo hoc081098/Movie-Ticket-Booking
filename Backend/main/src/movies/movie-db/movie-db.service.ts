@@ -1,7 +1,7 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { ConfigKey, ConfigService } from '../../config/config.service';
-import { concatMap, filter, ignoreElements, map, mergeMap, tap } from 'rxjs/operators';
-import { defer, from, Observable, zip } from 'rxjs';
+import { catchError, concatMap, filter, ignoreElements, map, mapTo, mergeMap, tap, toArray } from 'rxjs/operators';
+import { defer, EMPTY, from, Observable, zip } from 'rxjs';
 import { Movie } from '../movie.schema';
 import { CreateDocumentDefinition, Model } from 'mongoose';
 import { Category } from '../../categories/category.schema';
@@ -9,7 +9,15 @@ import { MovieCategory } from '../movie-category.schema';
 import { Person } from '../../people/person.schema';
 import { fromArray } from 'rxjs/internal/observable/fromArray';
 import { InjectModel } from '@nestjs/mongoose';
+import * as fs from 'fs';
+import { ShowTime } from "../../show-times/show-time.schema";
+import { Theatre } from "../../theatres/theatre.schema";
+import { Comment } from "../../comments/comment.schema";
+import { Ticket } from "../../seats/ticket.schema";
+import { Reservation } from "../../reservations/reservation.schema";
+import { Notification } from "../../notifications/notification.schema";
 import dayjs = require('dayjs');
+import { User } from "../../users/user.schema";
 
 @Injectable()
 export class MovieDbService {
@@ -30,7 +38,15 @@ export class MovieDbService {
       @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
       @InjectModel(MovieCategory.name) private readonly movieCategoryModel: Model<MovieCategory>,
       @InjectModel(Person.name) private readonly personModel: Model<Person>,
-  ) {}
+      @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
+      @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
+      @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
+      @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
+      @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
+      @InjectModel(Notification.name) private readonly notificationModel: Model<Notification>,
+      @InjectModel(User.name) private readonly userModel: Model<User>,
+  ) {
+  }
 
   seed(query: string, page: number, year: number) {
     return this.search(query, page, year)
@@ -225,6 +241,258 @@ export class MovieDbService {
             ),
             tap({ complete: () => this.logger.debug(`Done update video url`) }),
         );
+  }
+
+  removeAdultMovies() {
+    const array: { detail: MovieDetailResponseResult, found: string | undefined }[] = [];
+
+    return defer(() => this.movieModel.find({}).sort({ createdAt: -1 })).pipe(
+        tap(a => this.logger.debug(`All ${a.length} movies`)),
+        mergeMap(from),
+        concatMap((movie: Movie, index: number): Observable<Movie> => {
+          this.logger.debug(index);
+
+          return this
+              .search(movie.title, 1, null)
+              .pipe(
+                  map(searchResults => searchResults.results?.find(i => i.title === movie.title)?.id),
+                  filter(id => !!id),
+                  mergeMap(id => this.detail(id)),
+                  filter(d => {
+                    const removed = d.adult || (() => {
+                      delete d.adult;
+                      const s = JSON.stringify(d).toLowerCase();
+
+                      const found = [
+                        'sex',
+                        'gay',
+                        'adult',
+                        'mother',
+                        'mother-in-law',
+                        'porn',
+                        'sexuality',
+                        'unfaithfulness',
+                        'sexologist',
+                        'sex',
+                        'school',
+                        'teenage',
+                        'lgbt',
+                        'teen',
+                        'black',
+                        'teenage',
+                        'protagonist',
+                        'sex',
+                        'scandal',
+                        'anal',
+                        'pistols',
+                        'sex',
+                        'rough sex',
+                        'phone sex',
+                        'artistic sex',
+                        'sex fiend',
+                        'sex tourism',
+                        'sex game',
+                        'oral sex',
+                        'sex video',
+                        'sex club',
+                        'sex class',
+                        'sex pest',
+                        'sex robot',
+                        'car sex',
+                        'sex',
+                        'sex positive',
+                        'sex-shop',
+                        'group sex',
+                        'sex therapy',
+                        'public sex',
+                        'sex talk',
+                        'unprotected sex',
+                        'sex industry',
+                        'telephone sex',
+                        'taboo sex',
+                        'kinky sex',
+                        'sex show',
+                        'sex performer',
+                        'sex work',
+                        'forced sex',
+                        'simulated sex',
+                        'sex assignment',
+                        'pornography',
+                        'porn actor',
+                        'pornographic video',
+                        'porn star',
+                        'porn director',
+                        'internet porn',
+                        'porn industry',
+                        'porn parody',
+                        'porn actress',
+                        'pornographer',
+                        'porn magazine',
+                        'feature porn',
+                        'torture porn',
+                        'roman porno',
+                        'porn producer',
+                        'gay pornography',
+                        'porn tape',
+                        'food porn',
+                        'porno industry',
+                        'pornochanchada',
+                        'adult education center',
+                        'becoming an adult',
+                        'adult humor',
+                        'adult animation',
+                        'disbelieving adult',
+                        'adult filmmaking',
+                        'young adult',
+                        'adult in college',
+                        'adult illiteracy',
+                        'based on young adult novel',
+                        'adult babies',
+                        'adult theatre',
+                        'adult magazine',
+                        'adult',
+                        'adult swim: made in spain',
+                        'adult movie star',
+                      ]
+                          .find(v => s.includes(v.toLowerCase()));
+
+                      array.push({
+                        detail: d,
+                        found,
+                      });
+
+                      return found;
+                    })();
+                    // this.logger.debug(`${index}-${movie.title}-${movie._id} is adult? ${removed}`);
+                    return !!removed;
+                  }),
+                  mapTo(movie),
+                  catchError(() => EMPTY),
+              );
+        }),
+        toArray(),
+        mergeMap(async movies => {
+          this.logger.debug(array.length);
+
+          await new Promise(((resolve, reject) => {
+            fs.writeFile('./movie.json', JSON.stringify(array), {}, (e) => {
+              if (e) reject(e)
+              else resolve();
+            });
+          }));
+
+          await this.deleteAllByMovieIds(movies.map(m => m._id));
+
+          this.logger.debug(movies.length);
+          return movies.length;
+        }),
+    )
+  }
+
+  private async deleteAllByMovieIds(ids: any[]) {
+    const inIds = { $in: ids };
+    await this.movieModel.deleteMany({ _id: inIds });
+    await this.movieCategoryModel.deleteMany({ movie_id: inIds });
+    await this.commentModel.deleteMany({ movie: inIds })
+
+    const st = await this.showTimeModel.find({ movie: inIds });
+    const relSt = { show_time: { $in: st.map(s => s._id) } };
+
+    await this.showTimeModel.deleteMany({ movie: inIds });
+    await this.ticketModel.deleteMany(relSt);
+
+    const reservations = await this.reservationModel.find(relSt);
+    await this.reservationModel.deleteMany(relSt);
+    await this.notificationModel.deleteMany({ reservation: { $in: reservations.map(r => r._id) } });
+
+    const users = await this.userModel.find({});
+    for (const user of users) {
+      const favorite_movie_ids = user.favorite_movie_ids ?? {};
+      let changed = false;
+
+      for (const movieId of ids) {
+        if (favorite_movie_ids[movieId]) {
+          delete favorite_movie_ids[movieId];
+          changed = true;
+        }
+      }
+      if (changed) {
+        await this.userModel.updateOne({ _id: user._id }, { favorite_movie_ids });
+      }
+    }
+  }
+
+  async removeMovies() {
+    const $in = [
+      'Love Shots',
+      'Proof Of Love',
+      'RDX Love',
+      "A Brother's Love",
+      'Love Blooms',
+      'swiping compressed filtered love (et enfin, permettre l’incontrôlable)',
+      'The Only Thing I Love More Than You Is Ranch Dressing',
+      'If You Know Me Is To Love Me',
+      'Bears Love Me!',
+      'Muffin Top: A Love Story',
+      'Ovid and the Art of Love',
+      'Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? OVA',
+      'Loveless',
+      'Love to Our Fathers’ Sacred Graves. Echo of Port Arthur',
+      'I love Everything I Hate About You',
+      'The Killing of Two Lovers',
+      'Why Do You Love Me?',
+      'My Wife\'s Lover 3',
+      'Doggy Love',
+      'A Brother’s Love',
+      'Love Without Size',
+      'Love and Lies',
+      'I Love You I Miss You I Hope I See You Before I Die',
+      'Like Love',
+      'Marianne & Leonard: Words of Love',
+      'Almost Love',
+      'A Secret Love',
+      'Victim of Love',
+      'Love, Loss, and What I Wore',
+      'With Love – Volume One 1987-1996',
+      'Love Mooning',
+      'Love Aaj Kal',
+      'Love Aaj Kal Porshu',
+      'Joy House',
+      'All Things Fair',
+      'Aqours 5th LoveLive! ～Next SPARKLING!!～',
+      'Mektoub, My Love: Canto Uno',
+      'Love Me Not',
+      'Mektoub, My Love: Intermezzo',
+    ];
+    this.logger.debug(`Start ${$in.length}`);
+    const movies = await this.movieModel.find({
+      title: { $in }
+    });
+    this.logger.debug(`Movies ${movies.length}`);
+    await this.deleteAllByMovieIds(movies.map(m => m._id));
+    this.logger.debug('Done');
+  }
+
+  async removeDup() {
+    const ms = await this.movieModel.find({});
+    let i = 0;
+    for (const m of ms) {
+      const dups = await this.movieModel.find({ title: m.title, _id: { $ne: m._id } });
+      if (dups.length > 0) {
+        this.logger.debug(`${m.title} dup ${dups.length}`);
+        await this.deleteAllByMovieIds(dups.map(d => d._id));
+      }
+      this.logger.debug(`${i++}/${ms.length}`);
+    }
+  }
+
+  async removeShort() {
+    const ms = await this.movieModel.find({ duration: { $lt: 30 } });
+    let i = 0;
+    for (const m of ms) {
+      await this.deleteAllByMovieIds([m._id]);
+      this.logger.debug(`${i++}/${ms.length}`);
+    }
   }
 }
 

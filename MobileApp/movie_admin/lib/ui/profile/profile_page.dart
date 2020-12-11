@@ -109,6 +109,22 @@ class LoggedIn extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
+              'Role',
+              style: detailHeaderStyle,
+            ),
+            subtitle: Text(
+              user.role.string(),
+              style: detailInfoStyle,
+            ),
+            dense: true,
+            leading: Icon(
+              Icons.work,
+              color: accentColor,
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            title: Text(
               'Email',
               style: detailHeaderStyle,
             ),

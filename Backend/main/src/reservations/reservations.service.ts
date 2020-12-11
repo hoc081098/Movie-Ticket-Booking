@@ -511,6 +511,15 @@ export class ReservationsService {
           as: 'seats',
         },
       },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      { $unwind: '$user' },
     ]).exec();
 
     return results.map(item => {

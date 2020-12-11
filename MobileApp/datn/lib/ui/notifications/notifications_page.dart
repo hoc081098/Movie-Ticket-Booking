@@ -136,7 +136,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           if (state.items.isEmpty) {
             return Center(
               child: EmptyWidget(
-                message: 'Empty comments',
+                message: 'Empty notification',
               ),
             );
           }

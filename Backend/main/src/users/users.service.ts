@@ -16,6 +16,7 @@ import { defer, of, range } from 'rxjs';
 import { catchError, concatMap, exhaustMap, ignoreElements, tap } from 'rxjs/operators';
 import { Movie } from "../movies/movie.schema";
 import dayjs = require('dayjs');
+import { Theatre } from "../theatres/theatre.schema";
 
 function paymentMethodToCardDto(paymentMethod: Stripe.PaymentMethod): Card {
   const card = paymentMethod.card;
@@ -40,6 +41,7 @@ export class UsersService {
   constructor(
       @InjectModel(User.name) readonly userModel: Model<User>,
       @InjectModel(Movie.name) readonly movieModel: Model<Movie>,
+      @InjectModel(Theatre.name) readonly theatreModel: Model<Theatre>,
       configService: ConfigService,
       private readonly firebaseAuthenticationService: FirebaseAuthenticationService,
   ) {
@@ -50,7 +52,9 @@ export class UsersService {
   }
 
   findByUid(uid: string): Promise<User | undefined> {
-    return this.userModel.findOne({ uid }).exec();
+    return this.userModel.findOne({ uid })
+        .populate('theatre')
+        .exec();
   }
 
   update(user: UserPayload, updateUserDto: UpdateUserDto): Promise<User> {
@@ -152,7 +156,7 @@ export class UsersService {
   }
 
   async delete(uid: string): Promise<User> {
-    const result = await this.userModel.findOneAndDelete({ uid, role: { $ne: 'ADMIN' } });
+    const result = await this.userModel.findOneAndDelete({ uid, role: { $ne: 'ADMIN' } }).populate('theatre');
 
     if (result == null) {
       throw new NotFoundException(`User with uid ${uid} not found`);
@@ -200,6 +204,7 @@ export class UsersService {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
+        .populate('theatre')
         .exec();
   }
 
@@ -208,7 +213,9 @@ export class UsersService {
         { uid, role: { $ne: 'ADMIN' } },
         { is_active: false },
         { new: true },
-    ).exec();
+    )
+        .populate('theatre')
+        .exec();
   }
 
   updateFcmToken(user: User, fcmToken: string): Promise<User> {
@@ -219,8 +226,26 @@ export class UsersService {
     ).exec();
   }
 
-  seedUsers() {
-    return this.userModel.updateMany({role: null}, { role: 'USER' }).exec();
+  async seedUsers() {
+    // Fix theatre_id
+    const [allStaffs, theatres] = await Promise.all([
+      this.userModel.find({ role: 'STAFF', theatre: null }),
+      this.theatreModel.find({}),
+    ]);
+    this.logger.debug(allStaffs.length);
+    this.logger.debug(theatres.length);
+
+    let i = 0;
+    for (const s of allStaffs) {
+      i = (i + 1) % theatres.length;
+      const theatre = theatres[i];
+      await this.userModel.updateOne({ _id: s._id }, { theatre: theatre._id }).exec();
+    }
+    return this.userModel.find({});
+
+    // Fix roles
+    return this.userModel.updateMany({ role: null }, { role: 'USER' }).exec();
+
     // await this.userModel.updateMany({}, { favorite_movie_ids: {} }).exec();
     //
     // const users = await this.userModel
@@ -244,6 +269,7 @@ export class UsersService {
     //
     // return;
 
+    // seed users
     return range(0, 300).pipe(
         concatMap(() => {
           return defer(() =>
@@ -283,10 +309,17 @@ export class UsersService {
         { uid, role: { $ne: 'ADMIN' } },
         { is_active: true },
         { new: true },
-    ).exec();
+    )
+        .populate('theatre')
+        .exec();
   }
 
-  async toStaffRole(uid: string): Promise<User> {
+  async toStaffRole(uid: string, theatre_id: string): Promise<User> {
+    const theatre = await this.theatreModel.findById(theatre_id);
+    if (!theatre) {
+      throw new BadRequestException(`Theatre not found`);
+    }
+
     const updatedUser = await this.userModel.findOneAndUpdate(
         {
           uid, role: { $ne: 'ADMIN' },
@@ -295,13 +328,13 @@ export class UsersService {
             { is_active: true },
           ]
         },
-        { role: 'STAFF' },
+        { role: 'STAFF', theatre: theatre._id },
         { new: true },
     );
     if (!updatedUser) {
       throw new BadRequestException(`User is not found or user is blocked!`);
     }
-    return updatedUser;
+    return updatedUser.populate('theatre').execPopulate();
   }
 
   async toUserRole(uid: string): Promise<User> {
@@ -310,8 +343,10 @@ export class UsersService {
           uid,
           role: { $ne: 'ADMIN' },
         },
-        { role: 'USER' },
+        { role: 'USER', theatre: null },
         { new: true },
-    ).exec();
+    )
+        .populate('theatre')
+        .exec();
   }
 }

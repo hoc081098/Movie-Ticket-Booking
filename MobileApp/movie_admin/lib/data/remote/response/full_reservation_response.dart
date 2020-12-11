@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:movie_admin/data/remote/response/user_response.dart';
 
 import '../../serializers.dart';
 import 'product_response.dart';
@@ -35,7 +36,7 @@ abstract class FullReservationResponse
 
   DateTime get updatedAt;
 
-  String get user;
+  UserResponse get user;
 
   BuiltList<TicketResponse> get tickets;
 
@@ -254,4 +255,28 @@ abstract class Res_LocationResponse
 
 extension IsNullOrEmptyIterableExtension<T> on Iterable<T> {
   bool get isNullOrEmpty => this == null || isEmpty;
+}
+
+class UserResponseSerializer implements PrimitiveSerializer<UserResponse> {
+  @override
+  UserResponse deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final list = serialized as List<dynamic>;
+    final map = <String, dynamic>{};
+    for (var i = 0; i + 1 < list.length; i += 2) {
+      map[list[i] as String] = list[i + 1];
+    }
+    return UserResponse.fromJson(map);
+  }
+
+  @override
+  Object serialize(Serializers serializers, UserResponse object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      throw UnimplementedError('UserResponseSerializer.serialize');
+
+  @override
+  Iterable<Type> get types => const <Type>[UserResponse].build();
+
+  @override
+  String get wireName => 'UserResponse';
 }

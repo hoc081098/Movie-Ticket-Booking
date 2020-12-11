@@ -10,6 +10,7 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '../config/config.module';
 import { Ticket, TicketSchema } from "../seats/ticket.schema";
 import { Seat, SeatSchema } from "../seats/seat.schema";
+import { SeatsModule } from "../seats/seats.module";
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { Seat, SeatSchema } from "../seats/seat.schema";
     AuthModule,
     UsersModule,
     ConfigModule,
+    SeatsModule,
   ],
   controllers: [ShowTimesController, AdminShowTimesController],
   providers: [ShowTimesService]

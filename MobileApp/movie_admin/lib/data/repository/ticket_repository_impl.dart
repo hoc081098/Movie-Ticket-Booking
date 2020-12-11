@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:movie_admin/data/remote/response/seat_response.dart';
+import 'package:movie_admin/domain/model/seat.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/reservation.dart';
@@ -46,6 +48,43 @@ class TicketRepositoryImpl implements TicketRepository {
       () => _authClient.getBody(
         buildUrl(
           '/admin-reservations/show-times/${id}',
+        ),
+      ),
+    ).map(mapResult);
+  }
+
+  @override
+  Stream<BuiltList<Seat>> getSeatsByTheatreId(String id) {
+    final mapResult = (dynamic json) {
+      final responses = serializers.deserialize(
+        json,
+        specifiedType: builtListSeatResponse,
+      ) as BuiltList<SeatResponse>;
+
+      return [
+        for (final seat in responses)
+          Seat.from(
+            is_active: seat.is_active ?? true,
+            coordinates: SeatCoordinates.from(
+              x: seat.coordinates[0],
+              y: seat.coordinates[1],
+            ),
+            id: seat.id,
+            room: seat.room,
+            theatre: seat.theatre,
+            column: seat.column,
+            row: seat.row,
+            count: seat.count,
+            createdAt: seat.createdAt,
+            updatedAt: seat.updatedAt,
+          )
+      ].build();
+    };
+
+    return Rx.fromCallable(
+      () => _authClient.getBody(
+        buildUrl(
+          '/admin-seats/seats/theatres/${id}',
         ),
       ),
     ).map(mapResult);

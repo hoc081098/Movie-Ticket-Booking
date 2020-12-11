@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:movie_admin/domain/model/theatre.dart';
 
 import 'location.dart';
 
@@ -38,6 +39,8 @@ class User {
 
   final Role role;
 
+  final Theatre theatre;
+
   User({
     @required this.uid,
     @required this.email,
@@ -51,5 +54,6 @@ class User {
     @required this.isCompleted,
     @required this.isActive,
     @required this.role,
+    @required this.theatre,
   });
 }

@@ -38,14 +38,14 @@ export class SeatsService {
     });
   }
 
-  private async seedTicketsForSingleShowTime(showTime: ShowTime): Promise<Ticket[]> {
+  async seedTicketsForSingleShowTime(showTime: ShowTime): Promise<Ticket[]> {
     const seats: Seat[] = await this.getSeatsByShowTimeId(showTime._id);
     const price = [60_000, 70_000, 80_000, 100_000].random();
 
     const docs: Omit<DocumentDefinition<Ticket>, '_id'>[] = seats.map(seat => {
       return {
         is_active: true,
-        price: price,
+        price: price * seat.count,
         reservation: null,
         seat: seat._id,
         show_time: showTime._id,
@@ -184,6 +184,14 @@ export class SeatsService {
         .populate('seat')
         .exec();
 
+  }
+
+  getSeatsByTheatreId(theatre_id: string): Promise<Seat[]> {
+    return this.seatModel.find({
+      theatre: theatre_id,
+      room: '2D 1',
+      is_active: true,
+    }).exec();
   }
 }
 

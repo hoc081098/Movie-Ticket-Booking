@@ -60,11 +60,18 @@ class ManagerRepositoryImpl implements ManagerRepository {
   }
 
   @override
-  Future<User> changeRoleUser(User user) async {
+  Future<User> changeRoleUser(User user, String theatre_id) async {
+    if (user.role == Role.USER) {
+      ArgumentError.checkNotNull(theatre_id);
+    }
+
     try {
       final path = user.role == Role.USER ? 'to_staff_role' : 'to_user_role';
       final url = buildUrl('admin_users/$path/${user.uid}');
-      final userRes = await _authClient.putBody(url);
+      final userRes = await _authClient.putBody(
+        url,
+        body: user.role == Role.USER ? {'theatre_id': theatre_id} : null,
+      );
       if (userRes == null) return Future.error(null);
       return userResponseToUserDomain(UserResponse.fromJson(userRes));
     } on ErrorResponse catch (e) {

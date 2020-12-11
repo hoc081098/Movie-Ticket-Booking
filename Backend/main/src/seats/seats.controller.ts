@@ -55,4 +55,12 @@ export class AdminSeatsController {
   ): Promise<Ticket[]> {
     return this.seatsService.getTicketsByShowTimeId(showTimeId);
   }
+
+  @Roles('ADMIN')
+  @Get('seats/theatres/:theatre_id')
+  getSeatsByTheatreId(
+      @Param('theatre_id') theatre_id: string,
+  ) {
+    return this.seatsService.getSeatsByTheatreId(theatre_id);
+  }
 }

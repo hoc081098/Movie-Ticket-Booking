@@ -82,8 +82,9 @@ class _MoviePageState extends State<MoviePage> {
 class MovieCell extends StatelessWidget {
   final Movie item;
   final Function1<Movie, void> onToggle;
+  final Function1<Movie, void> onTap;
 
-  MovieCell(this.item, this.onToggle);
+  MovieCell(this.item, this.onToggle, [this.onTap]);
 
   @override
   Widget build(BuildContext context) {
@@ -100,10 +101,12 @@ class MovieCell extends StatelessWidget {
     final rateStyle = titleStyle.copyWith(fontSize: 20);
 
     return InkWell(
-      onTap: () {
-        AppScaffold.of(context)
-            .pushNamed(MovieInfoPage.routeName, arguments: item);
-      },
+      onTap: onTap != null
+          ? () => onTap(item)
+          : () {
+              AppScaffold.of(context)
+                  .pushNamed(MovieInfoPage.routeName, arguments: item);
+            },
       child: Container(
         margin: const EdgeInsets.only(
           left: 6,
