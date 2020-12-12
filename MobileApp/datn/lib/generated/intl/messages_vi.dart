@@ -21,11 +21,35 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(error) => "Lỗi khi thay đổi ngôn ngữ: ${error}";
 
+  static m1(minute) => "#${minute} phút";
+
+  static m2(message) => "Lỗi: ${message}";
+
+  static m3(totalFavorite) => "${Intl.plural(totalFavorite, other: '${totalFavorite} yêu thích')}";
+
+  static m4(totalRate) => "${Intl.plural(totalRate, other: '${totalRate} đánh giá')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "cancel" : MessageLookupByLibrary.simpleMessage("Hủy"),
     "change_language" : MessageLookupByLibrary.simpleMessage("Thay đổi ngôn ngữ"),
     "change_language_error" : m0,
     "change_language_failure" : MessageLookupByLibrary.simpleMessage("Lỗi khi thay đổi ngôn ngữ"),
-    "change_language_success" : MessageLookupByLibrary.simpleMessage("Thay đổi ngôn ngữ thành công")
+    "change_language_success" : MessageLookupByLibrary.simpleMessage("Thay đổi ngôn ngữ thành công"),
+    "coming_soon" : MessageLookupByLibrary.simpleMessage("PHIM SẮP PHÁT HÀNH"),
+    "duration_minutes" : m1,
+    "empty_movie" : MessageLookupByLibrary.simpleMessage("Không có bộ phim nào"),
+    "empty_theatre" : MessageLookupByLibrary.simpleMessage("Không có rạp nào"),
+    "error_with_message" : m2,
+    "load_image_error" : MessageLookupByLibrary.simpleMessage("Lỗi tải ảnh"),
+    "most_favorite" : MessageLookupByLibrary.simpleMessage("ĐƯỢC YÊU THÍCH NHẤT"),
+    "most_rate" : MessageLookupByLibrary.simpleMessage("ĐƯỢC ĐÁNH GIÁ CAO"),
+    "movies_on_theatre" : MessageLookupByLibrary.simpleMessage("Phim Đang Chiếu"),
+    "nearby_theatre" : MessageLookupByLibrary.simpleMessage("RẠP PHIM GẦN ĐÂY"),
+    "recommended_for_you" : MessageLookupByLibrary.simpleMessage("GỢI Ý CHO BẠN"),
+    "select_city" : MessageLookupByLibrary.simpleMessage("Chọn thành phố"),
+    "total_favorite" : m3,
+    "total_rate_review" : m4,
+    "view_all" : MessageLookupByLibrary.simpleMessage("Xem tất cả")
   };
 }

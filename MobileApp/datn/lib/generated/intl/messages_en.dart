@@ -19,13 +19,37 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static m0(error) => "Error when chane language: ${error}";
+  static m0(error) => "Error when change language: ${error}";
+
+  static m1(minute) => "#${minute} minutes";
+
+  static m2(message) => "Error: ${message}";
+
+  static m3(totalFavorite) => "${Intl.plural(totalFavorite, zero: '0 favorite', one: '1 favorite', other: '${totalFavorite} favorites')}";
+
+  static m4(totalRate) => "${Intl.plural(totalRate, zero: '0 review', one: '1 review', other: '${totalRate} reviews')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "change_language" : MessageLookupByLibrary.simpleMessage("Change language"),
     "change_language_error" : m0,
-    "change_language_failure" : MessageLookupByLibrary.simpleMessage("Error when chane language"),
-    "change_language_success" : MessageLookupByLibrary.simpleMessage("Change language successfully")
+    "change_language_failure" : MessageLookupByLibrary.simpleMessage("Error when change language"),
+    "change_language_success" : MessageLookupByLibrary.simpleMessage("Change language successfully"),
+    "coming_soon" : MessageLookupByLibrary.simpleMessage("COMING SOON"),
+    "duration_minutes" : m1,
+    "empty_movie" : MessageLookupByLibrary.simpleMessage("Empty movie"),
+    "empty_theatre" : MessageLookupByLibrary.simpleMessage("Empty theatre"),
+    "error_with_message" : m2,
+    "load_image_error" : MessageLookupByLibrary.simpleMessage("Load image error"),
+    "most_favorite" : MessageLookupByLibrary.simpleMessage("MOST FAVORITE"),
+    "most_rate" : MessageLookupByLibrary.simpleMessage("MOST RATE"),
+    "movies_on_theatre" : MessageLookupByLibrary.simpleMessage("Movies on Theatre"),
+    "nearby_theatre" : MessageLookupByLibrary.simpleMessage("NEARBY THEATRES"),
+    "recommended_for_you" : MessageLookupByLibrary.simpleMessage("RECOMMENDED FOR YOU"),
+    "select_city" : MessageLookupByLibrary.simpleMessage("Select city"),
+    "total_favorite" : m3,
+    "total_rate_review" : m4,
+    "view_all" : MessageLookupByLibrary.simpleMessage("VIEW ALL")
   };
 }

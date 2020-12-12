@@ -2,5 +2,21 @@
   "change_language_success": "Thay đổi ngôn ngữ thành công",
   "change_language_error": "Lỗi khi thay đổi ngôn ngữ: {error}",
   "change_language_failure": "Lỗi khi thay đổi ngôn ngữ",
-  "change_language": "Thay đổi ngôn ngữ"
+  "change_language": "Thay đổi ngôn ngữ",
+  "movies_on_theatre": "Phim Đang Chiếu",
+  "select_city": "Chọn thành phố",
+  "cancel": "Hủy",
+  "error_with_message": "Lỗi: {message}",
+  "empty_movie": "Không có bộ phim nào",
+  "load_image_error": "Lỗi tải ảnh",
+  "duration_minutes": "#{minute} phút",
+  "total_rate_review": "{totalRate,plural, other{{totalRate} đánh giá}}",
+  "total_favorite": "{totalFavorite,plural, other{{totalFavorite} yêu thích}}",
+  "coming_soon": "PHIM SẮP PHÁT HÀNH",
+  "recommended_for_you": "GỢI Ý CHO BẠN",
+  "most_favorite": "ĐƯỢC YÊU THÍCH NHẤT",
+  "most_rate": "ĐƯỢC ĐÁNH GIÁ CAO",
+  "nearby_theatre": "RẠP PHIM GẦN ĐÂY",
+  "view_all": "Xem tất cả",
+  "empty_theatre": "Không có rạp nào"
 }

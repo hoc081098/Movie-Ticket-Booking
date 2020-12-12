@@ -45,20 +45,20 @@ class S {
     );
   }
 
-  /// `Error when chane language: {error}`
+  /// `Error when change language: {error}`
   String change_language_error(Object error) {
     return Intl.message(
-      'Error when chane language: $error',
+      'Error when change language: $error',
       name: 'change_language_error',
       desc: '',
       args: [error],
     );
   }
 
-  /// `Error when chane language`
+  /// `Error when change language`
   String get change_language_failure {
     return Intl.message(
-      'Error when chane language',
+      'Error when change language',
       name: 'change_language_failure',
       desc: '',
       args: [],
@@ -70,6 +70,172 @@ class S {
     return Intl.message(
       'Change language',
       name: 'change_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Movies on Theatre`
+  String get movies_on_theatre {
+    return Intl.message(
+      'Movies on Theatre',
+      name: 'movies_on_theatre',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select city`
+  String get select_city {
+    return Intl.message(
+      'Select city',
+      name: 'select_city',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error: {message}`
+  String error_with_message(Object message) {
+    return Intl.message(
+      'Error: $message',
+      name: 'error_with_message',
+      desc: '',
+      args: [message],
+    );
+  }
+
+  /// `Empty movie`
+  String get empty_movie {
+    return Intl.message(
+      'Empty movie',
+      name: 'empty_movie',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Load image error`
+  String get load_image_error {
+    return Intl.message(
+      'Load image error',
+      name: 'load_image_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `#{minute} minutes`
+  String duration_minutes(Object minute) {
+    return Intl.message(
+      '#$minute minutes',
+      name: 'duration_minutes',
+      desc: '',
+      args: [minute],
+    );
+  }
+
+  /// `{totalRate,plural, =0{0 review}=1{1 review}other{{totalRate} reviews}}`
+  String total_rate_review(num totalRate) {
+    return Intl.plural(
+      totalRate,
+      zero: '0 review',
+      one: '1 review',
+      other: '$totalRate reviews',
+      name: 'total_rate_review',
+      desc: '',
+      args: [totalRate],
+    );
+  }
+
+  /// `{totalFavorite,plural, =0{0 favorite}=1{1 favorite}other{{totalFavorite} favorites}}`
+  String total_favorite(num totalFavorite) {
+    return Intl.plural(
+      totalFavorite,
+      zero: '0 favorite',
+      one: '1 favorite',
+      other: '$totalFavorite favorites',
+      name: 'total_favorite',
+      desc: '',
+      args: [totalFavorite],
+    );
+  }
+
+  /// `COMING SOON`
+  String get coming_soon {
+    return Intl.message(
+      'COMING SOON',
+      name: 'coming_soon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RECOMMENDED FOR YOU`
+  String get recommended_for_you {
+    return Intl.message(
+      'RECOMMENDED FOR YOU',
+      name: 'recommended_for_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MOST FAVORITE`
+  String get most_favorite {
+    return Intl.message(
+      'MOST FAVORITE',
+      name: 'most_favorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MOST RATE`
+  String get most_rate {
+    return Intl.message(
+      'MOST RATE',
+      name: 'most_rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NEARBY THEATRES`
+  String get nearby_theatre {
+    return Intl.message(
+      'NEARBY THEATRES',
+      name: 'nearby_theatre',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `VIEW ALL`
+  String get view_all {
+    return Intl.message(
+      'VIEW ALL',
+      name: 'view_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty theatre`
+  String get empty_theatre {
+    return Intl.message(
+      'Empty theatre',
+      name: 'empty_theatre',
       desc: '',
       args: [],
     );

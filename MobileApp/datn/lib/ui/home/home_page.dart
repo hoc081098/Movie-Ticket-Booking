@@ -17,7 +17,9 @@ import '../../domain/model/theatre.dart';
 import '../../domain/repository/city_repository.dart';
 import '../../domain/repository/movie_repository.dart';
 import '../../domain/repository/theatre_repository.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
+import '../../utils/intl.dart';
 import '../../utils/streams.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
@@ -307,7 +309,7 @@ class HomeLocationHeader extends StatelessWidget {
                     Hero(
                       tag: MovieType.nowPlaying.toString(),
                       child: Text(
-                        'Movies on Theatre',
+                        S.of(context).movies_on_theatre,
                         maxLines: 1,
                         style: textTheme.headline6.copyWith(fontSize: 18),
                       ),
@@ -365,7 +367,7 @@ class HomeLocationHeader extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Select city'),
+          title: Text(S.of(context).select_city),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -381,7 +383,7 @@ class HomeLocationHeader extends StatelessWidget {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Cancel'),
+              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(),
             ),
           ],
@@ -448,7 +450,9 @@ class HomeHorizontalMoviesList extends StatelessWidget {
 
             if (state.error != null) {
               return MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: S
+                    .of(context)
+                    .error_with_message(getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               );
             }
@@ -469,7 +473,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
 
             if (movies.isEmpty) {
               return Center(
-                child: EmptyWidget(message: 'Empty movies'),
+                child: EmptyWidget(message: S.of(context).empty_movie),
               );
             }
 
@@ -547,7 +551,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                'Load image error',
+                                S.of(context).load_image_error,
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle2
@@ -571,7 +575,13 @@ class HomeHorizontalMoviesList extends StatelessWidget {
             ),
           ),
           buildBottom(
-              imageWidth, item, titleTextStyle, reviewstextStyle, minStyle),
+            imageWidth,
+            item,
+            titleTextStyle,
+            reviewstextStyle,
+            minStyle,
+            context,
+          ),
         ],
       ),
     );
@@ -583,6 +593,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
     TextStyle titleTextStyle,
     TextStyle reviewstextStyle,
     TextStyle minStyle,
+    BuildContext context,
   ) {
     switch (type) {
       case MovieType.nowPlaying:
@@ -627,14 +638,14 @@ class HomeHorizontalMoviesList extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    getDescription(item),
+                    getDescription(item, context),
                     style: reviewstextStyle,
                   )
                 ],
               ),
               const SizedBox(height: 4),
               Text(
-                '#${item.duration} minutes',
+                S.of(context).duration_minutes(item.duration),
                 style: minStyle,
               ),
             ],
@@ -666,15 +677,15 @@ class HomeHorizontalMoviesList extends StatelessWidget {
     throw StateError('Unknown $type');
   }
 
-  String getDescription(Movie item) {
+  String getDescription(Movie item, BuildContext context) {
     switch (type) {
       case MovieType.comingSoon:
         throw StateError('Wrong type $type');
       case MovieType.nowPlaying:
       case MovieType.recommended:
-        return '${item.totalRate} review${item.totalRate > 1 ? 's' : ''}';
+        return S.of(context).total_rate_review(item.totalRate);
       case MovieType.mostFavorite:
-        return '${item.totalFavorite} favorite${item.totalFavorite > 1 ? 's' : ''}';
+        return S.of(context).total_favorite(item.totalFavorite);
       case MovieType.mostRate:
         return '${item.rateStar.toStringAsFixed(2)} / 5';
     }
@@ -708,7 +719,7 @@ class ComingSoonHeader extends StatelessWidget {
               child: Hero(
                 tag: MovieType.comingSoon.toString(),
                 child: Text(
-                  'COMING SOON',
+                  S.of(context).coming_soon,
                   maxLines: 1,
                   style: textTheme.headline6.copyWith(
                     fontSize: 16,
@@ -759,7 +770,7 @@ class RecommendedHeader extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'RECOMMENDED FOR YOU',
+                S.of(context).recommended_for_you,
                 maxLines: 1,
                 style: textTheme.headline6.copyWith(
                   fontSize: 16,
@@ -808,7 +819,7 @@ class MostFavoriteHeader extends StatelessWidget {
               child: Hero(
                 tag: MovieType.mostFavorite.toString(),
                 child: Text(
-                  'MOST FAVORITE',
+                  S.of(context).most_favorite,
                   maxLines: 1,
                   style: textTheme.headline6.copyWith(
                     fontSize: 16,
@@ -861,7 +872,7 @@ class MostRateHeader extends StatelessWidget {
               child: Hero(
                 tag: MovieType.mostRate.toString(),
                 child: Text(
-                  'MOST RATE',
+                  context.s.most_rate,
                   maxLines: 1,
                   style: textTheme.headline6.copyWith(
                     fontSize: 16,
@@ -914,7 +925,7 @@ class NearbyTheatreHeader extends StatelessWidget {
               child: Hero(
                 tag: 'NEARBY_CINEMAS',
                 child: Text(
-                  'NEARBY CINEMAS',
+                  context.s.nearby_theatre,
                   maxLines: 1,
                   style: textTheme.headline6.copyWith(
                     fontSize: 16,
@@ -947,7 +958,7 @@ class ViewAllButton extends StatelessWidget {
         arguments: movieType,
       ),
       child: Text(
-        'VIEW ALL',
+        context.s.view_all,
         style: textTheme.button.copyWith(
           color: Theme.of(context).accentColor,
           fontWeight: FontWeight.w600,
@@ -977,7 +988,8 @@ class NearbyTheatresList extends StatelessWidget {
               height: height,
               padding: padding,
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText:
+                    context.s.error_with_message(getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             ),
@@ -1010,7 +1022,7 @@ class NearbyTheatresList extends StatelessWidget {
               padding: padding,
               height: height,
               child: Center(
-                child: EmptyWidget(message: 'Empty theatre'),
+                child: EmptyWidget(message: context.s.empty_theatre),
               ),
             ),
           );
