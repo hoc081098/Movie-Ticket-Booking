@@ -1,6 +1,9 @@
+import 'package:datn/generated/l10n.dart';
+import 'package:datn/locale_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
 import 'domain/repository/user_repository.dart';
@@ -81,14 +84,38 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final localeBloc = BlocProvider.of<LocaleBloc>(context);
+
     return Provider<Map<String, WidgetBuilder>>(
       value: routes,
-      child: MaterialApp(
-        title: 'Movie ticket',
-        theme: themeData,
-        home: SplashPage(),
-        routes: routes,
-        debugShowCheckedModeBanner: false,
+      child: RxStreamBuilder<Locale>(
+        stream: localeBloc.locale$,
+        builder: (context, snapshot) {
+          print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${snapshot.data}');
+
+          if (snapshot.data == null) {
+            return Container(
+              color: Colors.white,
+              width: double.infinity,
+              height: double.infinity,
+            );
+          }
+
+          return MaterialApp(
+            title: 'Movie ticket',
+            theme: themeData,
+            home: SplashPage(),
+            routes: routes,
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            locale: snapshot.requireData,
+          );
+        },
       ),
     );
   }

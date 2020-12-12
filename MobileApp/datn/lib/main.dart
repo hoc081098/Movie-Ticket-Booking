@@ -1,10 +1,12 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
+import 'package:datn/locale_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -158,6 +160,8 @@ void main() async {
     mappers.theatreResponseToTheatre,
   );
 
+  final localeBloc = LocaleBloc(preferences);
+
   runApp(
     Providers(
       providers: [
@@ -173,7 +177,10 @@ void main() async {
         Provider<FcmNotificationManager>(value: fcmNotificationManager),
         Provider<TheatreRepository>(value: theatreRepository),
       ],
-      child: MyApp(),
+      child: BlocProvider(
+        initBloc: () => localeBloc,
+        child: MyApp(),
+      ),
     ),
   );
 }

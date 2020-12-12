@@ -1,0 +1,6 @@
+{
+  "change_language_success": "Change language successfully",
+  "change_language_error": "Error when chane language: {error}",
+  "change_language_failure": "Error when chane language",
+  "change_language": "Change language"
+}

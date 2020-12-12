@@ -29,7 +29,7 @@ dependencies:
   octo_image: ^0.3.0
   firebase_remote_config: ^0.4.2
   flutter_cache_manager: ^2.0.0
-  distinct_value_connectable_stream: ^1.2.0-beta01
+  distinct_value_connectable_stream: ^1.2.0-beta02
   flutter_local_notifications: ^3.0.1+6
   firebase_messaging: ^7.0.3
   socket_io_client: ^0.9.12
@@ -65,6 +65,8 @@ dependencies:
 
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -72,14 +74,8 @@ dependencies:
   cupertino_icons: ^1.0.0
 
 dependency_overrides:
-  rxdart:
-    git:
-      url: 'https://github.com/ReactiveX/rxdart.git'
-      ref: 'master'
-  distinct_value_connectable_stream:
-    git:
-      url: 'https://github.com/hoc081098/distinct_value_connectable_stream.git'
-      ref: 'rxdart_master'
+  rxdart: 0.25.0
+  intl: 0.17.0-nullsafety.2
 
 dev_dependencies:
   build_runner: ^1.10.2
@@ -174,3 +170,5 @@ flutter:
         - asset: assets/fonts/Montserrat-BlackItalic.ttf
           weight: 900
           style: italic
+flutter_intl:
+  enabled: true

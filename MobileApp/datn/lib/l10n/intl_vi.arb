@@ -1,0 +1,6 @@
+{
+  "change_language_success": "Thay đổi ngôn ngữ thành công",
+  "change_language_error": "Lỗi khi thay đổi ngôn ngữ: {error}",
+  "change_language_failure": "Lỗi khi thay đổi ngôn ngữ",
+  "change_language": "Thay đổi ngôn ngữ"
+}

@@ -23,6 +23,7 @@ import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
+import 'change_language_button.dart';
 import 'detail/movie_detail_page.dart';
 import 'movie_type.dart';
 import 'search_delegate.dart';
@@ -196,6 +197,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
       appBar: AppBar(
         title: Text('Enjoy movies'),
         actions: [
+          const ChangeLanguageButton(),
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
