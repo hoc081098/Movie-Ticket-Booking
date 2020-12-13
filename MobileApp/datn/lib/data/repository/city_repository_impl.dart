@@ -12,11 +12,13 @@ import '../../utils/optional.dart';
 import '../local/user_local.dart';
 import '../local/user_local_source.dart';
 
+// ignore_for_file: deprecated_member_use_from_same_package
+
 class CityRepositoryImpl implements CityRepository {
   static const _city_key = 'com.hoc.datn.city';
 
   static final _allCities = <City>[
-    City((b) => b..name = 'Nationwide'),
+    City((b) => b..name = CityRepository.nationwide),
     City(
       (b) => b
         ..name = 'Đà Nẵng'

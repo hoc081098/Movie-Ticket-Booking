@@ -18,6 +18,7 @@ import '../domain/repository/comment_repository.dart';
 import '../domain/repository/promotion_repository.dart';
 import '../domain/repository/reservation_repository.dart';
 import '../domain/repository/user_repository.dart';
+import '../generated/l10n.dart';
 import '../utils/optional.dart';
 import 'app_scaffold.dart';
 import 'favorites/favorites_page.dart';
@@ -212,22 +213,22 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
             notificationsRoutes[settings.name](context, settings),
         (context, settings) => profileRoutes[settings.name](context, settings),
       ],
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_rounded),
-          label: 'Home',
+          icon: const Icon(Icons.home_rounded),
+          label: S.of(context).home,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_rounded),
-          label: 'Favorites',
+          icon: const Icon(Icons.favorite_rounded),
+          label: S.of(context).favorites,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: 'Notification',
+          icon: const Icon(Icons.notifications),
+          label: S.of(context).notifications,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person_rounded),
-          label: 'Profile',
+          icon: const Icon(Icons.person_rounded),
+          label: S.of(context).profile,
         ),
       ],
     );

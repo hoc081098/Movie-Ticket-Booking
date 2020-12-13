@@ -135,10 +135,10 @@ class S {
     );
   }
 
-  /// `#{minute} minutes`
+  /// `{minute} minutes`
   String duration_minutes(Object minute) {
     return Intl.message(
-      '#$minute minutes',
+      '$minute minutes',
       name: 'duration_minutes',
       desc: '',
       args: [minute],
@@ -238,6 +238,96 @@ class S {
       name: 'empty_theatre',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Nationwide`
+  String get nationwide {
+    return Intl.message(
+      'Nationwide',
+      name: 'nationwide',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favorites`
+  String get favorites {
+    return Intl.message(
+      'Favorites',
+      name: 'favorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty favorite movie`
+  String get empty_favorite_movie {
+    return Intl.message(
+      'Empty favorite movie',
+      name: 'empty_favorite_movie',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get remove {
+    return Intl.message(
+      'Remove',
+      name: 'remove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Removed successfully: {title}`
+  String fav_removed_successfully_with_title(Object title) {
+    return Intl.message(
+      'Removed successfully: $title',
+      name: 'fav_removed_successfully_with_title',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `Removed failed: {title}`
+  String fav_removed_failed_with_title(Object title) {
+    return Intl.message(
+      'Removed failed: $title',
+      name: 'fav_removed_failed_with_title',
+      desc: '',
+      args: [title],
     );
   }
 }

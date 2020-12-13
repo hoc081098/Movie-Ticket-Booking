@@ -9,7 +9,7 @@
   "error_with_message": "Error: {message}",
   "empty_movie": "Empty movie",
   "load_image_error": "Load image error",
-  "duration_minutes": "#{minute} minutes",
+  "duration_minutes": "{minute} minutes",
   "total_rate_review": "{totalRate,plural, =0{0 review}=1{1 review}other{{totalRate} reviews}}",
   "total_favorite": "{totalFavorite,plural, =0{0 favorite}=1{1 favorite}other{{totalFavorite} favorites}}",
   "coming_soon": "COMING SOON",
@@ -18,5 +18,14 @@
   "most_rate": "MOST RATE",
   "nearby_theatre": "NEARBY THEATRES",
   "view_all": "VIEW ALL",
-  "empty_theatre": "Empty theatre"
+  "empty_theatre": "Empty theatre",
+  "nationwide": "Nationwide",
+  "home": "Home",
+  "favorites": "Favorites",
+  "notifications": "Notifications",
+  "profile": "Profile",
+  "empty_favorite_movie": "Empty favorite movie",
+  "remove": "Remove",
+  "fav_removed_successfully_with_title": "Removed successfully: {title}",
+  "fav_removed_failed_with_title": "Removed failed: {title}"
 }

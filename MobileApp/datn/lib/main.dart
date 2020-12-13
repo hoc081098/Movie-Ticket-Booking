@@ -1,5 +1,4 @@
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
-import 'package:datn/locale_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -38,6 +37,7 @@ import 'domain/repository/ticket_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
 import 'fcm_notification.dart';
+import 'locale_bloc.dart';
 import 'utils/custom_indenting_built_value_to_string_helper.dart';
 import 'utils/type_defs.dart';
 

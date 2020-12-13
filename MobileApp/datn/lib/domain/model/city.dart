@@ -5,6 +5,7 @@ import 'location.dart';
 part 'city.g.dart';
 
 abstract class City implements Built<City, CityBuilder> {
+  @deprecated
   String get name;
 
   @nullable

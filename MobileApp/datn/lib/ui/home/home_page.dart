@@ -337,15 +337,15 @@ class HomeLocationHeader extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         RxStreamBuilder<City>(
-                            stream: cityRepo.selectedCity$,
-                            builder: (context, snapshot) {
-                              return Text(
-                                snapshot.data.name,
-                                maxLines: 1,
-                                style:
-                                    textTheme.headline6.copyWith(fontSize: 13),
-                              );
-                            }),
+                          stream: cityRepo.selectedCity$,
+                          builder: (context, snapshot) {
+                            return Text(
+                              snapshot.data.localizedName(context),
+                              maxLines: 1,
+                              style: textTheme.headline6.copyWith(fontSize: 13),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ],
@@ -374,7 +374,7 @@ class HomeLocationHeader extends StatelessWidget {
               children: [
                 for (final city in cityRepo.allCities)
                   ListTile(
-                    title: Text(city.name),
+                    title: Text(city.localizedName(context)),
                     onTap: () => Navigator.of(dialogContext).pop(city),
                     selected: city == cityRepo.selectedCity$.value,
                   ),
@@ -645,7 +645,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                S.of(context).duration_minutes(item.duration),
+                '#' + S.of(context).duration_minutes(item.duration),
                 style: minStyle,
               ),
             ],

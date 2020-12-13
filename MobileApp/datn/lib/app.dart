@@ -1,5 +1,3 @@
-import 'package:datn/generated/l10n.dart';
-import 'package:datn/locale_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -8,6 +6,8 @@ import 'package:flutter_provider/flutter_provider.dart';
 
 import 'domain/repository/user_repository.dart';
 import 'fcm_notification.dart';
+import 'generated/l10n.dart';
+import 'locale_bloc.dart';
 import 'ui/login/login_bloc.dart';
 import 'ui/login/login_page.dart';
 import 'ui/login_update_profile/login_update_profile_page.dart';

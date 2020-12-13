@@ -16,6 +16,7 @@ import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
 import '../../../utils/date_time.dart';
 import '../../../utils/error.dart';
+import '../../../utils/intl.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
@@ -253,7 +254,7 @@ class SelectCityWidget extends StatelessWidget {
               return PopupMenuButton<City>(
                 initialValue: selected,
                 onSelected: cityRepo.change,
-                offset: Offset(0, 200),
+                offset: Offset(0, 56),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
@@ -261,7 +262,7 @@ class SelectCityWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        selected.name,
+                        selected.localizedName(context),
                         style: textTheme.subtitle1,
                       ),
                       SizedBox(width: 8),
@@ -273,7 +274,7 @@ class SelectCityWidget extends StatelessWidget {
                   return [
                     for (final city in cityRepo.allCities)
                       PopupMenuItem<City>(
-                        child: Text(city.name),
+                        child: Text(city.localizedName(context)),
                         value: city,
                       )
                   ];

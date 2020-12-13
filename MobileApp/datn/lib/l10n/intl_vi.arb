@@ -9,7 +9,7 @@
   "error_with_message": "Lỗi: {message}",
   "empty_movie": "Không có bộ phim nào",
   "load_image_error": "Lỗi tải ảnh",
-  "duration_minutes": "#{minute} phút",
+  "duration_minutes": "{minute} phút",
   "total_rate_review": "{totalRate,plural, other{{totalRate} đánh giá}}",
   "total_favorite": "{totalFavorite,plural, other{{totalFavorite} yêu thích}}",
   "coming_soon": "PHIM SẮP PHÁT HÀNH",
@@ -18,5 +18,14 @@
   "most_rate": "ĐƯỢC ĐÁNH GIÁ CAO",
   "nearby_theatre": "RẠP PHIM GẦN ĐÂY",
   "view_all": "Xem tất cả",
-  "empty_theatre": "Không có rạp nào"
+  "empty_theatre": "Không có rạp nào",
+  "nationwide": "Toàn quốc",
+  "home": "Trang chủ",
+  "favorites": "Yêu thích",
+  "notifications": "Thông báo",
+  "profile": "Tài khoản",
+  "empty_favorite_movie": "Không có phim yêu thích nào",
+  "remove": "Loại bỏ",
+  "fav_removed_successfully_with_title": "Loại bỏ thành công: {title}",
+  "fav_removed_failed_with_title": "Loại bỏ không thành công: {title}"
 }

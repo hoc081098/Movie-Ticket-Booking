@@ -21,13 +21,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(error) => "Lỗi khi thay đổi ngôn ngữ: ${error}";
 
-  static m1(minute) => "#${minute} phút";
+  static m1(minute) => "${minute} phút";
 
   static m2(message) => "Lỗi: ${message}";
 
-  static m3(totalFavorite) => "${Intl.plural(totalFavorite, other: '${totalFavorite} yêu thích')}";
+  static m3(title) => "Loại bỏ không thành công: ${title}";
 
-  static m4(totalRate) => "${Intl.plural(totalRate, other: '${totalRate} đánh giá')}";
+  static m4(title) => "Loại bỏ thành công: ${title}";
+
+  static m5(totalFavorite) => "${Intl.plural(totalFavorite, other: '${totalFavorite} yêu thích')}";
+
+  static m6(totalRate) => "${Intl.plural(totalRate, other: '${totalRate} đánh giá')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -38,18 +42,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "change_language_success" : MessageLookupByLibrary.simpleMessage("Thay đổi ngôn ngữ thành công"),
     "coming_soon" : MessageLookupByLibrary.simpleMessage("PHIM SẮP PHÁT HÀNH"),
     "duration_minutes" : m1,
+    "empty_favorite_movie" : MessageLookupByLibrary.simpleMessage("Không có phim yêu thích nào"),
     "empty_movie" : MessageLookupByLibrary.simpleMessage("Không có bộ phim nào"),
     "empty_theatre" : MessageLookupByLibrary.simpleMessage("Không có rạp nào"),
     "error_with_message" : m2,
+    "fav_removed_failed_with_title" : m3,
+    "fav_removed_successfully_with_title" : m4,
+    "favorites" : MessageLookupByLibrary.simpleMessage("Yêu thích"),
+    "home" : MessageLookupByLibrary.simpleMessage("Trang chủ"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Lỗi tải ảnh"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("ĐƯỢC YÊU THÍCH NHẤT"),
     "most_rate" : MessageLookupByLibrary.simpleMessage("ĐƯỢC ĐÁNH GIÁ CAO"),
     "movies_on_theatre" : MessageLookupByLibrary.simpleMessage("Phim Đang Chiếu"),
+    "nationwide" : MessageLookupByLibrary.simpleMessage("Toàn quốc"),
     "nearby_theatre" : MessageLookupByLibrary.simpleMessage("RẠP PHIM GẦN ĐÂY"),
+    "notifications" : MessageLookupByLibrary.simpleMessage("Thông báo"),
+    "profile" : MessageLookupByLibrary.simpleMessage("Tài khoản"),
     "recommended_for_you" : MessageLookupByLibrary.simpleMessage("GỢI Ý CHO BẠN"),
+    "remove" : MessageLookupByLibrary.simpleMessage("Loại bỏ"),
     "select_city" : MessageLookupByLibrary.simpleMessage("Chọn thành phố"),
-    "total_favorite" : m3,
-    "total_rate_review" : m4,
+    "total_favorite" : m5,
+    "total_rate_review" : m6,
     "view_all" : MessageLookupByLibrary.simpleMessage("Xem tất cả")
   };
 }
