@@ -1,4 +1,3 @@
-import 'package:datn/generated/l10n.dart';
 import 'package:flutter/material.dart' hide Notification, Action;
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -10,6 +9,7 @@ import 'package:rxdart/rxdart.dart' hide Notification;
 import '../../domain/model/notification.dart';
 import '../../domain/repository/notification_repository.dart';
 import '../../fcm_notification.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/utils.dart';
 import '../app_scaffold.dart';
