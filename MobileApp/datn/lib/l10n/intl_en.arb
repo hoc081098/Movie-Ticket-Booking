@@ -6,7 +6,7 @@
   "movies_on_theatre": "Movies on Theatre",
   "select_city": "Select city",
   "cancel": "Cancel",
-  "error_with_message": "Error: {message}",
+  "error_with_message": "Error occurred: {message}",
   "empty_movie": "Empty movie",
   "load_image_error": "Load image error",
   "duration_minutes": "{minute} minutes",
@@ -27,5 +27,13 @@
   "empty_favorite_movie": "Empty favorite movie",
   "remove": "Remove",
   "fav_removed_successfully_with_title": "Removed successfully: {title}",
-  "fav_removed_failed_with_title": "Removed failed: {title}"
+  "fav_removed_failed_with_title": "Removed failed: {title}",
+  "loadedAllNotifications": "Loaded all notifications",
+  "emptyNotification": "Empty notification",
+  "deleteNotification": "Delete notification",
+  "areYouSureYouWantToDeleteThisNotification": "Are you sure you want to delete this notification?",
+  "deleteSuccessfully": "Delete successfully",
+  "startAt": "Start at: ",
+  "theatre": "Theatre: ",
+  "room": " Room: "
 }

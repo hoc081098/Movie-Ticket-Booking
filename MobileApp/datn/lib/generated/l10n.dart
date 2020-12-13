@@ -105,10 +105,10 @@ class S {
     );
   }
 
-  /// `Error: {message}`
+  /// `Error occurred: {message}`
   String error_with_message(Object message) {
     return Intl.message(
-      'Error: $message',
+      'Error occurred: $message',
       name: 'error_with_message',
       desc: '',
       args: [message],
@@ -328,6 +328,86 @@ class S {
       name: 'fav_removed_failed_with_title',
       desc: '',
       args: [title],
+    );
+  }
+
+  /// `Loaded all notifications`
+  String get loadedAllNotifications {
+    return Intl.message(
+      'Loaded all notifications',
+      name: 'loadedAllNotifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty notification`
+  String get emptyNotification {
+    return Intl.message(
+      'Empty notification',
+      name: 'emptyNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete notification`
+  String get deleteNotification {
+    return Intl.message(
+      'Delete notification',
+      name: 'deleteNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this notification?`
+  String get areYouSureYouWantToDeleteThisNotification {
+    return Intl.message(
+      'Are you sure you want to delete this notification?',
+      name: 'areYouSureYouWantToDeleteThisNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete successfully`
+  String get deleteSuccessfully {
+    return Intl.message(
+      'Delete successfully',
+      name: 'deleteSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start at: `
+  String get startAt {
+    return Intl.message(
+      'Start at: ',
+      name: 'startAt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theatre: `
+  String get theatre {
+    return Intl.message(
+      'Theatre: ',
+      name: 'theatre',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` Room: `
+  String get room {
+    return Intl.message(
+      ' Room: ',
+      name: 'room',
+      desc: '',
+      args: [],
     );
   }
 }

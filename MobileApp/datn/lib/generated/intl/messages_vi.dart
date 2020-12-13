@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m1(minute) => "${minute} phút";
 
-  static m2(message) => "Lỗi: ${message}";
+  static m2(message) => "Xảy ra lỗi: ${message}";
 
   static m3(title) => "Loại bỏ không thành công: ${title}";
 
@@ -35,13 +35,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "areYouSureYouWantToDeleteThisNotification" : MessageLookupByLibrary.simpleMessage("Bạn có muốn xóa thông báo này?"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Hủy"),
     "change_language" : MessageLookupByLibrary.simpleMessage("Thay đổi ngôn ngữ"),
     "change_language_error" : m0,
     "change_language_failure" : MessageLookupByLibrary.simpleMessage("Lỗi khi thay đổi ngôn ngữ"),
     "change_language_success" : MessageLookupByLibrary.simpleMessage("Thay đổi ngôn ngữ thành công"),
     "coming_soon" : MessageLookupByLibrary.simpleMessage("PHIM SẮP PHÁT HÀNH"),
+    "deleteNotification" : MessageLookupByLibrary.simpleMessage("Xóa thông báo"),
+    "deleteSuccessfully" : MessageLookupByLibrary.simpleMessage("Xóa thành công"),
     "duration_minutes" : m1,
+    "emptyNotification" : MessageLookupByLibrary.simpleMessage("Không có thông báo nào"),
     "empty_favorite_movie" : MessageLookupByLibrary.simpleMessage("Không có phim yêu thích nào"),
     "empty_movie" : MessageLookupByLibrary.simpleMessage("Không có bộ phim nào"),
     "empty_theatre" : MessageLookupByLibrary.simpleMessage("Không có rạp nào"),
@@ -51,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "favorites" : MessageLookupByLibrary.simpleMessage("Yêu thích"),
     "home" : MessageLookupByLibrary.simpleMessage("Trang chủ"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Lỗi tải ảnh"),
+    "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả thông báo"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("ĐƯỢC YÊU THÍCH NHẤT"),
     "most_rate" : MessageLookupByLibrary.simpleMessage("ĐƯỢC ĐÁNH GIÁ CAO"),
     "movies_on_theatre" : MessageLookupByLibrary.simpleMessage("Phim Đang Chiếu"),
@@ -60,7 +65,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "profile" : MessageLookupByLibrary.simpleMessage("Tài khoản"),
     "recommended_for_you" : MessageLookupByLibrary.simpleMessage("GỢI Ý CHO BẠN"),
     "remove" : MessageLookupByLibrary.simpleMessage("Loại bỏ"),
+    "room" : MessageLookupByLibrary.simpleMessage(" Phòng: "),
     "select_city" : MessageLookupByLibrary.simpleMessage("Chọn thành phố"),
+    "startAt" : MessageLookupByLibrary.simpleMessage("Bắt đầu lúc: "),
+    "theatre" : MessageLookupByLibrary.simpleMessage("Rạp: "),
     "total_favorite" : m5,
     "total_rate_review" : m6,
     "view_all" : MessageLookupByLibrary.simpleMessage("Xem tất cả")

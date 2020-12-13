@@ -6,7 +6,7 @@
   "movies_on_theatre": "Phim Đang Chiếu",
   "select_city": "Chọn thành phố",
   "cancel": "Hủy",
-  "error_with_message": "Lỗi: {message}",
+  "error_with_message": "Xảy ra lỗi: {message}",
   "empty_movie": "Không có bộ phim nào",
   "load_image_error": "Lỗi tải ảnh",
   "duration_minutes": "{minute} phút",
@@ -27,5 +27,13 @@
   "empty_favorite_movie": "Không có phim yêu thích nào",
   "remove": "Loại bỏ",
   "fav_removed_successfully_with_title": "Loại bỏ thành công: {title}",
-  "fav_removed_failed_with_title": "Loại bỏ không thành công: {title}"
+  "fav_removed_failed_with_title": "Loại bỏ không thành công: {title}",
+  "loadedAllNotifications": "Đã tải tất cả thông báo",
+  "emptyNotification": "Không có thông báo nào",
+  "deleteNotification": "Xóa thông báo",
+  "areYouSureYouWantToDeleteThisNotification": "Bạn có muốn xóa thông báo này?",
+  "deleteSuccessfully": "Xóa thành công",
+  "startAt": "Bắt đầu lúc: ",
+  "theatre": "Rạp: ",
+  "room": " Phòng: "
 }

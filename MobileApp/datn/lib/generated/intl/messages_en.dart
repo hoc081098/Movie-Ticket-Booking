@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m1(minute) => "${minute} minutes";
 
-  static m2(message) => "Error: ${message}";
+  static m2(message) => "Error occurred: ${message}";
 
   static m3(title) => "Removed failed: ${title}";
 
@@ -35,13 +35,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "areYouSureYouWantToDeleteThisNotification" : MessageLookupByLibrary.simpleMessage("Are you sure you want to delete this notification?"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "change_language" : MessageLookupByLibrary.simpleMessage("Change language"),
     "change_language_error" : m0,
     "change_language_failure" : MessageLookupByLibrary.simpleMessage("Error when change language"),
     "change_language_success" : MessageLookupByLibrary.simpleMessage("Change language successfully"),
     "coming_soon" : MessageLookupByLibrary.simpleMessage("COMING SOON"),
+    "deleteNotification" : MessageLookupByLibrary.simpleMessage("Delete notification"),
+    "deleteSuccessfully" : MessageLookupByLibrary.simpleMessage("Delete successfully"),
     "duration_minutes" : m1,
+    "emptyNotification" : MessageLookupByLibrary.simpleMessage("Empty notification"),
     "empty_favorite_movie" : MessageLookupByLibrary.simpleMessage("Empty favorite movie"),
     "empty_movie" : MessageLookupByLibrary.simpleMessage("Empty movie"),
     "empty_theatre" : MessageLookupByLibrary.simpleMessage("Empty theatre"),
@@ -51,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "favorites" : MessageLookupByLibrary.simpleMessage("Favorites"),
     "home" : MessageLookupByLibrary.simpleMessage("Home"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Load image error"),
+    "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Loaded all notifications"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("MOST FAVORITE"),
     "most_rate" : MessageLookupByLibrary.simpleMessage("MOST RATE"),
     "movies_on_theatre" : MessageLookupByLibrary.simpleMessage("Movies on Theatre"),
@@ -60,7 +65,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "profile" : MessageLookupByLibrary.simpleMessage("Profile"),
     "recommended_for_you" : MessageLookupByLibrary.simpleMessage("RECOMMENDED FOR YOU"),
     "remove" : MessageLookupByLibrary.simpleMessage("Remove"),
+    "room" : MessageLookupByLibrary.simpleMessage(" Room: "),
     "select_city" : MessageLookupByLibrary.simpleMessage("Select city"),
+    "startAt" : MessageLookupByLibrary.simpleMessage("Start at: "),
+    "theatre" : MessageLookupByLibrary.simpleMessage("Theatre: "),
     "total_favorite" : m5,
     "total_rate_review" : m6,
     "view_all" : MessageLookupByLibrary.simpleMessage("VIEW ALL")
