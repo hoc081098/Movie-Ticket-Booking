@@ -82,6 +82,7 @@ void main() async {
   RxSharedPreferencesConfigs.logger = null;
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
+  final keywordSource = SearchKeywordSourceImpl(preferences);
 
   final client = http.Client();
   const httpTimeout = Duration(seconds: 20);
@@ -112,6 +113,7 @@ void main() async {
     googleSignIn,
     facebookLogin,
     firebaseMessaging,
+    keywordSource,
   );
   _onSignOut = userRepository.logout;
 
@@ -121,7 +123,7 @@ void main() async {
     mappers.showTimeAndTheatreResponsesToTheatreAndShowTimes,
     mappers.movieDetailResponseToMovie,
     mappers.movieAndShowTimeResponsesToMovieAndShowTimes,
-    SearchKeywordSourceImpl(preferences),
+    keywordSource,
     mappers.categoryResponseToCategory,
   );
 

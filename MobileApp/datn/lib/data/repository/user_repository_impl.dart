@@ -16,6 +16,7 @@ import '../../domain/model/user.dart';
 import '../../domain/repository/user_repository.dart';
 import '../../utils/optional.dart';
 import '../../utils/type_defs.dart';
+import '../local/search_keyword_source.dart';
 import '../local/user_local.dart';
 import '../local/user_local_source.dart';
 import '../remote/auth_client.dart';
@@ -35,6 +36,8 @@ class UserRepositoryImpl implements UserRepository {
   final GoogleSignIn _googleSignIn;
   final FacebookLogin _facebookLogin;
 
+  final SearchKeywordSource _searchKeywordSource;
+
   final ValueConnectableStream<Optional<User>> _user$;
 
   UserRepositoryImpl(
@@ -47,6 +50,7 @@ class UserRepositoryImpl implements UserRepository {
     this._googleSignIn,
     this._facebookLogin,
     this._firebaseMessaging,
+    this._searchKeywordSource,
   ) : _user$ = valueConnectableStream(
           _auth,
           _userLocalSource,
@@ -193,6 +197,7 @@ class UserRepositoryImpl implements UserRepository {
     // local
     await _userLocalSource.saveToken(null);
     await _userLocalSource.saveUser(null);
+    await _searchKeywordSource.clear();
   }
 
   /// A [FirebaseAuthException] maybe thrown with the following error code:
