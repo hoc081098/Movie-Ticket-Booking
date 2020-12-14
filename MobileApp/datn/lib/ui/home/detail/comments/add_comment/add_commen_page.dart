@@ -6,6 +6,7 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../../../../generated/l10n.dart';
 import '../../../../../utils/utils.dart';
 import '../../../../app_scaffold.dart';
 import 'add_comment_bloc.dart';
@@ -36,7 +37,7 @@ class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add comment'),
+        title: Text(S.of(context).addComment),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -100,7 +101,7 @@ class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
                     maxLength: 500,
                     onChanged: bloc.contentChanged,
                     decoration: InputDecoration(
-                      hintText: 'Your comment...',
+                      hintText: S.of(context).yourComment,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(width: 0.8),
@@ -133,14 +134,14 @@ class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
 
   void handleMessage(Message message) async {
     if (message is AddCommentSuccessMessage) {
-      context.showSnackBar('Add comment successfully');
+      context.showSnackBar(S.of(context).addCommentSuccessfully);
       await delay(500);
       AppScaffold.of(context).pop(message.comment);
       return;
     }
     if (message is AddCommentFailureMessage) {
       context.showSnackBar(
-        'Add comment failure: ${getErrorMessage(message.error)}',
+        S.of(context).addCommentFailureMessage(getErrorMessage(message.error)),
       );
     }
   }

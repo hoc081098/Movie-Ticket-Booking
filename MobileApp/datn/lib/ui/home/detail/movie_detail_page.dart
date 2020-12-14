@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/model/movie.dart';
+import '../../../generated/l10n.dart';
 import 'comments/comments_page.dart';
 import 'info/movie_info_page.dart';
 import 'show_times_page.dart';
@@ -38,15 +39,15 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     final tabBar = TabBar(
       tabs: [
         Tab(
-          text: 'Showtimes',
+          text: S.of(context).showTimes,
           iconMargin: const EdgeInsets.only(bottom: 8),
         ),
         Tab(
-          text: 'Comments',
+          text: S.of(context).comments,
           iconMargin: const EdgeInsets.only(bottom: 8),
         ),
         Tab(
-          text: 'Information',
+          text: S.of(context).information,
           iconMargin: const EdgeInsets.only(bottom: 8),
         ),
       ],

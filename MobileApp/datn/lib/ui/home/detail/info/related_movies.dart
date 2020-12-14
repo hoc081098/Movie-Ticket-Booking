@@ -7,6 +7,7 @@ import 'package:octo_image/octo_image.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../../../domain/model/movie.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../utils/error.dart';
 import '../../../app_scaffold.dart';
 import '../../../widgets/age_type.dart';
@@ -32,7 +33,9 @@ class RelatedMovies extends StatelessWidget {
               color: Color(0xFFFCFCFC),
               constraints: BoxConstraints.expand(height: 350),
               child: MyErrorWidget(
-                errorText: 'Error: ${context.getErrorMessage(state.error)}',
+                errorText: S
+                    .of(context)
+                    .error_with_message(context.getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             ),
@@ -65,7 +68,7 @@ class RelatedMovies extends StatelessWidget {
               color: Color(0xFFFCFCFC),
               constraints: BoxConstraints.expand(height: 350),
               child: Center(
-                child: EmptyWidget(message: 'Empty related movies'),
+                child: EmptyWidget(message: S.of(context).emptyRelatedMovie),
               ),
             ),
           );
@@ -125,7 +128,7 @@ class RelatedMovies extends StatelessWidget {
                                       ),
                                       SizedBox(height: 4),
                                       Text(
-                                        'Load image error',
+                                        S.of(context).load_image_error,
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle2
@@ -189,14 +192,14 @@ class RelatedMovies extends StatelessWidget {
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                '${item.totalRate} review${item.totalRate > 1 ? 's' : ''}',
+                                S.of(context).total_rate_review(item.totalRate),
                                 style: reviewstextStyle,
                               )
                             ],
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '#${item.duration} minutes',
+                            '#' + S.of(context).duration_minutes(item.duration),
                             style: minStyle,
                           ),
                         ],

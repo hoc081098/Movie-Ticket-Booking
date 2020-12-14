@@ -730,6 +730,276 @@ class S {
       args: [],
     );
   }
+
+  /// `Show times`
+  String get showTimes {
+    return Intl.message(
+      'Show times',
+      name: 'showTimes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Comments`
+  String get comments {
+    return Intl.message(
+      'Comments',
+      name: 'comments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Information`
+  String get information {
+    return Intl.message(
+      'Information',
+      name: 'information',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message(
+      'Today',
+      name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty show times`
+  String get emptyShowTimes {
+    return Intl.message(
+      'Empty show times',
+      name: 'emptyShowTimes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select the area: `
+  String get selectTheArea {
+    return Intl.message(
+      'Select the area: ',
+      name: 'selectTheArea',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loaded all comments`
+  String get loadedAllComments {
+    return Intl.message(
+      'Loaded all comments',
+      name: 'loadedAllComments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Removed successfully: {title}...`
+  String commentRemovedSuccessfullyTitle(Object title) {
+    return Intl.message(
+      'Removed successfully: $title...',
+      name: 'commentRemovedSuccessfullyTitle',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `Failed when removing comment: {title}...`
+  String commentFailedWhenRemovingCommentTitle(Object title) {
+    return Intl.message(
+      'Failed when removing comment: $title...',
+      name: 'commentFailedWhenRemovingCommentTitle',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `Empty comment`
+  String get emptyComment {
+    return Intl.message(
+      'Empty comment',
+      name: 'emptyComment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove this comment`
+  String get removeThisComment {
+    return Intl.message(
+      'Remove this comment',
+      name: 'removeThisComment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete this comment. This action cannot be undone!`
+  String get doYouWantToDeleteThisCommentThisActionCannot {
+    return Intl.message(
+      'Do you want to delete this comment. This action cannot be undone!',
+      name: 'doYouWantToDeleteThisCommentThisActionCannot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your thoughts on this movie?`
+  String get yourThinkAboutThisMovie {
+    return Intl.message(
+      'Your thoughts on this movie?',
+      name: 'yourThinkAboutThisMovie',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Based on `
+  String get baseOn {
+    return Intl.message(
+      'Based on ',
+      name: 'baseOn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` reviews`
+  String get reviews {
+    return Intl.message(
+      ' reviews',
+      name: 'reviews',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add comment`
+  String get addComment {
+    return Intl.message(
+      'Add comment',
+      name: 'addComment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your comment...`
+  String get yourComment {
+    return Intl.message(
+      'Your comment...',
+      name: 'yourComment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add comment successfully`
+  String get addCommentSuccessfully {
+    return Intl.message(
+      'Add comment successfully',
+      name: 'addCommentSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add comment failed: {message}`
+  String addCommentFailureMessage(Object message) {
+    return Intl.message(
+      'Add comment failed: $message',
+      name: 'addCommentFailureMessage',
+      desc: '',
+      args: [message],
+    );
+  }
+
+  /// `Toggled successfully`
+  String get toggledSuccessfully {
+    return Intl.message(
+      'Toggled successfully',
+      name: 'toggledSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Toggle failed: {message}`
+  String toggleFailed(Object message) {
+    return Intl.message(
+      'Toggle failed: $message',
+      name: 'toggleFailed',
+      desc: '',
+      args: [message],
+    );
+  }
+
+  /// `STORYLINE`
+  String get storyline {
+    return Intl.message(
+      'STORYLINE',
+      name: 'storyline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CAST OVERVIEW`
+  String get castOverview {
+    return Intl.message(
+      'CAST OVERVIEW',
+      name: 'castOverview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DIRECTORS`
+  String get directors {
+    return Intl.message(
+      'DIRECTORS',
+      name: 'directors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RELATED MOVIES`
+  String get relatedMovies {
+    return Intl.message(
+      'RELATED MOVIES',
+      name: 'relatedMovies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cannot open trailer video`
+  String get cannotOpenTrailerVideo {
+    return Intl.message(
+      'Cannot open trailer video',
+      name: 'cannotOpenTrailerVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty related movie`
+  String get emptyRelatedMovie {
+    return Intl.message(
+      'Empty related movie',
+      name: 'emptyRelatedMovie',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
