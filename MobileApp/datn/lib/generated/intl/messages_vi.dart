@@ -29,13 +29,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m4(title) => "Loại bỏ thành công: ${title}";
 
-  static m5(totalFavorite) => "${Intl.plural(totalFavorite, other: '${totalFavorite} yêu thích')}";
+  static m5(message) => "Đăng xuất không thành công: ${message}";
 
-  static m6(totalRate) => "${Intl.plural(totalRate, other: '${totalRate} đánh giá')}";
+  static m6(totalFavorite) => "${Intl.plural(totalFavorite, other: '${totalFavorite} yêu thích')}";
+
+  static m7(totalRate) => "${Intl.plural(totalRate, other: '${totalRate} đánh giá')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "address" : MessageLookupByLibrary.simpleMessage("Địa chỉ"),
     "areYouSureYouWantToDeleteThisNotification" : MessageLookupByLibrary.simpleMessage("Bạn có muốn xóa thông báo này?"),
+    "areYouSureYouWantToLogout" : MessageLookupByLibrary.simpleMessage("Bạn có muốn đăng xuất?"),
+    "birthday" : MessageLookupByLibrary.simpleMessage("Ngày sinh"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Hủy"),
     "change_language" : MessageLookupByLibrary.simpleMessage("Thay đổi ngôn ngữ"),
     "change_language_error" : m0,
@@ -45,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteNotification" : MessageLookupByLibrary.simpleMessage("Xóa thông báo"),
     "deleteSuccessfully" : MessageLookupByLibrary.simpleMessage("Xóa thành công"),
     "duration_minutes" : m1,
+    "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "emptyNotification" : MessageLookupByLibrary.simpleMessage("Không có thông báo nào"),
     "empty_favorite_movie" : MessageLookupByLibrary.simpleMessage("Không có phim yêu thích nào"),
     "empty_movie" : MessageLookupByLibrary.simpleMessage("Không có bộ phim nào"),
@@ -53,15 +59,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "fav_removed_failed_with_title" : m3,
     "fav_removed_successfully_with_title" : m4,
     "favorites" : MessageLookupByLibrary.simpleMessage("Yêu thích"),
+    "fullName" : MessageLookupByLibrary.simpleMessage("Tên đầy đủ"),
+    "gender" : MessageLookupByLibrary.simpleMessage("Giới tính"),
     "home" : MessageLookupByLibrary.simpleMessage("Trang chủ"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Lỗi tải ảnh"),
     "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả thông báo"),
+    "logoutFailed" : m5,
+    "logoutOut" : MessageLookupByLibrary.simpleMessage("Đăng xuất"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("ĐƯỢC YÊU THÍCH NHẤT"),
     "most_rate" : MessageLookupByLibrary.simpleMessage("ĐƯỢC ĐÁNH GIÁ CAO"),
     "movies_on_theatre" : MessageLookupByLibrary.simpleMessage("Phim Đang Chiếu"),
     "nationwide" : MessageLookupByLibrary.simpleMessage("Toàn quốc"),
     "nearby_theatre" : MessageLookupByLibrary.simpleMessage("RẠP PHIM GẦN ĐÂY"),
     "notifications" : MessageLookupByLibrary.simpleMessage("Thông báo"),
+    "phoneNumber" : MessageLookupByLibrary.simpleMessage("Số điện thoại"),
     "profile" : MessageLookupByLibrary.simpleMessage("Tài khoản"),
     "recommended_for_you" : MessageLookupByLibrary.simpleMessage("GỢI Ý CHO BẠN"),
     "remove" : MessageLookupByLibrary.simpleMessage("Loại bỏ"),
@@ -69,8 +80,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "select_city" : MessageLookupByLibrary.simpleMessage("Chọn thành phố"),
     "startAt" : MessageLookupByLibrary.simpleMessage("Bắt đầu lúc: "),
     "theatre" : MessageLookupByLibrary.simpleMessage("Rạp: "),
-    "total_favorite" : m5,
-    "total_rate_review" : m6,
+    "tickets" : MessageLookupByLibrary.simpleMessage("Vé của bạn"),
+    "total_favorite" : m6,
+    "total_rate_review" : m7,
     "view_all" : MessageLookupByLibrary.simpleMessage("Xem tất cả")
   };
 }

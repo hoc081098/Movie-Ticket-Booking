@@ -35,5 +35,15 @@
   "deleteSuccessfully": "Delete successfully",
   "startAt": "Start at: ",
   "theatre": "Theatre: ",
-  "room": " Room: "
+  "room": " Room: ",
+  "tickets": "Tickets",
+  "email": "Email",
+  "fullName": "Full name",
+  "phoneNumber": "Phone number",
+  "gender": "Gender",
+  "address": "Address",
+  "birthday": "Birthday",
+  "logoutOut": "Logout out",
+  "areYouSureYouWantToLogout": "Are you sure you want to logout?",
+  "logoutFailed": "Logout failed: {message}"
 }

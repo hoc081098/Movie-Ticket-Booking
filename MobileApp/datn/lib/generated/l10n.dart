@@ -410,6 +410,106 @@ class S {
       args: [],
     );
   }
+
+  /// `Tickets`
+  String get tickets {
+    return Intl.message(
+      'Tickets',
+      name: 'tickets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get email {
+    return Intl.message(
+      'Email',
+      name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full name`
+  String get fullName {
+    return Intl.message(
+      'Full name',
+      name: 'fullName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number`
+  String get phoneNumber {
+    return Intl.message(
+      'Phone number',
+      name: 'phoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gender`
+  String get gender {
+    return Intl.message(
+      'Gender',
+      name: 'gender',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address`
+  String get address {
+    return Intl.message(
+      'Address',
+      name: 'address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Birthday`
+  String get birthday {
+    return Intl.message(
+      'Birthday',
+      name: 'birthday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout out`
+  String get logoutOut {
+    return Intl.message(
+      'Logout out',
+      name: 'logoutOut',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to logout?`
+  String get areYouSureYouWantToLogout {
+    return Intl.message(
+      'Are you sure you want to logout?',
+      name: 'areYouSureYouWantToLogout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout failed: {message}`
+  String logoutFailed(Object message) {
+    return Intl.message(
+      'Logout failed: $message',
+      name: 'logoutFailed',
+      desc: '',
+      args: [message],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

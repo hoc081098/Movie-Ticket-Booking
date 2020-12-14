@@ -35,5 +35,15 @@
   "deleteSuccessfully": "Xóa thành công",
   "startAt": "Bắt đầu lúc: ",
   "theatre": "Rạp: ",
-  "room": " Phòng: "
+  "room": " Phòng: ",
+  "tickets": "Vé của bạn",
+  "email": "Email",
+  "fullName": "Tên đầy đủ",
+  "phoneNumber": "Số điện thoại",
+  "gender": "Giới tính",
+  "address": "Địa chỉ",
+  "birthday": "Ngày sinh",
+  "logoutOut": "Đăng xuất",
+  "areYouSureYouWantToLogout": "Bạn có muốn đăng xuất?",
+  "logoutFailed": "Đăng xuất không thành công: {message}"
 }

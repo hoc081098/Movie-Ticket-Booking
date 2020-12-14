@@ -29,13 +29,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m4(title) => "Removed successfully: ${title}";
 
-  static m5(totalFavorite) => "${Intl.plural(totalFavorite, zero: '0 favorite', one: '1 favorite', other: '${totalFavorite} favorites')}";
+  static m5(message) => "Logout failed: ${message}";
 
-  static m6(totalRate) => "${Intl.plural(totalRate, zero: '0 review', one: '1 review', other: '${totalRate} reviews')}";
+  static m6(totalFavorite) => "${Intl.plural(totalFavorite, zero: '0 favorite', one: '1 favorite', other: '${totalFavorite} favorites')}";
+
+  static m7(totalRate) => "${Intl.plural(totalRate, zero: '0 review', one: '1 review', other: '${totalRate} reviews')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "address" : MessageLookupByLibrary.simpleMessage("Address"),
     "areYouSureYouWantToDeleteThisNotification" : MessageLookupByLibrary.simpleMessage("Are you sure you want to delete this notification?"),
+    "areYouSureYouWantToLogout" : MessageLookupByLibrary.simpleMessage("Are you sure you want to logout?"),
+    "birthday" : MessageLookupByLibrary.simpleMessage("Birthday"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "change_language" : MessageLookupByLibrary.simpleMessage("Change language"),
     "change_language_error" : m0,
@@ -45,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteNotification" : MessageLookupByLibrary.simpleMessage("Delete notification"),
     "deleteSuccessfully" : MessageLookupByLibrary.simpleMessage("Delete successfully"),
     "duration_minutes" : m1,
+    "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "emptyNotification" : MessageLookupByLibrary.simpleMessage("Empty notification"),
     "empty_favorite_movie" : MessageLookupByLibrary.simpleMessage("Empty favorite movie"),
     "empty_movie" : MessageLookupByLibrary.simpleMessage("Empty movie"),
@@ -53,15 +59,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "fav_removed_failed_with_title" : m3,
     "fav_removed_successfully_with_title" : m4,
     "favorites" : MessageLookupByLibrary.simpleMessage("Favorites"),
+    "fullName" : MessageLookupByLibrary.simpleMessage("Full name"),
+    "gender" : MessageLookupByLibrary.simpleMessage("Gender"),
     "home" : MessageLookupByLibrary.simpleMessage("Home"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Load image error"),
     "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Loaded all notifications"),
+    "logoutFailed" : m5,
+    "logoutOut" : MessageLookupByLibrary.simpleMessage("Logout out"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("MOST FAVORITE"),
     "most_rate" : MessageLookupByLibrary.simpleMessage("MOST RATE"),
     "movies_on_theatre" : MessageLookupByLibrary.simpleMessage("Movies on Theatre"),
     "nationwide" : MessageLookupByLibrary.simpleMessage("Nationwide"),
     "nearby_theatre" : MessageLookupByLibrary.simpleMessage("NEARBY THEATRES"),
     "notifications" : MessageLookupByLibrary.simpleMessage("Notifications"),
+    "phoneNumber" : MessageLookupByLibrary.simpleMessage("Phone number"),
     "profile" : MessageLookupByLibrary.simpleMessage("Profile"),
     "recommended_for_you" : MessageLookupByLibrary.simpleMessage("RECOMMENDED FOR YOU"),
     "remove" : MessageLookupByLibrary.simpleMessage("Remove"),
@@ -69,8 +80,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "select_city" : MessageLookupByLibrary.simpleMessage("Select city"),
     "startAt" : MessageLookupByLibrary.simpleMessage("Start at: "),
     "theatre" : MessageLookupByLibrary.simpleMessage("Theatre: "),
-    "total_favorite" : m5,
-    "total_rate_review" : m6,
+    "tickets" : MessageLookupByLibrary.simpleMessage("Tickets"),
+    "total_favorite" : m6,
+    "total_rate_review" : m7,
     "view_all" : MessageLookupByLibrary.simpleMessage("VIEW ALL")
   };
 }

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:datn/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -55,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () =>
             AppScaffold.of(context).pushNamed(ReservationsPage.routeName),
-        label: Text('Tickets'),
+        label: Text(S.of(context).tickets),
         icon: FaIcon(FontAwesomeIcons.ticketAlt),
       ),
     );
@@ -93,6 +94,7 @@ class LoggedIn extends StatelessWidget {
           detailHeaderStyle,
           detailInfoStyle,
           accentColor,
+          context,
         ),
         buildAvatar(height, imageSize, context),
       ],
@@ -105,6 +107,7 @@ class LoggedIn extends StatelessWidget {
     TextStyle detailHeaderStyle,
     TextStyle detailInfoStyle,
     Color accentColor,
+    BuildContext context,
   ) {
     final density = VisualDensity.compact;
 
@@ -118,7 +121,7 @@ class LoggedIn extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
-              'Email',
+              S.of(context).email,
               style: detailHeaderStyle,
             ),
             subtitle: Text(
@@ -135,7 +138,7 @@ class LoggedIn extends StatelessWidget {
           const Divider(),
           ListTile(
             title: Text(
-              'Full name',
+              S.of(context).fullName,
               style: detailHeaderStyle,
             ),
             subtitle: Text(
@@ -153,7 +156,7 @@ class LoggedIn extends StatelessWidget {
           if (user.phoneNumber != null) ...[
             ListTile(
               title: Text(
-                'Phone number',
+                S.of(context).phoneNumber,
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
@@ -171,7 +174,7 @@ class LoggedIn extends StatelessWidget {
           ],
           ListTile(
             title: Text(
-              'Gender',
+              S.of(context).gender,
               style: detailHeaderStyle,
             ),
             subtitle: Text(
@@ -196,7 +199,7 @@ class LoggedIn extends StatelessWidget {
           if (user.address != null) ...[
             ListTile(
               title: Text(
-                'Address',
+                S.of(context).address,
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
@@ -215,7 +218,7 @@ class LoggedIn extends StatelessWidget {
           if (user.birthday != null) ...[
             ListTile(
               title: Text(
-                'Birthday',
+                S.of(context).birthday,
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
@@ -231,6 +234,7 @@ class LoggedIn extends StatelessWidget {
             ),
             const Divider(),
           ],
+          const SizedBox(height: 64)
         ],
       ),
     );
@@ -381,11 +385,11 @@ class LoggedIn extends StatelessWidget {
                 barrierDismissible: true,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Logout out'),
-                    content: Text('Are you sure you want to logout?'),
+                    title: Text(S.of(context).logoutOut),
+                    content: Text(S.of(context).areYouSureYouWantToLogout),
                     actions: <Widget>[
                       TextButton(
-                        child: Text('Cancel'),
+                        child: Text(S.of(context).cancel),
                         onPressed: () => Navigator.of(context).pop(false),
                       ),
                       TextButton(
@@ -402,7 +406,8 @@ class LoggedIn extends StatelessWidget {
                   await Provider.of<UserRepository>(context).logout();
                 } catch (e, s) {
                   print('logout $e $s');
-                  context.showSnackBar('Logout failed: ${getErrorMessage(e)}');
+                  context.showSnackBar(
+                      S.of(context).logoutFailed(getErrorMessage(e)));
                 }
               }
             },
