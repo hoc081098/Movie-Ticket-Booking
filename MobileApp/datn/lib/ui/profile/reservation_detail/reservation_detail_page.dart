@@ -234,7 +234,7 @@ class ReservationDetailPage extends StatelessWidget {
                           child: Center(
                             child: MyErrorWidget(
                               errorText:
-                                  'Error: ${getErrorMessage(state.error)}',
+                                  'Error: ${context.getErrorMessage(state.error)}',
                               onPressed: bloc.fetch,
                             ),
                           ),

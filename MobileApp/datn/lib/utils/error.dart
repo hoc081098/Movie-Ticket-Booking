@@ -2,60 +2,77 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 
 import '../data/remote/response/error_response.dart';
 import '../domain/model/exception.dart';
+import '../generated/l10n.dart';
 
-String getErrorMessage(dynamic error) {
-  if (error is String) {
-    return error;
-  }
+@deprecated
+String getErrorMessageDeprecated(Object error) => S.current.getErrorMessage(error);
 
-  // domain errors
-  if (error is NotCompletedLoginException) {
-    return 'Required updating your profile';
-  }
-  if (error is NotLoggedInException) {
-    return 'Not logged in';
-  }
-  if (error is NotVerifiedEmail) {
-    return 'Your account email has not been verify. Please verify to continue!';
-  }
-  if (error is WrongRoleException) {
-    return 'Only USER role is allowed';
-  }
+extension ErrorMessageS on S {
+  String getErrorMessage(Object error) {
+    ArgumentError.checkNotNull(error);
 
-  // server error
-  if (error is SingleMessageErrorResponse) {
-    return error.message;
-  }
-  if (error is MultipleMessagesErrorResponse) {
-    return error.messages.join('\n');
-  }
+    if (error is String) {
+      return error;
+    }
 
-  // network error
-  if (error is SocketException) {
-    return 'No internet connection';
-  }
-  if (error is TimeoutException) {
-    return 'Slow internet connection';
-  }
-  if (error is HttpException) {
-    return 'Network error';
-  }
-  if (error is ClientException) {
-    return 'Network error';
-  }
+    // domain errors
+    if (error is NotCompletedLoginException) {
+      return requiredUpdatingYourProfile;
+    }
+    if (error is NotLoggedInException) {
+      return notLoggedIn;
+    }
+    if (error is NotVerifiedEmail) {
+      return yourAccountEmailHasNotBeenVerifyPleaseVerifyTo;
+    }
+    if (error is WrongRoleException) {
+      return onlyUserRoleIsAllowed;
+    }
 
-  // firebase & platform errors
-  if (error is FirebaseAuthException) {
-    return error.message;
-  }
-  if (error is PlatformException) {
-    return error.message;
-  }
+    // server error
+    if (error is SingleMessageErrorResponse) {
+      return error.message;
+    }
+    if (error is MultipleMessagesErrorResponse) {
+      return error.messages.join('\n');
+    }
 
-  return 'Error: $error';
+    // network error
+    if (error is SocketException) {
+      return noInternetConnection;
+    }
+    if (error is TimeoutException) {
+      return slowInternetConnection;
+    }
+    if (error is HttpException) {
+      return networkError;
+    }
+    if (error is ClientException) {
+      return networkError;
+    }
+
+    // firebase & platform errors
+    if (error is FirebaseAuthException) {
+      return error.message;
+    }
+    if (error is PlatformException) {
+      return error.message;
+    }
+
+    return error.toString();
+  }
+}
+
+extension ErrorMessageBuildContext on BuildContext {
+  String getErrorMessage(Object error) => S.of(this).getErrorMessage(error);
+}
+
+extension ErrorMessageState on State {
+  String getErrorMessage(Object error) => context.getErrorMessage(error);
 }

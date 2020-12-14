@@ -69,7 +69,7 @@ class GoogleSignInBloc extends DisposeCallbackBaseBloc {
       yield const LoginSuccessMessage();
     } catch (e) {
       yield LoginErrorMessage(
-          'Google sign in failed: ${getErrorMessage(e)}', e);
+          'Google sign in failed: ${getErrorMessageDeprecated(e)}', e);
     }
     isLoadingController.add(false);
   }

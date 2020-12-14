@@ -32,7 +32,7 @@ class RelatedMovies extends StatelessWidget {
               color: Color(0xFFFCFCFC),
               constraints: BoxConstraints.expand(height: 350),
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: 'Error: ${context.getErrorMessage(state.error)}',
                 onPressed: bloc.fetch,
               ),
             ),

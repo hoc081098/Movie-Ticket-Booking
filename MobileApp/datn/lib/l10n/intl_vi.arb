@@ -45,5 +45,19 @@
   "birthday": "Ngày sinh",
   "logoutOut": "Đăng xuất",
   "areYouSureYouWantToLogout": "Bạn có muốn đăng xuất?",
-  "logoutFailed": "Đăng xuất không thành công: {message}"
+  "logoutFailed": "Đăng xuất không thành công: {message}",
+  "loadedAllReservations": "Đã tải tất cả đặt chỗ",
+  "yourReservations": "Đặt chỗ của bạn",
+  "emptyReservation": "Không có đặt chỗ nào",
+  "couponCode": "Mã giảm giá: ",
+  "discount": "Giảm giá: ",
+  "originalPrice": "Giá gốc: ",
+  "totalPrice": "Tổng tiền: ",
+  "requiredUpdatingYourProfile": "Cần cập nhật hồ sơ của bạn",
+  "notLoggedIn": "Chưa đăng nhập",
+  "yourAccountEmailHasNotBeenVerifyPleaseVerifyTo": "Email tài khoản của bạn chưa được xác minh. Vui lòng xác minh để tiếp tục!",
+  "onlyUserRoleIsAllowed": "Chỉ cho phép vai trò USER",
+  "noInternetConnection": "Không có kết nối Internet",
+  "slowInternetConnection": "Kết nối internet chậm",
+  "networkError": "Lỗi mạng"
 }

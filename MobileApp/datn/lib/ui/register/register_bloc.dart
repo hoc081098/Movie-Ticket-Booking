@@ -89,7 +89,7 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
                 .map<RegisterMessage>((email) => RegisterSuccessMessage(email))
                 .onErrorReturnWith(
                   (error) => RegisterErrorMessage(
-                    'Register error: ${getErrorMessage(error)}',
+                    'Register error: ${getErrorMessageDeprecated(error)}',
                     error,
                   ),
                 ),

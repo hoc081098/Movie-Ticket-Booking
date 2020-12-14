@@ -70,7 +70,7 @@ class ResetPasswordBloc extends DisposeCallbackBaseBloc {
                 .map<Message>((email) => SuccessMessage(email))
                 .onErrorReturnWith(
                   (error) => ErrorMessage(
-                    'Reset password error: ${getErrorMessage(error)}',
+                    'Reset password error: ${getErrorMessageDeprecated(error)}',
                     error,
                   ),
                 ),

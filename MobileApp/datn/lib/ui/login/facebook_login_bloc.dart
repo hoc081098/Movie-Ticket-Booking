@@ -70,7 +70,7 @@ class FacebookLoginBloc extends DisposeCallbackBaseBloc {
       yield const LoginSuccessMessage();
     } catch (e) {
       yield LoginErrorMessage(
-        'Facebook login error: ${getErrorMessage(e)}',
+        'Facebook login error: ${getErrorMessageDeprecated(e)}',
         e,
       );
     }

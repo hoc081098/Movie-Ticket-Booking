@@ -452,7 +452,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
               return MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(getErrorMessage(state.error)),
+                    .error_with_message(context.getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               );
             }
@@ -989,7 +989,7 @@ class NearbyTheatresList extends StatelessWidget {
               padding: padding,
               child: MyErrorWidget(
                 errorText:
-                    context.s.error_with_message(getErrorMessage(state.error)),
+                    context.s.error_with_message(context.getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             ),

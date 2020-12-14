@@ -9,6 +9,7 @@ import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/repository/reservation_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/utils.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
@@ -65,12 +66,12 @@ class _ReservationsPageState extends State<ReservationsPage>
     store.actionStream.listen((action) {
       if (action is FailureAction) {
         context.showSnackBar(
-          'Error occurred: ${getErrorMessage(action.error)}',
+          S.of(context).error_with_message(getErrorMessage(action.error)),
         );
       }
       if (action is SuccessAction) {
         if (action.reservations.isEmpty) {
-          context.showSnackBar('Loaded all reservations');
+          context.showSnackBar(S.of(context).loadedAllReservations);
         }
       }
     }).disposedBy(bag);
@@ -80,7 +81,7 @@ class _ReservationsPageState extends State<ReservationsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your reservations'),
+        title: Text(S.of(context).yourReservations),
       ),
       body: StreamBuilder<ReservationsState>(
         stream: store.stateStream,
@@ -104,7 +105,9 @@ class _ReservationsPageState extends State<ReservationsPage>
           if (state.error != null && state.isFirstPage) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: S
+                    .of(context)
+                    .error_with_message(getErrorMessage(state.error)),
                 onPressed: () => store.dispatch(const RetryAction()),
               ),
             );
@@ -113,7 +116,7 @@ class _ReservationsPageState extends State<ReservationsPage>
           if (state.items.isEmpty) {
             return Center(
               child: EmptyWidget(
-                message: 'Empty reservation',
+                message: S.of(context).emptyReservation,
               ),
             );
           }
@@ -142,8 +145,9 @@ class _ReservationsPageState extends State<ReservationsPage>
                   return Padding(
                     padding: const EdgeInsets.all(12),
                     child: MyErrorWidget(
-                      errorText:
-                          'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
+                      errorText: S
+                          .of(context)
+                          .error_with_message(getErrorMessage(state.error)),
                       onPressed: () => store.dispatch(const RetryAction()),
                     ),
                   );

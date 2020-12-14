@@ -510,6 +510,146 @@ class S {
       args: [message],
     );
   }
+
+  /// `Loaded all reservations`
+  String get loadedAllReservations {
+    return Intl.message(
+      'Loaded all reservations',
+      name: 'loadedAllReservations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your reservations`
+  String get yourReservations {
+    return Intl.message(
+      'Your reservations',
+      name: 'yourReservations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty reservation`
+  String get emptyReservation {
+    return Intl.message(
+      'Empty reservation',
+      name: 'emptyReservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coupon code: `
+  String get couponCode {
+    return Intl.message(
+      'Coupon code: ',
+      name: 'couponCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discount: `
+  String get discount {
+    return Intl.message(
+      'Discount: ',
+      name: 'discount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Original price: `
+  String get originalPrice {
+    return Intl.message(
+      'Original price: ',
+      name: 'originalPrice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total price: `
+  String get totalPrice {
+    return Intl.message(
+      'Total price: ',
+      name: 'totalPrice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required updating your profile`
+  String get requiredUpdatingYourProfile {
+    return Intl.message(
+      'Required updating your profile',
+      name: 'requiredUpdatingYourProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not logged in`
+  String get notLoggedIn {
+    return Intl.message(
+      'Not logged in',
+      name: 'notLoggedIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your account email has not been verify. Please verify to continue!`
+  String get yourAccountEmailHasNotBeenVerifyPleaseVerifyTo {
+    return Intl.message(
+      'Your account email has not been verify. Please verify to continue!',
+      name: 'yourAccountEmailHasNotBeenVerifyPleaseVerifyTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only USER role is allowed`
+  String get onlyUserRoleIsAllowed {
+    return Intl.message(
+      'Only USER role is allowed',
+      name: 'onlyUserRoleIsAllowed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection`
+  String get noInternetConnection {
+    return Intl.message(
+      'No internet connection',
+      name: 'noInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Slow internet connection`
+  String get slowInternetConnection {
+    return Intl.message(
+      'Slow internet connection',
+      name: 'slowInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network error`
+  String get networkError {
+    return Intl.message(
+      'Network error',
+      name: 'networkError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

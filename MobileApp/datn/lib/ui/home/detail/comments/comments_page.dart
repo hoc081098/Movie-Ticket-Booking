@@ -210,7 +210,7 @@ class CommentItemsListWidget extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: MyErrorWidget(
               errorText:
-                  'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
+                  'Load page ${state.page}, error: ${context.getErrorMessage(state.error)}',
               onPressed: () => dispatch(const RetryAction()),
             ),
           );

@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:rxdart/src/streams/value_stream.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/user.dart';
 import '../../domain/repository/user_repository.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/optional.dart';
 import '../../utils/snackbar.dart';
@@ -407,7 +407,7 @@ class LoggedIn extends StatelessWidget {
                 } catch (e, s) {
                   print('logout $e $s');
                   context.showSnackBar(
-                      S.of(context).logoutFailed(getErrorMessage(e)));
+                      S.of(context).logoutFailed(context.getErrorMessage(e)));
                 }
               }
             },

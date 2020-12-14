@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../domain/model/reservation.dart';
 import '../../../domain/model/ticket.dart';
+import '../../../generated/l10n.dart';
 import '../../app_scaffold.dart';
 import '../../home/checkout/widgets/header.dart';
 import '../reservation_detail/reservation_detail_page.dart';
@@ -53,7 +54,7 @@ class ReservationListItem extends StatelessWidget {
             if (promotion != null) ...[
               RichText(
                 text: TextSpan(
-                  text: 'Coupon code: ',
+                  text: S.of(context).couponCode,
                   style: textStyle,
                   children: [
                     TextSpan(
@@ -69,7 +70,7 @@ class ReservationListItem extends StatelessWidget {
               const SizedBox(height: 8),
               RichText(
                 text: TextSpan(
-                  text: 'Discount: ',
+                  text: S.of(context).discount,
                   style: textStyle,
                   children: [
                     TextSpan(
@@ -84,7 +85,7 @@ class ReservationListItem extends StatelessWidget {
             ],
             RichText(
               text: TextSpan(
-                text: 'Original price: ',
+                text: S.of(context).originalPrice,
                 style: textStyle,
                 children: [
                   TextSpan(
@@ -98,7 +99,7 @@ class ReservationListItem extends StatelessWidget {
             const SizedBox(height: 8),
             RichText(
               text: TextSpan(
-                text: 'Total price: ',
+                text: S.of(context).totalPrice,
                 style: textStyle,
                 children: [
                   TextSpan(

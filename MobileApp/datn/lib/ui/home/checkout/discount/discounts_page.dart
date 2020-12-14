@@ -125,7 +125,7 @@ class DiscountsPage extends StatelessWidget {
           if (state.error != null) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: 'Error: ${context.getErrorMessage(state.error)}',
                 onPressed: bloc.fetch,
               ),
             );

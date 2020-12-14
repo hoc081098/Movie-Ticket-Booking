@@ -45,5 +45,19 @@
   "birthday": "Birthday",
   "logoutOut": "Logout out",
   "areYouSureYouWantToLogout": "Are you sure you want to logout?",
-  "logoutFailed": "Logout failed: {message}"
+  "logoutFailed": "Logout failed: {message}",
+  "loadedAllReservations": "Loaded all reservations",
+  "yourReservations": "Your reservations",
+  "emptyReservation": "Empty reservation",
+  "couponCode": "Coupon code: ",
+  "discount": "Discount: ",
+  "originalPrice": "Original price: ",
+  "totalPrice": "Total price: ",
+  "requiredUpdatingYourProfile": "Required updating your profile",
+  "notLoggedIn": "Not logged in",
+  "yourAccountEmailHasNotBeenVerifyPleaseVerifyTo": "Your account email has not been verify. Please verify to continue!",
+  "onlyUserRoleIsAllowed": "Only USER role is allowed",
+  "noInternetConnection": "No internet connection",
+  "slowInternetConnection": "Slow internet connection",
+  "networkError": "Network error"
 }
