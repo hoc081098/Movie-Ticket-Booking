@@ -83,7 +83,9 @@ extension ScrollPositionStreamExt on ScrollController {
 
   Stream<void> nearBottomEdge$() => scroll$()
       .debounceTime(const Duration(milliseconds: 100))
-      .mapNotNull((sc) => sc.hasClients
-          ? sc.offset + 56 * 2 >= sc.position.maxScrollExtent
-          : null);
+      .where(
+        (sc) =>
+            sc.hasClients && sc.offset + 56 * 2 >= sc.position.maxScrollExtent,
+      )
+      .mapTo<void>(null);
 }
