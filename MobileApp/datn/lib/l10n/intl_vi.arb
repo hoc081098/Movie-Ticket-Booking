@@ -36,7 +36,7 @@
   "startAt": "Bắt đầu lúc: ",
   "theatre": "Rạp: ",
   "room": " Phòng: ",
-  "tickets": "Vé của bạn",
+  "tickets": "Vé",
   "email": "Email",
   "fullName": "Tên đầy đủ",
   "phoneNumber": "Số điện thoại",
@@ -59,5 +59,13 @@
   "onlyUserRoleIsAllowed": "Chỉ cho phép vai trò USER",
   "noInternetConnection": "Không có kết nối Internet",
   "slowInternetConnection": "Kết nối internet chậm",
-  "networkError": "Lỗi mạng"
+  "networkError": "Lỗi mạng",
+  "myTicket": "Vé của tôi",
+  "title": "Tiêu đề phim",
+  "date": "Ngày",
+  "time": "Thời gian",
+  "orderId": "ID đặt chỗ",
+  "checkYourMail": "Kiểm tra email: ",
+  "myTicket_room": "Phòng",
+  "myTicket_theatre": "Rạp"
 }

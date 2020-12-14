@@ -59,5 +59,13 @@
   "onlyUserRoleIsAllowed": "Only USER role is allowed",
   "noInternetConnection": "No internet connection",
   "slowInternetConnection": "Slow internet connection",
-  "networkError": "Network error"
+  "networkError": "Network error",
+  "myTicket": "My ticket",
+  "title": "Title",
+  "date": "Date",
+  "time": "Time",
+  "orderId": "Order ID",
+  "checkYourMail": "Check your mail: ",
+  "myTicket_room": "Room",
+  "myTicket_theatre": "Theatre"
 }

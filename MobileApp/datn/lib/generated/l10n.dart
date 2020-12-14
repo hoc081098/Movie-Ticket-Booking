@@ -650,6 +650,86 @@ class S {
       args: [],
     );
   }
+
+  /// `My ticket`
+  String get myTicket {
+    return Intl.message(
+      'My ticket',
+      name: 'myTicket',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get title {
+    return Intl.message(
+      'Title',
+      name: 'title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message(
+      'Date',
+      name: 'date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time`
+  String get time {
+    return Intl.message(
+      'Time',
+      name: 'time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order ID`
+  String get orderId {
+    return Intl.message(
+      'Order ID',
+      name: 'orderId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your mail: `
+  String get checkYourMail {
+    return Intl.message(
+      'Check your mail: ',
+      name: 'checkYourMail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Room`
+  String get myTicket_room {
+    return Intl.message(
+      'Room',
+      name: 'myTicket_room',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theatre`
+  String get myTicket_theatre {
+    return Intl.message(
+      'Theatre',
+      name: 'myTicket_theatre',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
