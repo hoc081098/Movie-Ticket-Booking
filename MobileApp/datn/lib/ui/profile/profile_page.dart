@@ -404,6 +404,7 @@ class LoggedIn extends StatelessWidget {
               if (identical(shouldLogout, true)) {
                 try {
                   await Provider.of<UserRepository>(context).logout();
+                  context.showSnackBar(S.of(context).loggedOutSuccessfully);
                 } catch (e, s) {
                   print('logout $e $s');
                   context.showSnackBar(

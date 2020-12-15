@@ -128,9 +128,27 @@ extension NavigatorStateX on NavigatorState {
     String routeName, {
     Object arguments,
   }) {
+    _removeCurrentSnackBar();
+    return pushNamed(routeName, arguments: arguments);
+  }
+
+  @optionalTypeArgs
+  Future<T> pushNamedAndRemoveUntilX<T>(
+    String newRouteName,
+    RoutePredicate predicate, {
+    Object arguments,
+  }) {
+    _removeCurrentSnackBar();
+    return pushNamedAndRemoveUntil(
+      newRouteName,
+      predicate,
+      arguments: arguments,
+    );
+  }
+
+  void _removeCurrentSnackBar() {
     try {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
     } catch (_) {}
-    return pushNamed(routeName, arguments: arguments);
   }
 }

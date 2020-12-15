@@ -1,3 +1,4 @@
+import 'package:datn/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -195,7 +196,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     listenToken ??= Provider.of<UserRepository>(context)
         .user$
         .where((userOptional) => userOptional != null && userOptional is None)
-        .listen((event) => Navigator.of(context).pushNamedAndRemoveUntil(
+        .listen((event) => Navigator.of(context).pushNamedAndRemoveUntilX(
               LoginPage.routeName,
               (route) => false,
             ))

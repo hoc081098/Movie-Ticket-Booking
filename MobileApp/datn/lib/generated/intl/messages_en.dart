@@ -94,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loadedAllComments" : MessageLookupByLibrary.simpleMessage("Loaded all comments"),
     "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Loaded all notifications"),
     "loadedAllReservations" : MessageLookupByLibrary.simpleMessage("Loaded all reservations"),
+    "loggedOutSuccessfully" : MessageLookupByLibrary.simpleMessage("Logged out successfully"),
     "logoutFailed" : m8,
     "logoutOut" : MessageLookupByLibrary.simpleMessage("Logout out"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("MOST FAVORITE"),

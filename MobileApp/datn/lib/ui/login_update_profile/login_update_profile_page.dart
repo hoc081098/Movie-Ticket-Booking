@@ -22,6 +22,7 @@ import '../../domain/repository/user_repository.dart';
 import '../../env_manager.dart';
 import '../../utils/error.dart';
 import '../../utils/snackbar.dart';
+import '../app_scaffold.dart';
 import '../main_page.dart';
 
 class UpdateProfilePage extends StatefulWidget {
@@ -610,8 +611,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       );
       context.showSnackBar('Update profile successfully');
       if (widget.user == null) {
-        await Navigator.pushNamedAndRemoveUntil(
-          context,
+        await Navigator.of(context).pushNamedAndRemoveUntilX(
           MainPage.routeName,
           (route) => false,
         );

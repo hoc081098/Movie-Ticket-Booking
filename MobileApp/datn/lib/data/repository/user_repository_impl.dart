@@ -195,9 +195,9 @@ class UserRepositoryImpl implements UserRepository {
     await _auth.signOut();
 
     // local
+    await _searchKeywordSource.clear();
     await _userLocalSource.saveToken(null);
     await _userLocalSource.saveUser(null);
-    await _searchKeywordSource.clear();
   }
 
   /// A [FirebaseAuthException] maybe thrown with the following error code:

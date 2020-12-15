@@ -94,5 +94,6 @@
   "directors": "DIRECTORS",
   "relatedMovies": "RELATED MOVIES",
   "cannotOpenTrailerVideo": "Cannot open trailer video",
-  "emptyRelatedMovie": "Empty related movie"
+  "emptyRelatedMovie": "Empty related movie",
+  "loggedOutSuccessfully": "Logged out successfully"
 }

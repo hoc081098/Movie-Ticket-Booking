@@ -94,5 +94,6 @@
   "directors": "ĐẠO DIỄN",
   "relatedMovies": "PHIM LIÊN QUAN",
   "cannotOpenTrailerVideo": "Không thể mở video giới thiệu",
-  "emptyRelatedMovie": "Không có phim liên quan nào"
+  "emptyRelatedMovie": "Không có phim liên quan nào",
+  "loggedOutSuccessfully": "Đăng xuất thành công"
 }
