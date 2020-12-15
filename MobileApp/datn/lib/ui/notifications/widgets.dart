@@ -52,7 +52,7 @@ class NotificationItemWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        AppScaffold.of(context, newTabIndex: 3).pushNamed(
+        AppScaffold.of(context, newTabIndex: 3).pushNamedX(
           ReservationDetailPage.routeName,
           arguments: reservation,
         );

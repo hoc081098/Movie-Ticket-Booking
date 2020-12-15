@@ -246,7 +246,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
               child: FloatingActionButton.extended(
                 onPressed: () async {
                   final added = await AppScaffold.of(context)
-                      .pushNamed(AddCardPage.routeName);
+                      .pushNamedX(AddCardPage.routeName);
                   if (added != null) {
                     bloc.cardAdded(added as domain.Card);
                   }

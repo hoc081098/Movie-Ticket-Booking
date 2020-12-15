@@ -37,7 +37,7 @@ class SelectDiscount extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () async {
-            final promotion = (await AppScaffold.of(context).pushNamed(
+            final promotion = (await AppScaffold.of(context).pushNamedX(
               DiscountsPage.routeName,
               arguments: showTime.id,
             )) as Promotion;

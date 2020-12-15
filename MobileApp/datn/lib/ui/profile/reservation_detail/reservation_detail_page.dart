@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -11,6 +10,7 @@ import 'package:stream_loader/stream_loader.dart';
 import '../../../domain/model/reservation.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/reservation_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
 import '../../widgets/error_widget.dart';
 

@@ -33,7 +33,7 @@ class SelectedCard extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () async {
-            final card = (await AppScaffold.of(context).pushNamed(
+            final card = (await AppScaffold.of(context).pushNamedX(
               CardsPage.routeName,
               arguments: bloc.selectedCard$.value,
             )) as domain.Card;

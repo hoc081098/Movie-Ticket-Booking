@@ -51,34 +51,38 @@ class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
               itemSize: 54,
               onRatingUpdate: (v) => bloc.rateChanged(v.toInt()),
               itemBuilder: (context, index) {
-                switch (index) {
-                  case 0:
-                    return Icon(
-                      Icons.sentiment_very_dissatisfied,
-                      color: Colors.red,
-                    );
-                  case 1:
-                    return Icon(
-                      Icons.sentiment_dissatisfied,
-                      color: Colors.redAccent,
-                    );
-                  case 2:
-                    return Icon(
-                      Icons.sentiment_neutral,
-                      color: Colors.amber,
-                    );
-                  case 3:
-                    return Icon(
-                      Icons.sentiment_satisfied,
-                      color: Colors.lightGreen,
-                    );
-                  case 4:
-                    return Icon(
-                      Icons.sentiment_very_satisfied,
-                      color: Colors.green,
-                    );
-                }
-                throw StateError('$index');
+                return const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                );
+                // switch (index) {
+                //   case 0:
+                //     return Icon(
+                //       Icons.sentiment_very_dissatisfied,
+                //       color: Colors.red,
+                //     );
+                //   case 1:
+                //     return Icon(
+                //       Icons.sentiment_dissatisfied,
+                //       color: Colors.redAccent,
+                //     );
+                //   case 2:
+                //     return Icon(
+                //       Icons.sentiment_neutral,
+                //       color: Colors.amber,
+                //     );
+                //   case 3:
+                //     return Icon(
+                //       Icons.sentiment_satisfied,
+                //       color: Colors.lightGreen,
+                //     );
+                //   case 4:
+                //     return Icon(
+                //       Icons.sentiment_very_satisfied,
+                //       color: Colors.green,
+                //     );
+                // }
+                // throw StateError('$index');
               },
             ),
             const SizedBox(height: 32),

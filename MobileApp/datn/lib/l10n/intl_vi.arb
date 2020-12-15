@@ -89,7 +89,7 @@
   "addCommentFailureMessage": "Thêm nhận xét không thành công: {message}",
   "toggledSuccessfully": "Thêm/xoá yêu thích thành công",
   "toggleFailed": "Thêm/xoá yêu thích không thành công: {message}",
-  "storyline": "CÂU CHUYỆN",
+  "storyline": "NỘI DUNG",
   "castOverview": "DIỄN VIÊN",
   "directors": "ĐẠO DIỄN",
   "relatedMovies": "PHIM LIÊN QUAN",

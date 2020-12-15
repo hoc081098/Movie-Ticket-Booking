@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../domain/model/exception.dart';
 import '../../domain/repository/user_repository.dart';
 import '../../utils/snackbar.dart';
+import '../app_scaffold.dart';
 import '../login_update_profile/login_update_profile_page.dart';
 import '../main_page.dart';
 import '../register/register_page.dart';
@@ -286,7 +287,7 @@ class _LoginPageState extends State<LoginPage>
       context.showSnackBar('Login successfully');
 
       navigator.popUntil((route) => false);
-      navigator.pushNamed(MainPage.routeName);
+      navigator.pushNamedX(MainPage.routeName);
       print('>>>>>>>>>>>>> SignIn to home >>');
 
       return;
@@ -297,7 +298,7 @@ class _LoginPageState extends State<LoginPage>
 
       if (message.error is NotCompletedLoginException) {
         navigator.popUntil((route) => false);
-        navigator.pushNamed(UpdateProfilePage.routeName);
+        navigator.pushNamedX(UpdateProfilePage.routeName);
         print('>>>>>>>>>>>>> SignIn to update >>');
       }
 
@@ -407,8 +408,7 @@ class _LoginPageState extends State<LoginPage>
   Widget needAnAccount(LoginBloc loginBloc) {
     return FlatButton(
       onPressed: () async {
-        final email = await Navigator.pushNamed(
-          context,
+        final email = await Navigator.of(context).pushNamedX(
           RegisterPage.routeName,
         );
         print('[DEBUG] email = $email');
@@ -432,10 +432,8 @@ class _LoginPageState extends State<LoginPage>
   Widget forgotPassword(LoginBloc loginBloc) {
     return FlatButton(
       onPressed: () async {
-        final email = await Navigator.pushNamed(
-          context,
-          ResetPasswordPage.routeName,
-        );
+        final email =
+            await Navigator.of(context).pushNamedX(ResetPasswordPage.routeName);
         print('[DEBUG] email = $email');
         if (email != null && email is String) {
           emailController.text = email;

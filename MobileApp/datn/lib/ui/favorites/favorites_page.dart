@@ -222,7 +222,7 @@ class FavoriteItem extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: () => AppScaffold.of(context, newTabIndex: 0).pushNamed(
+          onTap: () => AppScaffold.of(context, newTabIndex: 0).pushNamedX(
             MovieDetailPage.routeName,
             arguments: item,
           ),

@@ -49,7 +49,7 @@ class ViewAllListItem extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: () => AppScaffold.of(context).pushNamed(
+          onTap: () => AppScaffold.of(context).pushNamedX(
             MovieDetailPage.routeName,
             arguments: item,
           ),

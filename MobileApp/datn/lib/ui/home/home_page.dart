@@ -511,7 +511,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
   ) {
     return InkWell(
       onTap: () {
-        AppScaffold.of(context).pushNamed(
+        AppScaffold.of(context).pushNamedX(
           MovieDetailPage.routeName,
           arguments: item,
         );
@@ -922,16 +922,13 @@ class NearbyTheatreHeader extends StatelessWidget {
                   end: AlignmentDirectional.bottomEnd,
                 ),
               ),
-              child: Hero(
-                tag: 'NEARBY_CINEMAS',
-                child: Text(
-                  context.s.nearby_theatre,
-                  maxLines: 1,
-                  style: textTheme.headline6.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+              child: Text(
+                context.s.nearby_theatre,
+                maxLines: 1,
+                style: textTheme.headline6.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -953,7 +950,7 @@ class ViewAllButton extends StatelessWidget {
 
     return FlatButton(
       padding: const EdgeInsets.all(12),
-      onPressed: () => AppScaffold.of(context).pushNamed(
+      onPressed: () => AppScaffold.of(context).pushNamedX(
         ViewAllPage.routeName,
         arguments: movieType,
       ),
@@ -1046,7 +1043,7 @@ class NearbyTheatresList extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () {
-                        AppScaffold.of(context).pushNamed(
+                        AppScaffold.of(context).pushNamedX(
                           ShowTimesByTheatrePage.routeName,
                           arguments: item,
                         );

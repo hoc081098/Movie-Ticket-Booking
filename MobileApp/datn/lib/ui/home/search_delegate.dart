@@ -72,7 +72,7 @@ class MovieSearchDelegate extends SearchDelegate<String> {
   }
 
   void toSearchPage(BuildContext context, String query, NavigatorState nav) {
-    nav.pushNamed(
+    nav.pushNamedX(
       SearchPage.routeName,
       arguments: query,
     );

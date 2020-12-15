@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () =>
-            AppScaffold.of(context).pushNamed(ReservationsPage.routeName),
+            AppScaffold.of(context).pushNamedX(ReservationsPage.routeName),
         label: Text(S.of(context).tickets),
         icon: FaIcon(FontAwesomeIcons.ticketAlt),
       ),
@@ -252,7 +252,7 @@ class LoggedIn extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () => AppScaffold.of(context).pushNamed(
+            onTap: () => AppScaffold.of(context).pushNamedX(
               UpdateProfilePage.routeName,
               arguments: user,
             ),

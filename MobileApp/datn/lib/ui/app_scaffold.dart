@@ -121,3 +121,16 @@ class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
     );
   }
 }
+
+extension NavigatorStateX on NavigatorState {
+  @optionalTypeArgs
+  Future<T> pushNamedX<T extends Object>(
+    String routeName, {
+    Object arguments,
+  }) {
+    try {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    } catch (_) {}
+    return pushNamed(routeName, arguments: arguments);
+  }
+}

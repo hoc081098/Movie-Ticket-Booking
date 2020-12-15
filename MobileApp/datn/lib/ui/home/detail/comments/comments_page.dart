@@ -142,14 +142,6 @@ class _CommentsPageState extends State<CommentsPage>
           );
         }
 
-        if (state.items.isEmpty) {
-          return Center(
-            child: EmptyWidget(
-              message: S.of(context).emptyComment,
-            ),
-          );
-        }
-
         return CommentItemsListWidget(
           state: state,
           dispatch: store.dispatch,
@@ -196,6 +188,14 @@ class CommentItemsListWidget extends StatelessWidget {
             total: state.total,
             movieId: movieId,
             dispatch: dispatch,
+          );
+        }
+
+        if (items.isEmpty) {
+          return Center(
+            child: EmptyWidget(
+              message: S.of(context).emptyComment,
+            ),
           );
         }
 
@@ -524,7 +524,7 @@ class Header extends StatelessWidget {
         ),
         InkWell(
           onTap: () async {
-            final comment = await AppScaffold.of(context).pushNamed(
+            final comment = await AppScaffold.of(context).pushNamedX(
               AddCommentPage.routeName,
               arguments: movieId,
             );

@@ -37,7 +37,7 @@ class ReservationListItem extends StatelessWidget {
     );
 
     return InkWell(
-      onTap: () => AppScaffold.of(context).pushNamed(
+      onTap: () => AppScaffold.of(context).pushNamedX(
         ReservationDetailPage.routeName,
         arguments: item,
       ),

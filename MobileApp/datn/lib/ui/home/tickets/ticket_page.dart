@@ -451,7 +451,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
     }
 
     final tickets = ids.map((id) => ticketsMap[id]).toBuiltList();
-    AppScaffold.of(context).pushNamed(
+    AppScaffold.of(context).pushNamedX(
       ComboPage.routeName,
       arguments: {
         'showTime': widget.showTime,

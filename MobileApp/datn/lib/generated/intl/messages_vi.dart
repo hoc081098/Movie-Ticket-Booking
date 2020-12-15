@@ -125,7 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "showTimes" : MessageLookupByLibrary.simpleMessage("Lịch chiếu"),
     "slowInternetConnection" : MessageLookupByLibrary.simpleMessage("Kết nối internet chậm"),
     "startAt" : MessageLookupByLibrary.simpleMessage("Bắt đầu lúc: "),
-    "storyline" : MessageLookupByLibrary.simpleMessage("CÂU CHUYỆN"),
+    "storyline" : MessageLookupByLibrary.simpleMessage("NỘI DUNG"),
     "theatre" : MessageLookupByLibrary.simpleMessage("Rạp: "),
     "tickets" : MessageLookupByLibrary.simpleMessage("Vé"),
     "time" : MessageLookupByLibrary.simpleMessage("Thời gian"),
