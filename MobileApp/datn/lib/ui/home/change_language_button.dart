@@ -13,7 +13,9 @@ final supportedLocaleTitles = <Locale, String>{
 };
 
 class ChangeLanguageButton extends StatefulWidget {
-  const ChangeLanguageButton({Key key}) : super(key: key);
+  final Color iconColor;
+
+  const ChangeLanguageButton({Key key, this.iconColor}) : super(key: key);
 
   @override
   _ChangeLanguageButtonState createState() => _ChangeLanguageButtonState();
@@ -76,7 +78,10 @@ class _ChangeLanguageButtonState extends State<ChangeLanguageButton>
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.language),
+      icon: Icon(
+        Icons.language,
+        color: widget.iconColor,
+      ),
       onPressed: press,
     );
   }

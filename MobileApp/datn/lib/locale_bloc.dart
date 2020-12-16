@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 import 'generated/l10n.dart';
 
@@ -31,6 +32,7 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
 
   /// Input
   final void Function(Locale) changeLocale;
+  final Future<void> Function(Locale) resetLocale;
 
   /// Output
   final DistinctValueStream<Locale> locale$;
@@ -38,6 +40,7 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
 
   LocaleBloc._({
     @required this.changeLocale,
+    @required this.resetLocale,
     @required this.locale$,
     @required this.message$,
     @required void Function() dispose,
@@ -48,6 +51,8 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
   ) {
     // ignore_for_file: close_sinks
     final changeLocaleS = StreamController<Locale>(sync: true);
+    final resetS =
+        StreamController<Tuple2<Locale, Completer<void>>>(sync: true);
 
     final locale$ = rxSharedPrefs
         .getStringStream(_localeKey)
@@ -60,12 +65,15 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
         .publishValueDistinct(null, sync: true);
 
     final message$ = changeLocaleS.stream
-        .distinct()
-        .switchMap((l) => _changeLocale(l, rxSharedPrefs))
+        .where((locale) => locale != locale$.value)
+        .switchMap((l) => _changeLocale(Tuple2(l, null), rxSharedPrefs))
         .publish();
 
-    return LocaleBloc._(
+    final bloc = LocaleBloc._(
       dispose: DisposeBag([
+        resetS.stream
+            .exhaustMap((tuple) => _changeLocale(tuple, rxSharedPrefs))
+            .listen(null),
         locale$.connect(),
         message$.connect(),
         changeLocaleS,
@@ -73,17 +81,28 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
       changeLocale: changeLocaleS.add,
       message$: message$,
       locale$: locale$,
+      resetLocale: (locale) {
+        final completer = Completer<void>();
+        resetS.add(Tuple2(locale, completer));
+        return completer.future;
+      },
     );
+    print('CREATE LOCALE BLOC ${identityHashCode(bloc)}');
+    return bloc;
   }
 
   static Stream<ChangeLocaleMessage> _changeLocale(
-    Locale locale,
+    Tuple2<Locale, Completer<void>> tuple,
     RxSharedPreferences rxSharedPrefs,
   ) {
+    final locale = tuple.item1;
+    final completer = tuple.item2;
+
     return Rx.fromCallable(
             () => rxSharedPrefs.setString(_localeKey, locale.languageCode))
         .map((result) =>
             result ? const ChangeLocaleSuccess() : const ChangeLocaleFailure())
-        .onErrorReturnWith((e) => ChangeLocaleFailure(e));
+        .onErrorReturnWith((e) => ChangeLocaleFailure(e))
+        .doOnCancel(() => completer?.complete());
   }
 }

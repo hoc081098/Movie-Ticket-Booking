@@ -1,3 +1,4 @@
+import 'package:datn/ui/home/change_language_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -430,25 +431,37 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Widget forgotPassword(LoginBloc loginBloc) {
-    return FlatButton(
-      onPressed: () async {
-        final email =
-            await Navigator.of(context).pushNamedX(ResetPasswordPage.routeName);
-        print('[DEBUG] email = $email');
-        if (email != null && email is String) {
-          emailController.text = email;
-          loginBloc.emailChanged(email);
-          FocusScope.of(context).requestFocus(passwordFocusNode);
-        }
-      },
-      child: Text(
-        'Forgot password?',
-        style: TextStyle(
-          color: Colors.white70,
-          fontStyle: FontStyle.italic,
-          fontSize: 14.0,
+    return Stack(
+      children: [
+        Center(
+          child: FlatButton(
+            onPressed: () async {
+              final email = await Navigator.of(context)
+                  .pushNamedX(ResetPasswordPage.routeName);
+              print('[DEBUG] email = $email');
+              if (email != null && email is String) {
+                emailController.text = email;
+                loginBloc.emailChanged(email);
+                FocusScope.of(context).requestFocus(passwordFocusNode);
+              }
+            },
+            child: Text(
+              'Forgot password?',
+              style: TextStyle(
+                color: Colors.white70,
+                fontStyle: FontStyle.italic,
+                fontSize: 14.0,
+              ),
+            ),
+          ),
         ),
-      ),
+        const Align(
+          alignment: AlignmentDirectional.centerEnd,
+          child: ChangeLanguageButton(
+            iconColor: Colors.white,
+          ),
+        )
+      ],
     );
   }
 }

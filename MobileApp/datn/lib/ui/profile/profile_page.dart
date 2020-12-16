@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:datn/locale_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
@@ -10,9 +11,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repository/user_repository.dart';
 import '../../generated/l10n.dart';
-import '../../utils/error.dart';
 import '../../utils/optional.dart';
-import '../../utils/snackbar.dart';
 import '../app_scaffold.dart';
 import '../login_update_profile/login_update_profile_page.dart';
 import 'reservations/reservations_page.dart';
@@ -402,13 +401,15 @@ class LoggedIn extends StatelessWidget {
               );
 
               if (identical(shouldLogout, true)) {
+                final localeBloc = BlocProvider.of<LocaleBloc>(context);
+                final userRepository = Provider.of<UserRepository>(context);
+
                 try {
-                  await Provider.of<UserRepository>(context).logout();
-                  context.showSnackBar(S.of(context).loggedOutSuccessfully);
+                  await userRepository.logout();
+                  await localeBloc.resetLocale(S.delegate.supportedLocales[0]);
+                  print('>>> logged out');
                 } catch (e, s) {
-                  print('logout $e $s');
-                  context.showSnackBar(
-                      S.of(context).logoutFailed(context.getErrorMessage(e)));
+                  print('>>>> logout $e $s');
                 }
               }
             },
