@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/type_defs.dart';
 import 'login_state.dart';
@@ -70,7 +71,9 @@ class FacebookLoginBloc extends DisposeCallbackBaseBloc {
       yield const LoginSuccessMessage();
     } catch (e) {
       yield LoginErrorMessage(
-        'Facebook login error: ${getErrorMessageDeprecated(e)}',
+        S.current.facebookLoginErrorGeterrormessagedeprecatede(
+          getErrorMessageDeprecated(e),
+        ),
         e,
       );
     }

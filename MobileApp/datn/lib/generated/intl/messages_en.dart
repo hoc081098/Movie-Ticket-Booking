@@ -37,29 +37,35 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m8(message) => "Error occurred: ${message}";
 
-  static m9(title) => "Removed failed: ${title}";
+  static m9(msg) => "Facebook login error: ${msg}";
 
-  static m10(title) => "Removed successfully: ${title}";
+  static m10(title) => "Removed failed: ${title}";
 
-  static m11(message) => "Logout failed: ${message}";
+  static m11(title) => "Removed successfully: ${title}";
 
-  static m12(d) => "End: ${d}";
+  static m12(msg) => "Google sign in failed: ${msg}";
 
-  static m13(d) => "Start: ${d}";
+  static m13(msg) => "Login error: ${msg}";
 
-  static m14(last4, msg) => "Remove \'${last4}\' failed: ${msg}";
+  static m14(message) => "Logout failed: ${message}";
 
-  static m15(last4) => "Removed success: \'${last4}\'";
+  static m15(d) => "End: ${d}";
 
-  static m16(seats) => "${Intl.plural(seats, zero: 'seat', one: 'seat', other: 'seats')}";
+  static m16(d) => "Start: ${d}";
 
-  static m17(last4) => "Selected \'••••${last4}\'. Tap to change";
+  static m17(last4, msg) => "Remove \'${last4}\' failed: ${msg}";
 
-  static m18(message) => "Toggle failed: ${message}";
+  static m18(last4) => "Removed success: \'${last4}\'";
 
-  static m19(totalFavorite) => "${Intl.plural(totalFavorite, zero: '0 favorite', one: '1 favorite', other: '${totalFavorite} favorites')}";
+  static m19(seats) => "${Intl.plural(seats, zero: 'seat', one: 'seat', other: 'seats')}";
 
-  static m20(totalRate) => "${Intl.plural(totalRate, zero: '0 review', one: '1 review', other: '${totalRate} reviews')}";
+  static m20(last4) => "Selected \'••••${last4}\'. Tap to change";
+
+  static m21(message) => "Toggle failed: ${message}";
+
+  static m22(totalFavorite) => "${Intl.plural(totalFavorite, zero: '0 favorite', one: '1 favorite', other: '${totalFavorite} favorites')}";
+
+  static m23(totalRate) => "${Intl.plural(totalRate, zero: '0 review', one: '1 review', other: '${totalRate} reviews')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -67,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "CONTINUE" : MessageLookupByLibrary.simpleMessage("CONTINUE"),
     "DESCRIPTION" : MessageLookupByLibrary.simpleMessage("DESCRIPTION"),
     "FINISH" : MessageLookupByLibrary.simpleMessage("FINISH"),
+    "LOGIN" : MessageLookupByLibrary.simpleMessage("LOGIN"),
     "OFF" : MessageLookupByLibrary.simpleMessage("OFF"),
     "SCREEN" : MessageLookupByLibrary.simpleMessage("SCREEN"),
     "addCard" : MessageLookupByLibrary.simpleMessage("Add card"),
@@ -110,6 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "directors" : MessageLookupByLibrary.simpleMessage("DIRECTORS"),
     "discount" : MessageLookupByLibrary.simpleMessage("Discount: "),
     "doYouWantToDeleteThisCommentThisActionCannot" : MessageLookupByLibrary.simpleMessage("Do you want to delete this comment. This action cannot be undone!"),
+    "dontHaveAnAccountSignUp" : MessageLookupByLibrary.simpleMessage("Don\'t have an account? Sign up"),
     "doubledSeat" : MessageLookupByLibrary.simpleMessage("Doubled seat"),
     "doubledTicket" : MessageLookupByLibrary.simpleMessage("Doubled ticket"),
     "durationMinsFrom" : MessageLookupByLibrary.simpleMessage("Duration (mins) from "),
@@ -129,14 +137,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "empty_theatre" : MessageLookupByLibrary.simpleMessage("Empty theatre"),
     "error_with_message" : m8,
     "expireDateMmyy" : MessageLookupByLibrary.simpleMessage("Expire date (MM/yy)"),
-    "fav_removed_failed_with_title" : m9,
-    "fav_removed_successfully_with_title" : m10,
+    "facebookLoginErrorGeterrormessagedeprecatede" : m9,
+    "fav_removed_failed_with_title" : m10,
+    "fav_removed_successfully_with_title" : m11,
     "favorites" : MessageLookupByLibrary.simpleMessage("Favorites"),
+    "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password?"),
     "fullName" : MessageLookupByLibrary.simpleMessage("Full name"),
     "gender" : MessageLookupByLibrary.simpleMessage("Gender"),
+    "googleSignInFailedGeterrormessagedeprecatede" : m12,
     "home" : MessageLookupByLibrary.simpleMessage("Home"),
     "information" : MessageLookupByLibrary.simpleMessage("Information"),
     "invalidEmailAddress" : MessageLookupByLibrary.simpleMessage("Invalid email address"),
+    "invalidInformation" : MessageLookupByLibrary.simpleMessage("Invalid information"),
     "invalidPhoneNumber" : MessageLookupByLibrary.simpleMessage("Invalid phone number"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Load image error"),
     "loadedAllComments" : MessageLookupByLibrary.simpleMessage("Loaded all comments"),
@@ -144,7 +156,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Loaded all notifications"),
     "loadedAllReservations" : MessageLookupByLibrary.simpleMessage("Loaded all reservations"),
     "loggedOutSuccessfully" : MessageLookupByLibrary.simpleMessage("Logged out successfully"),
-    "logoutFailed" : m11,
+    "loginErrorGeterrormessagedeprecatederror" : m13,
+    "loginSuccessfully" : MessageLookupByLibrary.simpleMessage("Login successfully"),
+    "loginToYourAccount" : MessageLookupByLibrary.simpleMessage("Login to your Account"),
+    "logoutFailed" : m14,
     "logoutOut" : MessageLookupByLibrary.simpleMessage("Logout out"),
     "maximumComboCount" : MessageLookupByLibrary.simpleMessage("Maximum combo count"),
     "missingRequiredFields" : MessageLookupByLibrary.simpleMessage("Missing required fields"),
@@ -169,25 +184,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "onlyUserRoleIsAllowed" : MessageLookupByLibrary.simpleMessage("Only USER role is allowed"),
     "orderId" : MessageLookupByLibrary.simpleMessage("Order ID"),
     "originalPrice" : MessageLookupByLibrary.simpleMessage("Original price: "),
+    "password" : MessageLookupByLibrary.simpleMessage("Password"),
+    "passwordMustBeAtLeast6Characters" : MessageLookupByLibrary.simpleMessage("Password must be at least 6 characters"),
     "phoneNumber" : MessageLookupByLibrary.simpleMessage("Phone number"),
     "phoneNumberToReceiveTickets" : MessageLookupByLibrary.simpleMessage("Phone number to receive tickets"),
     "profile" : MessageLookupByLibrary.simpleMessage("Profile"),
-    "promotionEnd" : m12,
-    "promotionStart" : m13,
+    "promotionEnd" : m15,
+    "promotionStart" : m16,
     "recommended_for_you" : MessageLookupByLibrary.simpleMessage("RECOMMENDED FOR YOU"),
     "relatedMovies" : MessageLookupByLibrary.simpleMessage("RELATED MOVIES"),
     "releasedDateFrom" : MessageLookupByLibrary.simpleMessage("Released date from "),
     "remove" : MessageLookupByLibrary.simpleMessage("Remove"),
     "removeCard" : MessageLookupByLibrary.simpleMessage("Remove card"),
-    "removeMsgcardlast4FailedGeterrormessagemsgerror" : m14,
+    "removeMsgcardlast4FailedGeterrormessagemsgerror" : m17,
     "removeThisComment" : MessageLookupByLibrary.simpleMessage("Remove this comment"),
-    "removedSuccessMsgremovedlast4" : m15,
+    "removedSuccessMsgremovedlast4" : m18,
     "requiredUpdatingYourProfile" : MessageLookupByLibrary.simpleMessage("Required updating your profile"),
     "retry" : MessageLookupByLibrary.simpleMessage("Retry"),
     "reviews" : MessageLookupByLibrary.simpleMessage(" reviews"),
     "room" : MessageLookupByLibrary.simpleMessage(" Room: "),
     "searchFilter" : MessageLookupByLibrary.simpleMessage("Search filter"),
-    "seat_s" : m16,
+    "seat_s" : m19,
     "select" : MessageLookupByLibrary.simpleMessage("Select"),
     "selectCouponCode" : MessageLookupByLibrary.simpleMessage("Select coupon code"),
     "selectDiscountCode" : MessageLookupByLibrary.simpleMessage("Select discount code"),
@@ -195,7 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectTheArea" : MessageLookupByLibrary.simpleMessage("Select the area: "),
     "select_city" : MessageLookupByLibrary.simpleMessage("Select city"),
     "selected" : MessageLookupByLibrary.simpleMessage("Selected"),
-    "selectedCardlast4TapToChange" : m17,
+    "selectedCardlast4TapToChange" : m20,
     "showTimes" : MessageLookupByLibrary.simpleMessage("Show times"),
     "showtimeEndTimeMustBeAfterStartTime" : MessageLookupByLibrary.simpleMessage("Showtime end time must be after start time"),
     "showtimeStartFrom" : MessageLookupByLibrary.simpleMessage("Showtime start from "),
@@ -213,11 +230,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "title" : MessageLookupByLibrary.simpleMessage("Title"),
     "to" : MessageLookupByLibrary.simpleMessage(" to "),
     "today" : MessageLookupByLibrary.simpleMessage("Today"),
-    "toggleFailed" : m18,
+    "toggleFailed" : m21,
     "toggledSuccessfully" : MessageLookupByLibrary.simpleMessage("Toggled successfully"),
     "totalPrice" : MessageLookupByLibrary.simpleMessage("Total price: "),
-    "total_favorite" : m19,
-    "total_rate_review" : m20,
+    "total_favorite" : m22,
+    "total_rate_review" : m23,
     "view_all" : MessageLookupByLibrary.simpleMessage("VIEW ALL"),
     "warning" : MessageLookupByLibrary.simpleMessage("Warning"),
     "yourAccountEmailHasNotBeenVerifyPleaseVerifyTo" : MessageLookupByLibrary.simpleMessage("Your account email has not been verify. Please verify to continue!"),

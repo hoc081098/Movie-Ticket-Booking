@@ -159,5 +159,16 @@
   "apply": "Apply",
   "count_movie": "{movies,plural, =0{0 movie}=1{1 movie}other{{movies} movies}}",
   "DESCRIPTION": "DESCRIPTION",
-  "loadedAllMovies": "Loaded all movies"
+  "loadedAllMovies": "Loaded all movies",
+  "loginToYourAccount": "Login to your Account",
+  "loginSuccessfully": "Login successfully",
+  "invalidInformation": "Invalid information",
+  "password": "Password",
+  "LOGIN": "LOGIN",
+  "forgotPassword": "Forgot password?",
+  "loginErrorGeterrormessagedeprecatederror": "Login error: {msg}",
+  "passwordMustBeAtLeast6Characters": "Password must be at least 6 characters",
+  "googleSignInFailedGeterrormessagedeprecatede": "Google sign in failed: {msg}",
+  "facebookLoginErrorGeterrormessagedeprecatede": "Facebook login error: {msg}",
+  "dontHaveAnAccountSignUp": "Don't have an account? Sign up"
 }

@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/type_defs.dart';
 import 'login_state.dart';
@@ -69,7 +70,11 @@ class GoogleSignInBloc extends DisposeCallbackBaseBloc {
       yield const LoginSuccessMessage();
     } catch (e) {
       yield LoginErrorMessage(
-          'Google sign in failed: ${getErrorMessageDeprecated(e)}', e);
+        S.current.googleSignInFailedGeterrormessagedeprecatede(
+          getErrorMessageDeprecated(e),
+        ),
+        e,
+      );
     }
     isLoadingController.add(false);
   }

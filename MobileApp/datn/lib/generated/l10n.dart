@@ -1656,6 +1656,116 @@ class S {
       args: [],
     );
   }
+
+  /// `Login to your Account`
+  String get loginToYourAccount {
+    return Intl.message(
+      'Login to your Account',
+      name: 'loginToYourAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login successfully`
+  String get loginSuccessfully {
+    return Intl.message(
+      'Login successfully',
+      name: 'loginSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid information`
+  String get invalidInformation {
+    return Intl.message(
+      'Invalid information',
+      name: 'invalidInformation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `LOGIN`
+  String get LOGIN {
+    return Intl.message(
+      'LOGIN',
+      name: 'LOGIN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot password?`
+  String get forgotPassword {
+    return Intl.message(
+      'Forgot password?',
+      name: 'forgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login error: {msg}`
+  String loginErrorGeterrormessagedeprecatederror(Object msg) {
+    return Intl.message(
+      'Login error: $msg',
+      name: 'loginErrorGeterrormessagedeprecatederror',
+      desc: '',
+      args: [msg],
+    );
+  }
+
+  /// `Password must be at least 6 characters`
+  String get passwordMustBeAtLeast6Characters {
+    return Intl.message(
+      'Password must be at least 6 characters',
+      name: 'passwordMustBeAtLeast6Characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Google sign in failed: {msg}`
+  String googleSignInFailedGeterrormessagedeprecatede(Object msg) {
+    return Intl.message(
+      'Google sign in failed: $msg',
+      name: 'googleSignInFailedGeterrormessagedeprecatede',
+      desc: '',
+      args: [msg],
+    );
+  }
+
+  /// `Facebook login error: {msg}`
+  String facebookLoginErrorGeterrormessagedeprecatede(Object msg) {
+    return Intl.message(
+      'Facebook login error: $msg',
+      name: 'facebookLoginErrorGeterrormessagedeprecatede',
+      desc: '',
+      args: [msg],
+    );
+  }
+
+  /// `Don't have an account? Sign up`
+  String get dontHaveAnAccountSignUp {
+    return Intl.message(
+      'Don\'t have an account? Sign up',
+      name: 'dontHaveAnAccountSignUp',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

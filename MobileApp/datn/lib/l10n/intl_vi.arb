@@ -159,5 +159,16 @@
   "apply": "Áp dụng",
   "count_movie": "{movies,plural, other{{movies} bộ phim}}",
   "DESCRIPTION": "GIỚI THIỆU",
-  "loadedAllMovies": "Đã tải tất cả phim"
+  "loadedAllMovies": "Đã tải tất cả phim",
+  "loginToYourAccount": "Đăng nhập",
+  "loginSuccessfully": "Đăng nhập thành công",
+  "invalidInformation": "Thông tin không hợp lệ",
+  "password": "Mật khẩu",
+  "LOGIN": "ĐĂNG NHẬP",
+  "forgotPassword": "Quên mật khẩu?",
+  "loginErrorGeterrormessagedeprecatederror": "Lỗi đăng nhập: {msg}",
+  "passwordMustBeAtLeast6Characters": "Mật khẩu ít nhất 6 kí tự",
+  "googleSignInFailedGeterrormessagedeprecatede": "Đăng nhập Google không thành công: {msg}",
+  "facebookLoginErrorGeterrormessagedeprecatede": "Lỗi khi đăng nhập Facebook: {msg}",
+  "dontHaveAnAccountSignUp": "Không có tài khoản? Đăng ký ngay"
 }

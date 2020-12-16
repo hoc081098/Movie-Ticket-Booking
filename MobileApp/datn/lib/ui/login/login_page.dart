@@ -3,10 +3,13 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/exception.dart';
 import '../../domain/repository/user_repository.dart';
+import '../../generated/l10n.dart';
+import '../../utils/delay.dart';
 import '../../utils/snackbar.dart';
 import '../app_scaffold.dart';
 import '../home/change_language_button.dart';
@@ -154,7 +157,7 @@ class _LoginPageState extends State<LoginPage>
                     Image.asset('assets/images/enjoy.png'),
                     const SizedBox(height: 24),
                     Text(
-                      'Login to your Account',
+                      S.of(context).loginToYourAccount,
                       style: Theme.of(context).textTheme.headline6.copyWith(
                             fontSize: 18,
                             color: Colors.white,
@@ -280,15 +283,16 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  void handleMessage(LoginMessage message) {
+  void handleMessage(LoginMessage message) async {
     final navigator = Navigator.of(context);
     print('>>>>>>>>>>>>> SignIn $message >> $navigator');
 
     if (message is LoginSuccessMessage) {
-      context.showSnackBar('Login successfully');
+      context.showSnackBar(S.of(context).loginSuccessfully);
+      await delay(400);
 
       navigator.popUntil((route) => false);
-      navigator.pushNamedX(MainPage.routeName);
+      unawaited(navigator.pushNamedX(MainPage.routeName));
       print('>>>>>>>>>>>>> SignIn to home >>');
 
       return;
@@ -298,8 +302,10 @@ class _LoginPageState extends State<LoginPage>
       context.showSnackBar(message.message);
 
       if (message.error is NotCompletedLoginException) {
+        await delay(400);
+
         navigator.popUntil((route) => false);
-        navigator.pushNamedX(UpdateProfilePage.routeName);
+        unawaited(navigator.pushNamedX(UpdateProfilePage.routeName));
         print('>>>>>>>>>>>>> SignIn to update >>');
       }
 
@@ -307,7 +313,7 @@ class _LoginPageState extends State<LoginPage>
     }
 
     if (message is InvalidInformationMessage) {
-      context.showSnackBar('Invalid information');
+      context.showSnackBar(S.of(context).invalidInformation);
     }
   }
 
@@ -355,7 +361,7 @@ class _LoginPageState extends State<LoginPage>
         return PasswordTextField(
           errorText: snapshot.data,
           onChanged: loginBloc.passwordChanged,
-          labelText: 'Password',
+          labelText: S.of(context).password,
           textInputAction: TextInputAction.done,
           onSubmitted: () {
             FocusScope.of(context).requestFocus(FocusNode());
@@ -376,7 +382,7 @@ class _LoginPageState extends State<LoginPage>
         },
         color: Theme.of(context).backgroundColor,
         child: Text(
-          'LOGIN',
+          S.of(context).LOGIN,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16.0,
@@ -420,7 +426,7 @@ class _LoginPageState extends State<LoginPage>
         }
       },
       child: Text(
-        "Don't have an account? Sign up",
+        S.of(context).dontHaveAnAccountSignUp,
         style: TextStyle(
           color: Colors.white70,
           fontStyle: FontStyle.italic,
@@ -446,7 +452,7 @@ class _LoginPageState extends State<LoginPage>
               }
             },
             child: Text(
-              'Forgot password?',
+              S.of(context).forgotPassword,
               style: TextStyle(
                 color: Colors.white70,
                 fontStyle: FontStyle.italic,
