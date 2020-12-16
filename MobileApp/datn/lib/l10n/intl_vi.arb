@@ -125,5 +125,11 @@
   "selectedCardlast4TapToChange": "Đã chọn '••••{last4}'. Nhấn để thay đổi",
   "selectDiscountCode": "Chọn mã giảm giá",
   "emailToReceiveTickets": "Email để nhận vé",
-  "phoneNumberToReceiveTickets": "Số điện thoại nhận vé"
+  "phoneNumberToReceiveTickets": "Số điện thoại nhận vé",
+  "addCard": "Thêm card",
+  "emptyCard": "Không có card nào",
+  "removeCard": "Xóa card",
+  "areYouSureYouWantToRemoveCard": "Bạn có muốn xóa card không?",
+  "removeMsgcardlast4FailedGeterrormessagemsgerror": "Xóa '{last4}' không thành công: {msg}",
+  "removedSuccessMsgremovedlast4": "Xóa thành công: '{last4}'"
 }

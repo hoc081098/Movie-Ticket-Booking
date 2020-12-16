@@ -1313,6 +1313,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Add card`
+  String get addCard {
+    return Intl.message(
+      'Add card',
+      name: 'addCard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty card`
+  String get emptyCard {
+    return Intl.message(
+      'Empty card',
+      name: 'emptyCard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove card`
+  String get removeCard {
+    return Intl.message(
+      'Remove card',
+      name: 'removeCard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to remove card`
+  String get areYouSureYouWantToRemoveCard {
+    return Intl.message(
+      'Are you sure you want to remove card',
+      name: 'areYouSureYouWantToRemoveCard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove '{last4}' failed: {msg}`
+  String removeMsgcardlast4FailedGeterrormessagemsgerror(Object last4, Object msg) {
+    return Intl.message(
+      'Remove \'$last4\' failed: $msg',
+      name: 'removeMsgcardlast4FailedGeterrormessagemsgerror',
+      desc: '',
+      args: [last4, msg],
+    );
+  }
+
+  /// `Removed success: '{last4}'`
+  String removedSuccessMsgremovedlast4(Object last4) {
+    return Intl.message(
+      'Removed success: \'$last4\'',
+      name: 'removedSuccessMsgremovedlast4',
+      desc: '',
+      args: [last4],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

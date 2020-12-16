@@ -12,6 +12,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../../../domain/model/card.dart' as domain;
 import '../../../../domain/repository/card_repository.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../utils/error.dart';
 import '../../../../utils/utils.dart';
 import '../../../app_scaffold.dart';
@@ -251,7 +252,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                     bloc.cardAdded(added as domain.Card);
                   }
                 },
-                label: Text('Add card'),
+                label: Text(S.of(context).addCard),
               ),
             );
           },
@@ -279,7 +280,9 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
             if (state.error != null) {
               return Center(
                 child: MyErrorWidget(
-                  errorText: 'Error: ${getErrorMessage(state.error)}',
+                  errorText: S
+                      .of(context)
+                      .error_with_message(getErrorMessage(state.error)),
                   onPressed: bloc.fetch,
                 ),
               );
@@ -289,7 +292,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
             if (cards.isEmpty) {
               return Center(
                 child: EmptyWidget(
-                  message: 'Empty cards',
+                  message: S.of(context).emptyCard,
                 ),
               );
             }
@@ -384,11 +387,11 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Remove card'),
-          content: Text('Are you sure you want to remove card'),
+          title: Text(S.of(context).removeCard),
+          content: Text(S.of(context).areYouSureYouWantToRemoveCard),
           actions: <Widget>[
             FlatButton(
-              child: Text('Cancel'),
+              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(false),
             ),
             FlatButton(
@@ -407,12 +410,17 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
 
   void handleMessage(Message msg) {
     if (msg is RemovedSuccess) {
-      return context.showSnackBar("Removed success: '${msg.removed.last4}'");
+      return context.showSnackBar(
+          S.of(context).removedSuccessMsgremovedlast4(msg.removed.last4));
     }
 
     if (msg is RemoveFailure) {
       return context.showSnackBar(
-          "Remove '${msg.card.last4}' failed: ${getErrorMessage(msg.error)}");
+          S.of(context).removeMsgcardlast4FailedGeterrormessagemsgerror(
+              msg.card.last4,
+              getErrorMessage(
+                msg.error,
+              )));
     }
   }
 }

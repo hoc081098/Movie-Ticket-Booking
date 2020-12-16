@@ -125,5 +125,11 @@
   "selectedCardlast4TapToChange": "Selected '••••{last4}'. Tap to change",
   "selectDiscountCode": "Select discount code",
   "emailToReceiveTickets": "Email to receive tickets",
-  "phoneNumberToReceiveTickets": "Phone number to receive tickets"
+  "phoneNumberToReceiveTickets": "Phone number to receive tickets",
+  "addCard": "Add card",
+  "emptyCard": "Empty card",
+  "removeCard": "Remove card",
+  "areYouSureYouWantToRemoveCard": "Are you sure you want to remove card",
+  "removeMsgcardlast4FailedGeterrormessagemsgerror": "Remove '{last4}' failed: {msg}",
+  "removedSuccessMsgremovedlast4": "Removed success: '{last4}'"
 }
