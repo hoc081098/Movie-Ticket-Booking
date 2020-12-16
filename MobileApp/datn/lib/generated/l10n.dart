@@ -1143,6 +1143,46 @@ class S {
       args: [seats],
     );
   }
+
+  /// `Maximum combo count`
+  String get maximumComboCount {
+    return Intl.message(
+      'Maximum combo count',
+      name: 'maximumComboCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Combo`
+  String get combo {
+    return Intl.message(
+      'Combo',
+      name: 'combo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Normal ticket`
+  String get normalTicket {
+    return Intl.message(
+      'Normal ticket',
+      name: 'normalTicket',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Doubled ticket`
+  String get doubledTicket {
+    return Intl.message(
+      'Doubled ticket',
+      name: 'doubledTicket',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

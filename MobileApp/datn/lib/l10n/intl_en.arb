@@ -108,5 +108,9 @@
   "taken": "Taken",
   "doubledSeat": "Doubled seat",
   "select": "Select",
-  "seat_s": "{seats,plural, =0{seat}=1{seat}other{seats}}"
+  "seat_s": "{seats,plural, =0{seat}=1{seat}other{seats}}",
+  "maximumComboCount": "Maximum combo count",
+  "combo": "Combo",
+  "normalTicket": "Normal ticket",
+  "doubledTicket": "Doubled ticket"
 }

@@ -108,5 +108,9 @@
   "taken": "Đã đặt",
   "doubledSeat": "Ghế đôi",
   "select": "Đã chọn",
-  "seat_s": "{seats,plural, other{ghế}}"
+  "seat_s": "{seats,plural, other{ghế}}",
+  "maximumComboCount": "Đã đạt số lượng combo tối đa",
+  "combo": "Combo",
+  "normalTicket": "Vé thường",
+  "doubledTicket": "Vé đôi"
 }
