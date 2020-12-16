@@ -401,12 +401,12 @@ class LoggedIn extends StatelessWidget {
               );
 
               if (identical(shouldLogout, true)) {
-                final localeBloc = BlocProvider.of<LocaleBloc>(context);
+                // final localeBloc = BlocProvider.of<LocaleBloc>(context);
                 final userRepository = Provider.of<UserRepository>(context);
 
                 try {
                   await userRepository.logout();
-                  await localeBloc.resetLocale(S.delegate.supportedLocales[0]);
+                  // await localeBloc.resetLocale(S.delegate.supportedLocales[0]);
                   print('>>> logged out');
                 } catch (e, s) {
                   print('>>>> logout $e $s');

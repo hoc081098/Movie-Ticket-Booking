@@ -32,7 +32,8 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
 
   /// Input
   final void Function(Locale) changeLocale;
-  final Future<void> Function(Locale) resetLocale;
+
+  // final Future<void> Function(Locale) resetLocale;
 
   /// Output
   final DistinctValueStream<Locale> locale$;
@@ -40,7 +41,7 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
 
   LocaleBloc._({
     @required this.changeLocale,
-    @required this.resetLocale,
+    // @required this.resetLocale,
     @required this.locale$,
     @required this.message$,
     @required void Function() dispose,
@@ -51,8 +52,8 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
   ) {
     // ignore_for_file: close_sinks
     final changeLocaleS = StreamController<Locale>(sync: true);
-    final resetS =
-        StreamController<Tuple2<Locale, Completer<void>>>(sync: true);
+    // final resetS =
+    //     StreamController<Tuple2<Locale, Completer<void>>>(sync: true);
 
     final locale$ = rxSharedPrefs
         .getStringStream(_localeKey)
@@ -65,15 +66,20 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
         .publishValueDistinct(null, sync: true);
 
     final message$ = changeLocaleS.stream
-        .where((locale) => locale != locale$.value)
+        .where((locale) {
+          final current = locale$.value;
+          // not loaded yet -> change
+          // or difference  -> change
+          return current == null || locale != current;
+        })
         .switchMap((l) => _changeLocale(Tuple2(l, null), rxSharedPrefs))
         .publish();
 
     final bloc = LocaleBloc._(
       dispose: DisposeBag([
-        resetS.stream
-            .exhaustMap((tuple) => _changeLocale(tuple, rxSharedPrefs))
-            .listen(null),
+        // resetS.stream
+        //     .exhaustMap((tuple) => _changeLocale(tuple, rxSharedPrefs))
+        //     .listen(null),
         locale$.connect(),
         message$.connect(),
         changeLocaleS,
@@ -81,11 +87,11 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
       changeLocale: changeLocaleS.add,
       message$: message$,
       locale$: locale$,
-      resetLocale: (locale) {
-        final completer = Completer<void>();
-        resetS.add(Tuple2(locale, completer));
-        return completer.future;
-      },
+      // resetLocale: (locale) {
+      //   final completer = Completer<void>();
+      //   resetS.add(Tuple2(locale, completer));
+      //   return completer.future;
+      // },
     );
     print('CREATE LOCALE BLOC ${identityHashCode(bloc)}');
     return bloc;
