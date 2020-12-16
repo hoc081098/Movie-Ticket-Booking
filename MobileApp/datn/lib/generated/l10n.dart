@@ -1483,6 +1483,159 @@ class S {
       args: [d],
     );
   }
+
+  /// `Empty search result`
+  String get emptySearchResult {
+    return Intl.message(
+      'Empty search result',
+      name: 'emptySearchResult',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search filter`
+  String get searchFilter {
+    return Intl.message(
+      'Search filter',
+      name: 'searchFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Age type`
+  String get ageType {
+    return Intl.message(
+      'Age type',
+      name: 'ageType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duration (mins) from `
+  String get durationMinsFrom {
+    return Intl.message(
+      'Duration (mins) from ',
+      name: 'durationMinsFrom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Must be less than or equal to max duration`
+  String get mustBeLessThanOrEqualToMaxDuration {
+    return Intl.message(
+      'Must be less than or equal to max duration',
+      name: 'mustBeLessThanOrEqualToMaxDuration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` to `
+  String get to {
+    return Intl.message(
+      ' to ',
+      name: 'to',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Must be greater than or equal to min duration`
+  String get mustBeGreaterThanOrEqualToMinDuration {
+    return Intl.message(
+      'Must be greater than or equal to min duration',
+      name: 'mustBeGreaterThanOrEqualToMinDuration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Showtime start from `
+  String get showtimeStartFrom {
+    return Intl.message(
+      'Showtime start from ',
+      name: 'showtimeStartFrom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Showtime start time must be before end time`
+  String get showtimeStartTimeMustBeBeforeEndTime {
+    return Intl.message(
+      'Showtime start time must be before end time',
+      name: 'showtimeStartTimeMustBeBeforeEndTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Showtime end time must be after start time`
+  String get showtimeEndTimeMustBeAfterStartTime {
+    return Intl.message(
+      'Showtime end time must be after start time',
+      name: 'showtimeEndTimeMustBeAfterStartTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Released date from `
+  String get releasedDateFrom {
+    return Intl.message(
+      'Released date from ',
+      name: 'releasedDateFrom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Must be before max released date`
+  String get mustBeBeforeMaxReleasedDate {
+    return Intl.message(
+      'Must be before max released date',
+      name: 'mustBeBeforeMaxReleasedDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Must be after min released date`
+  String get mustBeAfterMinReleasedDate {
+    return Intl.message(
+      'Must be after min released date',
+      name: 'mustBeAfterMinReleasedDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apply`
+  String get apply {
+    return Intl.message(
+      'Apply',
+      name: 'apply',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{movies,plural, =0{0 movie}=1{1 movie}other{{movies} movies}}`
+  String count_movie(num movies) {
+    return Intl.plural(
+      movies,
+      zero: '0 movie',
+      one: '1 movie',
+      other: '$movies movies',
+      name: 'count_movie',
+      desc: '',
+      args: [movies],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

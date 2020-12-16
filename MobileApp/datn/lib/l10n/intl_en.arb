@@ -142,5 +142,20 @@
   "emptyCouponCode": "Empty coupon code",
   "selectCouponCode": "Select coupon code",
   "promotionStart": "Start: {d}",
-  "promotionEnd": "End: {d}"
+  "promotionEnd": "End: {d}",
+  "emptySearchResult": "Empty search result",
+  "searchFilter": "Search filter",
+  "ageType": "Age type",
+  "durationMinsFrom": "Duration (mins) from ",
+  "mustBeLessThanOrEqualToMaxDuration": "Must be less than or equal to max duration",
+  "to": " to ",
+  "mustBeGreaterThanOrEqualToMinDuration": "Must be greater than or equal to min duration",
+  "showtimeStartFrom": "Showtime start from ",
+  "showtimeStartTimeMustBeBeforeEndTime": "Showtime start time must be before end time",
+  "showtimeEndTimeMustBeAfterStartTime": "Showtime end time must be after start time",
+  "releasedDateFrom": "Released date from ",
+  "mustBeBeforeMaxReleasedDate": "Must be before max released date",
+  "mustBeAfterMinReleasedDate": "Must be after min released date",
+  "apply": "Apply",
+  "count_movie": "{movies,plural, =0{0 movie}=1{1 movie}other{{movies} movies}}"
 }

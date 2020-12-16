@@ -142,5 +142,20 @@
   "emptyCouponCode": "Không có mã giảm giá",
   "selectCouponCode": "Chọn mã giảm giá",
   "promotionStart": "Từ: {d}",
-  "promotionEnd": "Đến: {d}"
+  "promotionEnd": "Đến: {d}",
+  "emptySearchResult": "Kết quả tìm kiếm trống",
+  "searchFilter": "Bộ lọc tìm kiếm",
+  "ageType": "Loại tuổi",
+  "durationMinsFrom": "Độ dài (phút) từ ",
+  "mustBeLessThanOrEqualToMaxDuration": "Phải nhỏ hơn hoặc bằng độ dài tối đa",
+  "to": " đến ",
+  "mustBeGreaterThanOrEqualToMinDuration": "Phải lớn hơn hoặc bằng độ dài tối thiểu",
+  "showtimeStartFrom": "Thời gian chiếu bắt đầu từ ",
+  "showtimeStartTimeMustBeBeforeEndTime": "Thời gian bắt đầu chiếu phải trước thời gian kết thúc",
+  "showtimeEndTimeMustBeAfterStartTime": "Thời gian kết thúc suất chiếu phải sau thời gian bắt đầu",
+  "releasedDateFrom": "Ngày phát hành từ ",
+  "mustBeBeforeMaxReleasedDate": "Phải trước ngày phát hành tối đa",
+  "mustBeAfterMinReleasedDate": "Phải sau ngày phát hành tối thiểu",
+  "apply": "Áp dụng",
+  "count_movie": "{movies,plural, other{{movies} bộ phim}}"
 }

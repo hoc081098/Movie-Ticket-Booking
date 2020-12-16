@@ -31,33 +31,35 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m5(title) => "Đã xóa thành công: ${title}...";
 
-  static m6(minute) => "${minute} phút";
+  static m6(movies) => "${Intl.plural(movies, other: '${movies} bộ phim')}";
 
-  static m7(message) => "Xảy ra lỗi: ${message}";
+  static m7(minute) => "${minute} phút";
 
-  static m8(title) => "Loại bỏ không thành công: ${title}";
+  static m8(message) => "Xảy ra lỗi: ${message}";
 
-  static m9(title) => "Loại bỏ thành công: ${title}";
+  static m9(title) => "Loại bỏ không thành công: ${title}";
 
-  static m10(message) => "Đăng xuất không thành công: ${message}";
+  static m10(title) => "Loại bỏ thành công: ${title}";
 
-  static m11(d) => "Đến: ${d}";
+  static m11(message) => "Đăng xuất không thành công: ${message}";
 
-  static m12(d) => "Từ: ${d}";
+  static m12(d) => "Đến: ${d}";
 
-  static m13(last4, msg) => "Xóa \'${last4}\' không thành công: ${msg}";
+  static m13(d) => "Từ: ${d}";
 
-  static m14(last4) => "Xóa thành công: \'${last4}\'";
+  static m14(last4, msg) => "Xóa \'${last4}\' không thành công: ${msg}";
 
-  static m15(seats) => "${Intl.plural(seats, other: 'ghế')}";
+  static m15(last4) => "Xóa thành công: \'${last4}\'";
 
-  static m16(last4) => "Đã chọn \'••••${last4}\'. Nhấn để thay đổi";
+  static m16(seats) => "${Intl.plural(seats, other: 'ghế')}";
 
-  static m17(message) => "Thêm/xoá yêu thích không thành công: ${message}";
+  static m17(last4) => "Đã chọn \'••••${last4}\'. Nhấn để thay đổi";
 
-  static m18(totalFavorite) => "${Intl.plural(totalFavorite, other: '${totalFavorite} yêu thích')}";
+  static m18(message) => "Thêm/xoá yêu thích không thành công: ${message}";
 
-  static m19(totalRate) => "${Intl.plural(totalRate, other: '${totalRate} đánh giá')}";
+  static m19(totalFavorite) => "${Intl.plural(totalFavorite, other: '${totalFavorite} yêu thích')}";
+
+  static m20(totalRate) => "${Intl.plural(totalRate, other: '${totalRate} đánh giá')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -73,6 +75,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "addCommentSuccessfully" : MessageLookupByLibrary.simpleMessage("Thêm bình luận thành công"),
     "addedCardSuccessfully" : MessageLookupByLibrary.simpleMessage("Thêm card thành công"),
     "address" : MessageLookupByLibrary.simpleMessage("Địa chỉ"),
+    "ageType" : MessageLookupByLibrary.simpleMessage("Loại tuổi"),
+    "apply" : MessageLookupByLibrary.simpleMessage("Áp dụng"),
     "areYouSureYouWantToDeleteThisNotification" : MessageLookupByLibrary.simpleMessage("Bạn có muốn xóa thông báo này?"),
     "areYouSureYouWantToLogout" : MessageLookupByLibrary.simpleMessage("Bạn có muốn đăng xuất?"),
     "areYouSureYouWantToRemoveCard" : MessageLookupByLibrary.simpleMessage("Bạn có muốn xóa card không?"),
@@ -97,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "commentFailedWhenRemovingCommentTitle" : m4,
     "commentRemovedSuccessfullyTitle" : m5,
     "comments" : MessageLookupByLibrary.simpleMessage("Bình luận"),
+    "count_movie" : m6,
     "couponCode" : MessageLookupByLibrary.simpleMessage("Mã giảm giá: "),
     "date" : MessageLookupByLibrary.simpleMessage("Ngày"),
     "deleteNotification" : MessageLookupByLibrary.simpleMessage("Xóa thông báo"),
@@ -106,7 +111,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "doYouWantToDeleteThisCommentThisActionCannot" : MessageLookupByLibrary.simpleMessage("Bạn muốn xóa bình luận này. Hành động này không thể được hoàn tác!"),
     "doubledSeat" : MessageLookupByLibrary.simpleMessage("Ghế đôi"),
     "doubledTicket" : MessageLookupByLibrary.simpleMessage("Vé đôi"),
-    "duration_minutes" : m6,
+    "durationMinsFrom" : MessageLookupByLibrary.simpleMessage("Độ dài (phút) từ "),
+    "duration_minutes" : m7,
     "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "emailToReceiveTickets" : MessageLookupByLibrary.simpleMessage("Email để nhận vé"),
     "emptyCard" : MessageLookupByLibrary.simpleMessage("Không có card nào"),
@@ -115,14 +121,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyNotification" : MessageLookupByLibrary.simpleMessage("Không có thông báo nào"),
     "emptyRelatedMovie" : MessageLookupByLibrary.simpleMessage("Không có phim liên quan nào"),
     "emptyReservation" : MessageLookupByLibrary.simpleMessage("Không có đặt chỗ nào"),
+    "emptySearchResult" : MessageLookupByLibrary.simpleMessage("Kết quả tìm kiếm trống"),
     "emptyShowTimes" : MessageLookupByLibrary.simpleMessage("Không có lịch chiếu"),
     "empty_favorite_movie" : MessageLookupByLibrary.simpleMessage("Không có phim yêu thích nào"),
     "empty_movie" : MessageLookupByLibrary.simpleMessage("Không có bộ phim nào"),
     "empty_theatre" : MessageLookupByLibrary.simpleMessage("Không có rạp nào"),
-    "error_with_message" : m7,
+    "error_with_message" : m8,
     "expireDateMmyy" : MessageLookupByLibrary.simpleMessage("Ngày hết hạn (MM/yy)"),
-    "fav_removed_failed_with_title" : m8,
-    "fav_removed_successfully_with_title" : m9,
+    "fav_removed_failed_with_title" : m9,
+    "fav_removed_successfully_with_title" : m10,
     "favorites" : MessageLookupByLibrary.simpleMessage("Yêu thích"),
     "fullName" : MessageLookupByLibrary.simpleMessage("Tên đầy đủ"),
     "gender" : MessageLookupByLibrary.simpleMessage("Giới tính"),
@@ -135,13 +142,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả thông báo"),
     "loadedAllReservations" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả đặt chỗ"),
     "loggedOutSuccessfully" : MessageLookupByLibrary.simpleMessage("Đăng xuất thành công"),
-    "logoutFailed" : m10,
+    "logoutFailed" : m11,
     "logoutOut" : MessageLookupByLibrary.simpleMessage("Đăng xuất"),
     "maximumComboCount" : MessageLookupByLibrary.simpleMessage("Đã đạt số lượng combo tối đa"),
     "missingRequiredFields" : MessageLookupByLibrary.simpleMessage("Thiếu các thông tin bắt buộc"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("ĐƯỢC YÊU THÍCH NHẤT"),
     "most_rate" : MessageLookupByLibrary.simpleMessage("ĐƯỢC ĐÁNH GIÁ CAO"),
     "movies_on_theatre" : MessageLookupByLibrary.simpleMessage("Phim Đang Chiếu"),
+    "mustBeAfterMinReleasedDate" : MessageLookupByLibrary.simpleMessage("Phải sau ngày phát hành tối thiểu"),
+    "mustBeBeforeMaxReleasedDate" : MessageLookupByLibrary.simpleMessage("Phải trước ngày phát hành tối đa"),
+    "mustBeGreaterThanOrEqualToMinDuration" : MessageLookupByLibrary.simpleMessage("Phải lớn hơn hoặc bằng độ dài tối thiểu"),
+    "mustBeLessThanOrEqualToMaxDuration" : MessageLookupByLibrary.simpleMessage("Phải nhỏ hơn hoặc bằng độ dài tối đa"),
     "mustSelectAtLeastOneSeat" : MessageLookupByLibrary.simpleMessage("Phải chọn ít nhất một chỗ ngồi"),
     "myTicket" : MessageLookupByLibrary.simpleMessage("Vé của tôi"),
     "myTicket_room" : MessageLookupByLibrary.simpleMessage("Phòng"),
@@ -159,20 +170,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "phoneNumber" : MessageLookupByLibrary.simpleMessage("Số điện thoại"),
     "phoneNumberToReceiveTickets" : MessageLookupByLibrary.simpleMessage("Số điện thoại nhận vé"),
     "profile" : MessageLookupByLibrary.simpleMessage("Tài khoản"),
-    "promotionEnd" : m11,
-    "promotionStart" : m12,
+    "promotionEnd" : m12,
+    "promotionStart" : m13,
     "recommended_for_you" : MessageLookupByLibrary.simpleMessage("GỢI Ý CHO BẠN"),
     "relatedMovies" : MessageLookupByLibrary.simpleMessage("PHIM LIÊN QUAN"),
+    "releasedDateFrom" : MessageLookupByLibrary.simpleMessage("Ngày phát hành từ "),
     "remove" : MessageLookupByLibrary.simpleMessage("Loại bỏ"),
     "removeCard" : MessageLookupByLibrary.simpleMessage("Xóa card"),
-    "removeMsgcardlast4FailedGeterrormessagemsgerror" : m13,
+    "removeMsgcardlast4FailedGeterrormessagemsgerror" : m14,
     "removeThisComment" : MessageLookupByLibrary.simpleMessage("Xóa bình luận này"),
-    "removedSuccessMsgremovedlast4" : m14,
+    "removedSuccessMsgremovedlast4" : m15,
     "requiredUpdatingYourProfile" : MessageLookupByLibrary.simpleMessage("Cần cập nhật hồ sơ của bạn"),
     "retry" : MessageLookupByLibrary.simpleMessage("Thử lại"),
     "reviews" : MessageLookupByLibrary.simpleMessage(" đánh giá"),
     "room" : MessageLookupByLibrary.simpleMessage(" Phòng: "),
-    "seat_s" : m15,
+    "searchFilter" : MessageLookupByLibrary.simpleMessage("Bộ lọc tìm kiếm"),
+    "seat_s" : m16,
     "select" : MessageLookupByLibrary.simpleMessage("Đã chọn"),
     "selectCouponCode" : MessageLookupByLibrary.simpleMessage("Chọn mã giảm giá"),
     "selectDiscountCode" : MessageLookupByLibrary.simpleMessage("Chọn mã giảm giá"),
@@ -180,8 +193,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectTheArea" : MessageLookupByLibrary.simpleMessage("Chọn khu vực: "),
     "select_city" : MessageLookupByLibrary.simpleMessage("Chọn thành phố"),
     "selected" : MessageLookupByLibrary.simpleMessage("Đã chọn"),
-    "selectedCardlast4TapToChange" : m16,
+    "selectedCardlast4TapToChange" : m17,
     "showTimes" : MessageLookupByLibrary.simpleMessage("Lịch chiếu"),
+    "showtimeEndTimeMustBeAfterStartTime" : MessageLookupByLibrary.simpleMessage("Thời gian kết thúc suất chiếu phải sau thời gian bắt đầu"),
+    "showtimeStartFrom" : MessageLookupByLibrary.simpleMessage("Thời gian chiếu bắt đầu từ "),
+    "showtimeStartTimeMustBeBeforeEndTime" : MessageLookupByLibrary.simpleMessage("Thời gian bắt đầu chiếu phải trước thời gian kết thúc"),
     "slowInternetConnection" : MessageLookupByLibrary.simpleMessage("Kết nối internet chậm"),
     "someSeatsYouChooseHaveBeenReservedPleaseSelectOther" : MessageLookupByLibrary.simpleMessage("Một số chỗ bạn chọn đã được đặt trước. Vui lòng chọn chỗ ngồi khác."),
     "startAt" : MessageLookupByLibrary.simpleMessage("Bắt đầu lúc: "),
@@ -193,12 +209,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "timeOutToHoldTheSeatPleaseMakeYourReservation" : MessageLookupByLibrary.simpleMessage("Hết giờ giữ chỗ. Vui lòng đặt chỗ trong vòng 5 phút!"),
     "timeout" : MessageLookupByLibrary.simpleMessage("Hết thời gian"),
     "title" : MessageLookupByLibrary.simpleMessage("Tiêu đề phim"),
+    "to" : MessageLookupByLibrary.simpleMessage(" đến "),
     "today" : MessageLookupByLibrary.simpleMessage("Hôm nay"),
-    "toggleFailed" : m17,
+    "toggleFailed" : m18,
     "toggledSuccessfully" : MessageLookupByLibrary.simpleMessage("Thêm/xoá yêu thích thành công"),
     "totalPrice" : MessageLookupByLibrary.simpleMessage("Tổng tiền: "),
-    "total_favorite" : m18,
-    "total_rate_review" : m19,
+    "total_favorite" : m19,
+    "total_rate_review" : m20,
     "view_all" : MessageLookupByLibrary.simpleMessage("Xem tất cả"),
     "warning" : MessageLookupByLibrary.simpleMessage("Warning"),
     "yourAccountEmailHasNotBeenVerifyPleaseVerifyTo" : MessageLookupByLibrary.simpleMessage("Email tài khoản của bạn chưa được xác minh. Vui lòng xác minh để tiếp tục!"),
