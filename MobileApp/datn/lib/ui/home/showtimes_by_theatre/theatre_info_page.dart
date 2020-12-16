@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../domain/model/theatre.dart';
+import '../../../generated/l10n.dart';
 
 class TheatreInfoPage extends StatelessWidget {
   final Theatre theatre;
@@ -64,7 +65,7 @@ class TheatreInfoPage extends StatelessWidget {
                           ),
                           margin: const EdgeInsets.only(top: 7),
                           child: Text(
-                            'DESCRIPTION',
+                            S.of(context).DESCRIPTION,
                             maxLines: 1,
                             style: themeData.textTheme.headline6.copyWith(
                               fontSize: 16,
@@ -226,7 +227,7 @@ class DetailAppBar extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Load image error',
+                          S.of(context).load_image_error,
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2

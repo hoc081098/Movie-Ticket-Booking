@@ -157,5 +157,6 @@
   "mustBeBeforeMaxReleasedDate": "Phải trước ngày phát hành tối đa",
   "mustBeAfterMinReleasedDate": "Phải sau ngày phát hành tối thiểu",
   "apply": "Áp dụng",
-  "count_movie": "{movies,plural, other{{movies} bộ phim}}"
+  "count_movie": "{movies,plural, other{{movies} bộ phim}}",
+  "DESCRIPTION": "GIỚI THIỆU"
 }

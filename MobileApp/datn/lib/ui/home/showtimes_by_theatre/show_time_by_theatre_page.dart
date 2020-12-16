@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/model/theatre.dart';
+import '../../../generated/l10n.dart';
 import '../detail/movie_detail_page.dart';
 import 'show_times_page.dart';
 import 'theatre_info_page.dart';
@@ -46,11 +47,11 @@ class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
     final tabBar = TabBar(
       tabs: [
         Tab(
-          text: 'Showtimes',
+          text: S.of(context).showTimes,
           iconMargin: const EdgeInsets.only(bottom: 8),
         ),
         Tab(
-          text: 'Information',
+          text: S.of(context).information,
           iconMargin: const EdgeInsets.only(bottom: 8),
         ),
       ],

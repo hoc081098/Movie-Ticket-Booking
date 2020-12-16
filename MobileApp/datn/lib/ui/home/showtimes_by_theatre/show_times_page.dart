@@ -14,6 +14,7 @@ import '../../../domain/model/movie_and_showtimes.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/date_time.dart';
 import '../../../utils/error.dart';
 import '../../../utils/intl.dart';
@@ -133,7 +134,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                                   children: [
                                     Text(
                                       day == startDay
-                                          ? 'Today'
+                                          ? S.of(context).today
                                           : weekdayOf(day),
                                       style: day == selectedDay
                                           ? weekDaySelectedStyle
@@ -158,7 +159,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Text('Today, ${fullDateFormat.format(startDay)}'),
+                  child: Text(
+                      '${S.of(context).today}, ${fullDateFormat.format(startDay)}'),
                 ),
               ],
             ),
@@ -185,7 +187,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
   Widget _buildBottom(LoaderState<BuiltList<MovieAndShowTimes>> state) {
     if (state.error != null) {
       return MyErrorWidget(
-        errorText: 'Error: ${getErrorMessage(state.error)}',
+        errorText:
+            S.of(context).error_with_message(getErrorMessage(state.error)),
         onPressed: bloc.fetch,
       );
     }
@@ -207,7 +210,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     if (list.isEmpty) {
       return Center(
         child: EmptyWidget(
-          message: 'Empty show times',
+          message: S.of(context).emptyShowTimes,
         ),
       );
     }
@@ -241,7 +244,7 @@ class SelectCityWidget extends StatelessWidget {
       children: [
         const SizedBox(width: 16),
         Text(
-          'Select the area: ',
+          S.of(context).selectTheArea,
           style: textTheme.headline6.copyWith(fontSize: 16),
         ),
         const SizedBox(width: 16),
@@ -398,7 +401,7 @@ class ShowTimeItem extends StatelessWidget {
                       Text(movie.title),
                       const SizedBox(height: 4),
                       Text(
-                        '${movie.duration} mins',
+                        S.of(context).duration_minutes(movie.duration),
                         style: textTheme.caption.copyWith(fontSize: 14),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,

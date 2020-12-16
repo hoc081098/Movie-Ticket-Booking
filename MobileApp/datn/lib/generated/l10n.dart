@@ -1636,6 +1636,16 @@ class S {
       args: [movies],
     );
   }
+
+  /// `DESCRIPTION`
+  String get DESCRIPTION {
+    return Intl.message(
+      'DESCRIPTION',
+      name: 'DESCRIPTION',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

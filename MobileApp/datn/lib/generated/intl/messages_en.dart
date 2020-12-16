@@ -65,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "ADDCARD" : MessageLookupByLibrary.simpleMessage("ADD CARD"),
     "CONTINUE" : MessageLookupByLibrary.simpleMessage("CONTINUE"),
+    "DESCRIPTION" : MessageLookupByLibrary.simpleMessage("DESCRIPTION"),
     "FINISH" : MessageLookupByLibrary.simpleMessage("FINISH"),
     "OFF" : MessageLookupByLibrary.simpleMessage("OFF"),
     "SCREEN" : MessageLookupByLibrary.simpleMessage("SCREEN"),

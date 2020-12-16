@@ -65,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "ADDCARD" : MessageLookupByLibrary.simpleMessage("THÊM CARD"),
     "CONTINUE" : MessageLookupByLibrary.simpleMessage("TIẾP TỤC"),
+    "DESCRIPTION" : MessageLookupByLibrary.simpleMessage("GIỚI THIỆU"),
     "FINISH" : MessageLookupByLibrary.simpleMessage("HOÀN THÀNH"),
     "OFF" : MessageLookupByLibrary.simpleMessage("GIẢM GIÁ"),
     "SCREEN" : MessageLookupByLibrary.simpleMessage("MÀN HÌNH"),
