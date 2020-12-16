@@ -154,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "removeThisComment" : MessageLookupByLibrary.simpleMessage("Xóa bình luận này"),
     "removedSuccessMsgremovedlast4" : m11,
     "requiredUpdatingYourProfile" : MessageLookupByLibrary.simpleMessage("Cần cập nhật hồ sơ của bạn"),
+    "retry" : MessageLookupByLibrary.simpleMessage("Thử lại"),
     "reviews" : MessageLookupByLibrary.simpleMessage(" đánh giá"),
     "room" : MessageLookupByLibrary.simpleMessage(" Phòng: "),
     "seat_s" : m12,
