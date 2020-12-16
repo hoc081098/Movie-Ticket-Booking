@@ -1383,6 +1383,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Card holder name`
+  String get cardHolderName {
+    return Intl.message(
+      'Card holder name',
+      name: 'cardHolderName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card number`
+  String get cardNumber {
+    return Intl.message(
+      'Card number',
+      name: 'cardNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expire date (MM/yy)`
+  String get expireDateMmyy {
+    return Intl.message(
+      'Expire date (MM/yy)',
+      name: 'expireDateMmyy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ADD CARD`
+  String get ADDCARD {
+    return Intl.message(
+      'ADD CARD',
+      name: 'ADDCARD',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Added card successfully`
+  String get addedCardSuccessfully {
+    return Intl.message(
+      'Added card successfully',
+      name: 'addedCardSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add card failed: {msg}`
+  String addCardFailed(Object msg) {
+    return Intl.message(
+      'Add card failed: $msg',
+      name: 'addCardFailed',
+      desc: '',
+      args: [msg],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

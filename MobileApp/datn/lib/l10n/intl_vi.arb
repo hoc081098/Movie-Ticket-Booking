@@ -132,5 +132,11 @@
   "areYouSureYouWantToRemoveCard": "Bạn có muốn xóa card không?",
   "removeMsgcardlast4FailedGeterrormessagemsgerror": "Xóa '{last4}' không thành công: {msg}",
   "removedSuccessMsgremovedlast4": "Xóa thành công: '{last4}'",
-  "retry": "Thử lại"
+  "retry": "Thử lại",
+  "cardHolderName": "Tên chủ thẻ",
+  "cardNumber": "Số thẻ",
+  "expireDateMmyy": "Ngày hết hạn (MM/yy)",
+  "ADDCARD": "THÊM CARD",
+  "addedCardSuccessfully": "Thêm card thành công",
+  "addCardFailed": "Thêm card không thành công: {msg}"
 }

@@ -132,5 +132,11 @@
   "areYouSureYouWantToRemoveCard": "Are you sure you want to remove card",
   "removeMsgcardlast4FailedGeterrormessagemsgerror": "Remove '{last4}' failed: {msg}",
   "removedSuccessMsgremovedlast4": "Removed success: '{last4}'",
-  "retry": "Retry"
+  "retry": "Retry",
+  "cardHolderName": "Card holder name",
+  "cardNumber": "Card number",
+  "expireDateMmyy": "Expire date (MM/yy)",
+  "ADDCARD": "ADD CARD",
+  "addedCardSuccessfully": "Added card successfully",
+  "addCardFailed": "Add card failed: {msg}"
 }
