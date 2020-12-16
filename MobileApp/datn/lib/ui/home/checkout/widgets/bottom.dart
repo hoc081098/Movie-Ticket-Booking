@@ -8,6 +8,7 @@ import 'package:tuple/tuple.dart';
 import '../../../../domain/model/product.dart';
 import '../../../../domain/model/promotion.dart';
 import '../../../../domain/model/ticket.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../utils/iterable.dart';
 import '../../../../utils/type_defs.dart';
 import '../checkout_page.dart';
@@ -125,7 +126,7 @@ class BottomRow extends StatelessWidget {
                       FocusScope.of(context).requestFocus(FocusNode());
                     }.pipe(bloc.submit),
                     child: Text(
-                      'FINISH',
+                      S.of(context).FINISH,
                       style: textTheme.headline6
                           .copyWith(fontSize: 16, color: Colors.white),
                     ),
@@ -154,7 +155,7 @@ class BottomRow extends StatelessWidget {
           item.key == 1
               ? ListTile(
                   title: Text(
-                    'Normal ticket',
+                    S.of(context).normalTicket,
                     style: titleStyle,
                   ),
                   subtitle: Text(
@@ -168,7 +169,7 @@ class BottomRow extends StatelessWidget {
                 )
               : ListTile(
                   title: Text(
-                    'Doubled ticket',
+                    S.of(context).doubledTicket,
                     style: titleStyle,
                   ),
                   subtitle: Text(
@@ -205,11 +206,11 @@ class BottomRow extends StatelessWidget {
         ),
         ListTile(
           title: Text(
-            'Coupon code',
+            S.of(context).couponCode.replaceAll(': ', ''),
             style: titleStyle,
           ),
           subtitle: Text(
-            '${(promotion.discount * 100).toInt()}% OFF',
+            '${(promotion.discount * 100).toInt()}% ${S.of(context).OFF}',
             style: style,
           ),
         ),

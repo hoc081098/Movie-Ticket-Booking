@@ -1183,6 +1183,136 @@ class S {
       args: [],
     );
   }
+
+  /// `Invalid email address`
+  String get invalidEmailAddress {
+    return Intl.message(
+      'Invalid email address',
+      name: 'invalidEmailAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid phone number`
+  String get invalidPhoneNumber {
+    return Intl.message(
+      'Invalid phone number',
+      name: 'invalidPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checkout`
+  String get checkout {
+    return Intl.message(
+      'Checkout',
+      name: 'checkout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checkout successfully. Please check email to get ticket`
+  String get checkoutSuccessfullyPleaseCheckEmailToGetTicket {
+    return Intl.message(
+      'Checkout successfully. Please check email to get ticket',
+      name: 'checkoutSuccessfullyPleaseCheckEmailToGetTicket',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checkout failed: {message}`
+  String checkoutFailedGeterrormessagemessageerror(Object message) {
+    return Intl.message(
+      'Checkout failed: $message',
+      name: 'checkoutFailedGeterrormessagemessageerror',
+      desc: '',
+      args: [message],
+    );
+  }
+
+  /// `Missing required fields`
+  String get missingRequiredFields {
+    return Intl.message(
+      'Missing required fields',
+      name: 'missingRequiredFields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `FINISH`
+  String get FINISH {
+    return Intl.message(
+      'FINISH',
+      name: 'FINISH',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OFF`
+  String get OFF {
+    return Intl.message(
+      'OFF',
+      name: 'OFF',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select or add a card`
+  String get selectOrAddACard {
+    return Intl.message(
+      'Select or add a card',
+      name: 'selectOrAddACard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected '••••{last4}'. Tap to change`
+  String selectedCardlast4TapToChange(Object last4) {
+    return Intl.message(
+      'Selected \'••••$last4\'. Tap to change',
+      name: 'selectedCardlast4TapToChange',
+      desc: '',
+      args: [last4],
+    );
+  }
+
+  /// `Select discount code`
+  String get selectDiscountCode {
+    return Intl.message(
+      'Select discount code',
+      name: 'selectDiscountCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email to receive tickets`
+  String get emailToReceiveTickets {
+    return Intl.message(
+      'Email to receive tickets',
+      name: 'emailToReceiveTickets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number to receive tickets`
+  String get phoneNumberToReceiveTickets {
+    return Intl.message(
+      'Phone number to receive tickets',
+      name: 'phoneNumberToReceiveTickets',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

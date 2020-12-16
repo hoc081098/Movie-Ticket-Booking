@@ -160,7 +160,7 @@ class ReservationDetailPage extends StatelessWidget {
                     const SizedBox(width: 2),
                     Expanded(
                       child: InfoWidget(
-                        title: S.of(context).address,
+                        title: S.of(context).address + ': ',
                         subtitle: theatre.address,
                       ),
                       flex: 5,

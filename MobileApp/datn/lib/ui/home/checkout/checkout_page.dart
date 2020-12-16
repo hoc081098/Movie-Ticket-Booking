@@ -16,6 +16,7 @@ import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/reservation_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
@@ -98,13 +99,15 @@ class CheckoutBloc implements BaseBloc {
     final email$ = _emailS
         .distinct()
         .map((e) => Tuple2(
-            Validator.isValidEmail(e) ? null : 'Invalid email address', e))
+            Validator.isValidEmail(e) ? null : S.current.invalidEmailAddress,
+            e))
         .share();
 
     final phone$ = _phoneS
         .distinct()
         .map((p) => Tuple2(
-            phoneNumberRegex.hasMatch(p) ? null : 'Invalid phone number', p))
+            phoneNumberRegex.hasMatch(p) ? null : S.current.invalidPhoneNumber,
+            p))
         .share();
 
     _emailError$ =
@@ -225,7 +228,7 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Checkout'),
+        title: Text(S.of(context).checkout),
         actions: [
           Center(
             child: RxStreamBuilder<String>(
@@ -302,7 +305,7 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   void handleMessage(Message message) async {
     if (message is CheckoutSuccess) {
       context.showSnackBar(
-          'Checkout successfully. Please check email to get ticket');
+          S.of(context).checkoutSuccessfullyPleaseCheckEmailToGetTicket);
       await delay(700);
 
       if (TicketsCountDownTimerBlocProvider.shared().fromDetailPage) {
@@ -314,11 +317,13 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
       }
     }
     if (message is CheckoutFailure) {
-      context
-          .showSnackBar('Checkout failed: ${getErrorMessage(message.error)}');
+      context.showSnackBar(S
+          .of(context)
+          .checkoutFailedGeterrormessagemessageerror(
+              getErrorMessage(message.error)));
     }
     if (message is MissingRequiredInfo) {
-      context.showSnackBar('Missing required fields');
+      context.showSnackBar(S.of(context).missingRequiredFields);
     }
   }
 }

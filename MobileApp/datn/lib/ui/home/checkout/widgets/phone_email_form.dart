@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 
+import '../../../../generated/l10n.dart';
 import '../checkout_page.dart';
 
 class PhoneEmailForm extends StatelessWidget {
@@ -44,7 +45,7 @@ class PhoneEmailForm extends StatelessWidget {
                     padding: const EdgeInsetsDirectional.only(end: 8.0),
                     child: Icon(Icons.email),
                   ),
-                  labelText: 'Email to receive tickets',
+                  labelText: S.of(context).emailToReceiveTickets,
                   labelStyle: TextStyle(fontSize: 13),
                   errorText: snapshot.data,
                   border: OutlineInputBorder(),
@@ -69,7 +70,7 @@ class PhoneEmailForm extends StatelessWidget {
                     padding: const EdgeInsetsDirectional.only(end: 8.0),
                     child: Icon(Icons.phone),
                   ),
-                  labelText: 'Phone number to receive tickets',
+                  labelText: S.of(context).phoneNumberToReceiveTickets,
                   labelStyle: TextStyle(fontSize: 13),
                   errorText: snapshot.data,
                   border: OutlineInputBorder(),

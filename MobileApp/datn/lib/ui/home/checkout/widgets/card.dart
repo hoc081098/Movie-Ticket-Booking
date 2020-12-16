@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 
 import '../../../../domain/model/card.dart' as domain;
+import '../../../../generated/l10n.dart';
 import '../../../app_scaffold.dart';
 import '../cards/cards_page.dart';
 import '../checkout_page.dart';
@@ -53,8 +54,10 @@ class SelectedCard extends StatelessWidget {
                       final card = snapshot.data;
                       return Expanded(
                         child: Text(card == null
-                            ? 'Select or add a card'
-                            : "Selected '••••${card.last4}'. Tap to change"),
+                            ? S.of(context).selectOrAddACard
+                            : S
+                                .of(context)
+                                .selectedCardlast4TapToChange(card.last4)),
                       );
                     }),
                 Icon(

@@ -7,6 +7,7 @@ import '../../../../domain/model/movie.dart';
 import '../../../../domain/model/show_time.dart';
 import '../../../../domain/model/theatre.dart';
 import '../../../../domain/model/ticket.dart';
+import '../../../../generated/l10n.dart';
 import '../../../widgets/age_type.dart';
 
 class HeaderWidget extends StatelessWidget {
@@ -94,7 +95,7 @@ class HeaderWidget extends StatelessWidget {
                       children: [
                         AgeTypeWidget(ageType: movie.ageType),
                         const SizedBox(width: 8),
-                        Text('${movie.duration} minutes'),
+                        Text(S.of(context).duration_minutes(movie.duration)),
                       ],
                     ),
                   ],
@@ -123,7 +124,7 @@ class HeaderWidget extends StatelessWidget {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            'Load image error',
+                            S.of(context).load_image_error,
                             style: textTheme.subtitle2.copyWith(fontSize: 12),
                           ),
                         ],
@@ -136,38 +137,47 @@ class HeaderWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           RichText(
-            text: TextSpan(text: 'Start at: ', style: textStyle, children: [
-              TextSpan(
-                text: startTimeFormat.format(showTime.start_time),
-                style: textStyle2,
-              ),
-            ]),
-          ),
-          const SizedBox(height: 8),
-          RichText(
-            text: TextSpan(text: 'Theatre: ', style: textStyle, children: [
-              TextSpan(
-                text: theatre.name,
-                style: textStyle2,
-              ),
-              TextSpan(
-                text: ' Room: ',
+            text: TextSpan(
+                text: S.of(context).startAt,
                 style: textStyle,
-              ),
-              TextSpan(
-                text: showTime.room,
-                style: textStyle2,
-              ),
-            ]),
+                children: [
+                  TextSpan(
+                    text: startTimeFormat.format(showTime.start_time),
+                    style: textStyle2,
+                  ),
+                ]),
           ),
           const SizedBox(height: 8),
           RichText(
-            text: TextSpan(text: 'Address: ', style: textStyle, children: [
-              TextSpan(
-                text: theatre.address,
-                style: textStyle2,
-              ),
-            ]),
+            text: TextSpan(
+                text: S.of(context).theatre,
+                style: textStyle,
+                children: [
+                  TextSpan(
+                    text: theatre.name,
+                    style: textStyle2,
+                  ),
+                  TextSpan(
+                    text: S.of(context).room,
+                    style: textStyle,
+                  ),
+                  TextSpan(
+                    text: showTime.room,
+                    style: textStyle2,
+                  ),
+                ]),
+          ),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(
+                text: S.of(context).address + ': ',
+                style: textStyle,
+                children: [
+                  TextSpan(
+                    text: theatre.address,
+                    style: textStyle2,
+                  ),
+                ]),
           ),
           const SizedBox(height: 6),
           Wrap(

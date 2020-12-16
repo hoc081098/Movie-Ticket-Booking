@@ -112,5 +112,18 @@
   "maximumComboCount": "Đã đạt số lượng combo tối đa",
   "combo": "Combo",
   "normalTicket": "Vé thường",
-  "doubledTicket": "Vé đôi"
+  "doubledTicket": "Vé đôi",
+  "invalidEmailAddress": "Email không hợp lệ",
+  "invalidPhoneNumber": "SĐT không hợp lệ",
+  "checkout": "Thanh toán",
+  "checkoutSuccessfullyPleaseCheckEmailToGetTicket": "Thanh toán thành công. Vui lòng kiểm tra email để nhận vé",
+  "checkoutFailedGeterrormessagemessageerror": "Thanh toán không thành công: {message}",
+  "missingRequiredFields": "Thiếu các thông tin bắt buộc",
+  "FINISH": "HOÀN THÀNH",
+  "OFF": "GIẢM GIÁ",
+  "selectOrAddACard": "Chọn hoặc thêm card",
+  "selectedCardlast4TapToChange": "Đã chọn '••••{last4}'. Nhấn để thay đổi",
+  "selectDiscountCode": "Chọn mã giảm giá",
+  "emailToReceiveTickets": "Email để nhận vé",
+  "phoneNumberToReceiveTickets": "Số điện thoại nhận vé"
 }

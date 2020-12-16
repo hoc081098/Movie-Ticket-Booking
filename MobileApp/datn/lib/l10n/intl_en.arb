@@ -112,5 +112,18 @@
   "maximumComboCount": "Maximum combo count",
   "combo": "Combo",
   "normalTicket": "Normal ticket",
-  "doubledTicket": "Doubled ticket"
+  "doubledTicket": "Doubled ticket",
+  "invalidEmailAddress": "Invalid email address",
+  "invalidPhoneNumber": "Invalid phone number",
+  "checkout": "Checkout",
+  "checkoutSuccessfullyPleaseCheckEmailToGetTicket": "Checkout successfully. Please check email to get ticket",
+  "checkoutFailedGeterrormessagemessageerror": "Checkout failed: {message}",
+  "missingRequiredFields": "Missing required fields",
+  "FINISH": "FINISH",
+  "OFF": "OFF",
+  "selectOrAddACard": "Select or add a card",
+  "selectedCardlast4TapToChange": "Selected '••••{last4}'. Tap to change",
+  "selectDiscountCode": "Select discount code",
+  "emailToReceiveTickets": "Email to receive tickets",
+  "phoneNumberToReceiveTickets": "Phone number to receive tickets"
 }

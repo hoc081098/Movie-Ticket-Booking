@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../domain/model/promotion.dart';
 import '../../../../domain/model/show_time.dart';
+import '../../../../generated/l10n.dart';
 import '../../../app_scaffold.dart';
 import '../checkout_page.dart';
 import '../discount/discounts_page.dart';
@@ -60,7 +61,9 @@ class SelectDiscount extends StatelessWidget {
                     final pro = snapshot.data;
                     return Expanded(
                       child: Text(
-                        pro == null ? 'Select discount code' : pro.code,
+                        pro == null
+                            ? S.of(context).selectDiscountCode
+                            : pro.code,
                         maxLines: 1,
                       ),
                     );
