@@ -95,5 +95,18 @@
   "relatedMovies": "PHIM LIÊN QUAN",
   "cannotOpenTrailerVideo": "Không thể mở video giới thiệu",
   "emptyRelatedMovie": "Không có phim liên quan nào",
-  "loggedOutSuccessfully": "Đăng xuất thành công"
+  "loggedOutSuccessfully": "Đăng xuất thành công",
+  "timeout": "Hết thời gian",
+  "timeOutToHoldTheSeatPleaseMakeYourReservation": "Hết giờ giữ chỗ. Vui lòng đặt chỗ trong vòng 5 phút!",
+  "CONTINUE": "TIẾP TỤC",
+  "mustSelectAtLeastOneSeat": "Phải chọn ít nhất một chỗ ngồi",
+  "warning": "Warning",
+  "someSeatsYouChooseHaveBeenReservedPleaseSelectOther": "Một số chỗ bạn chọn đã được đặt trước. Vui lòng chọn chỗ ngồi khác.",
+  "SCREEN": "MÀN HÌNH",
+  "selected": "Đã chọn",
+  "available": "Còn trống",
+  "taken": "Đã đặt",
+  "doubledSeat": "Ghế đôi",
+  "select": "Đã chọn",
+  "seat_s": "{seats,plural, other{ghế}}"
 }

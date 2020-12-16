@@ -95,5 +95,18 @@
   "relatedMovies": "RELATED MOVIES",
   "cannotOpenTrailerVideo": "Cannot open trailer video",
   "emptyRelatedMovie": "Empty related movie",
-  "loggedOutSuccessfully": "Logged out successfully"
+  "loggedOutSuccessfully": "Logged out successfully",
+  "timeout": "Timeout",
+  "timeOutToHoldTheSeatPleaseMakeYourReservation": "Time out to hold the seat. Please make your reservation within 5 minutes!",
+  "CONTINUE": "CONTINUE",
+  "mustSelectAtLeastOneSeat": "Must select at least one seat",
+  "warning": "Warning",
+  "someSeatsYouChooseHaveBeenReservedPleaseSelectOther": "Some seats you choose have been reserved. Please select other seats.",
+  "SCREEN": "SCREEN",
+  "selected": "Selected",
+  "available": "Available",
+  "taken": "Taken",
+  "doubledSeat": "Doubled seat",
+  "select": "Select",
+  "seat_s": "{seats,plural, =0{seat}=1{seat}other{seats}}"
 }

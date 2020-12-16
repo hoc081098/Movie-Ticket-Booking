@@ -1010,6 +1010,139 @@ class S {
       args: [],
     );
   }
+
+  /// `Timeout`
+  String get timeout {
+    return Intl.message(
+      'Timeout',
+      name: 'timeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time out to hold the seat. Please make your reservation within 5 minutes!`
+  String get timeOutToHoldTheSeatPleaseMakeYourReservation {
+    return Intl.message(
+      'Time out to hold the seat. Please make your reservation within 5 minutes!',
+      name: 'timeOutToHoldTheSeatPleaseMakeYourReservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CONTINUE`
+  String get CONTINUE {
+    return Intl.message(
+      'CONTINUE',
+      name: 'CONTINUE',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Must select at least one seat`
+  String get mustSelectAtLeastOneSeat {
+    return Intl.message(
+      'Must select at least one seat',
+      name: 'mustSelectAtLeastOneSeat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Warning`
+  String get warning {
+    return Intl.message(
+      'Warning',
+      name: 'warning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Some seats you choose have been reserved. Please select other seats.`
+  String get someSeatsYouChooseHaveBeenReservedPleaseSelectOther {
+    return Intl.message(
+      'Some seats you choose have been reserved. Please select other seats.',
+      name: 'someSeatsYouChooseHaveBeenReservedPleaseSelectOther',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SCREEN`
+  String get SCREEN {
+    return Intl.message(
+      'SCREEN',
+      name: 'SCREEN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected`
+  String get selected {
+    return Intl.message(
+      'Selected',
+      name: 'selected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Available`
+  String get available {
+    return Intl.message(
+      'Available',
+      name: 'available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Taken`
+  String get taken {
+    return Intl.message(
+      'Taken',
+      name: 'taken',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Doubled seat`
+  String get doubledSeat {
+    return Intl.message(
+      'Doubled seat',
+      name: 'doubledSeat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select`
+  String get select {
+    return Intl.message(
+      'Select',
+      name: 'select',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{seats,plural, =0{seat}=1{seat}other{seats}}`
+  String seat_s(num seats) {
+    return Intl.plural(
+      seats,
+      zero: 'seat',
+      one: 'seat',
+      other: 'seats',
+      name: 'seat_s',
+      desc: '',
+      args: [seats],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
