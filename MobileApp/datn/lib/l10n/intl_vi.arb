@@ -138,5 +138,9 @@
   "expireDateMmyy": "Ngày hết hạn (MM/yy)",
   "ADDCARD": "THÊM CARD",
   "addedCardSuccessfully": "Thêm card thành công",
-  "addCardFailed": "Thêm card không thành công: {msg}"
+  "addCardFailed": "Thêm card không thành công: {msg}",
+  "emptyCouponCode": "Không có mã giảm giá",
+  "selectCouponCode": "Chọn mã giảm giá",
+  "promotionStart": "Từ: {d}",
+  "promotionEnd": "Đến: {d}"
 }

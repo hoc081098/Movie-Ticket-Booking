@@ -1443,6 +1443,46 @@ class S {
       args: [msg],
     );
   }
+
+  /// `Empty coupon code`
+  String get emptyCouponCode {
+    return Intl.message(
+      'Empty coupon code',
+      name: 'emptyCouponCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select coupon code`
+  String get selectCouponCode {
+    return Intl.message(
+      'Select coupon code',
+      name: 'selectCouponCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start: {d}`
+  String promotionStart(Object d) {
+    return Intl.message(
+      'Start: $d',
+      name: 'promotionStart',
+      desc: '',
+      args: [d],
+    );
+  }
+
+  /// `End: {d}`
+  String promotionEnd(Object d) {
+    return Intl.message(
+      'End: $d',
+      name: 'promotionEnd',
+      desc: '',
+      args: [d],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

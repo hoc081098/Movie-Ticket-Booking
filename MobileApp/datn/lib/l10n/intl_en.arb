@@ -138,5 +138,9 @@
   "expireDateMmyy": "Expire date (MM/yy)",
   "ADDCARD": "ADD CARD",
   "addedCardSuccessfully": "Added card successfully",
-  "addCardFailed": "Add card failed: {msg}"
+  "addCardFailed": "Add card failed: {msg}",
+  "emptyCouponCode": "Empty coupon code",
+  "selectCouponCode": "Select coupon code",
+  "promotionStart": "Start: {d}",
+  "promotionEnd": "End: {d}"
 }
