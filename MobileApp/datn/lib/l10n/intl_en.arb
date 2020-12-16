@@ -158,5 +158,6 @@
   "mustBeAfterMinReleasedDate": "Must be after min released date",
   "apply": "Apply",
   "count_movie": "{movies,plural, =0{0 movie}=1{1 movie}other{{movies} movies}}",
-  "DESCRIPTION": "DESCRIPTION"
+  "DESCRIPTION": "DESCRIPTION",
+  "loadedAllMovies": "Loaded all movies"
 }

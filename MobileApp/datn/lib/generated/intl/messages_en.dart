@@ -140,6 +140,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidPhoneNumber" : MessageLookupByLibrary.simpleMessage("Invalid phone number"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Load image error"),
     "loadedAllComments" : MessageLookupByLibrary.simpleMessage("Loaded all comments"),
+    "loadedAllMovies" : MessageLookupByLibrary.simpleMessage("Loaded all movies"),
     "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Loaded all notifications"),
     "loadedAllReservations" : MessageLookupByLibrary.simpleMessage("Loaded all reservations"),
     "loggedOutSuccessfully" : MessageLookupByLibrary.simpleMessage("Logged out successfully"),

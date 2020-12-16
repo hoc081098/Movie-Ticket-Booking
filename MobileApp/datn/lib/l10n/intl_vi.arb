@@ -158,5 +158,6 @@
   "mustBeAfterMinReleasedDate": "Phải sau ngày phát hành tối thiểu",
   "apply": "Áp dụng",
   "count_movie": "{movies,plural, other{{movies} bộ phim}}",
-  "DESCRIPTION": "GIỚI THIỆU"
+  "DESCRIPTION": "GIỚI THIỆU",
+  "loadedAllMovies": "Đã tải tất cả phim"
 }

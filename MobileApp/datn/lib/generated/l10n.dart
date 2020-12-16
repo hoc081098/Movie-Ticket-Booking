@@ -1646,6 +1646,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Loaded all movies`
+  String get loadedAllMovies {
+    return Intl.message(
+      'Loaded all movies',
+      name: 'loadedAllMovies',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
