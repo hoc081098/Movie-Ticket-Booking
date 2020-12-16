@@ -1,4 +1,3 @@
-import 'package:datn/ui/home/change_language_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -10,6 +9,7 @@ import '../../domain/model/exception.dart';
 import '../../domain/repository/user_repository.dart';
 import '../../utils/snackbar.dart';
 import '../app_scaffold.dart';
+import '../home/change_language_button.dart';
 import '../login_update_profile/login_update_profile_page.dart';
 import '../main_page.dart';
 import '../register/register_page.dart';

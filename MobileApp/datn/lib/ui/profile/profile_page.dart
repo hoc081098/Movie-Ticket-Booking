@@ -1,17 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:datn/locale_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/user.dart';
 import '../../domain/repository/user_repository.dart';
 import '../../generated/l10n.dart';
-import '../../utils/optional.dart';
+import '../../utils/utils.dart';
 import '../app_scaffold.dart';
 import '../login_update_profile/login_update_profile_page.dart';
 import 'reservations/reservations_page.dart';
@@ -33,31 +33,35 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: RxStreamBuilder<Optional<User>>(
-        stream: user$,
-        builder: (context, snapshot) {
-          final data = snapshot.data;
-          if (data == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
-            );
-          }
+    return RxStreamBuilder<Optional<User>>(
+      stream: user$,
+      builder: (context, snapshot) {
+        final data = snapshot.data;
 
-          return data.fold(
-            () => NotLoggedIn(),
-            (user) => LoggedIn(user),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>
-            AppScaffold.of(context).pushNamedX(ReservationsPage.routeName),
-        label: Text(S.of(context).tickets),
-        icon: FaIcon(FontAwesomeIcons.ticketAlt),
-      ),
+        return Scaffold(
+          body: data == null
+              ? Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                )
+              : data.fold(
+                  () => NotLoggedIn(),
+                  (user) => LoggedIn(user),
+                ),
+          floatingActionButton: data == null
+              ? null
+              : data.fold(
+                  () => null,
+                  (_) => FloatingActionButton.extended(
+                    onPressed: () => AppScaffold.of(context)
+                        .pushNamedX(ReservationsPage.routeName),
+                    label: Text(S.of(context).tickets),
+                    icon: FaIcon(FontAwesomeIcons.ticketAlt),
+                  ),
+                ),
+        );
+      },
     );
   }
 }
@@ -410,6 +414,10 @@ class LoggedIn extends StatelessWidget {
                   print('>>> logged out');
                 } catch (e, s) {
                   print('>>>> logout $e $s');
+                  try {
+                    context.showSnackBar(
+                        S.of(context).logoutFailed(context.getErrorMessage(e)));
+                  } catch (_) {}
                 }
               }
             },
@@ -431,7 +439,19 @@ class LoggedIn extends StatelessWidget {
 
 class NotLoggedIn extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Container();
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: SizedBox(
+          width: 64,
+          height: 64,
+          child: LoadingIndicator(
+            indicatorType: Indicator.ballClipRotatePulse,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _CustomClipper extends CustomClipper<Path> {

@@ -1,8 +1,8 @@
-import 'package:datn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
 import '../../../domain/model/movie.dart';
+import '../../../generated/l10n.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/age_type.dart';
 import '../detail/movie_detail_page.dart';

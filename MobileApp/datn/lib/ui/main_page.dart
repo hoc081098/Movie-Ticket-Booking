@@ -1,8 +1,8 @@
-import 'package:datn/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:pedantic/pedantic.dart';
 
 import '../data/mappers.dart'
     show
@@ -21,6 +21,7 @@ import '../domain/repository/reservation_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../generated/l10n.dart';
 import '../utils/optional.dart';
+import '../utils/utils.dart';
 import 'app_scaffold.dart';
 import 'favorites/favorites_page.dart';
 import 'home/checkout/cards/add_card/add_card_bloc.dart';
@@ -196,10 +197,8 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     listenToken ??= Provider.of<UserRepository>(context)
         .user$
         .where((userOptional) => userOptional != null && userOptional is None)
-        .listen((event) => Navigator.of(context).pushNamedAndRemoveUntilX(
-              LoginPage.routeName,
-              (route) => false,
-            ))
+        .take(1)
+        .listen(onLoggedOut)
         .disposedBy(bag);
   }
 
@@ -232,6 +231,19 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           label: S.of(context).profile,
         ),
       ],
+    );
+  }
+
+  void onLoggedOut(Optional<User> _) async {
+    context.showSnackBar(S.of(context).loggedOutSuccessfully);
+    final navigatorState = Navigator.of(context);
+    await delay(500);
+
+    unawaited(
+      navigatorState.pushNamedAndRemoveUntilX(
+        LoginPage.routeName,
+        (route) => false,
+      ),
     );
   }
 }

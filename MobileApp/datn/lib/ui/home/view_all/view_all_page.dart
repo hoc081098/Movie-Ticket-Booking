@@ -1,4 +1,3 @@
-import 'package:datn/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -8,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/utils.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
