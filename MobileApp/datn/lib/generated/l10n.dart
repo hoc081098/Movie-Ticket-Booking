@@ -1806,6 +1806,46 @@ class S {
       args: [msg],
     );
   }
+
+  /// `Enter your Email to reset Password`
+  String get enterYourEmailToResetPassword {
+    return Intl.message(
+      'Enter your Email to reset Password',
+      name: 'enterYourEmailToResetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset successfully. Please check your email to reset password!`
+  String get resetSuccessfullyPleaseCheckYourEmailToResetPassword {
+    return Intl.message(
+      'Reset successfully. Please check your email to reset password!',
+      name: 'resetSuccessfullyPleaseCheckYourEmailToResetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RESET PASSWORD`
+  String get RESET_PASSWORD {
+    return Intl.message(
+      'RESET PASSWORD',
+      name: 'RESET_PASSWORD',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset password error: {msg}`
+  String resetPasswordErrorMsg(Object msg) {
+    return Intl.message(
+      'Reset password error: $msg',
+      name: 'resetPasswordErrorMsg',
+      desc: '',
+      args: [msg],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

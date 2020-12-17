@@ -174,5 +174,9 @@
   "createYourAccount": "Create your Account",
   "registerSuccessfullyPleaseCheckYourEmailInboxToVerifyThis": "Register successfully. Please check your email inbox to verify this account.",
   "REGISTER": "REGISTER",
-  "registerError": "Register error: {msg}"
+  "registerError": "Register error: {msg}",
+  "enterYourEmailToResetPassword": "Enter your Email to reset Password",
+  "resetSuccessfullyPleaseCheckYourEmailToResetPassword": "Reset successfully. Please check your email to reset password!",
+  "RESET_PASSWORD": "RESET PASSWORD",
+  "resetPasswordErrorMsg": "Reset password error: {msg}"
 }

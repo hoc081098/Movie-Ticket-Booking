@@ -59,15 +59,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m19(last4) => "Removed success: \'${last4}\'";
 
-  static m20(seats) => "${Intl.plural(seats, zero: 'seat', one: 'seat', other: 'seats')}";
+  static m20(msg) => "Reset password error: ${msg}";
 
-  static m21(last4) => "Selected \'••••${last4}\'. Tap to change";
+  static m21(seats) => "${Intl.plural(seats, zero: 'seat', one: 'seat', other: 'seats')}";
 
-  static m22(message) => "Toggle failed: ${message}";
+  static m22(last4) => "Selected \'••••${last4}\'. Tap to change";
 
-  static m23(totalFavorite) => "${Intl.plural(totalFavorite, zero: '0 favorite', one: '1 favorite', other: '${totalFavorite} favorites')}";
+  static m23(message) => "Toggle failed: ${message}";
 
-  static m24(totalRate) => "${Intl.plural(totalRate, zero: '0 review', one: '1 review', other: '${totalRate} reviews')}";
+  static m24(totalFavorite) => "${Intl.plural(totalFavorite, zero: '0 favorite', one: '1 favorite', other: '${totalFavorite} favorites')}";
+
+  static m25(totalRate) => "${Intl.plural(totalRate, zero: '0 review', one: '1 review', other: '${totalRate} reviews')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -78,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "LOGIN" : MessageLookupByLibrary.simpleMessage("LOGIN"),
     "OFF" : MessageLookupByLibrary.simpleMessage("OFF"),
     "REGISTER" : MessageLookupByLibrary.simpleMessage("REGISTER"),
+    "RESET_PASSWORD" : MessageLookupByLibrary.simpleMessage("RESET PASSWORD"),
     "SCREEN" : MessageLookupByLibrary.simpleMessage("SCREEN"),
     "addCard" : MessageLookupByLibrary.simpleMessage("Add card"),
     "addCardFailed" : m0,
@@ -139,6 +142,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "empty_favorite_movie" : MessageLookupByLibrary.simpleMessage("Empty favorite movie"),
     "empty_movie" : MessageLookupByLibrary.simpleMessage("Empty movie"),
     "empty_theatre" : MessageLookupByLibrary.simpleMessage("Empty theatre"),
+    "enterYourEmailToResetPassword" : MessageLookupByLibrary.simpleMessage("Enter your Email to reset Password"),
     "error_with_message" : m8,
     "expireDateMmyy" : MessageLookupByLibrary.simpleMessage("Expire date (MM/yy)"),
     "facebookLoginErrorGeterrormessagedeprecatede" : m9,
@@ -206,11 +210,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "removeThisComment" : MessageLookupByLibrary.simpleMessage("Remove this comment"),
     "removedSuccessMsgremovedlast4" : m19,
     "requiredUpdatingYourProfile" : MessageLookupByLibrary.simpleMessage("Required updating your profile"),
+    "resetPasswordErrorMsg" : m20,
+    "resetSuccessfullyPleaseCheckYourEmailToResetPassword" : MessageLookupByLibrary.simpleMessage("Reset successfully. Please check your email to reset password!"),
     "retry" : MessageLookupByLibrary.simpleMessage("Retry"),
     "reviews" : MessageLookupByLibrary.simpleMessage(" reviews"),
     "room" : MessageLookupByLibrary.simpleMessage(" Room: "),
     "searchFilter" : MessageLookupByLibrary.simpleMessage("Search filter"),
-    "seat_s" : m20,
+    "seat_s" : m21,
     "select" : MessageLookupByLibrary.simpleMessage("Select"),
     "selectCouponCode" : MessageLookupByLibrary.simpleMessage("Select coupon code"),
     "selectDiscountCode" : MessageLookupByLibrary.simpleMessage("Select discount code"),
@@ -218,7 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectTheArea" : MessageLookupByLibrary.simpleMessage("Select the area: "),
     "select_city" : MessageLookupByLibrary.simpleMessage("Select city"),
     "selected" : MessageLookupByLibrary.simpleMessage("Selected"),
-    "selectedCardlast4TapToChange" : m21,
+    "selectedCardlast4TapToChange" : m22,
     "showTimes" : MessageLookupByLibrary.simpleMessage("Show times"),
     "showtimeEndTimeMustBeAfterStartTime" : MessageLookupByLibrary.simpleMessage("Showtime end time must be after start time"),
     "showtimeStartFrom" : MessageLookupByLibrary.simpleMessage("Showtime start from "),
@@ -236,11 +242,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "title" : MessageLookupByLibrary.simpleMessage("Title"),
     "to" : MessageLookupByLibrary.simpleMessage(" to "),
     "today" : MessageLookupByLibrary.simpleMessage("Today"),
-    "toggleFailed" : m22,
+    "toggleFailed" : m23,
     "toggledSuccessfully" : MessageLookupByLibrary.simpleMessage("Toggled successfully"),
     "totalPrice" : MessageLookupByLibrary.simpleMessage("Total price: "),
-    "total_favorite" : m23,
-    "total_rate_review" : m24,
+    "total_favorite" : m24,
+    "total_rate_review" : m25,
     "view_all" : MessageLookupByLibrary.simpleMessage("VIEW ALL"),
     "warning" : MessageLookupByLibrary.simpleMessage("Warning"),
     "yourAccountEmailHasNotBeenVerifyPleaseVerifyTo" : MessageLookupByLibrary.simpleMessage("Your account email has not been verify. Please verify to continue!"),

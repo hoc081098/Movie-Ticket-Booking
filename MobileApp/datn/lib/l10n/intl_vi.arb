@@ -174,5 +174,9 @@
   "createYourAccount": "Tạo tài khoản",
   "registerSuccessfullyPleaseCheckYourEmailInboxToVerifyThis": "Đăng ký thành công. Vui lòng kiểm tra hộp thư email của bạn để xác minh tài khoản này.",
   "REGISTER": "ĐĂNG KÝ",
-  "registerError": "Đăng ký lỗi: {msg}"
+  "registerError": "Đăng ký lỗi: {msg}",
+  "enterYourEmailToResetPassword": "Nhập Email để đặt lại Mật khẩu",
+  "resetSuccessfullyPleaseCheckYourEmailToResetPassword": "Thành công. Vui lòng kiểm tra email của bạn để đặt lại mật khẩu!",
+  "RESET_PASSWORD": "ĐẶT LẠI MẬT KHẨU",
+  "resetPasswordErrorMsg": "Đặt lại lỗi mật khẩu: {msg}"
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: close_sinks
 
+import 'package:datn/generated/l10n.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:meta/meta.dart';
@@ -70,7 +71,8 @@ class ResetPasswordBloc extends DisposeCallbackBaseBloc {
                 .map<Message>((email) => SuccessMessage(email))
                 .onErrorReturnWith(
                   (error) => ErrorMessage(
-                    'Reset password error: ${getErrorMessageDeprecated(error)}',
+                    S.current.resetPasswordErrorMsg(
+                        getErrorMessageDeprecated(error)),
                     error,
                   ),
                 ),
@@ -83,7 +85,7 @@ class ResetPasswordBloc extends DisposeCallbackBaseBloc {
     final emailError$ = emailController.stream
         .map((email) {
           if (Validator.isValidEmail(email)) return null;
-          return 'Invalid email address';
+          return S.current.invalidEmailAddress;
         })
         .distinct()
         .share();
