@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -13,6 +13,7 @@ import '../data/remote/auth_client.dart';
 import '../data/repository/card_repository_impl.dart';
 import '../data/repository/product_repository_impl.dart';
 import '../data/repository/promotion_repository_impl.dart';
+import '../domain/model/card.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
@@ -58,28 +59,44 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     CardsPage.routeName: (context, settings) {
       final authClient = Provider.of<AuthClient>(context);
       final args = settings.arguments as Map<String, dynamic>;
-      final mode = args['mode'];
+
+      final mode = args['mode'] as CardPageMode;
+      assert(mode != null);
+      final key = ValueKey(mode);
+
+      final card = args['card'] as Card;
 
       return BlocProvider<CardsBloc>(
-        key: ValueKey(mode),
+        key: key,
         child: CardsPage(
           mode: mode,
-          key: ValueKey(mode),
+          key: key,
         ),
-        initBloc: () => CardsBloc(
-          CardRepositoryImpl(
-            authClient,
-            cardResponseToCard,
-          ),
-          args['card'],
-        ),
+        initBloc: () {
+          return CardsBloc(
+            CardRepositoryImpl(
+              authClient,
+              cardResponseToCard,
+            ),
+            card,
+          );
+        },
       );
     },
     AddCardPage.routeName: (context, settings) {
       final authClient = Provider.of<AuthClient>(context);
 
+      final mode = settings.arguments as CardPageMode;
+      assert(mode != null);
+
+      final key = ValueKey(mode);
+
       return BlocProvider<AddCardBloc>(
-        child: AddCardPage(),
+        key: key,
+        child: AddCardPage(
+          key: key,
+          mode: mode,
+        ),
         initBloc: () => AddCardBloc(
           CardRepositoryImpl(
             authClient,

@@ -6,10 +6,15 @@ import 'package:loading_indicator/loading_indicator.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../utils/utils.dart';
 import '../../../tickets/ticket_page.dart';
+import '../cards_page.dart' show CardPageMode;
 import 'add_card_bloc.dart';
 
 class AddCardPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets/combo/checkout/cards/add_card';
+
+  final CardPageMode mode;
+
+  const AddCardPage({Key key, @required this.mode}) : super(key: key);
 
   @override
   _AddCardPageState createState() => _AddCardPageState();
@@ -43,23 +48,26 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).addCard),
-        actions: [
-          Center(
-            child: RxStreamBuilder<String>(
-              stream:
-                  TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? Text(
-                        snapshot.data,
-                        style: countDownStyle,
-                      )
-                    : const SizedBox();
-              },
-            ),
-          ),
-          const SizedBox(width: 12),
-        ],
+        actions: widget.mode == CardPageMode.select
+            ? [
+                Center(
+                  child: RxStreamBuilder<String>(
+                    stream: TicketsCountDownTimerBlocProvider.shared()
+                        .bloc
+                        .countDown$,
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? Text(
+                              snapshot.data,
+                              style: countDownStyle,
+                            )
+                          : const SizedBox();
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+              ]
+            : null,
       ),
       body: Center(
         child: Padding(

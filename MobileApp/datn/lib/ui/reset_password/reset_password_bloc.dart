@@ -1,12 +1,12 @@
 // ignore_for_file: close_sinks
 
-import 'package:datn/generated/l10n.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/streams.dart';
 import '../../utils/type_defs.dart';

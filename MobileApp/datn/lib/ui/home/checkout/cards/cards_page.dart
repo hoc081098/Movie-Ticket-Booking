@@ -230,10 +230,10 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Cards'),
-          actions: [
-            Center(
-              child: widget.mode == CardPageMode.select
-                  ? RxStreamBuilder<String>(
+          actions: widget.mode == CardPageMode.select
+              ? [
+                  Center(
+                    child: RxStreamBuilder<String>(
                       stream: TicketsCountDownTimerBlocProvider.shared()
                           .bloc
                           .countDown$,
@@ -245,11 +245,11 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                               )
                             : const SizedBox();
                       },
-                    )
-                  : null,
-            ),
-            const SizedBox(width: 12),
-          ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                ]
+              : null,
         ),
         floatingActionButton: RxStreamBuilder<bool>(
           stream: fabVisible$,
@@ -258,8 +258,10 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
               visible: snapshot.data,
               child: FloatingActionButton.extended(
                 onPressed: () async {
-                  final added = await AppScaffold.of(context)
-                      .pushNamedX(AddCardPage.routeName);
+                  final added = await AppScaffold.of(context).pushNamedX(
+                    AddCardPage.routeName,
+                    arguments: widget.mode,
+                  );
                   if (added != null) {
                     bloc.cardAdded(added as domain.Card);
                   }
