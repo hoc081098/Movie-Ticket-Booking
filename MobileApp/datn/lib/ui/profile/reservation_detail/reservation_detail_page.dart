@@ -210,7 +210,7 @@ class ReservationDetailPage extends StatelessWidget {
                 LoaderWidget<Uint8List>(
                   blocProvider: () => LoaderBloc<Uint8List>(
                     loaderFunction: () => repo.getQrCode(reservation.id),
-                    enableLogger: true,
+                    logger: print,
                   ),
                   builder: (context, state, bloc) {
                     if (state.isLoading) {

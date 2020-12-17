@@ -194,7 +194,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           );
       final loaderBloc = LoaderBloc(
         loaderFunction: loaderFunction,
-        enableLogger: true,
+        logger: print,
       );
 
       final userRepo = Provider.of<UserRepository>(context);

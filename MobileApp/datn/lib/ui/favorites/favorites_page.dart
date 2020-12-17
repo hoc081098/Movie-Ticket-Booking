@@ -39,7 +39,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
       final loaderBloc = LoaderBloc<BuiltList<Movie>>(
         loaderFunction: repo.favoritesMovie,
         initialContent: BuiltList.of(<Movie>[]),
-        enableLogger: true,
+        logger: print,
       );
 
       AppScaffold.tapStream(context)

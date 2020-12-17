@@ -107,7 +107,7 @@ class DiscountsPage extends StatelessWidget {
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
           initialContent: const <Promotion>[].build(),
-          enableLogger: true,
+          logger: print,
         ),
         builder: (context, state, bloc) {
           if (state.isLoading) {

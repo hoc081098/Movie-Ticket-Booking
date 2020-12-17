@@ -75,7 +75,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
               ) =>
                   showTimesByDay[day] ?? emptyList);
         },
-        enableLogger: true,
+        logger: print,
         initialContent: emptyList,
       )..fetch();
     }();
@@ -131,6 +131,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                                       : Colors.white,
                                 ),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
                                       day == startDay
@@ -139,6 +140,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                                       style: day == selectedDay
                                           ? weekDaySelectedStyle
                                           : weekDayStyle,
+                                      textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
@@ -146,6 +148,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                                       style: day == selectedDay
                                           ? ddMMSelectedStyle
                                           : ddMMStyle,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),

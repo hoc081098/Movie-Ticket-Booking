@@ -109,7 +109,6 @@ class CardsBloc extends DisposeCallbackBaseBloc {
     final loader = LoaderBloc<BuiltList<domain.Card>>(
       loaderFunction: cardStreamFunc,
       initialContent: BuiltList.of(<domain.Card>[]),
-      enableLogger: false,
     );
 
     state$ = Rx.combineLatest2(

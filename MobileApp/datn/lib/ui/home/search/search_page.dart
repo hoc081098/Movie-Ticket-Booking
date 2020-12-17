@@ -134,7 +134,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
         loaderFunction: loaderFunction,
         refresherFunction: loaderFunction,
         initialContent: const <Movie>[].build(),
-        enableLogger: true,
+        logger: print,
       );
 
       movieRepo.getCategories().listen((event) {

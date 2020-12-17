@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
           initialContent: emptyMovieList,
-          enableLogger: true,
+          logger: print,
         );
       }();
 
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
           initialContent: emptyMovieList,
-          enableLogger: true,
+          logger: print,
         );
       }();
 
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
           initialContent: emptyMovieList,
-          enableLogger: true,
+          logger: print,
         );
       }();
 
@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
           initialContent: emptyMovieList,
-          enableLogger: true,
+          logger: print,
         );
       }();
 
@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
           initialContent: emptyMovieList,
-          enableLogger: true,
+          logger: print,
         );
       }();
 
@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
           initialContent: const <Theatre>[].build(),
-          enableLogger: true,
+          logger: print,
         );
       }();
 

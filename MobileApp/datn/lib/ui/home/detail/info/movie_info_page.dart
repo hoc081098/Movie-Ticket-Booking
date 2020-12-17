@@ -59,7 +59,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
 
       return LoaderBloc(
         loaderFunction: loaderFunction,
-        enableLogger: true,
+        logger: print,
       )..fetch();
     }();
 
@@ -71,7 +71,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
         loaderFunction: loaderFunction,
         refresherFunction: loaderFunction,
         initialContent: null,
-        enableLogger: true,
+        logger: print,
       )..fetch();
     }();
 
@@ -97,7 +97,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       return LoaderBloc(
         loaderFunction: () => repository.getRelatedMovies(widget.movieId),
         initialContent: null,
-        enableLogger: true,
+        logger: print,
       )..fetch();
     }();
   }
