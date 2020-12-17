@@ -21,6 +21,11 @@ import '../../../widgets/error_widget.dart';
 import '../../tickets/ticket_page.dart';
 import 'add_card/add_card_page.dart';
 
+enum CardPageMode {
+  select,
+  manage,
+}
+
 abstract class Message {}
 
 class RemovedSuccess implements Message {
@@ -143,6 +148,10 @@ class CardsBloc extends DisposeCallbackBaseBloc {
 class CardsPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets/combo/checkout/cards';
 
+  final CardPageMode mode;
+
+  const CardsPage({Key key, @required this.mode}) : super(key: key);
+
   @override
   _CardsPageState createState() => _CardsPageState();
 }
@@ -223,18 +232,21 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
           title: Text('Cards'),
           actions: [
             Center(
-              child: RxStreamBuilder<String>(
-                stream:
-                    TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? Text(
-                          snapshot.data,
-                          style: countDownStyle,
-                        )
-                      : const SizedBox();
-                },
-              ),
+              child: widget.mode == CardPageMode.select
+                  ? RxStreamBuilder<String>(
+                      stream: TicketsCountDownTimerBlocProvider.shared()
+                          .bloc
+                          .countDown$,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? Text(
+                                snapshot.data,
+                                style: countDownStyle,
+                              )
+                            : const SizedBox();
+                      },
+                    )
+                  : null,
             ),
             const SizedBox(width: 12),
           ],
@@ -345,7 +357,8 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                           Container(
                             child: Column(
                               children: [
-                                if (card.id == selectedCard?.id)
+                                if (card.id == selectedCard?.id &&
+                                    widget.mode == CardPageMode.select)
                                   Padding(
                                     padding: const EdgeInsets.all(8),
                                     child: Icon(

@@ -25,6 +25,7 @@ environment:
 # $3 get $1;
 
 dependencies:
+  flutter_speed_dial: ^1.2.5
   firebase_core: ^0.5.2+1
   octo_image: ^0.3.0
   firebase_remote_config: ^0.4.2

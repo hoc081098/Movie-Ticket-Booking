@@ -36,7 +36,10 @@ class SelectedCard extends StatelessWidget {
           onTap: () async {
             final card = (await AppScaffold.of(context).pushNamedX(
               CardsPage.routeName,
-              arguments: bloc.selectedCard$.value,
+              arguments: {
+                'card': bloc.selectedCard$.value,
+                'mode': CardPageMode.select,
+              },
             )) as domain.Card;
             print('[DEBUG] receiver ${card?.id}');
             bloc.selectedCard(card);

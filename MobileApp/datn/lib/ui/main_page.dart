@@ -54,6 +54,42 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> with DisposeBagMixin {
+  static final cardPages = <String, AppScaffoldWidgetBuilder>{
+    CardsPage.routeName: (context, settings) {
+      final authClient = Provider.of<AuthClient>(context);
+      final args = settings.arguments as Map<String, dynamic>;
+      final mode = args['mode'];
+
+      return BlocProvider<CardsBloc>(
+        key: ValueKey(mode),
+        child: CardsPage(
+          mode: mode,
+          key: ValueKey(mode),
+        ),
+        initBloc: () => CardsBloc(
+          CardRepositoryImpl(
+            authClient,
+            cardResponseToCard,
+          ),
+          args['card'],
+        ),
+      );
+    },
+    AddCardPage.routeName: (context, settings) {
+      final authClient = Provider.of<AuthClient>(context);
+
+      return BlocProvider<AddCardBloc>(
+        child: AddCardPage(),
+        initBloc: () => AddCardBloc(
+          CardRepositoryImpl(
+            authClient,
+            cardResponseToCard,
+          ),
+        ),
+      );
+    },
+  };
+
   static final homeRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) => HomePage(),
     MovieDetailPage.routeName: (context, settings) {
@@ -118,33 +154,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         ),
       );
     },
-    CardsPage.routeName: (context, settings) {
-      final authClient = Provider.of<AuthClient>(context);
-
-      return BlocProvider<CardsBloc>(
-        child: CardsPage(),
-        initBloc: () => CardsBloc(
-          CardRepositoryImpl(
-            authClient,
-            cardResponseToCard,
-          ),
-          settings.arguments,
-        ),
-      );
-    },
-    AddCardPage.routeName: (context, settings) {
-      final authClient = Provider.of<AuthClient>(context);
-
-      return BlocProvider<AddCardBloc>(
-        child: AddCardPage(),
-        initBloc: () => AddCardBloc(
-          CardRepositoryImpl(
-            authClient,
-            cardResponseToCard,
-          ),
-        ),
-      );
-    },
+    ...cardPages,
     DiscountsPage.routeName: (context, settings) {
       final authClient = Provider.of<AuthClient>(context);
 
@@ -179,6 +189,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         reservation: settings.arguments,
       );
     },
+    ...cardPages,
   };
 
   static final favoritesRoutes = <String, AppScaffoldWidgetBuilder>{

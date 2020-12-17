@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:datn/ui/home/checkout/cards/cards_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -53,15 +55,66 @@ class _ProfilePageState extends State<ProfilePage> {
               ? null
               : data.fold(
                   () => null,
-                  (_) => FloatingActionButton.extended(
+                  (_) =>
+                      /*FloatingActionButton.extended(
                     onPressed: () => AppScaffold.of(context)
                         .pushNamedX(ReservationsPage.routeName),
                     label: Text(S.of(context).tickets),
                     icon: FaIcon(FontAwesomeIcons.ticketAlt),
-                  ),
+                  )*/
+                      buildFab(),
                 ),
         );
       },
+    );
+  }
+
+  Widget buildFab() {
+    const color = Color(0xffA4508B);
+
+    return SpeedDial(
+      animatedIcon: AnimatedIcons.menu_close,
+      animatedIconTheme: IconThemeData(size: 22),
+      backgroundColor: color,
+      visible: true,
+      curve: Curves.bounceIn,
+      children: [
+        SpeedDialChild(
+          child: Icon(
+            FontAwesomeIcons.ticketAlt,
+            size: 20,
+          ),
+          backgroundColor: color,
+          onTap: () =>
+              AppScaffold.of(context).pushNamedX(ReservationsPage.routeName),
+          label: S.of(context).tickets,
+          labelStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+          labelBackgroundColor: color,
+        ),
+        SpeedDialChild(
+          child: Icon(
+            Icons.credit_card,
+          ),
+          backgroundColor: color,
+          onTap: () => AppScaffold.of(context).pushNamedX(
+            CardsPage.routeName,
+            arguments: {
+              'mode': CardPageMode.manage,
+            },
+          ),
+          label: 'Cards',
+          labelStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+          labelBackgroundColor: color,
+        ),
+      ],
     );
   }
 }
