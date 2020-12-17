@@ -178,5 +178,14 @@
   "enterYourEmailToResetPassword": "Nhập Email để đặt lại Mật khẩu",
   "resetSuccessfullyPleaseCheckYourEmailToResetPassword": "Thành công. Vui lòng kiểm tra email của bạn để đặt lại mật khẩu!",
   "RESET_PASSWORD": "ĐẶT LẠI MẬT KHẨU",
-  "resetPasswordErrorMsg": "Đặt lại lỗi mật khẩu: {msg}"
+  "resetPasswordErrorMsg": "Đặt lại lỗi mật khẩu: {msg}",
+  "updateProfile": "Cập nhật thông tin",
+  "invalidFullName": "Tên không hợp lệ",
+  "emptyAddress": "Địa chỉ trống",
+  "UPDATE": "CẬP NHẬT",
+  "invalidBirthday": "Ngày sinh không hợp lệ",
+  "updateProfileSuccessfully": "Cập nhật thành công",
+  "updateProfileFailedMsg": "Cập nhật không thành công: {msg}",
+  "male": "Nam",
+  "female": "Nữ"
 }

@@ -178,5 +178,14 @@
   "enterYourEmailToResetPassword": "Enter your Email to reset Password",
   "resetSuccessfullyPleaseCheckYourEmailToResetPassword": "Reset successfully. Please check your email to reset password!",
   "RESET_PASSWORD": "RESET PASSWORD",
-  "resetPasswordErrorMsg": "Reset password error: {msg}"
+  "resetPasswordErrorMsg": "Reset password error: {msg}",
+  "updateProfile": "Update profile",
+  "invalidFullName": "Invalid full name",
+  "emptyAddress": "Empty address",
+  "UPDATE": "UPDATE",
+  "invalidBirthday": "Invalid birthday",
+  "updateProfileSuccessfully": "Update profile successfully",
+  "updateProfileFailedMsg": "Update profile failed: {msg}",
+  "male": "Male",
+  "female": "Female"
 }

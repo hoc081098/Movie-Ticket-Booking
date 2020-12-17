@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m25(totalRate) => "${Intl.plural(totalRate, other: '${totalRate} đánh giá')}";
 
+  static m26(msg) => "Cập nhật không thành công: ${msg}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "ADDCARD" : MessageLookupByLibrary.simpleMessage("THÊM CARD"),
@@ -82,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "REGISTER" : MessageLookupByLibrary.simpleMessage("ĐĂNG KÝ"),
     "RESET_PASSWORD" : MessageLookupByLibrary.simpleMessage("ĐẶT LẠI MẬT KHẨU"),
     "SCREEN" : MessageLookupByLibrary.simpleMessage("MÀN HÌNH"),
+    "UPDATE" : MessageLookupByLibrary.simpleMessage("CẬP NHẬT"),
     "addCard" : MessageLookupByLibrary.simpleMessage("Thêm card"),
     "addCardFailed" : m0,
     "addComment" : MessageLookupByLibrary.simpleMessage("Thêm bình luận"),
@@ -131,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "duration_minutes" : m7,
     "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "emailToReceiveTickets" : MessageLookupByLibrary.simpleMessage("Email để nhận vé"),
+    "emptyAddress" : MessageLookupByLibrary.simpleMessage("Địa chỉ trống"),
     "emptyCard" : MessageLookupByLibrary.simpleMessage("Không có card nào"),
     "emptyComment" : MessageLookupByLibrary.simpleMessage("Không có bình luận nào"),
     "emptyCouponCode" : MessageLookupByLibrary.simpleMessage("Không có mã giảm giá"),
@@ -149,13 +153,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "fav_removed_failed_with_title" : m10,
     "fav_removed_successfully_with_title" : m11,
     "favorites" : MessageLookupByLibrary.simpleMessage("Yêu thích"),
+    "female" : MessageLookupByLibrary.simpleMessage("Nữ"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Quên mật khẩu?"),
     "fullName" : MessageLookupByLibrary.simpleMessage("Tên đầy đủ"),
     "gender" : MessageLookupByLibrary.simpleMessage("Giới tính"),
     "googleSignInFailedGeterrormessagedeprecatede" : m12,
     "home" : MessageLookupByLibrary.simpleMessage("Trang chủ"),
     "information" : MessageLookupByLibrary.simpleMessage("Thông tin"),
+    "invalidBirthday" : MessageLookupByLibrary.simpleMessage("Ngày sinh không hợp lệ"),
     "invalidEmailAddress" : MessageLookupByLibrary.simpleMessage("Email không hợp lệ"),
+    "invalidFullName" : MessageLookupByLibrary.simpleMessage("Tên không hợp lệ"),
     "invalidInformation" : MessageLookupByLibrary.simpleMessage("Thông tin không hợp lệ"),
     "invalidPhoneNumber" : MessageLookupByLibrary.simpleMessage("SĐT không hợp lệ"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Lỗi tải ảnh"),
@@ -169,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginToYourAccount" : MessageLookupByLibrary.simpleMessage("Đăng nhập"),
     "logoutFailed" : m14,
     "logoutOut" : MessageLookupByLibrary.simpleMessage("Đăng xuất"),
+    "male" : MessageLookupByLibrary.simpleMessage("Nam"),
     "maximumComboCount" : MessageLookupByLibrary.simpleMessage("Đã đạt số lượng combo tối đa"),
     "missingRequiredFields" : MessageLookupByLibrary.simpleMessage("Thiếu các thông tin bắt buộc"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("ĐƯỢC YÊU THÍCH NHẤT"),
@@ -247,6 +255,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalPrice" : MessageLookupByLibrary.simpleMessage("Tổng tiền: "),
     "total_favorite" : m24,
     "total_rate_review" : m25,
+    "updateProfile" : MessageLookupByLibrary.simpleMessage("Cập nhật thông tin"),
+    "updateProfileFailedMsg" : m26,
+    "updateProfileSuccessfully" : MessageLookupByLibrary.simpleMessage("Cập nhật thành công"),
     "view_all" : MessageLookupByLibrary.simpleMessage("Xem tất cả"),
     "warning" : MessageLookupByLibrary.simpleMessage("Warning"),
     "yourAccountEmailHasNotBeenVerifyPleaseVerifyTo" : MessageLookupByLibrary.simpleMessage("Email tài khoản của bạn chưa được xác minh. Vui lòng xác minh để tiếp tục!"),

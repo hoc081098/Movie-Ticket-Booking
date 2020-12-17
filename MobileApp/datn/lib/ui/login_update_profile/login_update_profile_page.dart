@@ -20,6 +20,7 @@ import '../../domain/model/location.dart';
 import '../../domain/model/user.dart';
 import '../../domain/repository/user_repository.dart';
 import '../../env_manager.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/snackbar.dart';
 import '../app_scaffold.dart';
@@ -179,7 +180,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Update profile'),
+        title: Text(S.of(context).updateProfile),
       ),
       body: Stack(
         children: [
@@ -382,7 +383,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             color: Colors.white,
           ),
         ),
-        labelText: 'Full name',
+        labelText: S.of(context).fullName,
         labelStyle: TextStyle(color: Colors.white),
         fillColor: Colors.white,
         enabledBorder: OutlineInputBorder(
@@ -397,7 +398,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       autofocus: true,
       onFieldSubmitted: (_) =>
           FocusScope.of(context).requestFocus(phoneNumberFocusNode),
-      validator: (v) => fullNameRegex.hasMatch(v) ? null : 'Invalid full name',
+      validator: (v) =>
+          fullNameRegex.hasMatch(v) ? null : S.of(context).invalidFullName,
       controller: fullNameTextController,
     );
   }
@@ -413,7 +415,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             color: Colors.white,
           ),
         ),
-        labelText: 'Phone number',
+        labelText: S.of(context).phoneNumber,
         labelStyle: TextStyle(color: Colors.white),
         fillColor: Colors.white,
         enabledBorder: OutlineInputBorder(
@@ -428,8 +430,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       onFieldSubmitted: (_) =>
           FocusScope.of(context).requestFocus(addressFocusNode),
       focusNode: phoneNumberFocusNode,
-      validator: (v) =>
-          phoneNumberRegex.hasMatch(v) ? null : 'Invalid phone number',
+      validator: (v) => phoneNumberRegex.hasMatch(v)
+          ? null
+          : S.of(context).invalidPhoneNumber,
       controller: phoneNumberTextController,
     );
   }
@@ -449,7 +452,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                   color: Colors.white,
                 ),
               ),
-              labelText: 'Address',
+              labelText: S.of(context).address,
               labelStyle: TextStyle(color: Colors.white),
               fillColor: Colors.white,
               enabledBorder: OutlineInputBorder(
@@ -463,7 +466,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(),
             focusNode: addressFocusNode,
-            validator: (v) => v.isEmpty ? 'Empty address' : null,
+            validator: (v) => v.isEmpty ? S.of(context).emptyAddress : null,
           ),
         ),
         const SizedBox(width: 8),
@@ -500,7 +503,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         },
         color: Theme.of(context).backgroundColor,
         child: Text(
-          'UPDATE',
+          S.of(context).UPDATE,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16.0,
@@ -549,7 +552,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         if (date == null) {
           return null;
         }
-        return date.isAfter(DateTime.now()) ? 'Invalid birthday' : null;
+        return date.isAfter(DateTime.now())
+            ? S.of(context).invalidBirthday
+            : null;
       },
       onChanged: (v) => birthday = v,
       resetIcon: Icon(Icons.delete, color: Colors.white),
@@ -561,7 +566,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             color: Colors.white,
           ),
         ),
-        labelText: 'Birthday',
+        labelText: S.of(context).birthday,
         labelStyle: TextStyle(color: Colors.white),
         fillColor: Colors.white,
         enabledBorder: OutlineInputBorder(
@@ -590,7 +595,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     final isValid = formKey.currentState?.validate() == true;
 
     if (!isValid) {
-      context.showSnackBar('Invalid information');
+      context.showSnackBar(S.of(context).invalidInformation);
       return;
     }
 
@@ -609,7 +614,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         birthday: birthday,
         avatarFile: avatarFile$.value,
       );
-      context.showSnackBar('Update profile successfully');
+      context.showSnackBar(S.of(context).updateProfileSuccessfully);
       if (widget.user == null) {
         await Navigator.of(context).pushNamedAndRemoveUntilX(
           MainPage.routeName,
@@ -620,7 +625,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       }
     } catch (e, s) {
       print('loginUpdateProfile $e $s');
-      context.showSnackBar('Update profile failed: ${getErrorMessage(e)}');
+      context.showSnackBar(
+          S.of(context).updateProfileFailedMsg(getErrorMessage(e)));
     } finally {
       isLoading = false;
       unawaited(loginButtonController.reverse());
@@ -689,7 +695,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                         groupValue: gender,
                         onChanged: gender$.add,
                       ),
-                      Text('Male', style: textFieldStyle),
+                      Text(S.of(context).male, style: textFieldStyle),
                     ],
                   ),
                 ),
@@ -706,7 +712,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                         groupValue: gender,
                         onChanged: gender$.add,
                       ),
-                      Text('Female', style: textFieldStyle),
+                      Text(S.of(context).female, style: textFieldStyle),
                     ],
                   ),
                 ),

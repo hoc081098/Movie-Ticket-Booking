@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m25(totalRate) => "${Intl.plural(totalRate, zero: '0 review', one: '1 review', other: '${totalRate} reviews')}";
 
+  static m26(msg) => "Update profile failed: ${msg}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "ADDCARD" : MessageLookupByLibrary.simpleMessage("ADD CARD"),
@@ -82,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "REGISTER" : MessageLookupByLibrary.simpleMessage("REGISTER"),
     "RESET_PASSWORD" : MessageLookupByLibrary.simpleMessage("RESET PASSWORD"),
     "SCREEN" : MessageLookupByLibrary.simpleMessage("SCREEN"),
+    "UPDATE" : MessageLookupByLibrary.simpleMessage("UPDATE"),
     "addCard" : MessageLookupByLibrary.simpleMessage("Add card"),
     "addCardFailed" : m0,
     "addComment" : MessageLookupByLibrary.simpleMessage("Add comment"),
@@ -131,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "duration_minutes" : m7,
     "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "emailToReceiveTickets" : MessageLookupByLibrary.simpleMessage("Email to receive tickets"),
+    "emptyAddress" : MessageLookupByLibrary.simpleMessage("Empty address"),
     "emptyCard" : MessageLookupByLibrary.simpleMessage("Empty card"),
     "emptyComment" : MessageLookupByLibrary.simpleMessage("Empty comment"),
     "emptyCouponCode" : MessageLookupByLibrary.simpleMessage("Empty coupon code"),
@@ -149,13 +153,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "fav_removed_failed_with_title" : m10,
     "fav_removed_successfully_with_title" : m11,
     "favorites" : MessageLookupByLibrary.simpleMessage("Favorites"),
+    "female" : MessageLookupByLibrary.simpleMessage("Female"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password?"),
     "fullName" : MessageLookupByLibrary.simpleMessage("Full name"),
     "gender" : MessageLookupByLibrary.simpleMessage("Gender"),
     "googleSignInFailedGeterrormessagedeprecatede" : m12,
     "home" : MessageLookupByLibrary.simpleMessage("Home"),
     "information" : MessageLookupByLibrary.simpleMessage("Information"),
+    "invalidBirthday" : MessageLookupByLibrary.simpleMessage("Invalid birthday"),
     "invalidEmailAddress" : MessageLookupByLibrary.simpleMessage("Invalid email address"),
+    "invalidFullName" : MessageLookupByLibrary.simpleMessage("Invalid full name"),
     "invalidInformation" : MessageLookupByLibrary.simpleMessage("Invalid information"),
     "invalidPhoneNumber" : MessageLookupByLibrary.simpleMessage("Invalid phone number"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Load image error"),
@@ -169,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginToYourAccount" : MessageLookupByLibrary.simpleMessage("Login to your Account"),
     "logoutFailed" : m14,
     "logoutOut" : MessageLookupByLibrary.simpleMessage("Logout out"),
+    "male" : MessageLookupByLibrary.simpleMessage("Male"),
     "maximumComboCount" : MessageLookupByLibrary.simpleMessage("Maximum combo count"),
     "missingRequiredFields" : MessageLookupByLibrary.simpleMessage("Missing required fields"),
     "most_favorite" : MessageLookupByLibrary.simpleMessage("MOST FAVORITE"),
@@ -247,6 +255,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalPrice" : MessageLookupByLibrary.simpleMessage("Total price: "),
     "total_favorite" : m24,
     "total_rate_review" : m25,
+    "updateProfile" : MessageLookupByLibrary.simpleMessage("Update profile"),
+    "updateProfileFailedMsg" : m26,
+    "updateProfileSuccessfully" : MessageLookupByLibrary.simpleMessage("Update profile successfully"),
     "view_all" : MessageLookupByLibrary.simpleMessage("VIEW ALL"),
     "warning" : MessageLookupByLibrary.simpleMessage("Warning"),
     "yourAccountEmailHasNotBeenVerifyPleaseVerifyTo" : MessageLookupByLibrary.simpleMessage("Your account email has not been verify. Please verify to continue!"),

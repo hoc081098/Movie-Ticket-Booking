@@ -1846,6 +1846,96 @@ class S {
       args: [msg],
     );
   }
+
+  /// `Update profile`
+  String get updateProfile {
+    return Intl.message(
+      'Update profile',
+      name: 'updateProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid full name`
+  String get invalidFullName {
+    return Intl.message(
+      'Invalid full name',
+      name: 'invalidFullName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty address`
+  String get emptyAddress {
+    return Intl.message(
+      'Empty address',
+      name: 'emptyAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `UPDATE`
+  String get UPDATE {
+    return Intl.message(
+      'UPDATE',
+      name: 'UPDATE',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid birthday`
+  String get invalidBirthday {
+    return Intl.message(
+      'Invalid birthday',
+      name: 'invalidBirthday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update profile successfully`
+  String get updateProfileSuccessfully {
+    return Intl.message(
+      'Update profile successfully',
+      name: 'updateProfileSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update profile failed: {msg}`
+  String updateProfileFailedMsg(Object msg) {
+    return Intl.message(
+      'Update profile failed: $msg',
+      name: 'updateProfileFailedMsg',
+      desc: '',
+      args: [msg],
+    );
+  }
+
+  /// `Male`
+  String get male {
+    return Intl.message(
+      'Male',
+      name: 'male',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Female`
+  String get female {
+    return Intl.message(
+      'Female',
+      name: 'female',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
