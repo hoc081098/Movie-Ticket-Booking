@@ -170,5 +170,9 @@
   "passwordMustBeAtLeast6Characters": "Mật khẩu ít nhất 6 kí tự",
   "googleSignInFailedGeterrormessagedeprecatede": "Đăng nhập Google không thành công: {msg}",
   "facebookLoginErrorGeterrormessagedeprecatede": "Lỗi khi đăng nhập Facebook: {msg}",
-  "dontHaveAnAccountSignUp": "Không có tài khoản? Đăng ký ngay"
+  "dontHaveAnAccountSignUp": "Không có tài khoản? Đăng ký ngay",
+  "createYourAccount": "Tạo tài khoản",
+  "registerSuccessfullyPleaseCheckYourEmailInboxToVerifyThis": "Đăng ký thành công. Vui lòng kiểm tra hộp thư email của bạn để xác minh tài khoản này.",
+  "REGISTER": "ĐĂNG KÝ",
+  "registerError": "Đăng ký lỗi: {msg}"
 }

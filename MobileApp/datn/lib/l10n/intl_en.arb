@@ -170,5 +170,9 @@
   "passwordMustBeAtLeast6Characters": "Password must be at least 6 characters",
   "googleSignInFailedGeterrormessagedeprecatede": "Google sign in failed: {msg}",
   "facebookLoginErrorGeterrormessagedeprecatede": "Facebook login error: {msg}",
-  "dontHaveAnAccountSignUp": "Don't have an account? Sign up"
+  "dontHaveAnAccountSignUp": "Don't have an account? Sign up",
+  "createYourAccount": "Create your Account",
+  "registerSuccessfullyPleaseCheckYourEmailInboxToVerifyThis": "Register successfully. Please check your email inbox to verify this account.",
+  "REGISTER": "REGISTER",
+  "registerError": "Register error: {msg}"
 }

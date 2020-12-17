@@ -1766,6 +1766,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Create your Account`
+  String get createYourAccount {
+    return Intl.message(
+      'Create your Account',
+      name: 'createYourAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register successfully. Please check your email inbox to verify this account.`
+  String get registerSuccessfullyPleaseCheckYourEmailInboxToVerifyThis {
+    return Intl.message(
+      'Register successfully. Please check your email inbox to verify this account.',
+      name: 'registerSuccessfullyPleaseCheckYourEmailInboxToVerifyThis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `REGISTER`
+  String get REGISTER {
+    return Intl.message(
+      'REGISTER',
+      name: 'REGISTER',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register error: {msg}`
+  String registerError(Object msg) {
+    return Intl.message(
+      'Register error: $msg',
+      name: 'registerError',
+      desc: '',
+      args: [msg],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
