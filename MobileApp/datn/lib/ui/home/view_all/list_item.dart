@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
 import '../../../domain/model/movie.dart';
+import '../../../generated/l10n.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/age_type.dart';
 import '../detail/movie_detail_page.dart';
@@ -49,7 +50,7 @@ class ViewAllListItem extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: () => AppScaffold.of(context).pushNamed(
+          onTap: () => AppScaffold.of(context).pushNamedX(
             MovieDetailPage.routeName,
             arguments: item,
           ),
@@ -82,7 +83,7 @@ class ViewAllListItem extends StatelessWidget {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  'Load image error',
+                                  S.of(context).load_image_error,
                                   style: Theme.of(context)
                                       .textTheme
                                       .subtitle2
@@ -118,7 +119,7 @@ class ViewAllListItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '#${item.duration} minutes',
+                      '#' + S.of(context).duration_minutes(item.duration),
                       style: durationStyle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -148,12 +149,12 @@ class ViewAllListItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '${item.totalRate} reviews',
+                      S.of(context).total_rate_review(item.totalRate),
                       style: durationStyle,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${item.totalFavorite} favorites',
+                      S.of(context).total_favorite(item.totalFavorite),
                       style: durationStyle,
                     ),
                   ],

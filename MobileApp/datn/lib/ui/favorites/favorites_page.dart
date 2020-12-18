@@ -12,6 +12,7 @@ import 'package:stream_loader/stream_loader.dart';
 
 import '../../domain/model/movie.dart';
 import '../../domain/repository/favorites_repository.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/snackbar.dart';
 import '../../utils/type_defs.dart';
@@ -38,7 +39,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
       final loaderBloc = LoaderBloc<BuiltList<Movie>>(
         loaderFunction: repo.favoritesMovie,
         initialContent: BuiltList.of(<Movie>[]),
-        enableLogger: true,
+        logger: print,
       );
 
       AppScaffold.tapStream(context)
@@ -64,7 +65,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorites'),
+        title: Text(S.of(context).favorites),
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
@@ -89,7 +90,9 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
             if (state.error != null) {
               return Center(
                 child: MyErrorWidget(
-                  errorText: 'Error: ${getErrorMessage(state.error)}',
+                  errorText: S
+                      .of(context)
+                      .error_with_message(getErrorMessage(state.error)),
                   onPressed: bloc.fetch,
                 ),
               );
@@ -100,7 +103,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
             if (items.isEmpty) {
               return Center(
                 child: EmptyWidget(
-                  message: 'Empty favorite movies',
+                  message: S.of(context).empty_favorite_movie,
                 ),
               );
             }
@@ -148,10 +151,11 @@ class _FavoritesListState extends State<FavoritesList> with DisposeBagMixin {
 
                 return repo
                     .toggleFavorite(movie.id)
-                    .doOnData((_) =>
-                        context.showSnackBar('Removed successfully: ${title}'))
-                    .doOnError((e, s) =>
-                        context.showSnackBar('Removed failed: ${title}'));
+                    .doOnData((_) => context.showSnackBar(S
+                        .of(context)
+                        .fav_removed_successfully_with_title(title)))
+                    .doOnError((e, s) => context.showSnackBar(
+                        S.of(context).fav_removed_failed_with_title(title)));
               }))
           .listen(null)
           .disposedBy(bag);
@@ -218,7 +222,7 @@ class FavoriteItem extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: () => AppScaffold.of(context, newTabIndex: 0).pushNamed(
+          onTap: () => AppScaffold.of(context, newTabIndex: 0).pushNamedX(
             MovieDetailPage.routeName,
             arguments: item,
           ),
@@ -227,7 +231,7 @@ class FavoriteItem extends StatelessWidget {
             actionExtentRatio: 0.25,
             secondaryActions: [
               IconSlideAction(
-                caption: 'Delete',
+                caption: S.of(context).remove,
                 color: Colors.red,
                 icon: Icons.delete,
                 onTap: () => onToggle(item),
@@ -262,7 +266,7 @@ class FavoriteItem extends StatelessWidget {
                                   ),
                                   SizedBox(height: 4),
                                   Text(
-                                    'Load image error',
+                                    S.of(context).load_image_error,
                                     style: Theme.of(context)
                                         .textTheme
                                         .subtitle2
@@ -298,7 +302,7 @@ class FavoriteItem extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '${item.duration} minutes',
+                        S.of(context).duration_minutes(item.duration),
                         style: durationStyle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -328,7 +332,7 @@ class FavoriteItem extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '${item.totalRate} reviews',
+                        S.of(context).total_rate_review(item.totalRate),
                         style: durationStyle,
                       ),
                     ],

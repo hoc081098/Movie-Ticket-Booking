@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/streams.dart';
 import '../../utils/type_defs.dart';
@@ -89,7 +90,9 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
                 .map<RegisterMessage>((email) => RegisterSuccessMessage(email))
                 .onErrorReturnWith(
                   (error) => RegisterErrorMessage(
-                    'Register error: ${getErrorMessage(error)}',
+                    S.current.registerError(
+                      getErrorMessageDeprecated(error),
+                    ),
                     error,
                   ),
                 ),
@@ -102,7 +105,7 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
     final emailError$ = emailController.stream
         .map((email) {
           if (Validator.isValidEmail(email)) return null;
-          return 'Invalid email address';
+          return S.current.invalidEmailAddress;
         })
         .distinct()
         .share();
@@ -110,7 +113,7 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
     final passwordError$ = passwordController.stream
         .map((password) {
           if (Validator.isValidPassword(password)) return null;
-          return 'Password must be at least 6 characters';
+          return S.current.passwordMustBeAtLeast6Characters;
         })
         .distinct()
         .share();

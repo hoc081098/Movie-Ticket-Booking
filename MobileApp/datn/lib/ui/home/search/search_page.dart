@@ -15,6 +15,7 @@ import '../../../domain/model/category.dart';
 import '../../../domain/model/movie.dart';
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
 import '../../../utils/snackbar.dart';
 import '../../../utils/streams.dart';
@@ -133,7 +134,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
         loaderFunction: loaderFunction,
         refresherFunction: loaderFunction,
         initialContent: const <Movie>[].build(),
-        enableLogger: true,
+        logger: print,
       );
 
       movieRepo.getCategories().listen((event) {
@@ -191,7 +192,9 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
           if (state.error != null) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: S
+                    .of(context)
+                    .error_with_message(getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             );
@@ -202,7 +205,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
           if (items.isEmpty) {
             return Center(
               child: EmptyWidget(
-                message: 'Empty search result',
+                message: S.of(context).emptySearchResult,
               ),
             );
           }
@@ -226,7 +229,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
                   children: [
                     const SizedBox(width: 16),
                     Text(
-                      '${items.length} movie${items.length > 1 ? 's' : ''}',
+                      S.of(context).count_movie(items.length),
                       style: Theme.of(context).textTheme.headline6.copyWith(
                             fontSize: 16,
                             color: const Color(0xff687189),
@@ -370,7 +373,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Search filter',
+                        S.of(context).searchFilter,
                         style: Theme.of(context).textTheme.headline6.copyWith(
                               fontSize: 18,
                               color: const Color(0xff687189),
@@ -383,7 +386,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                     child: Row(
                       children: [
                         const Spacer(),
-                        const Text('Age type'),
+                        Text(S.of(context).ageType),
                         const SizedBox(width: 16),
                         DropdownButton<AgeType>(
                           value: ageType,
@@ -398,27 +401,29 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Text('Duration (mins) from '),
+                      Text(S.of(context).durationMinsFrom),
                       DropdownButton<int>(
                         value: minDuration,
                         items: durations,
                         onChanged: (val) {
                           if (val > maxDuration) {
-                            return context.showSnackBar(
-                                'Must be less than or equal to max duration');
+                            return context.showSnackBar(S
+                                .of(context)
+                                .mustBeLessThanOrEqualToMaxDuration);
                           }
                           setState(() => minDuration = val);
                         },
                         underline: divider,
                       ),
-                      const Text(' to '),
+                      Text(S.of(context).to),
                       DropdownButton<int>(
                         value: maxDuration,
                         items: durations,
                         onChanged: (val) {
                           if (val < minDuration) {
-                            return context.showSnackBar(
-                                'Must be greater than or equal to min duration');
+                            return context.showSnackBar(S
+                                .of(context)
+                                .mustBeGreaterThanOrEqualToMinDuration);
                           }
                           setState(() => maxDuration = val);
                         },
@@ -430,7 +435,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Text('Showtime start from '),
+                      Text(S.of(context).showtimeStartFrom),
                       FlatButton(
                         onPressed: () async {
                           final newStart =
@@ -439,8 +444,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                             return;
                           }
                           if (!newStart.isBefore(showtimeEndTime)) {
-                            return context.showSnackBar(
-                                'Showtime start time must be before end time');
+                            return context.showSnackBar(S
+                                .of(context)
+                                .showtimeStartTimeMustBeBeforeEndTime);
                           }
                           setState(() => showtimeStartTime = newStart);
                         },
@@ -452,7 +458,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Text(' to '),
+                      Text(S.of(context).to),
                       FlatButton(
                         onPressed: () async {
                           final newEnd = await pickDateTime(showtimeEndTime);
@@ -460,8 +466,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                             return;
                           }
                           if (!newEnd.isAfter(showtimeStartTime)) {
-                            return context.showSnackBar(
-                                'Showtime end time must be after start time');
+                            return context.showSnackBar(S
+                                .of(context)
+                                .showtimeEndTimeMustBeAfterStartTime);
                           }
                           setState(() => showtimeEndTime = newEnd);
                         },
@@ -475,7 +482,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Text('Released date from '),
+                      Text(S.of(context).releasedDateFrom),
                       FlatButton(
                         onPressed: () async {
                           final newStart = await pickDateTime(minReleasedDate);
@@ -484,7 +491,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           }
                           if (!newStart.isBefore(maxReleasedDate)) {
                             return context.showSnackBar(
-                                'Must be before max released date');
+                                S.of(context).mustBeBeforeMaxReleasedDate);
                           }
                           setState(() => minReleasedDate = newStart);
                         },
@@ -496,7 +503,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Text(' to '),
+                      Text(S.of(context).to),
                       FlatButton(
                         onPressed: () async {
                           final newEnd = await pickDateTime(maxReleasedDate);
@@ -505,7 +512,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           }
                           if (!newEnd.isAfter(minReleasedDate)) {
                             return context.showSnackBar(
-                                'Must be after min released date');
+                                S.of(context).mustBeAfterMinReleasedDate);
                           }
                           setState(() => maxReleasedDate = newEnd);
                         },
@@ -553,7 +560,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Expanded(
                     child: FlatButton(
                       onPressed: () => Navigator.of(context).pop(false),
-                      child: Text('Cancel'),
+                      child: Text(S.of(context).cancel),
                       color: Theme.of(context).disabledColor,
                       textTheme: ButtonTextTheme.primary,
                       shape: RoundedRectangleBorder(
@@ -568,7 +575,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                         apply();
                         Navigator.of(context).pop(true);
                       },
-                      child: Text('Apply'),
+                      child: Text(S.of(context).apply),
                       color: Theme.of(context).primaryColor,
                       textTheme: ButtonTextTheme.primary,
                       shape: RoundedRectangleBorder(

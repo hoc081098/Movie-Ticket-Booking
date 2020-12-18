@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' hide Notification;
 import 'package:intl/intl.dart';
 
 import '../../domain/model/notification.dart';
+import '../../generated/l10n.dart';
 import '../../utils/type_defs.dart';
 import '../app_scaffold.dart';
 import '../profile/reservation_detail/reservation_detail_page.dart';
@@ -51,7 +52,7 @@ class NotificationItemWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        AppScaffold.of(context, newTabIndex: 3).pushNamed(
+        AppScaffold.of(context, newTabIndex: 3).pushNamedX(
           ReservationDetailPage.routeName,
           arguments: reservation,
         );
@@ -125,7 +126,7 @@ class NotificationItemWidget extends StatelessWidget {
                       const SizedBox(height: 8),
                       RichText(
                         text: TextSpan(
-                            text: 'Start at: ',
+                            text: S.of(context).startAt,
                             style: textStyle,
                             children: [
                               TextSpan(
@@ -138,7 +139,7 @@ class NotificationItemWidget extends StatelessWidget {
                       const SizedBox(height: 8),
                       RichText(
                         text: TextSpan(
-                            text: 'Theatre: ',
+                            text: S.of(context).theatre,
                             style: textStyle,
                             children: [
                               TextSpan(
@@ -146,7 +147,7 @@ class NotificationItemWidget extends StatelessWidget {
                                 style: textStyle2,
                               ),
                               TextSpan(
-                                text: ' Room: ',
+                                text: S.of(context).room,
                                 style: textStyle,
                               ),
                               TextSpan(

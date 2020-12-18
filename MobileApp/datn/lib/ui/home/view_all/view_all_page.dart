@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/utils.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
@@ -72,12 +73,12 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
     store.actionStream.listen((action) {
       if (action is FailureAction) {
         context.showSnackBar(
-          'Error occurred: ${getErrorMessage(action.error)}',
+          S.of(context).error_with_message(getErrorMessage(action.error)),
         );
       }
       if (action is SuccessAction) {
         if (action.items.isEmpty) {
-          context.showSnackBar('Loaded all movies');
+          context.showSnackBar(S.of(context).loadedAllMovies);
         }
       }
     }).disposedBy(bag);
@@ -90,7 +91,10 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
         title: Hero(
           tag: widget.movieType.toString(),
           child: Text(
-            _getTitle(widget.movieType),
+            _getTitle(
+              widget.movieType,
+              context,
+            ),
           ),
         ),
       ),
@@ -116,7 +120,9 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
           if (state.error != null && state.isFirstPage) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: S
+                    .of(context)
+                    .error_with_message(getErrorMessage(state.error)),
                 onPressed: () => store.dispatch(const RetryAction()),
               ),
             );
@@ -125,7 +131,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
           if (state.items.isEmpty) {
             return Center(
               child: EmptyWidget(
-                message: 'Empty movie',
+                message: S.of(context).empty_movie,
               ),
             );
           }
@@ -152,8 +158,9 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
                   return Padding(
                     padding: const EdgeInsets.all(12),
                     child: MyErrorWidget(
-                      errorText:
-                          'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
+                      errorText: S
+                          .of(context)
+                          .error_with_message(getErrorMessage(state.error)),
                       onPressed: () => store.dispatch(const RetryAction()),
                     ),
                   );
@@ -212,18 +219,24 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   }
 }
 
-String _getTitle(MovieType movieType) {
+String _getTitle(MovieType movieType, BuildContext context) {
   switch (movieType) {
     case MovieType.nowPlaying:
-      return 'Movies on Theatre';
+      return S.of(context).movies_on_theatre;
     case MovieType.comingSoon:
-      return 'Coming soon';
+      return S.of(context).coming_soon.capitalize();
     case MovieType.recommended:
       throw StateError('Unsupported type $movieType');
     case MovieType.mostFavorite:
-      return 'Most favorite';
+      return S.of(context).most_favorite.capitalize();
     case MovieType.mostRate:
-      return 'Most rate';
+      return S.of(context).most_rate.capitalize();
   }
   throw StateError('Missing $movieType');
+}
+
+extension StringExt on String {
+  String capitalize() => isNotEmpty
+      ? substring(0, 1).toUpperCase() + substring(1).toLowerCase()
+      : this;
 }

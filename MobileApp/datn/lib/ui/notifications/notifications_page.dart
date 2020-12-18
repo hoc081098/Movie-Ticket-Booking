@@ -9,6 +9,7 @@ import 'package:rxdart/rxdart.dart' hide Notification;
 import '../../domain/model/notification.dart';
 import '../../domain/repository/notification_repository.dart';
 import '../../fcm_notification.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/utils.dart';
 import '../app_scaffold.dart';
@@ -88,12 +89,12 @@ class _NotificationsPageState extends State<NotificationsPage>
     store.actionStream.listen((action) {
       if (action is FailureAction) {
         context.showSnackBar(
-          'Error occurred: ${getErrorMessage(action.error)}',
+          S.of(context).error_with_message(getErrorMessage(action.error)),
         );
       }
       if (action is SuccessAction) {
         if (action.notifications.isEmpty) {
-          context.showSnackBar('Loaded all notifications');
+          context.showSnackBar(S.of(context).loadedAllNotifications);
         }
       }
     }).disposedBy(bag);
@@ -103,7 +104,7 @@ class _NotificationsPageState extends State<NotificationsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications'),
+        title: Text(S.of(context).notifications),
       ),
       body: StreamBuilder<st.State>(
         stream: store.stateStream,
@@ -127,7 +128,8 @@ class _NotificationsPageState extends State<NotificationsPage>
           if (state.error != null && state.isFirstPage) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText:
+                    context.s.error_with_message(getErrorMessage(state.error)),
                 onPressed: () => store.dispatch(const RetryAction()),
               ),
             );
@@ -136,7 +138,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           if (state.items.isEmpty) {
             return Center(
               child: EmptyWidget(
-                message: 'Empty notification',
+                message: S.of(context).emptyNotification,
               ),
             );
           }
@@ -165,8 +167,8 @@ class _NotificationsPageState extends State<NotificationsPage>
                   return Padding(
                     padding: const EdgeInsets.all(12),
                     child: MyErrorWidget(
-                      errorText:
-                          'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
+                      errorText: context.s
+                          .error_with_message(getErrorMessage(state.error)),
                       onPressed: () => store.dispatch(const RetryAction()),
                     ),
                   );
@@ -203,11 +205,12 @@ class _NotificationsPageState extends State<NotificationsPage>
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete notification'),
-          content: Text('Are you sure you want to delete this notification?'),
+          title: Text(S.of(context).deleteNotification),
+          content:
+              Text(S.of(context).areYouSureYouWantToDeleteThisNotification),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             TextButton(
@@ -226,13 +229,14 @@ class _NotificationsPageState extends State<NotificationsPage>
     try {
       await Provider.of<NotificationRepository>(context)
           .deleteNotificationById(item.id);
-      context.showSnackBar('Delete successfully');
+      context.showSnackBar(S.of(context).deleteSuccessfully);
 
       store?.dispatch(RemovedNotificationAction(item));
     } catch (e, s) {
       print(e);
       print(s);
-      context.showSnackBar('Error: ${getErrorMessage(e)}');
+      context
+          .showSnackBar(S.of(context).error_with_message(getErrorMessage(e)));
     }
   }
 }

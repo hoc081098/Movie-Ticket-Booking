@@ -203,16 +203,14 @@ packages:
       name: disposebag
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.2"
+    version: "1.4.0"
   distinct_value_connectable_stream:
     dependency: "direct main"
     description:
-      path: "."
-      ref: rxdart_master
-      resolved-ref: "5c311f9e6b746ee57f1c99833e27b603a232b760"
-      url: "https://github.com/hoc081098/distinct_value_connectable_stream.git"
-    source: git
-    version: "1.2.0-beta01"
+      name: distinct_value_connectable_stream
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0-beta02"
   expandable:
     dependency: "direct main"
     description:
@@ -393,6 +391,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0+1"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -421,6 +424,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.7"
+  flutter_speed_dial:
+    dependency: "direct main"
+    description:
+      name: flutter_speed_dial
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.5"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -528,7 +538,7 @@ packages:
       name: intl
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.16.1"
+    version: "0.17.0-nullsafety.2"
   io:
     dependency: transitive
     description:
@@ -721,19 +731,26 @@ packages:
   rx_shared_preferences:
     dependency: "direct main"
     description:
-      name: rx_shared_preferences
+      path: "."
+      ref: refactor_generic
+      resolved-ref: "0bfc0bdfb43812b22714065fbee07365c25c5c22"
+      url: "https://github.com/hoc081098/rx_shared_preferences.git"
+    source: git
+    version: "1.3.3"
+  rx_storage:
+    dependency: transitive
+    description:
+      name: rx_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.3"
+    version: "0.0.1"
   rxdart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "8f400da59cb9ed6874b2ce818aebbac70742f3ef"
-      url: "https://github.com/ReactiveX/rxdart.git"
-    source: git
-    version: "0.25.0-beta3"
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.25.0"
   shared_preferences:
     dependency: transitive
     description:
@@ -850,7 +867,7 @@ packages:
       name: stream_loader
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0-beta01"
+    version: "1.1.0-beta02"
   stream_transform:
     dependency: transitive
     description:

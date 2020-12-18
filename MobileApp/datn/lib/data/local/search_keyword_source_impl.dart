@@ -21,22 +21,29 @@ class SearchKeywordSourceImpl implements SearchKeywordSource {
     queryS.asyncExpand(_saveQuery).debug(toString()).listenNull();
   }
 
-  Stream<dynamic> _saveQuery(tuple2) async* {
+  Stream<dynamic> _saveQuery(Tuple2<String, Completer<void>> tuple2) async* {
     final query = tuple2.item1;
     final completer = tuple2.item2;
 
     try {
-      final s = (await _prefs.getString(_queriesKey)) ?? '[]';
-      final newList = [query, ...(jsonDecode(s) as List)].distinct().toList();
+      if (query != null) {
+        final s = (await _prefs.getString(_queriesKey)) ?? '[]';
+        final newList = [query, ...(jsonDecode(s) as List)].distinct().toList();
 
-      if (newList.length > _maxLength) {
-        newList.removeAt(0);
+        if (newList.length > _maxLength) {
+          newList.removeAt(0);
+        }
+
+        await _prefs.setString(_queriesKey, jsonEncode(newList));
+        yield Tuple2(query, newList);
+      } else {
+        await _prefs.setString(_queriesKey, '[]');
+        yield Tuple2(query, []);
       }
 
-      await _prefs.setString(_queriesKey, jsonEncode(newList));
-      yield Tuple2(query, newList);
-    } finally {
       completer.complete();
+    } catch (e, s) {
+      completer.completeError(e, s);
     }
   }
 
@@ -52,5 +59,12 @@ class SearchKeywordSourceImpl implements SearchKeywordSource {
     final s = (await _prefs.getString(_queriesKey)) ?? '[]';
     final queries = List<String>.from(jsonDecode(s) as List);
     return queries.build();
+  }
+
+  @override
+  Future<void> clear() {
+    final completer = Completer<void>();
+    queryS.add(Tuple2(null, completer));
+    return completer.future;
   }
 }

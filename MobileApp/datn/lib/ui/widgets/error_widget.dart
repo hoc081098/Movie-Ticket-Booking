@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../generated/l10n.dart';
+
 class MyErrorWidget extends StatelessWidget {
   final String errorText;
   final void Function() onPressed;
@@ -27,7 +29,7 @@ class MyErrorWidget extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 4),
           child: RaisedButton(
-            child: Text('Retry'),
+            child: Text(S.of(context).retry),
             padding: const EdgeInsets.symmetric(
               vertical: 16,
               horizontal: 32,

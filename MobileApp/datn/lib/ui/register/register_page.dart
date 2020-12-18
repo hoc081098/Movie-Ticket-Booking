@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 
+import '../../generated/l10n.dart';
 import '../../utils/delay.dart';
 import '../../utils/snackbar.dart';
 import '../widgets/password_text_field.dart';
@@ -125,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage>
                     Image.asset('assets/images/enjoy.png'),
                     const SizedBox(height: 24),
                     Text(
-                      'Create your Account',
+                      S.of(context).createYourAccount,
                       style: Theme.of(context).textTheme.headline6.copyWith(
                             fontSize: 18,
                             color: Colors.white,
@@ -158,8 +159,9 @@ class _RegisterPageState extends State<RegisterPage>
 
   void handleMessage(message) async {
     if (message is RegisterSuccessMessage) {
-      context.showSnackBar(
-          'Register successfully. Please check your email inbox to verify this account.');
+      context.showSnackBar(S
+          .of(context)
+          .registerSuccessfullyPleaseCheckYourEmailInboxToVerifyThis);
       await delay(1000);
       await Navigator.of(context).pop(message.email);
     }
@@ -167,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage>
       context.showSnackBar(message.message);
     }
     if (message is InvalidInformationMessage) {
-      context.showSnackBar('Invalid information');
+      context.showSnackBar(S.of(context).invalidInformation);
     }
   }
 
@@ -215,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage>
         return PasswordTextField(
           errorText: snapshot.data,
           onChanged: bloc.passwordChanged,
-          labelText: 'Password',
+          labelText: S.of(context).password,
           textInputAction: TextInputAction.done,
           onSubmitted: () {
             FocusScope.of(context).requestFocus(FocusNode());
@@ -236,7 +238,7 @@ class _RegisterPageState extends State<RegisterPage>
         },
         color: Theme.of(context).backgroundColor,
         child: Text(
-          'REGISTER',
+          S.of(context).REGISTER,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16.0,

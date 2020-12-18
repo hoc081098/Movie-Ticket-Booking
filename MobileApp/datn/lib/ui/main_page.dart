@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:pedantic/pedantic.dart';
 
 import '../data/mappers.dart'
     show
@@ -12,13 +13,16 @@ import '../data/remote/auth_client.dart';
 import '../data/repository/card_repository_impl.dart';
 import '../data/repository/product_repository_impl.dart';
 import '../data/repository/promotion_repository_impl.dart';
+import '../domain/model/card.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
 import '../domain/repository/promotion_repository.dart';
 import '../domain/repository/reservation_repository.dart';
 import '../domain/repository/user_repository.dart';
+import '../generated/l10n.dart';
 import '../utils/optional.dart';
+import '../utils/utils.dart';
 import 'app_scaffold.dart';
 import 'favorites/favorites_page.dart';
 import 'home/checkout/cards/add_card/add_card_bloc.dart';
@@ -51,6 +55,58 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> with DisposeBagMixin {
+  static final cardPages = <String, AppScaffoldWidgetBuilder>{
+    CardsPage.routeName: (context, settings) {
+      final authClient = Provider.of<AuthClient>(context);
+      final args = settings.arguments as Map<String, dynamic>;
+
+      final mode = args['mode'] as CardPageMode;
+      assert(mode != null);
+      final key = ValueKey(mode);
+
+      final card = args['card'] as Card;
+
+      return BlocProvider<CardsBloc>(
+        key: key,
+        child: CardsPage(
+          mode: mode,
+          key: key,
+        ),
+        initBloc: () {
+          return CardsBloc(
+            CardRepositoryImpl(
+              authClient,
+              cardResponseToCard,
+            ),
+            card,
+          );
+        },
+      );
+    },
+    AddCardPage.routeName: (context, settings) {
+      final authClient = Provider.of<AuthClient>(context);
+
+      final mode = settings.arguments as CardPageMode;
+      assert(mode != null);
+
+      final key = ValueKey(mode);
+
+      return BlocProvider<AddCardBloc>(
+        key: key,
+        child: AddCardPage(
+          key: key,
+          mode: mode,
+        ),
+        initBloc: () => AddCardBloc(
+          CardRepositoryImpl(
+            authClient,
+            cardResponseToCard,
+          ),
+        ),
+      );
+    },
+  };
+
   static final homeRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) => HomePage(),
     MovieDetailPage.routeName: (context, settings) {
@@ -115,33 +171,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         ),
       );
     },
-    CardsPage.routeName: (context, settings) {
-      final authClient = Provider.of<AuthClient>(context);
-
-      return BlocProvider<CardsBloc>(
-        child: CardsPage(),
-        initBloc: () => CardsBloc(
-          CardRepositoryImpl(
-            authClient,
-            cardResponseToCard,
-          ),
-          settings.arguments,
-        ),
-      );
-    },
-    AddCardPage.routeName: (context, settings) {
-      final authClient = Provider.of<AuthClient>(context);
-
-      return BlocProvider<AddCardBloc>(
-        child: AddCardPage(),
-        initBloc: () => AddCardBloc(
-          CardRepositoryImpl(
-            authClient,
-            cardResponseToCard,
-          ),
-        ),
-      );
-    },
+    ...cardPages,
     DiscountsPage.routeName: (context, settings) {
       final authClient = Provider.of<AuthClient>(context);
 
@@ -176,6 +206,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         reservation: settings.arguments,
       );
     },
+    ...cardPages,
   };
 
   static final favoritesRoutes = <String, AppScaffoldWidgetBuilder>{
@@ -194,10 +225,8 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     listenToken ??= Provider.of<UserRepository>(context)
         .user$
         .where((userOptional) => userOptional != null && userOptional is None)
-        .listen((event) => Navigator.of(context).pushNamedAndRemoveUntil(
-              LoginPage.routeName,
-              (route) => false,
-            ))
+        .take(1)
+        .listen(onLoggedOut)
         .disposedBy(bag);
   }
 
@@ -212,24 +241,37 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
             notificationsRoutes[settings.name](context, settings),
         (context, settings) => profileRoutes[settings.name](context, settings),
       ],
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_rounded),
-          label: 'Home',
+          icon: const Icon(Icons.home_rounded),
+          label: S.of(context).home,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_rounded),
-          label: 'Favorites',
+          icon: const Icon(Icons.favorite_rounded),
+          label: S.of(context).favorites,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: 'Notification',
+          icon: const Icon(Icons.notifications),
+          label: S.of(context).notifications,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person_rounded),
-          label: 'Profile',
+          icon: const Icon(Icons.person_rounded),
+          label: S.of(context).profile,
         ),
       ],
+    );
+  }
+
+  void onLoggedOut(Optional<User> _) async {
+    context.showSnackBar(S.of(context).loggedOutSuccessfully);
+    final navigatorState = Navigator.of(context);
+    await delay(500);
+
+    unawaited(
+      navigatorState.pushNamedAndRemoveUntilX(
+        LoginPage.routeName,
+        (route) => false,
+      ),
     );
   }
 }

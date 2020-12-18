@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 
+import '../../generated/l10n.dart';
 import '../../utils/utils.dart';
 import 'reset_password_bloc.dart';
 import 'reset_password_state.dart';
@@ -125,7 +126,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
                     Image.asset('assets/images/enjoy.png'),
                     const SizedBox(height: 24),
                     Text(
-                      'Enter your Email to reset Password',
+                      S.of(context).enterYourEmailToResetPassword,
                       style: Theme.of(context).textTheme.headline6.copyWith(
                             fontSize: 18,
                             color: Colors.white,
@@ -155,7 +156,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
   void handleMessage(message) async {
     if (message is SuccessMessage) {
       context.showSnackBar(
-          'Reset successfully. Please check your email to reset password!');
+          S.of(context).resetSuccessfullyPleaseCheckYourEmailToResetPassword);
       await delay(1000);
       await Navigator.of(context).pop(message.email);
     }
@@ -163,7 +164,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
       context.showSnackBar(message.message);
     }
     if (message is InvalidInformationMessage) {
-      context.showSnackBar('Invalid information');
+      context.showSnackBar(S.of(context).invalidInformation);
     }
   }
 
@@ -214,7 +215,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
         },
         color: Theme.of(context).backgroundColor,
         child: Text(
-          'RESET PASSWORD',
+          S.of(context).RESET_PASSWORD,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16.0,

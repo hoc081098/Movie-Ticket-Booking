@@ -13,6 +13,7 @@ import '../../../domain/model/movie.dart';
 import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
 import '../../../utils/iterable.dart';
 import '../../../utils/utils.dart';
@@ -71,7 +72,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
     super.didChangeDependencies();
     token ??= BlocProvider.of<ComboBloc>(context)
         .message$
-        .listen((_) => context.showSnackBar('Maximum combo count'))
+        .listen((_) => context.showSnackBar(S.of(context).maximumComboCount))
         .disposedBy(bag);
   }
 
@@ -85,7 +86,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Combo'),
+        title: Text(S.of(context).combo),
         actions: [
           Center(
             child: RxStreamBuilder<String>(
@@ -125,7 +126,9 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           if (state.error != null) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: S
+                    .of(context)
+                    .error_with_message(getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             );
@@ -342,7 +345,9 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                       children: [
                         AgeTypeWidget(ageType: widget.movie.ageType),
                         const SizedBox(width: 8),
-                        Text('${widget.movie.duration} minutes'),
+                        Text(S
+                            .of(context)
+                            .duration_minutes(widget.movie.duration)),
                       ],
                     ),
                   ],
@@ -371,7 +376,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            'Load image error',
+                            context.s.load_image_error,
                             style: textTheme.subtitle2.copyWith(fontSize: 12),
                           ),
                         ],
@@ -384,7 +389,8 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           ),
           const SizedBox(height: 8),
           RichText(
-            text: TextSpan(text: 'Start at: ', style: textStyle, children: [
+            text:
+                TextSpan(text: context.s.startAt, style: textStyle, children: [
               TextSpan(
                 text: startTimeFormat.format(widget.showTime.start_time),
                 style: textStyle2,
@@ -393,13 +399,14 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           ),
           const SizedBox(height: 8),
           RichText(
-            text: TextSpan(text: 'Theatre: ', style: textStyle, children: [
+            text:
+                TextSpan(text: context.s.theatre, style: textStyle, children: [
               TextSpan(
                 text: widget.theatre.name,
                 style: textStyle2,
               ),
               TextSpan(
-                text: ' Room: ',
+                text: context.s.room,
                 style: textStyle,
               ),
               TextSpan(
@@ -410,12 +417,15 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           ),
           const SizedBox(height: 8),
           RichText(
-            text: TextSpan(text: 'Address: ', style: textStyle, children: [
-              TextSpan(
-                text: widget.theatre.address,
-                style: textStyle2,
-              ),
-            ]),
+            text: TextSpan(
+                text: context.s.address + ': ',
+                style: textStyle,
+                children: [
+                  TextSpan(
+                    text: widget.theatre.address,
+                    style: textStyle2,
+                  ),
+                ]),
           ),
           const SizedBox(height: 6),
         ],
@@ -495,7 +505,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
             color: Theme.of(context).primaryColor,
             onPressed: () => tapContinue(comboItems),
             child: Text(
-              'CONTINUE',
+              context.s.CONTINUE,
               style: textTheme.headline6
                   .copyWith(fontSize: 16, color: Colors.white),
             ),
@@ -517,7 +527,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           item.key == 1
               ? ListTile(
                   title: Text(
-                    'Normal ticket',
+                    S.of(context).normalTicket,
                     style: titleStyle,
                   ),
                   subtitle: Text(
@@ -531,7 +541,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                 )
               : ListTile(
                   title: Text(
-                    'Doubled ticket',
+                    S.of(context).doubledTicket,
                     style: titleStyle,
                   ),
                   subtitle: Text(
@@ -577,7 +587,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
   }
 
   void tapContinue(BuiltList<ComboItem> comboItems) {
-    AppScaffold.of(context).pushNamed(
+    AppScaffold.of(context).pushNamedX(
       CheckoutPage.routeName,
       arguments: <String, dynamic>{
         'showTime': widget.showTime,

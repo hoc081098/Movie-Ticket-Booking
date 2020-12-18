@@ -14,8 +14,10 @@ import '../../../domain/model/movie_and_showtimes.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/date_time.dart';
 import '../../../utils/error.dart';
+import '../../../utils/intl.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
@@ -73,7 +75,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
               ) =>
                   showTimesByDay[day] ?? emptyList);
         },
-        enableLogger: true,
+        logger: print,
         initialContent: emptyList,
       )..fetch();
     }();
@@ -129,14 +131,16 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                                       : Colors.white,
                                 ),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
                                       day == startDay
-                                          ? 'Today'
+                                          ? S.of(context).today
                                           : weekdayOf(day),
                                       style: day == selectedDay
                                           ? weekDaySelectedStyle
                                           : weekDayStyle,
+                                      textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
@@ -144,6 +148,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                                       style: day == selectedDay
                                           ? ddMMSelectedStyle
                                           : ddMMStyle,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
@@ -157,7 +162,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Text('Today, ${fullDateFormat.format(startDay)}'),
+                  child: Text(
+                      '${S.of(context).today}, ${fullDateFormat.format(startDay)}'),
                 ),
               ],
             ),
@@ -184,7 +190,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
   Widget _buildBottom(LoaderState<BuiltList<MovieAndShowTimes>> state) {
     if (state.error != null) {
       return MyErrorWidget(
-        errorText: 'Error: ${getErrorMessage(state.error)}',
+        errorText:
+            S.of(context).error_with_message(getErrorMessage(state.error)),
         onPressed: bloc.fetch,
       );
     }
@@ -206,7 +213,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     if (list.isEmpty) {
       return Center(
         child: EmptyWidget(
-          message: 'Empty show times',
+          message: S.of(context).emptyShowTimes,
         ),
       );
     }
@@ -240,7 +247,7 @@ class SelectCityWidget extends StatelessWidget {
       children: [
         const SizedBox(width: 16),
         Text(
-          'Select the area: ',
+          S.of(context).selectTheArea,
           style: textTheme.headline6.copyWith(fontSize: 16),
         ),
         const SizedBox(width: 16),
@@ -253,7 +260,7 @@ class SelectCityWidget extends StatelessWidget {
               return PopupMenuButton<City>(
                 initialValue: selected,
                 onSelected: cityRepo.change,
-                offset: Offset(0, 200),
+                offset: Offset(0, 56),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
@@ -261,7 +268,7 @@ class SelectCityWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        selected.name,
+                        selected.localizedName(context),
                         style: textTheme.subtitle1,
                       ),
                       SizedBox(width: 8),
@@ -273,7 +280,7 @@ class SelectCityWidget extends StatelessWidget {
                   return [
                     for (final city in cityRepo.allCities)
                       PopupMenuItem<City>(
-                        child: Text(city.name),
+                        child: Text(city.localizedName(context)),
                         value: city,
                       )
                   ];
@@ -316,7 +323,7 @@ class ShowTimeItem extends StatelessWidget {
       children: [
         for (final show in showTimes)
           InkWell(
-            onTap: () => AppScaffold.of(context).pushNamed(
+            onTap: () => AppScaffold.of(context).pushNamedX(
               TicketsPage.routeName,
               arguments: <String, dynamic>{
                 'theatre': theatre,
@@ -350,7 +357,7 @@ class ShowTimeItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        AppScaffold.of(context).pushNamed(
+        AppScaffold.of(context).pushNamedX(
           MovieDetailPage.routeName,
           arguments: movie,
         );
@@ -397,7 +404,7 @@ class ShowTimeItem extends StatelessWidget {
                       Text(movie.title),
                       const SizedBox(height: 4),
                       Text(
-                        '${movie.duration} mins',
+                        S.of(context).duration_minutes(movie.duration),
                         style: textTheme.caption.copyWith(fontSize: 14),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,

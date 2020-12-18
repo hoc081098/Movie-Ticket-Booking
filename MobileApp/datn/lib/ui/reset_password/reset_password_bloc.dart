@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
+import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/streams.dart';
 import '../../utils/type_defs.dart';
@@ -70,7 +71,8 @@ class ResetPasswordBloc extends DisposeCallbackBaseBloc {
                 .map<Message>((email) => SuccessMessage(email))
                 .onErrorReturnWith(
                   (error) => ErrorMessage(
-                    'Reset password error: ${getErrorMessage(error)}',
+                    S.current.resetPasswordErrorMsg(
+                        getErrorMessageDeprecated(error)),
                     error,
                   ),
                 ),
@@ -83,7 +85,7 @@ class ResetPasswordBloc extends DisposeCallbackBaseBloc {
     final emailError$ = emailController.stream
         .map((email) {
           if (Validator.isValidEmail(email)) return null;
-          return 'Invalid email address';
+          return S.current.invalidEmailAddress;
         })
         .distinct()
         .share();

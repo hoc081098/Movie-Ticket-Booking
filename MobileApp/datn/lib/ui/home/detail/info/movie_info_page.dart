@@ -16,6 +16,7 @@ import '../../../../domain/model/movie.dart';
 import '../../../../domain/model/person.dart';
 import '../../../../domain/repository/favorites_repository.dart';
 import '../../../../domain/repository/movie_repository.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../utils/error.dart';
 import '../../../../utils/utils.dart';
 import '../../../widgets/age_type.dart';
@@ -58,7 +59,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
 
       return LoaderBloc(
         loaderFunction: loaderFunction,
-        enableLogger: true,
+        logger: print,
       )..fetch();
     }();
 
@@ -70,7 +71,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
         loaderFunction: loaderFunction,
         refresherFunction: loaderFunction,
         initialContent: null,
-        enableLogger: true,
+        logger: print,
       )..fetch();
     }();
 
@@ -80,9 +81,10 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       toggleS
           .exhaustMap((_) => repo
               .toggleFavorite(widget.movieId)
-              .doOnData((_) => context.showSnackBar('Toggled successfully'))
-              .doOnError((e, s) =>
-                  context.showSnackBar('Failed: ${getErrorMessage(e)}')))
+              .doOnData((_) =>
+                  context.showSnackBar(S.of(context).toggledSuccessfully))
+              .doOnError((e, s) => context.showSnackBar(
+                  S.of(context).toggleFailed(getErrorMessage(e)))))
           .listen(null)
           .disposedBy(bag);
 
@@ -95,7 +97,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       return LoaderBloc(
         loaderFunction: () => repository.getRelatedMovies(widget.movieId),
         initialContent: null,
-        enableLogger: true,
+        logger: print,
       )..fetch();
     }();
   }
@@ -123,7 +125,9 @@ class _MovieInfoPageState extends State<MovieInfoPage>
           if (state.error != null) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: S
+                    .of(context)
+                    .error_with_message(getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             );
@@ -181,7 +185,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                                 )),
                           ),
                           const SizedBox(width: 8),
-                          Text('${movie.duration} minutes'),
+                          Text(S.of(context).duration_minutes(movie.duration)),
                           const SizedBox(width: 8),
                           AgeTypeWidget(ageType: movie.ageType),
                           const SizedBox(width: 8),
@@ -221,7 +225,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                                 borderRadius: BorderRadius.circular(3),
                               ),
                               child: Text(
-                                'STORYLINE',
+                                S.of(context).storyline,
                                 maxLines: 1,
                                 style: themeData.textTheme.headline6.copyWith(
                                   fontSize: 16,
@@ -245,7 +249,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'CAST OVERVIEW',
+                        S.of(context).castOverview,
                         maxLines: 1,
                         style: themeData.textTheme.headline6.copyWith(
                           fontSize: 16,
@@ -256,7 +260,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                       const SizedBox(height: 12),
                       PeopleList(people: movie.actors),
                       Text(
-                        'DIRECTORS',
+                        S.of(context).directors,
                         maxLines: 1,
                         style: themeData.textTheme.headline6.copyWith(
                           fontSize: 16,
@@ -267,7 +271,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                       const SizedBox(height: 12),
                       PeopleList(people: movie.directors),
                       Text(
-                        'RELATED MOVIES',
+                        S.of(context).relatedMovies,
                         maxLines: 1,
                         style: themeData.textTheme.headline6.copyWith(
                           fontSize: 16,
@@ -341,7 +345,7 @@ class DetailAppBar extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Load image error',
+                          S.of(context).load_image_error,
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2
@@ -458,7 +462,8 @@ class DetailAppBar extends StatelessWidget {
                     if (await canLaunch(movie.trailerVideoUrl)) {
                       await launch(movie.trailerVideoUrl);
                     } else {
-                      context.showSnackBar('Cannot open trailer video');
+                      context
+                          .showSnackBar(S.of(context).cannotOpenTrailerVideo);
                     }
                   },
                   child: Container(

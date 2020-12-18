@@ -3,12 +3,18 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
+import '../../../../../generated/l10n.dart';
 import '../../../../../utils/utils.dart';
 import '../../../tickets/ticket_page.dart';
+import '../cards_page.dart' show CardPageMode;
 import 'add_card_bloc.dart';
 
 class AddCardPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets/combo/checkout/cards/add_card';
+
+  final CardPageMode mode;
+
+  const AddCardPage({Key key, @required this.mode}) : super(key: key);
 
   @override
   _AddCardPageState createState() => _AddCardPageState();
@@ -41,24 +47,27 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add card'),
-        actions: [
-          Center(
-            child: RxStreamBuilder<String>(
-              stream:
-                  TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? Text(
-                        snapshot.data,
-                        style: countDownStyle,
-                      )
-                    : const SizedBox();
-              },
-            ),
-          ),
-          const SizedBox(width: 12),
-        ],
+        title: Text(S.of(context).addCard),
+        actions: widget.mode == CardPageMode.select
+            ? [
+                Center(
+                  child: RxStreamBuilder<String>(
+                    stream: TicketsCountDownTimerBlocProvider.shared()
+                        .bloc
+                        .countDown$,
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? Text(
+                              snapshot.data,
+                              style: countDownStyle,
+                            )
+                          : const SizedBox();
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+              ]
+            : null,
       ),
       body: Center(
         child: Padding(
@@ -82,14 +91,14 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                           padding: EdgeInsetsDirectional.only(end: 8.0),
                           child: Icon(Icons.person_rounded),
                         ),
-                        labelText: 'Card holder name',
+                        labelText: S.of(context).cardHolderName,
                         errorText: snapshot.data,
                         border: const OutlineInputBorder(),
                       ),
                     );
                   },
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
                 RxStreamBuilder<String>(
                   stream: bloc.numberError$,
                   builder: (context, snapshot) {
@@ -109,7 +118,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                           padding: EdgeInsetsDirectional.only(end: 8.0),
                           child: Icon(Icons.credit_card_rounded),
                         ),
-                        labelText: 'Card number',
+                        labelText: S.of(context).cardNumber,
                         errorText: snapshot.data,
                         border: const OutlineInputBorder(),
                       ),
@@ -136,7 +145,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                           padding: EdgeInsetsDirectional.only(end: 8.0),
                           child: Icon(Icons.date_range_rounded),
                         ),
-                        labelText: 'Expire date (MM/yy)',
+                        labelText: S.of(context).expireDateMmyy,
                         errorText: snapshot.data,
                         border: const OutlineInputBorder(),
                       ),
@@ -187,28 +196,27 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                       );
                     } else {
                       return Container(
-                        width: 200,
-                        height: 54,
+                        width: 172,
+                        height: 48,
                         child: Material(
                           elevation: 5.0,
                           clipBehavior: Clip.antiAlias,
                           shadowColor: Theme.of(context).accentColor,
                           borderRadius: BorderRadius.circular(27),
                           child: MaterialButton(
-                            height: 54,
+                            height: 48,
                             onPressed: () {
                               FocusScope.of(context).requestFocus(doneNode);
                               bloc.submit();
                             },
-                            color: Theme.of(context).backgroundColor,
+                            color: Theme.of(context).accentColor,
                             child: Text(
-                              'ADD CARD',
+                              S.of(context).ADDCARD,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16.0,
                               ),
                             ),
-                            splashColor: Theme.of(context).accentColor,
                             elevation: 12,
                           ),
                         ),
@@ -226,14 +234,14 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
 
   void handleMessage(Message msg) async {
     if (msg is AddCardSuccess) {
-      context.showSnackBar('Added card successfully');
+      context.showSnackBar(S.of(context).addedCardSuccessfully);
       await delay(500);
       Navigator.pop(context, msg.card);
       return;
     }
     if (msg is AddCardFailure) {
-      return context
-          .showSnackBar('Add card failed: ${getErrorMessage(msg.error)}');
+      return context.showSnackBar(
+          S.of(context).addCardFailed(getErrorMessage(msg.error)));
     }
   }
 }

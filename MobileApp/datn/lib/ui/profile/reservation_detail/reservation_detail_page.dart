@@ -10,6 +10,7 @@ import 'package:stream_loader/stream_loader.dart';
 import '../../../domain/model/reservation.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/reservation_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
 import '../../widgets/error_widget.dart';
 
@@ -44,7 +45,7 @@ class ReservationDetailPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My ticket'),
+        title: Text(S.of(context).myTicket),
       ),
       body: Container(
         padding: const EdgeInsets.all(16),
@@ -72,7 +73,7 @@ class ReservationDetailPage extends StatelessWidget {
                   children: [
                     Spacer(),
                     Text(
-                      'Tickets',
+                      S.of(context).tickets,
                       style: Theme.of(context).textTheme.subtitle1.copyWith(
                             color: const Color(0xff687189),
                             fontWeight: FontWeight.w500,
@@ -103,7 +104,7 @@ class ReservationDetailPage extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  'Title',
+                  S.of(context).title,
                   style: Theme.of(context).textTheme.subtitle1.copyWith(
                         fontSize: 15,
                         color: const Color(0xff687189),
@@ -123,7 +124,7 @@ class ReservationDetailPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: InfoWidget(
-                        title: 'Date',
+                        title: S.of(context).date,
                         subtitle: dateFormat.format(showTime.start_time),
                       ),
                       flex: 3,
@@ -131,7 +132,7 @@ class ReservationDetailPage extends StatelessWidget {
                     const SizedBox(width: 2),
                     Expanded(
                       child: InfoWidget(
-                        title: 'Time',
+                        title: S.of(context).time,
                         subtitle: timeFormat.format(showTime.start_time),
                       ),
                       flex: 3,
@@ -139,7 +140,7 @@ class ReservationDetailPage extends StatelessWidget {
                     const SizedBox(width: 2),
                     Expanded(
                       child: InfoWidget(
-                        title: 'Room',
+                        title: S.of(context).myTicket_room,
                         subtitle: showTime.room,
                       ),
                       flex: 2,
@@ -151,7 +152,7 @@ class ReservationDetailPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: InfoWidget(
-                        title: 'Theatre',
+                        title: S.of(context).myTicket_theatre,
                         subtitle: theatre.name,
                       ),
                       flex: 3,
@@ -159,7 +160,7 @@ class ReservationDetailPage extends StatelessWidget {
                     const SizedBox(width: 2),
                     Expanded(
                       child: InfoWidget(
-                        title: 'Address',
+                        title: S.of(context).address + ': ',
                         subtitle: theatre.address,
                       ),
                       flex: 5,
@@ -171,7 +172,7 @@ class ReservationDetailPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: InfoWidget(
-                        title: 'Order ID',
+                        title: S.of(context).orderId,
                         subtitle: '#${reservation.id}',
                       ),
                       flex: 1,
@@ -209,7 +210,7 @@ class ReservationDetailPage extends StatelessWidget {
                 LoaderWidget<Uint8List>(
                   blocProvider: () => LoaderBloc<Uint8List>(
                     loaderFunction: () => repo.getQrCode(reservation.id),
-                    enableLogger: true,
+                    logger: print,
                   ),
                   builder: (context, state, bloc) {
                     if (state.isLoading) {
@@ -233,8 +234,8 @@ class ReservationDetailPage extends StatelessWidget {
                           height: 200,
                           child: Center(
                             child: MyErrorWidget(
-                              errorText:
-                                  'Error: ${getErrorMessage(state.error)}',
+                              errorText: S.of(context).error_with_message(
+                                  context.getErrorMessage(state.error)),
                               onPressed: bloc.fetch,
                             ),
                           ),
@@ -256,7 +257,7 @@ class ReservationDetailPage extends StatelessWidget {
                   child: Center(
                     child: RichText(
                       text: TextSpan(
-                        text: 'Check your mail: ',
+                        text: S.of(context).checkYourMail,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,

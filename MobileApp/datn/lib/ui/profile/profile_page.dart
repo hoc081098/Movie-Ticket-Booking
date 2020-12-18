@@ -3,16 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:rxdart/src/streams/value_stream.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/user.dart';
 import '../../domain/repository/user_repository.dart';
-import '../../utils/error.dart';
-import '../../utils/optional.dart';
-import '../../utils/snackbar.dart';
+import '../../generated/l10n.dart';
+import '../../utils/utils.dart';
 import '../app_scaffold.dart';
+import '../home/checkout/cards/cards_page.dart';
 import '../login_update_profile/login_update_profile_page.dart';
 import 'reservations/reservations_page.dart';
 
@@ -33,31 +35,86 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: RxStreamBuilder<Optional<User>>(
-        stream: user$,
-        builder: (context, snapshot) {
-          final data = snapshot.data;
-          if (data == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
-            );
-          }
+    return RxStreamBuilder<Optional<User>>(
+      stream: user$,
+      builder: (context, snapshot) {
+        final data = snapshot.data;
 
-          return data.fold(
-            () => NotLoggedIn(),
-            (user) => LoggedIn(user),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>
-            AppScaffold.of(context).pushNamed(ReservationsPage.routeName),
-        label: Text('Tickets'),
-        icon: FaIcon(FontAwesomeIcons.ticketAlt),
-      ),
+        return Scaffold(
+          body: data == null
+              ? Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                )
+              : data.fold(
+                  () => NotLoggedIn(),
+                  (user) => LoggedIn(user),
+                ),
+          floatingActionButton: data == null
+              ? null
+              : data.fold(
+                  () => null,
+                  (_) =>
+                      /*FloatingActionButton.extended(
+                    onPressed: () => AppScaffold.of(context)
+                        .pushNamedX(ReservationsPage.routeName),
+                    label: Text(S.of(context).tickets),
+                    icon: FaIcon(FontAwesomeIcons.ticketAlt),
+                  )*/
+                      buildFab(),
+                ),
+        );
+      },
+    );
+  }
+
+  Widget buildFab() {
+    const color = Color(0xffA4508B);
+
+    return SpeedDial(
+      animatedIcon: AnimatedIcons.menu_close,
+      animatedIconTheme: IconThemeData(size: 22),
+      backgroundColor: color,
+      visible: true,
+      curve: Curves.bounceIn,
+      children: [
+        SpeedDialChild(
+          child: Icon(
+            FontAwesomeIcons.ticketAlt,
+            size: 20,
+          ),
+          backgroundColor: color,
+          onTap: () =>
+              AppScaffold.of(context).pushNamedX(ReservationsPage.routeName),
+          label: S.of(context).tickets,
+          labelStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+          labelBackgroundColor: color,
+        ),
+        SpeedDialChild(
+          child: Icon(
+            Icons.credit_card,
+          ),
+          backgroundColor: color,
+          onTap: () => AppScaffold.of(context).pushNamedX(
+            CardsPage.routeName,
+            arguments: {
+              'mode': CardPageMode.manage,
+            },
+          ),
+          label: 'Cards',
+          labelStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+          labelBackgroundColor: color,
+        ),
+      ],
     );
   }
 }
@@ -93,6 +150,7 @@ class LoggedIn extends StatelessWidget {
           detailHeaderStyle,
           detailInfoStyle,
           accentColor,
+          context,
         ),
         buildAvatar(height, imageSize, context),
       ],
@@ -105,6 +163,7 @@ class LoggedIn extends StatelessWidget {
     TextStyle detailHeaderStyle,
     TextStyle detailInfoStyle,
     Color accentColor,
+    BuildContext context,
   ) {
     final density = VisualDensity.compact;
 
@@ -118,7 +177,7 @@ class LoggedIn extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
-              'Email',
+              S.of(context).email,
               style: detailHeaderStyle,
             ),
             subtitle: Text(
@@ -135,7 +194,7 @@ class LoggedIn extends StatelessWidget {
           const Divider(),
           ListTile(
             title: Text(
-              'Full name',
+              S.of(context).fullName,
               style: detailHeaderStyle,
             ),
             subtitle: Text(
@@ -153,7 +212,7 @@ class LoggedIn extends StatelessWidget {
           if (user.phoneNumber != null) ...[
             ListTile(
               title: Text(
-                'Phone number',
+                S.of(context).phoneNumber,
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
@@ -171,7 +230,7 @@ class LoggedIn extends StatelessWidget {
           ],
           ListTile(
             title: Text(
-              'Gender',
+              S.of(context).gender,
               style: detailHeaderStyle,
             ),
             subtitle: Text(
@@ -196,7 +255,7 @@ class LoggedIn extends StatelessWidget {
           if (user.address != null) ...[
             ListTile(
               title: Text(
-                'Address',
+                S.of(context).address,
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
@@ -215,7 +274,7 @@ class LoggedIn extends StatelessWidget {
           if (user.birthday != null) ...[
             ListTile(
               title: Text(
-                'Birthday',
+                S.of(context).birthday,
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
@@ -231,6 +290,7 @@ class LoggedIn extends StatelessWidget {
             ),
             const Divider(),
           ],
+          const SizedBox(height: 64)
         ],
       ),
     );
@@ -248,7 +308,7 @@ class LoggedIn extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () => AppScaffold.of(context).pushNamed(
+            onTap: () => AppScaffold.of(context).pushNamedX(
               UpdateProfilePage.routeName,
               arguments: user,
             ),
@@ -381,11 +441,11 @@ class LoggedIn extends StatelessWidget {
                 barrierDismissible: true,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Logout out'),
-                    content: Text('Are you sure you want to logout?'),
+                    title: Text(S.of(context).logoutOut),
+                    content: Text(S.of(context).areYouSureYouWantToLogout),
                     actions: <Widget>[
                       TextButton(
-                        child: Text('Cancel'),
+                        child: Text(S.of(context).cancel),
                         onPressed: () => Navigator.of(context).pop(false),
                       ),
                       TextButton(
@@ -398,11 +458,19 @@ class LoggedIn extends StatelessWidget {
               );
 
               if (identical(shouldLogout, true)) {
+                // final localeBloc = BlocProvider.of<LocaleBloc>(context);
+                final userRepository = Provider.of<UserRepository>(context);
+
                 try {
-                  await Provider.of<UserRepository>(context).logout();
+                  await userRepository.logout();
+                  // await localeBloc.resetLocale(S.delegate.supportedLocales[0]);
+                  print('>>> logged out');
                 } catch (e, s) {
-                  print('logout $e $s');
-                  context.showSnackBar('Logout failed: ${getErrorMessage(e)}');
+                  print('>>>> logout $e $s');
+                  try {
+                    context.showSnackBar(
+                        S.of(context).logoutFailed(context.getErrorMessage(e)));
+                  } catch (_) {}
                 }
               }
             },
@@ -424,7 +492,19 @@ class LoggedIn extends StatelessWidget {
 
 class NotLoggedIn extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Container();
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: SizedBox(
+          width: 64,
+          height: 64,
+          child: LoadingIndicator(
+            indicatorType: Indicator.ballClipRotatePulse,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _CustomClipper extends CustomClipper<Path> {

@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -36,6 +37,7 @@ import 'domain/repository/ticket_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
 import 'fcm_notification.dart';
+import 'locale_bloc.dart';
 import 'utils/custom_indenting_built_value_to_string_helper.dart';
 import 'utils/type_defs.dart';
 
@@ -80,6 +82,7 @@ void main() async {
   RxSharedPreferencesConfigs.logger = null;
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
+  final keywordSource = SearchKeywordSourceImpl(preferences);
 
   final client = http.Client();
   const httpTimeout = Duration(seconds: 20);
@@ -92,7 +95,7 @@ void main() async {
     client,
     httpTimeout,
     () => _onSignOut(),
-    () => userLocalSource.token$.first,
+    () => userLocalSource.token,
   );
 
   //
@@ -110,6 +113,7 @@ void main() async {
     googleSignIn,
     facebookLogin,
     firebaseMessaging,
+    keywordSource,
   );
   _onSignOut = userRepository.logout;
 
@@ -119,7 +123,7 @@ void main() async {
     mappers.showTimeAndTheatreResponsesToTheatreAndShowTimes,
     mappers.movieDetailResponseToMovie,
     mappers.movieAndShowTimeResponsesToMovieAndShowTimes,
-    SearchKeywordSourceImpl(preferences),
+    keywordSource,
     mappers.categoryResponseToCategory,
   );
 
@@ -158,6 +162,8 @@ void main() async {
     mappers.theatreResponseToTheatre,
   );
 
+  final localeBloc = LocaleBloc(preferences);
+
   runApp(
     Providers(
       providers: [
@@ -173,7 +179,10 @@ void main() async {
         Provider<FcmNotificationManager>(value: fcmNotificationManager),
         Provider<TheatreRepository>(value: theatreRepository),
       ],
-      child: MyApp(),
+      child: BlocProvider(
+        initBloc: () => localeBloc,
+        child: MyApp(),
+      ),
     ),
   );
 }

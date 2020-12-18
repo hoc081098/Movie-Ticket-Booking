@@ -20,6 +20,7 @@ import '../../../domain/model/user.dart';
 import '../../../domain/repository/reservation_repository.dart';
 import '../../../domain/repository/ticket_repository.dart';
 import '../../../domain/repository/user_repository.dart';
+import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
 import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
@@ -193,7 +194,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           );
       final loaderBloc = LoaderBloc(
         loaderFunction: loaderFunction,
-        enableLogger: true,
+        logger: print,
       );
 
       final userRepo = Provider.of<UserRepository>(context);
@@ -228,9 +229,9 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Timeout'),
-          content: Text(
-              'Time out to hold the seat. Please make your reservation within 5 minutes!'),
+          title: Text(S.of(context).timeout),
+          content:
+              Text(S.of(context).timeOutToHoldTheSeatPleaseMakeYourReservation),
           actions: <Widget>[
             FlatButton(
               child: Text('OK'),
@@ -281,7 +282,9 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           if (state.error != null) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: S
+                    .of(context)
+                    .error_with_message(getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             );
@@ -370,7 +373,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                     color: Theme.of(context).primaryColor,
                     onPressed: () => tapContinue(builtMap),
                     child: Text(
-                      'CONTINUE',
+                      S.of(context).CONTINUE,
                       style: Theme.of(context)
                           .textTheme
                           .headline6
@@ -447,11 +450,11 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   void tapContinue(BuiltMap<String, Ticket> ticketsMap) {
     final ids = selectedTicketIdsS.value;
     if (ids.isEmpty) {
-      return context.showSnackBar('Must select at least one seat');
+      return context.showSnackBar(S.of(context).mustSelectAtLeastOneSeat);
     }
 
     final tickets = ids.map((id) => ticketsMap[id]).toBuiltList();
-    AppScaffold.of(context).pushNamed(
+    AppScaffold.of(context).pushNamedX(
       ComboPage.routeName,
       arguments: {
         'showTime': widget.showTime,
@@ -500,9 +503,10 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           barrierDismissible: false,
           builder: (BuildContext dialogContext) {
             return AlertDialog(
-              title: Text('Warning'),
-              content: Text(
-                  'Some seats you choose have been reserved. Please select other seats.'),
+              title: Text(S.of(context).warning),
+              content: Text(S
+                  .of(context)
+                  .someSeatsYouChooseHaveBeenReservedPleaseSelectOther),
               actions: <Widget>[
                 FlatButton(
                   child: Text('OK'),
@@ -542,7 +546,7 @@ class ScreenWidget extends StatelessWidget {
             Align(
               alignment: AlignmentDirectional.bottomCenter,
               child: Text(
-                'SCREEN',
+                S.of(context).SCREEN,
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
@@ -867,7 +871,7 @@ class LegendsWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Select',
+                  S.of(context).selected,
                   style: textStyle,
                 ),
               ],
@@ -890,7 +894,7 @@ class LegendsWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Available',
+                  S.of(context).available,
                   style: textStyle,
                 ),
               ],
@@ -909,7 +913,7 @@ class LegendsWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Taken',
+                  S.of(context).taken,
                   style: textStyle,
                 ),
               ],
@@ -932,7 +936,7 @@ class LegendsWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Doubled seat',
+                  S.of(context).doubledSeat,
                   style: textStyle,
                 ),
               ],
@@ -1006,43 +1010,52 @@ class BottomWidget extends StatelessWidget {
               children: [
                 AgeTypeWidget(ageType: movie.ageType),
                 const SizedBox(width: 8),
-                Text('${movie.duration} minutes'),
+                Text(S.of(context).duration_minutes(movie.duration)),
               ],
             ),
             const SizedBox(height: 8),
             RichText(
-              text: TextSpan(text: 'Start at: ', style: textStyle, children: [
-                TextSpan(
-                  text: startTimeFormat.format(showTime.start_time),
-                  style: textStyle2,
-                ),
-              ]),
-            ),
-            const SizedBox(height: 8),
-            RichText(
-              text: TextSpan(text: 'Theatre: ', style: textStyle, children: [
-                TextSpan(
-                  text: theatre.name,
-                  style: textStyle2,
-                ),
-                TextSpan(
-                  text: ' Room: ',
+              text: TextSpan(
+                  text: S.of(context).startAt,
                   style: textStyle,
-                ),
-                TextSpan(
-                  text: showTime.room,
-                  style: textStyle2,
-                ),
-              ]),
+                  children: [
+                    TextSpan(
+                      text: startTimeFormat.format(showTime.start_time),
+                      style: textStyle2,
+                    ),
+                  ]),
             ),
             const SizedBox(height: 8),
             RichText(
-              text: TextSpan(text: 'Address: ', style: textStyle, children: [
-                TextSpan(
-                  text: theatre.address,
-                  style: textStyle2,
-                ),
-              ]),
+              text: TextSpan(
+                  text: S.of(context).theatre,
+                  style: textStyle,
+                  children: [
+                    TextSpan(
+                      text: theatre.name,
+                      style: textStyle2,
+                    ),
+                    TextSpan(
+                      text: S.of(context).room,
+                      style: textStyle,
+                    ),
+                    TextSpan(
+                      text: showTime.room,
+                      style: textStyle2,
+                    ),
+                  ]),
+            ),
+            const SizedBox(height: 8),
+            RichText(
+              text: TextSpan(
+                  text: S.of(context).address + ': ',
+                  style: textStyle,
+                  children: [
+                    TextSpan(
+                      text: theatre.address,
+                      style: textStyle2,
+                    ),
+                  ]),
             ),
             const SizedBox(height: 6),
             Padding(
@@ -1059,7 +1072,7 @@ class BottomWidget extends StatelessWidget {
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: 'Select',
+                        text: S.of(context).select,
                         style: selectTextStyle,
                         children: [
                           TextSpan(
@@ -1067,8 +1080,7 @@ class BottomWidget extends StatelessWidget {
                             style: seatsCountStyle,
                           ),
                           TextSpan(
-                            text:
-                                'seat' + (snapshot.data.length > 1 ? 's' : ''),
+                            text: S.of(context).seat_s(snapshot.data.length),
                             style: selectTextStyle,
                           ),
                         ],

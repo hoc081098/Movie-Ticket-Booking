@@ -8,6 +8,7 @@ import 'package:stream_loader/stream_loader.dart';
 
 import '../../../../domain/model/promotion.dart';
 import '../../../../domain/repository/promotion_repository.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../utils/error.dart';
 import '../../../app_scaffold.dart';
 import '../../../widgets/empty_widget.dart';
@@ -82,7 +83,7 @@ class DiscountsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Coupon code'),
+        title: Text(S.of(context).couponCode.replaceAll(': ', '')),
         actions: [
           Center(
             child: RxStreamBuilder<String>(
@@ -106,7 +107,7 @@ class DiscountsPage extends StatelessWidget {
           loaderFunction: loaderFunction,
           refresherFunction: loaderFunction,
           initialContent: const <Promotion>[].build(),
-          enableLogger: true,
+          logger: print,
         ),
         builder: (context, state, bloc) {
           if (state.isLoading) {
@@ -125,7 +126,7 @@ class DiscountsPage extends StatelessWidget {
           if (state.error != null) {
             return Center(
               child: MyErrorWidget(
-                errorText: 'Error: ${getErrorMessage(state.error)}',
+                errorText: S.of(context).error_with_message(context.getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             );
@@ -135,7 +136,7 @@ class DiscountsPage extends StatelessWidget {
           if (promotions.isEmpty) {
             return Center(
               child: EmptyWidget(
-                message: 'Empty coupon code',
+                message: S.of(context).emptyCouponCode,
               ),
             );
           }
@@ -194,7 +195,7 @@ class DiscountsPage extends StatelessWidget {
                         ),
                         Center(
                           child: Text(
-                            '${(promotion.discount * 100).toInt()}% OFF',
+                            '${(promotion.discount * 100).toInt()}% ${S.of(context).OFF}',
                             style:
                                 Theme.of(context).textTheme.headline6.copyWith(
                                       color: Colors.white,
@@ -210,11 +211,11 @@ class DiscountsPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                'Start: ${dateFormat.format(promotion.startTime)}',
+                                S.of(context).promotionStart(dateFormat.format(promotion.startTime)),
                                 style: timeStyle,
                               ),
                               Text(
-                                'End: ${dateFormat.format(promotion.endTime)}',
+                                S.of(context).promotionEnd(dateFormat.format(promotion.endTime)),
                                 style: timeStyle,
                               ),
                             ],
@@ -238,7 +239,7 @@ class DiscountsPage extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Select coupon code'),
+          title: Text(S.of(context).selectCouponCode),
           content: Text(promotion.code),
           actions: <Widget>[
             FlatButton(

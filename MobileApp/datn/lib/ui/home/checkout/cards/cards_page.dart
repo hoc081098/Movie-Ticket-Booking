@@ -12,6 +12,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../../../domain/model/card.dart' as domain;
 import '../../../../domain/repository/card_repository.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../utils/error.dart';
 import '../../../../utils/utils.dart';
 import '../../../app_scaffold.dart';
@@ -19,6 +20,11 @@ import '../../../widgets/empty_widget.dart';
 import '../../../widgets/error_widget.dart';
 import '../../tickets/ticket_page.dart';
 import 'add_card/add_card_page.dart';
+
+enum CardPageMode {
+  select,
+  manage,
+}
 
 abstract class Message {}
 
@@ -103,7 +109,6 @@ class CardsBloc extends DisposeCallbackBaseBloc {
     final loader = LoaderBloc<BuiltList<domain.Card>>(
       loaderFunction: cardStreamFunc,
       initialContent: BuiltList.of(<domain.Card>[]),
-      enableLogger: false,
     );
 
     state$ = Rx.combineLatest2(
@@ -141,6 +146,10 @@ class CardsBloc extends DisposeCallbackBaseBloc {
 
 class CardsPage extends StatefulWidget {
   static const routeName = 'home/detail/tickets/combo/checkout/cards';
+
+  final CardPageMode mode;
+
+  const CardsPage({Key key, @required this.mode}) : super(key: key);
 
   @override
   _CardsPageState createState() => _CardsPageState();
@@ -220,23 +229,26 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Cards'),
-          actions: [
-            Center(
-              child: RxStreamBuilder<String>(
-                stream:
-                    TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? Text(
-                          snapshot.data,
-                          style: countDownStyle,
-                        )
-                      : const SizedBox();
-                },
-              ),
-            ),
-            const SizedBox(width: 12),
-          ],
+          actions: widget.mode == CardPageMode.select
+              ? [
+                  Center(
+                    child: RxStreamBuilder<String>(
+                      stream: TicketsCountDownTimerBlocProvider.shared()
+                          .bloc
+                          .countDown$,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? Text(
+                                snapshot.data,
+                                style: countDownStyle,
+                              )
+                            : const SizedBox();
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                ]
+              : null,
         ),
         floatingActionButton: RxStreamBuilder<bool>(
           stream: fabVisible$,
@@ -245,13 +257,15 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
               visible: snapshot.data,
               child: FloatingActionButton.extended(
                 onPressed: () async {
-                  final added = await AppScaffold.of(context)
-                      .pushNamed(AddCardPage.routeName);
+                  final added = await AppScaffold.of(context).pushNamedX(
+                    AddCardPage.routeName,
+                    arguments: widget.mode,
+                  );
                   if (added != null) {
                     bloc.cardAdded(added as domain.Card);
                   }
                 },
-                label: Text('Add card'),
+                label: Text(S.of(context).addCard),
               ),
             );
           },
@@ -279,7 +293,9 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
             if (state.error != null) {
               return Center(
                 child: MyErrorWidget(
-                  errorText: 'Error: ${getErrorMessage(state.error)}',
+                  errorText: S
+                      .of(context)
+                      .error_with_message(getErrorMessage(state.error)),
                   onPressed: bloc.fetch,
                 ),
               );
@@ -289,7 +305,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
             if (cards.isEmpty) {
               return Center(
                 child: EmptyWidget(
-                  message: 'Empty cards',
+                  message: S.of(context).emptyCard,
                 ),
               );
             }
@@ -342,7 +358,8 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                           Container(
                             child: Column(
                               children: [
-                                if (card.id == selectedCard?.id)
+                                if (card.id == selectedCard?.id &&
+                                    widget.mode == CardPageMode.select)
                                   Padding(
                                     padding: const EdgeInsets.all(8),
                                     child: Icon(
@@ -384,11 +401,11 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Remove card'),
-          content: Text('Are you sure you want to remove card'),
+          title: Text(S.of(context).removeCard),
+          content: Text(S.of(context).areYouSureYouWantToRemoveCard),
           actions: <Widget>[
             FlatButton(
-              child: Text('Cancel'),
+              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(false),
             ),
             FlatButton(
@@ -407,12 +424,17 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
 
   void handleMessage(Message msg) {
     if (msg is RemovedSuccess) {
-      return context.showSnackBar("Removed success: '${msg.removed.last4}'");
+      return context.showSnackBar(
+          S.of(context).removedSuccessMsgremovedlast4(msg.removed.last4));
     }
 
     if (msg is RemoveFailure) {
       return context.showSnackBar(
-          "Remove '${msg.card.last4}' failed: ${getErrorMessage(msg.error)}");
+          S.of(context).removeMsgcardlast4FailedGeterrormessagemsgerror(
+              msg.card.last4,
+              getErrorMessage(
+                msg.error,
+              )));
     }
   }
 }

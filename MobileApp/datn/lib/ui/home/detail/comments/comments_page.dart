@@ -12,6 +12,7 @@ import '../../../../domain/model/comment.dart';
 import '../../../../domain/model/user.dart';
 import '../../../../domain/repository/comment_repository.dart';
 import '../../../../domain/repository/user_repository.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../utils/utils.dart';
 import '../../../app_scaffold.dart';
 import '../../../widgets/empty_widget.dart';
@@ -86,21 +87,23 @@ class _CommentsPageState extends State<CommentsPage>
     store.actionStream.listen((action) {
       if (action is FailureAction) {
         context.showSnackBar(
-          'Error occurred: ${getErrorMessage(action.error)}',
+          S.of(context).error_with_message(getErrorMessage(action.error)),
         );
       }
       if (action is SuccessAction) {
         if (action.comments.comments.isEmpty) {
-          context.showSnackBar('Loaded all comments');
+          context.showSnackBar(S.of(context).loadedAllComments);
         }
       }
       if (action is RemoveCommentSuccess) {
-        context.showSnackBar(
-            'Removed successfully: ${action.comment.content.substring(0, 20)}...');
+        context.showSnackBar(S.of(context).commentRemovedSuccessfullyTitle(
+            action.comment.content.substring(0, 20)));
       }
       if (action is RemoveCommentFailure) {
-        context.showSnackBar(
-            'Failed when removing comment: ${action.comment.content.substring(0, 20)}...');
+        context.showSnackBar(S
+            .of(context)
+            .commentFailedWhenRemovingCommentTitle(
+                action.comment.content.substring(0, 20)));
       }
     }).disposedBy(bag);
   }
@@ -131,16 +134,10 @@ class _CommentsPageState extends State<CommentsPage>
         if (state.error != null && state.isFirstPage) {
           return Center(
             child: MyErrorWidget(
-              errorText: 'Error: ${getErrorMessage(state.error)}',
+              errorText: S
+                  .of(context)
+                  .error_with_message(getErrorMessage(state.error)),
               onPressed: () => store.dispatch(const RetryAction()),
-            ),
-          );
-        }
-
-        if (state.items.isEmpty) {
-          return Center(
-            child: EmptyWidget(
-              message: 'Empty comments',
             ),
           );
         }
@@ -194,6 +191,14 @@ class CommentItemsListWidget extends StatelessWidget {
           );
         }
 
+        if (items.isEmpty) {
+          return Center(
+            child: EmptyWidget(
+              message: S.of(context).emptyComment,
+            ),
+          );
+        }
+
         index = index - 1;
 
         if (index < items.length) {
@@ -209,8 +214,9 @@ class CommentItemsListWidget extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(12),
             child: MyErrorWidget(
-              errorText:
-                  'Load page ${state.page}, error: ${getErrorMessage(state.error)}',
+              errorText: S
+                  .of(context)
+                  .error_with_message(context.getErrorMessage(state.error)),
               onPressed: () => dispatch(const RetryAction()),
             ),
           );
@@ -398,12 +404,12 @@ class CommentItemWidget extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Remove this comment'),
-          content: Text(
-              'Do you want to delete this comment. This action cannot be undone!'),
+          title: Text(S.of(context).removeThisComment),
+          content:
+              Text(S.of(context).doYouWantToDeleteThisCommentThisActionCannot),
           actions: <Widget>[
             FlatButton(
-              child: Text('Cancel'),
+              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(false),
             ),
             FlatButton(
@@ -495,7 +501,7 @@ class Header extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Base on ',
+                        text: S.of(context).baseOn,
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
                       TextSpan(
@@ -506,7 +512,7 @@ class Header extends StatelessWidget {
                             ),
                       ),
                       TextSpan(
-                        text: ' reviews',
+                        text: S.of(context).reviews,
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ],
@@ -518,7 +524,7 @@ class Header extends StatelessWidget {
         ),
         InkWell(
           onTap: () async {
-            final comment = await AppScaffold.of(context).pushNamed(
+            final comment = await AppScaffold.of(context).pushNamedX(
               AddCommentPage.routeName,
               arguments: movieId,
             );
@@ -599,7 +605,7 @@ class Header extends StatelessWidget {
                       color: Theme.of(context).buttonColor,
                     ),
                     child: Center(
-                      child: Text('Your think about this movie?'),
+                      child: Text(S.of(context).yourThinkAboutThisMovie),
                     ),
                   ),
                 ),
