@@ -17,7 +17,9 @@ import 'generated/l10n.dart';
 abstract class ChangeLocaleMessage {}
 
 class ChangeLocaleSuccess implements ChangeLocaleMessage {
-  const ChangeLocaleSuccess();
+  final Locale locale;
+
+  const ChangeLocaleSuccess(this.locale);
 }
 
 class ChangeLocaleFailure implements ChangeLocaleMessage {
@@ -107,7 +109,7 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
     return Rx.fromCallable(
             () => rxSharedPrefs.setString(_localeKey, locale.languageCode))
         .map((result) =>
-            result ? const ChangeLocaleSuccess() : const ChangeLocaleFailure())
+            result ? ChangeLocaleSuccess(locale) : const ChangeLocaleFailure())
         .onErrorReturnWith((e) => ChangeLocaleFailure(e))
         .doOnCancel(() => completer?.complete());
   }

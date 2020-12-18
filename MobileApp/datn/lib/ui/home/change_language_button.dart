@@ -32,11 +32,7 @@ class _ChangeLanguageButtonState extends State<ChangeLanguageButton>
     token ??= () {
       final localeBloc = BlocProvider.of<LocaleBloc>(context);
 
-      return localeBloc.message$.listen((msg) async {
-        await delay(0);
-
-        final newLocale = localeBloc.locale$.value.toString();
-
+      return localeBloc.message$.listen((msg) {
         if (msg is ChangeLocaleSuccess) {
           return context.showSnackBar(
             Intl.message(
@@ -44,29 +40,16 @@ class _ChangeLanguageButtonState extends State<ChangeLanguageButton>
               name: 'change_language_success',
               desc: '',
               args: [],
-              locale: newLocale,
+              locale: msg.locale.toString(),
             ),
           );
         }
         if (msg is ChangeLocaleFailure) {
           if (msg.error == null) {
-            context.showSnackBar(Intl.message(
-              'Error when chane language',
-              name: 'change_language_failure',
-              desc: '',
-              args: [],
-              locale: newLocale,
-            ));
+            context.showSnackBar(S.of(context).change_language_failure);
           } else {
-            context.showSnackBar(
-              Intl.message(
-                'Error when chane language: ${msg.error}',
-                name: 'change_language_error',
-                desc: '',
-                locale: newLocale,
-                args: [msg.error],
-              ),
-            );
+            context
+                .showSnackBar(S.of(context).change_language_error(msg.error));
           }
           return;
         }
