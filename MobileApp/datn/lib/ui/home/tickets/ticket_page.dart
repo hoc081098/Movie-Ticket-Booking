@@ -949,7 +949,7 @@ class LegendsWidget extends StatelessWidget {
 }
 
 class BottomWidget extends StatelessWidget {
-  final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
+  final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
 
   final ShowTime showTime;

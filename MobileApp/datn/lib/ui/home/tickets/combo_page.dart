@@ -48,7 +48,7 @@ class ComboPage extends StatefulWidget {
 class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
   dynamic token;
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
-  final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
+  final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
   int ticketsPrice;
 
   BuiltList<MapEntry<int, List<Ticket>>> ticketsByCount;

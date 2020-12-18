@@ -12,7 +12,7 @@ import '../profile/reservation_detail/reservation_detail_page.dart';
 import '../widgets/age_type.dart';
 
 class NotificationItemWidget extends StatelessWidget {
-  final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
+  final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
 
   final Notification item;
   final DateFormat dateFormat;

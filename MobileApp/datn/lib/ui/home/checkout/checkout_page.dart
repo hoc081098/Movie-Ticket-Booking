@@ -204,7 +204,7 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
-  final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
+  final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
 
   Object token;
 

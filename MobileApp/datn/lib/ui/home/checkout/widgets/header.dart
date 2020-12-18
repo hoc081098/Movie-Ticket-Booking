@@ -11,7 +11,7 @@ import '../../../../generated/l10n.dart';
 import '../../../widgets/age_type.dart';
 
 class HeaderWidget extends StatelessWidget {
-  final startTimeFormat = DateFormat('dd/MM/yy, EE, hh:mm a');
+  final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
 
   final Movie movie;
   final ShowTime showTime;
