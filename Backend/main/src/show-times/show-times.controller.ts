@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ShowTimesService } from './show-times.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { getCoordinates } from '../common/utils';
+import { checkStaffPermission, getCoordinates } from '../common/utils';
 import { AddShowTimeDto, MovieAndShowTime, TheatreAndShowTime } from './show-time.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { LocationDto } from '../common/location.dto';
@@ -13,6 +13,7 @@ import { ShowTime } from "./show-time.schema";
 import * as dayjs from "dayjs";
 import * as utc from 'dayjs/plugin/utc';
 import * as timezone from 'dayjs/plugin/timezone';
+import { GetUser, UserPayload } from "../auth/get-user.decorator";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -68,31 +69,36 @@ export class AdminShowTimesController {
   }
 
   @ForAdmin()
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'STAFF')
   @Post()
   addShowTime(
       @Body() dto: AddShowTimeDto,
+      @GetUser() userPayload: UserPayload,
   ) {
-    return this.showTimesService.addShowTime(dto);
+    return this.showTimesService.addShowTime(dto, userPayload);
   }
 
   @ForAdmin()
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'STAFF')
   @Get('theatres/:theatre_id')
   getShowTimesByTheatreId(
       @Param('theatre_id') theatreId: string,
       @Query() dto: PaginationDto,
+      @GetUser() userPayload: UserPayload,
   ): Promise<ShowTime[]> {
+    checkStaffPermission(userPayload, theatreId);
     return this.showTimesService.getShowTimesByTheatreIdAdmin(theatreId, dto);
   }
 
   @ForAdmin()
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'STAFF')
   @Get('available-periods')
   getAvailablePeriods(
       @Query('theatre_id') theatreId: string,
       @Query('day') day: string,
+      @GetUser() userPayload: UserPayload,
   ) {
+    checkStaffPermission(userPayload, theatreId);
     return this.showTimesService.getAvailablePeriods(theatreId, day);
   }
 

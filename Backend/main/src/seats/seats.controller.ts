@@ -5,6 +5,8 @@ import { SeatsService } from './seats.service';
 import { Seat } from './seat.schema';
 import { Ticket } from './ticket.schema';
 import { Roles, RolesGuard } from '../auth/roles.guard';
+import { checkStaffPermission } from "../common/utils";
+import { GetUser, UserPayload } from "../auth/get-user.decorator";
 
 @ApiTags('seats')
 @UseGuards(AuthGuard)
@@ -32,8 +34,9 @@ export class SeatsController {
   @Get('tickets/show-times/:show_time_id')
   getTicketsByShowTimeId(
       @Param('show_time_id') showTimeId: string,
+      @GetUser() userPayload: UserPayload,
   ): Promise<Ticket[]> {
-    return this.seatsService.getTicketsByShowTimeId(showTimeId);
+    return this.seatsService.getTicketsByShowTimeId(showTimeId, userPayload);
   }
 }
 
@@ -48,19 +51,22 @@ export class AdminSeatsController {
   @ApiOperation({
     description: 'Populated seat'
   })
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'STAFF')
   @Get('tickets/show-times/:show_time_id')
   getTicketsByShowTimeId(
       @Param('show_time_id') showTimeId: string,
+      @GetUser() userPayload: UserPayload,
   ): Promise<Ticket[]> {
-    return this.seatsService.getTicketsByShowTimeId(showTimeId);
+    return this.seatsService.getTicketsByShowTimeId(showTimeId, userPayload);
   }
 
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'STAFF')
   @Get('seats/theatres/:theatre_id')
   getSeatsByTheatreId(
       @Param('theatre_id') theatre_id: string,
+      @GetUser() userPayload: UserPayload,
   ) {
+    checkStaffPermission(userPayload, theatre_id);
     return this.seatsService.getSeatsByTheatreId(theatre_id);
   }
 }

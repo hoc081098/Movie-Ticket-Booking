@@ -10,9 +10,13 @@ class TheatreInfoPage extends StatelessWidget {
 
   final Theatre theatre;
   final bool automaticallyImplyLeading;
+  final Widget child;
 
   TheatreInfoPage(
-      {Key key, @required this.theatre, this.automaticallyImplyLeading})
+      {Key key,
+      @required this.theatre,
+      this.automaticallyImplyLeading,
+      this.child})
       : super(key: key);
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -181,7 +185,11 @@ class TheatreInfoPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 200),
+                  if (child != null) ...[
+                    child,
+                    const SizedBox(height: 32),
+                  ] else
+                    const SizedBox(height: 200)
                 ],
               ),
             ),

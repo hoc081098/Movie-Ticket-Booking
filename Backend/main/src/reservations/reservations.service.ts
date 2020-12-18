@@ -13,7 +13,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { Product } from '../products/product.schema';
 import { Ticket } from '../seats/ticket.schema';
-import { checkCompletedLogin, getSkipLimit } from '../common/utils';
+import { checkCompletedLogin, checkStaffPermission, getSkipLimit } from '../common/utils';
 import { Seat } from '../seats/seat.schema';
 import { Stripe } from 'stripe';
 import { AppGateway } from '../socket/app.gateway';
@@ -39,6 +39,7 @@ export class ReservationsService {
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
       @InjectModel(Product.name) private readonly productModel: Model<Product>,
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
+      @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
       private readonly usersService: UsersService,
       private readonly appGateway: AppGateway,
       private readonly promotionsService: PromotionsService,
@@ -442,9 +443,15 @@ export class ReservationsService {
     // return 'DONE';
   }
 
-  async getReservationsByShowTimeId(show_time_id: string) {
+  async getReservationsByShowTimeId(show_time_id: string, userPayload: UserPayload) {
+    const showTime = await this.showTimeModel.findById(show_time_id);
+    if (!showTime) {
+      throw new NotFoundException();
+    }
+    checkStaffPermission(userPayload, showTime.theatre._id.toString());
+
     const results = await this.reservationModel.aggregate([
-      { $match: { show_time: new Types.ObjectId(show_time_id) } },
+      { $match: { show_time: showTime._id } },
       { $sort: { createdAt: -1 } },
       {
         $lookup: {

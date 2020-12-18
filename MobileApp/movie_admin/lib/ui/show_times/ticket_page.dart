@@ -107,13 +107,12 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
             ),
           );
 
-          final buttonHeight = 54.0;
           final marginTop = MediaQuery.of(context).padding.top + 8;
 
           return Stack(
             children: [
               Positioned.fill(
-                bottom: buttonHeight,
+                bottom: 0,
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(

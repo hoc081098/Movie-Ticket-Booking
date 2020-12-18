@@ -115,7 +115,7 @@ export class AdminMoviesController {
   }
 
   @ForAdmin()
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'STAFF')
   @Get('search')
   searchByTitle(
       @Query('title') title: string,

@@ -11,6 +11,7 @@ import { Ticket, TicketSchema } from '../seats/ticket.schema';
 import { SocketModule } from '../socket/socket.module';
 import { PromotionsModule } from '../promotions/promotions.module';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { ShowTime, ShowTimeSchema } from "../show-times/show-time.schema";
 
 @Module({
   imports: [
@@ -27,6 +28,10 @@ import { NotificationsModule } from '../notifications/notifications.module';
       {
         name: Ticket.name,
         schema: TicketSchema,
+      },
+      {
+        name: ShowTime.name,
+        schema: ShowTimeSchema,
       }
     ]),
     AuthModule,

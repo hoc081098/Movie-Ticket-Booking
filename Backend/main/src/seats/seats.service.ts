@@ -5,6 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Theatre } from '../theatres/theatre.schema';
 import { ShowTime } from '../show-times/show-time.schema';
 import { Ticket } from './ticket.schema';
+import { checkStaffPermission } from "../common/utils";
+import { UserPayload } from "../auth/get-user.decorator";
 
 @Injectable()
 export class SeatsService {
@@ -177,8 +179,13 @@ export class SeatsService {
     }
   }
 
-  async getTicketsByShowTimeId(id: string): Promise<Ticket[]> {
+  async getTicketsByShowTimeId(id: string, userPayload: UserPayload): Promise<Ticket[]> {
     const showTime = await this.findShowTimeById(id);
+    if (!showTime) {
+      throw new NotFoundException();
+    }
+    checkStaffPermission(userPayload, showTime.theatre._id.toString());
+
     return await this.ticketModel
         .find({ show_time: showTime._id })
         .populate('seat')

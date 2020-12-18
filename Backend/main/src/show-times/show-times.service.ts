@@ -14,7 +14,7 @@ import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
 import { defer, forkJoin, from, Observable } from 'rxjs';
 import { bufferCount, concatMap, filter, pairwise, take, tap, reduce, map } from 'rxjs/operators';
-import { constants, getSkipLimit } from '../common/utils';
+import { checkStaffPermission, constants, getSkipLimit } from '../common/utils';
 import { AddShowTimeDto, TicketDto } from './show-time.dto';
 import { PaginationDto } from "../common/pagination.dto";
 import { Ticket } from "../seats/ticket.schema";
@@ -24,6 +24,7 @@ import * as isBetween from 'dayjs/plugin/isBetween';
 import * as utc from 'dayjs/plugin/utc';
 import * as timezone from 'dayjs/plugin/timezone';
 import { SeatsService } from "../seats/seats.service";
+import { UserPayload } from "../auth/get-user.decorator";
 
 dayjs.extend(isBetween);
 dayjs.extend(utc);
@@ -395,7 +396,7 @@ export class ShowTimesService {
     ]).exec();
   }
 
-  async addShowTime(dto: AddShowTimeDto): Promise<ShowTime> {
+  async addShowTime(dto: AddShowTimeDto, userPayload: UserPayload): Promise<ShowTime> {
     const room = '2D 1';
 
     const [movie, theatre]: [Movie, Theatre] = await Promise.all([
@@ -412,6 +413,8 @@ export class ShowTimesService {
         return v;
       }),
     ]);
+
+    checkStaffPermission(userPayload, dto.theatre);
 
     const seats = await from(dto.tickets)
         .pipe(
