@@ -63,17 +63,19 @@ export class ReservationsController {
 @Controller('admin-reservations')
 export class AdminReservationsController {
   constructor(
-    private readonly reservationsService: ReservationsService,
+      private readonly reservationsService: ReservationsService,
   ) {}
 
   @ForAdmin()
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'STAFF')
   @Get('show-times/:show_time_id')
   getReservationsByShowTimeId(
-    @Param('show_time_id') show_time_id: string,
+      @Param('show_time_id') show_time_id: string,
+      @GetUser() userPayload: UserPayload,
   ) {
     return this.reservationsService.getReservationsByShowTimeId(
-      show_time_id
+        show_time_id,
+        userPayload
     );
   }
 }

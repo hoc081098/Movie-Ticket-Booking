@@ -14,7 +14,7 @@ import { Theatre } from '../theatres/theatre.schema';
 import * as dayjs from 'dayjs';
 import { defer, forkJoin, from, Observable } from 'rxjs';
 import { bufferCount, concatMap, filter, pairwise, take, tap, reduce, map } from 'rxjs/operators';
-import { constants, getSkipLimit } from '../common/utils';
+import { checkStaffPermission, constants, getSkipLimit } from '../common/utils';
 import { AddShowTimeDto, TicketDto } from './show-time.dto';
 import { PaginationDto } from "../common/pagination.dto";
 import { Ticket } from "../seats/ticket.schema";
@@ -23,11 +23,15 @@ import { Seat } from "../seats/seat.schema";
 import * as isBetween from 'dayjs/plugin/isBetween';
 import * as utc from 'dayjs/plugin/utc';
 import * as timezone from 'dayjs/plugin/timezone';
+import * as customParseFormat from 'dayjs/plugin/customParseFormat';
 import { SeatsService } from "../seats/seats.service";
+import { UserPayload } from "../auth/get-user.decorator";
+import { Reservation } from "../reservations/reservation.schema";
 
 dayjs.extend(isBetween);
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
 
 type RawShowTimeAndTheatre = {
   theatre: Theatre;
@@ -50,6 +54,7 @@ export class ShowTimesService {
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
       @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
+      @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
       private readonly seatsService: SeatsService,
   ) {}
 
@@ -395,7 +400,7 @@ export class ShowTimesService {
     ]).exec();
   }
 
-  async addShowTime(dto: AddShowTimeDto): Promise<ShowTime> {
+  async addShowTime(dto: AddShowTimeDto, userPayload: UserPayload): Promise<ShowTime> {
     const room = '2D 1';
 
     const [movie, theatre]: [Movie, Theatre] = await Promise.all([
@@ -412,6 +417,8 @@ export class ShowTimesService {
         return v;
       }),
     ]);
+
+    checkStaffPermission(userPayload, dto.theatre);
 
     const seats = await from(dto.tickets)
         .pipe(
@@ -640,7 +647,7 @@ export class ShowTimesService {
       },
     ];
 
-    const res =  times.pairwise().map(([prev, next]) => {
+    const res = times.pairwise().map(([prev, next]) => {
       if (prev.end_time === null || next.start_time === null) {
         throw new InternalServerErrorException();
       }
@@ -653,6 +660,73 @@ export class ShowTimesService {
     this.logger.debug(res);
 
     return res;
+  }
+
+  async report(MMyyyy: string, theatre_id: string) {
+    const theatre = await this.theatreModel.findById(theatre_id);
+    if (!theatre) {
+      throw new NotFoundException();
+    }
+
+    const dayString = `01/${MMyyyy}`;
+    const start = dayjs(dayString, 'DD/MM/YYYY')
+        .utcOffset(420, false)
+        .startOf('day').startOf('month');
+    const end = start.endOf('day').endOf('month');
+
+    this.logger.debug('START: ' + start.toDate().toString());
+    this.logger.debug('END  : ' + end.toDate().toString());
+
+    const showTimes = await this.showTimeModel.find({
+      start_time: { $gte: start.toDate() },
+      end_time: { $lte: end.toDate() },
+      theatre: theatre._id,
+    });
+
+    const conditions = { show_time: { $in: showTimes.map(s => s._id) } };
+
+    const [reservations, ticketsCount] = await Promise.all([
+      this.reservationModel.aggregate([
+        {
+          $match: conditions
+        },
+        {
+          $group: {
+            _id: null,
+            total_price: { $sum: '$total_price' }
+          },
+        }
+      ]).exec(),
+      this.ticketModel.count(conditions).exec(),
+
+    ]);
+    const [ticketsSoldCount, amount] = await Promise.all([
+      this.ticketModel.count({ ...conditions, reservation: { $ne: null } }).exec(),
+      this.ticketModel.aggregate([
+        {
+          $match: conditions
+        },
+        {
+          $group: {
+            _id: null,
+            price: { $sum: '$price' }
+          },
+        }
+      ]).exec(),
+    ]);
+    this.logger.debug(reservations);
+    this.logger.debug(ticketsCount);
+    this.logger.debug(ticketsSoldCount);
+    this.logger.debug(amount);
+
+    const report = {
+      amount_sold: reservations[0]?.total_price ?? 0,
+      amount: amount[0]?.price ?? 0,
+      tickets_sold: ticketsSoldCount ?? 0,
+      tickets: ticketsCount ?? 0,
+    };
+    this.logger.debug(report);
+    return report;
   }
 }
 

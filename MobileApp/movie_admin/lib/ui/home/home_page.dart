@@ -5,12 +5,15 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:movie_admin/domain/model/exception.dart';
 import 'package:movie_admin/domain/model/user.dart';
 import 'package:movie_admin/domain/repository/user_repository.dart';
+import 'package:movie_admin/ui/report/report_page.dart';
+import 'package:movie_admin/ui/show_times/show_times_page.dart';
 import 'package:movie_admin/ui/theatres/theatre_info_page.dart';
 
 import '../../ui/movies/movies_page.dart';
 import '../../ui/movies/upload_movie/movie_upload_page.dart';
 import '../../ui/theatres/theatre_page.dart';
 import '../../utils/type_defs.dart';
+import '../app_scaffold.dart';
 import '../users/manager_users_page.dart';
 
 // ignore_for_file: prefer_single_quotes
@@ -82,6 +85,16 @@ class _HomePageState extends State<HomePage> {
                 TheatresPage.routeName,
                 arguments: TheatresMode.showTimes,
               ),
+            ),
+            card(
+              Icons.movie_creation,
+              "Report",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(
+                TheatresPage.routeName,
+                arguments: TheatresMode.report,
+              ),
             )
           ],
         ),
@@ -89,9 +102,38 @@ class _HomePageState extends State<HomePage> {
     } else {
       assert(user.theatre != null);
       print(user.theatre);
+
       return TheatreInfoPage(
         theatre: user.theatre,
         automaticallyImplyLeading: true,
+        child: GridView.count(
+          crossAxisCount: 2,
+          childAspectRatio: 1.5,
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          children: [
+            card(
+              Icons.movie_creation,
+              "Manager show time",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => AppScaffold.of(context).pushNamed(
+                ShowTimesPage.routeName,
+                arguments: user.theatre,
+              ),
+            ),
+            card(
+              Icons.movie_creation,
+              "Report",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(
+                ReportPage.routeName,
+                arguments: user.theatre,
+              ),
+            )
+          ],
+        ),
       );
     }
   }

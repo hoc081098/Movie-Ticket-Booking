@@ -60,15 +60,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       return LoaderBloc(
         loaderFunction: () =>
             ticketRepository.getTicketsByShowTimeId(widget.showTime.id),
-        enableLogger: true,
-      )..fetch();
+        logger: print,      )..fetch();
     }();
 
     resBloc ??= LoaderBloc(
       loaderFunction: () =>
           ticketRepository.getReservationsByShowTimeId(widget.showTime.id),
-      enableLogger: true,
-    )..fetch();
+      logger: print,    )..fetch();
   }
 
   @override
@@ -107,13 +105,12 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
             ),
           );
 
-          final buttonHeight = 54.0;
           final marginTop = MediaQuery.of(context).padding.top + 8;
 
           return Stack(
             children: [
               Positioned.fill(
-                bottom: buttonHeight,
+                bottom: 0,
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
@@ -771,16 +768,32 @@ class ResList extends StatelessWidget {
           );
         }
 
+        final total = movies.fold(0, (acc, e) => acc + e.totalPrice);
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'TOTAL: ${currencyFormat.format(total)} VND',
+                    style: Theme.of(context).textTheme.headline4.copyWith(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff687189),
+                        ),
+                  ),
+                );
+              }
+
+              index--;
               final item = movies[index];
               return ReservationListItem(
                 item: item,
                 currencyFormat: currencyFormat,
               );
             },
-            childCount: movies.length,
+            childCount: movies.length + 1,
           ),
         );
       },

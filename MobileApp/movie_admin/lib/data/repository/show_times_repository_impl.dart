@@ -1,3 +1,5 @@
+import 'package:built_collection/built_collection.dart';
+import 'package:built_collection/src/map.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../domain/model/show_time.dart';
@@ -82,6 +84,21 @@ class ShowTimesRepositoryImpl implements ShowTimesRepository {
               .toLocal(),
         )
     ];
+  }
+
+  @override
+  Future<BuiltMap<String, int>> report(String theatre_id, String MMyyyy) async {
+    final map = await _authClient.getBody(
+      buildUrl(
+        '/admin-show-times/report',
+        {
+          'MMyyyy': MMyyyy,
+          'theatre_id': theatre_id,
+        },
+      ),
+    ) as Map<String, dynamic>;
+
+    return BuiltMap<String, int>.from(map);
   }
 }
 

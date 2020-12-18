@@ -21,7 +21,6 @@ import '../../domain/repository/user_repository.dart';
 import '../../env_manager.dart';
 import '../../utils/error.dart';
 import '../../utils/snackbar.dart';
-import '../login/login_page.dart';
 import '../main_page.dart';
 
 class UpdateProfilePage extends StatefulWidget {
@@ -181,15 +180,45 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('Update profile'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {
-                await Provider.of<UserRepository>(context).logout();
-                await Navigator.of(context).pushNamed(LoginPage.routeName);
-                Navigator.of(context).pop();
-              })
-        ],
+        actions: widget.user == null
+            ? [
+                IconButton(
+                  icon: Icon(Icons.logout),
+                  onPressed: () async {
+                    final shouldLogout = await showDialog<bool>(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Logout out'),
+                          content: Text('Are you sure you want to logout?'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: () => Navigator.of(context).pop(false),
+                            ),
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () => Navigator.of(context).pop(true),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    if (identical(shouldLogout, true)) {
+                      try {
+                        await Provider.of<UserRepository>(context).logout();
+                      } catch (e, s) {
+                        print('logout $e $s');
+                        context.showSnackBar(
+                            'Logout failed: ${getErrorMessage(e)}');
+                      }
+                    }
+                  },
+                ),
+              ]
+            : null,
       ),
       body: Stack(
         children: [

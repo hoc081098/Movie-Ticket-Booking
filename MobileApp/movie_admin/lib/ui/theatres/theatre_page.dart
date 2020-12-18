@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:movie_admin/ui/report/report_page.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
@@ -19,6 +20,7 @@ enum TheatresMode {
   showTimes,
   theatreInfo,
   pick,
+  report,
 }
 
 class TheatresPage extends StatefulWidget {
@@ -43,7 +45,7 @@ class _TheatresPageState extends State<TheatresPage> {
       bloc = LoaderBloc(
         loaderFunction: loaderFunction,
         refresherFunction: loaderFunction,
-        enableLogger: true,
+        logger: print,
       )..fetch();
     }
   }
@@ -159,6 +161,11 @@ class _TheatresPageState extends State<TheatresPage> {
                               }
                             });
                             break;
+                          case TheatresMode.report:
+                            AppScaffold.of(context).pushNamed(
+                              ReportPage.routeName,
+                              arguments: item,
+                            );
                         }
                       },
                       borderRadius: BorderRadius.circular(6),
