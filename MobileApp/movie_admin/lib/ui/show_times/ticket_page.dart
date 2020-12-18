@@ -770,16 +770,32 @@ class ResList extends StatelessWidget {
           );
         }
 
+        final total = movies.fold(0, (acc, e) => acc + e.totalPrice);
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'TOTAL: ${currencyFormat.format(total)} VND',
+                    style: Theme.of(context).textTheme.headline4.copyWith(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff687189),
+                        ),
+                  ),
+                );
+              }
+
+              index--;
               final item = movies[index];
               return ReservationListItem(
                 item: item,
                 currencyFormat: currencyFormat,
               );
             },
-            childCount: movies.length,
+            childCount: movies.length + 1,
           ),
         );
       },
