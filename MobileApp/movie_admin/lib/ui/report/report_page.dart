@@ -6,14 +6,15 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:movie_admin/domain/model/theatre.dart';
-import 'package:movie_admin/domain/repository/show_times_repository.dart';
-import 'package:movie_admin/ui/widgets/error_widget.dart';
-import 'package:movie_admin/utils/error.dart';
-import 'package:movie_admin/utils/streams.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 import 'package:tuple/tuple.dart';
+
+import '../../domain/model/theatre.dart';
+import '../../domain/repository/show_times_repository.dart';
+import '../../utils/error.dart';
+import '../../utils/streams.dart';
+import '../widgets/error_widget.dart';
 
 class ReportPage extends StatefulWidget {
   static const routeName = 'home/report';
@@ -154,95 +155,7 @@ class _ReportPageState extends State<ReportPage> with DisposeBagMixin {
                     );
                   }
 
-                  final map = state.content;
-                  print(map);
-
-                  final seriesList = [
-                    charts.Series<Tuple2<String, int>, String>(
-                      id: 'Amount',
-                      domainFn: (t, i) => t.item1,
-                      measureFn: (t, i) => t.item2,
-                      data: [
-                        Tuple2('Sold amount', map['amount_sold']),
-                        Tuple2('Total amount', map['amount']),
-                      ],
-                      colorFn: (t, i) {
-                        if (i == 0) {
-                          return charts.MaterialPalette.purple.shadeDefault;
-                        }
-                        return charts.ColorUtil.fromDartColor(
-                            Color(0xffCE93D8));
-                      },
-                    ),
-                  ];
-                  final sum1 = map['amount_sold'] + map['amount'];
-
-                  final seriesList2 = [
-                    charts.Series<Tuple2<String, int>, String>(
-                        id: 'Tickets',
-                        domainFn: (t, i) => t.item1,
-                        measureFn: (t, i) => t.item2,
-                        data: [
-                          Tuple2('Sold tickets', map['tickets_sold']),
-                          Tuple2('Total tickets', map['tickets']),
-                        ],
-                        colorFn: (t, i) {
-                          if (i == 0) {
-                            return charts.MaterialPalette.red.shadeDefault;
-                          }
-                          return charts.ColorUtil.fromDartColor(
-                              Color(0xffEF9A9A));
-                        }),
-                  ];
-                  final sum2 = map['tickets_sold'] + map['tickets'];
-
-                  return ListView(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.width * 1.1,
-                        child: charts.PieChart(
-                          seriesList,
-                          animate: true,
-                          behaviors: [
-                            charts.DatumLegend(
-                              position: charts.BehaviorPosition.bottom,
-                              horizontalFirst: false,
-                              cellPadding:
-                                  EdgeInsets.only(right: 4.0, bottom: 4.0),
-                              showMeasures: true,
-                              legendDefaultMeasure:
-                                  charts.LegendDefaultMeasure.firstValue,
-                              measureFormatter: (num value) {
-                                return '${defaultLegendMeasureFormatter(value)} - ${sum1 == 0 ? 0 : (value / sum1 * 100).toStringAsFixed(2)}%';
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(),
-                      Container(
-                        height: MediaQuery.of(context).size.width * 1.1,
-                        child: charts.PieChart(
-                          seriesList2,
-                          animate: true,
-                          behaviors: [
-                            charts.DatumLegend(
-                              position: charts.BehaviorPosition.bottom,
-                              horizontalFirst: false,
-                              cellPadding:
-                                  EdgeInsets.only(right: 4.0, bottom: 4.0),
-                              showMeasures: true,
-                              legendDefaultMeasure:
-                                  charts.LegendDefaultMeasure.firstValue,
-                              measureFormatter: (num value) {
-                                return '${defaultLegendMeasureFormatter(value)} - ${sum2 == 0 ? 0 : (value / sum2 * 100).toStringAsFixed(2)}%';
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
+                  return buildCharts(state.content, context);
                 },
               ),
             ),
@@ -251,11 +164,95 @@ class _ReportPageState extends State<ReportPage> with DisposeBagMixin {
       ),
     );
   }
+
+  Widget buildCharts(BuiltMap<String, int> map, BuildContext context) {
+    final amount_sold = map['amount_sold'];
+    final amount = map['amount'];
+
+    final seriesList = [
+      charts.Series<Tuple2<String, int>, String>(
+        id: 'Amount',
+        domainFn: (t, i) => t.item1,
+        measureFn: (t, i) => t.item2,
+        data: [
+          Tuple2('Sold', amount_sold),
+          Tuple2('Not sold yet', amount - amount_sold),
+        ],
+        colorFn: (t, i) {
+          if (i == 0) {
+            return charts.MaterialPalette.purple.shadeDefault;
+          }
+          return charts.ColorUtil.fromDartColor(Color(0xffCE93D8));
+        },
+      ),
+    ];
+
+    final tickets_sold = map['tickets_sold'];
+    final tickets = map['tickets'];
+
+    final seriesList2 = [
+      charts.Series<Tuple2<String, int>, String>(
+        id: 'Tickets',
+        domainFn: (t, i) => t.item1,
+        measureFn: (t, i) => t.item2,
+        data: [
+          Tuple2('Sold', tickets_sold),
+          Tuple2('Not sold yet', tickets - tickets_sold),
+        ],
+        colorFn: (t, i) {
+          if (i == 0) {
+            return charts.MaterialPalette.red.shadeDefault;
+          }
+          return charts.ColorUtil.fromDartColor(Color(0xffEF9A9A));
+        },
+      ),
+    ];
+
+    return ListView(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.width * 1.1,
+          child: charts.PieChart(
+            seriesList,
+            animate: true,
+            behaviors: [
+              charts.DatumLegend(
+                position: charts.BehaviorPosition.bottom,
+                horizontalFirst: false,
+                cellPadding: EdgeInsets.only(right: 4.0, bottom: 4.0),
+                showMeasures: true,
+                legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,
+                measureFormatter: (value) =>
+                    '${defaultLegendMeasureFormatter(value)} VND ~ ${amount == 0 ? 0 : (value / amount * 100).toStringAsFixed(2)}%',
+              ),
+            ],
+          ),
+        ),
+        const Divider(),
+        Container(
+          height: MediaQuery.of(context).size.width * 1.1,
+          child: charts.PieChart(
+            seriesList2,
+            animate: true,
+            behaviors: [
+              charts.DatumLegend(
+                position: charts.BehaviorPosition.bottom,
+                horizontalFirst: false,
+                cellPadding: EdgeInsets.only(right: 4.0, bottom: 4.0),
+                showMeasures: true,
+                legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,
+                measureFormatter: (value) =>
+                    '${defaultLegendMeasureFormatter(value)} tickets ~ ${tickets == 0 ? 0 : (value / tickets * 100).toStringAsFixed(2)}%',
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 final _decimalPattern = NumberFormat.decimalPattern();
 
-/// Default measure formatter for legends.
-String defaultLegendMeasureFormatter(num value) {
-  return (value == null) ? '' : _decimalPattern.format(value);
-}
+String defaultLegendMeasureFormatter(num value) =>
+    value == null ? '' : _decimalPattern.format(value);
