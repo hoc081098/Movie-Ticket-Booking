@@ -70,6 +70,18 @@ export class AdminShowTimesController {
 
   @ForAdmin()
   @Roles('ADMIN', 'STAFF')
+  @Get('report')
+  report(
+      @Query('MMyyyy') MMyyyy: string,
+      @Query('theatre_id') theatre_id: string,
+      @GetUser() userPayload: UserPayload,
+  ) {
+    checkStaffPermission(userPayload, theatre_id);
+    return this.showTimesService.report(MMyyyy, theatre_id);
+  }
+
+  @ForAdmin()
+  @Roles('ADMIN', 'STAFF')
   @Post()
   addShowTime(
       @Body() dto: AddShowTimeDto,

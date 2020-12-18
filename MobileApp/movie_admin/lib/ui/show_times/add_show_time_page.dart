@@ -65,8 +65,7 @@ class _AppShowTimePageState extends State<AppShowTimePage>
       final b = LoaderBloc(
         loaderFunction: () => Provider.of<TicketRepository>(context)
             .getSeatsByTheatreId(widget.theatre.id),
-        enableLogger: true,
-      );
+        logger: print,      );
 
       b.state$.listen((event) {
         final tuples = event.content
@@ -332,8 +331,7 @@ class _AppShowTimePageState extends State<AppShowTimePage>
                     blocProvider: () => LoaderBloc(
                       loaderFunction: () =>
                           Rx.fromCallable(() => repo.availablePeriods(id, day)),
-                      enableLogger: true,
-                    ),
+                      logger: print,                    ),
                   ),
                   actions: <Widget>[
                     FlatButton(

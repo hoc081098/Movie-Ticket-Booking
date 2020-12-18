@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 import 'package:tuple/tuple.dart';
 
@@ -20,4 +21,6 @@ abstract class ShowTimesRepository {
       String theatre_id,
       DateTime day,
       );
+
+  Future<BuiltMap<String, int>> report(String theatre_id, String MMyyyy);
 }

@@ -60,15 +60,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       return LoaderBloc(
         loaderFunction: () =>
             ticketRepository.getTicketsByShowTimeId(widget.showTime.id),
-        enableLogger: true,
-      )..fetch();
+        logger: print,      )..fetch();
     }();
 
     resBloc ??= LoaderBloc(
       loaderFunction: () =>
           ticketRepository.getReservationsByShowTimeId(widget.showTime.id),
-      enableLogger: true,
-    )..fetch();
+      logger: print,    )..fetch();
   }
 
   @override
