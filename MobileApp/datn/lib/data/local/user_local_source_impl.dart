@@ -38,4 +38,14 @@ class UserLocalSourceImpl implements UserLocalSource {
         ? null
         : UserLocal.fromJson(jsonDecode(jsonString));
   }
+
+  @override
+  Future<String> get token =>
+      _preferences.getString(_tokenKey).catchError((e) => null);
+
+  @override
+  Future<UserLocal> get user => _preferences
+      .getString(_userKey)
+      .then(_toUserLocal)
+      .catchError((e) => null);
 }

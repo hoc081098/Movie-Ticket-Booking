@@ -77,7 +77,7 @@ class UserRepositoryImpl implements UserRepository {
             ..connect();
 
   Future<AuthState> _isUserLocalCompletedLogin([UserLocal local]) async {
-    local ??= await _userLocalSource.user$.first;
+    local ??= await _userLocalSource.user;
 
     return local == null
         ? AuthState.notLoggedIn

@@ -95,7 +95,7 @@ void main() async {
     client,
     httpTimeout,
     () => _onSignOut(),
-    () => userLocalSource.token$.first,
+    () => userLocalSource.token,
   );
 
   //
