@@ -181,15 +181,15 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('Update profile'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {
-                await Provider.of<UserRepository>(context).logout();
-                await Navigator.of(context).pushNamed(LoginPage.routeName);
-                Navigator.of(context).pop();
-              })
-        ],
+        // actions: [
+        //   IconButton(
+        //       icon: Icon(Icons.logout),
+        //       onPressed: () async {
+        //         await Provider.of<UserRepository>(context).logout();
+        //         await Navigator.of(context).pushNamed(LoginPage.routeName);
+        //         Navigator.of(context).pop();
+        //       })
+        // ],
       ),
       body: Stack(
         children: [
