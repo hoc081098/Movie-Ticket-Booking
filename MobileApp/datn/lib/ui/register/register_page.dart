@@ -220,7 +220,7 @@ class _RegisterPageState extends State<RegisterPage>
           labelText: S.of(context).password,
           textInputAction: TextInputAction.done,
           onSubmitted: () {
-            FocusScope.of(context).requestFocus(FocusNode());
+            FocusScope.of(context).unfocus();
           },
           focusNode: passwordFocusNode,
         );
@@ -233,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage>
       animation: buttonSqueezeAnimation,
       child: MaterialButton(
         onPressed: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
           bloc.submit();
         },
         color: Theme.of(context).backgroundColor,

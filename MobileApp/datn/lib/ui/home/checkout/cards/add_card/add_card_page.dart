@@ -24,7 +24,6 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
   final numberNode = FocusNode();
   final expNode = FocusNode();
   final cvcNode = FocusNode();
-  final doneNode = FocusNode();
 
   dynamic token;
 
@@ -161,12 +160,11 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                       keyboardType: TextInputType.number,
                       maxLines: 1,
                       onChanged: bloc.cvcChanged,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       focusNode: cvcNode,
                       maxLength: 3,
                       maxLengthEnforced: true,
-                      onSubmitted: (_) =>
-                          FocusScope.of(context).requestFocus(doneNode),
+                      onSubmitted: (_) => FocusScope.of(context).unfocus(),
                       decoration: InputDecoration(
                         prefixIcon: const Padding(
                           padding: EdgeInsetsDirectional.only(end: 8.0),
@@ -206,7 +204,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                           child: MaterialButton(
                             height: 48,
                             onPressed: () {
-                              FocusScope.of(context).requestFocus(doneNode);
+                              FocusScope.of(context).unfocus();
                               bloc.submit();
                             },
                             color: Theme.of(context).accentColor,

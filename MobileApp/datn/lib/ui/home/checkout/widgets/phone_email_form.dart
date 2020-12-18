@@ -64,7 +64,7 @@ class PhoneEmailForm extends StatelessWidget {
                 maxLines: 1,
                 onChanged: bloc.phoneChanged,
                 textInputAction: TextInputAction.done,
-                onSubmitted: (_) => FocusScope.of(context).requestFocus(),
+                onSubmitted: (_) => FocusScope.of(context).unfocus(),
                 decoration: InputDecoration(
                   prefixIcon: Padding(
                     padding: const EdgeInsetsDirectional.only(end: 8.0),

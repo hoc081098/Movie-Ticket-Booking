@@ -364,7 +364,7 @@ class _LoginPageState extends State<LoginPage>
           labelText: S.of(context).password,
           textInputAction: TextInputAction.done,
           onSubmitted: () {
-            FocusScope.of(context).requestFocus(FocusNode());
+            FocusScope.of(context).unfocus();
           },
           focusNode: passwordFocusNode,
         );
@@ -377,7 +377,7 @@ class _LoginPageState extends State<LoginPage>
       animation: buttonSqueezeAnimation,
       child: MaterialButton(
         onPressed: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
           loginBloc.submitLogin();
         },
         color: Theme.of(context).backgroundColor,

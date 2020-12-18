@@ -181,6 +181,54 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).updateProfile),
+        actions: [
+          if (widget.user != null) // edit mode
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () async {
+                FocusScope.of(context).unfocus();
+
+                final shouldLogout = await showDialog<bool>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(S.of(context).logoutOut),
+                      content: Text(S.of(context).areYouSureYouWantToLogout),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text(S.of(context).cancel),
+                          onPressed: () => Navigator.of(context).pop(false),
+                        ),
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () => Navigator.of(context).pop(true),
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+                if (identical(shouldLogout, true)) {
+                  // final localeBloc = BlocProvider.of<LocaleBloc>(context);
+                  final userRepository = Provider.of<UserRepository>(context);
+
+                  try {
+                    await userRepository.logout();
+                    // await localeBloc.resetLocale(S.delegate.supportedLocales[0]);
+                    print('>>> logged out');
+                  } catch (e, s) {
+                    print('>>>> logout $e $s');
+                    try {
+                      context.showSnackBar(S
+                          .of(context)
+                          .logoutFailed(context.getErrorMessage(e)));
+                    } catch (_) {}
+                  }
+                }
+              },
+            )
+        ],
       ),
       body: Stack(
         children: [
@@ -464,7 +512,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             style: textFieldStyle,
             onChanged: (v) => address = v,
             textInputAction: TextInputAction.done,
-            onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(),
+            onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
             focusNode: addressFocusNode,
             validator: (v) => v.isEmpty ? S.of(context).emptyAddress : null,
           ),
@@ -498,7 +546,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       animation: buttonSqueezeAnimation,
       child: MaterialButton(
         onPressed: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
           onSubmit();
         },
         color: Theme.of(context).backgroundColor,

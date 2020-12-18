@@ -210,7 +210,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
       animation: buttonSqueezeAnimation,
       child: MaterialButton(
         onPressed: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
           bloc.submit();
         },
         color: Theme.of(context).backgroundColor,
