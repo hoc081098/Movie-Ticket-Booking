@@ -182,9 +182,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       appBar: AppBar(
         title: Text(S.of(context).updateProfile),
         actions: [
-          if (widget.user != null) // edit mode
+          if (widget.user == null) // not completed login
             IconButton(
-              icon: Icon(Icons.exit_to_app),
+              icon: const Icon(Icons.exit_to_app),
               onPressed: () async {
                 FocusScope.of(context).unfocus();
 
@@ -227,7 +227,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                   }
                 }
               },
-            )
+            ),
         ],
       ),
       body: Stack(
