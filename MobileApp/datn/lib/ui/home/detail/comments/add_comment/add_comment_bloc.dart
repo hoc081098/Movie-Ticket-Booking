@@ -7,6 +7,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../../../../domain/model/comment.dart';
 import '../../../../../domain/repository/comment_repository.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../utils/type_defs.dart';
 
 @immutable
@@ -55,8 +56,8 @@ class AddCommentBloc extends DisposeCallbackBaseBloc {
         .map(
           (s) => Tuple2(
             s,
-            s.length < 20 || s.length > 500
-                ? 'Length of content must be in from 20 to 500'
+            s.length < 10 || s.length > 500
+                ? S.current.lengthOfContentMustBeInFrom10To500
                 : null,
           ),
         )

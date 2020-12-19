@@ -81,7 +81,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
               if (change is _Toggled) {
                 return acc.rebuild((b) {
                   change.favorite
-                      ? b.add(change.movie)
+                      ? b.insert(0, change.movie)
                       : b.removeWhere((item) => item.id == change.movie.id);
                 });
               }

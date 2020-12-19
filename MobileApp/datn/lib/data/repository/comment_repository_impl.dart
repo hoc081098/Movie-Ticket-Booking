@@ -61,11 +61,11 @@ class CommentRepositoryImpl implements CommentRepository {
         'must be in range from 1 to 5',
       );
     }
-    if (content.length < 20 || 500 < content.length) {
+    if (content.length < 10 || content.length > 500) {
       throw ArgumentError.value(
         content,
         'content',
-        'length must be in range from 20 to 500',
+        'length must be in range from 10 to 500',
       );
     }
 

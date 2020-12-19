@@ -165,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidFullName" : MessageLookupByLibrary.simpleMessage("Invalid full name"),
     "invalidInformation" : MessageLookupByLibrary.simpleMessage("Invalid information"),
     "invalidPhoneNumber" : MessageLookupByLibrary.simpleMessage("Invalid phone number"),
+    "lengthOfContentMustBeInFrom10To500" : MessageLookupByLibrary.simpleMessage("Length of content must be in from 10 to 500"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Load image error"),
     "loadedAllComments" : MessageLookupByLibrary.simpleMessage("Loaded all comments"),
     "loadedAllMovies" : MessageLookupByLibrary.simpleMessage("Loaded all movies"),

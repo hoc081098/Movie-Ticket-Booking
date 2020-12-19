@@ -165,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidFullName" : MessageLookupByLibrary.simpleMessage("Tên không hợp lệ"),
     "invalidInformation" : MessageLookupByLibrary.simpleMessage("Thông tin không hợp lệ"),
     "invalidPhoneNumber" : MessageLookupByLibrary.simpleMessage("SĐT không hợp lệ"),
+    "lengthOfContentMustBeInFrom10To500" : MessageLookupByLibrary.simpleMessage("Độ dài phải từ 10 đến 500"),
     "load_image_error" : MessageLookupByLibrary.simpleMessage("Lỗi tải ảnh"),
     "loadedAllComments" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả bình luận"),
     "loadedAllMovies" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả phim"),

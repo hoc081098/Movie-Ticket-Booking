@@ -3,7 +3,7 @@ import { Comment } from './comment.schema';
 
 export class CreateCommentDto {
   @IsString()
-  @MinLength(20)
+  @MinLength(10)
   @MaxLength(500)
   content: string;
 

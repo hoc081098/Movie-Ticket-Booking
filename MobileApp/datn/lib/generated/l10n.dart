@@ -1936,6 +1936,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Length of content must be in from 10 to 500`
+  String get lengthOfContentMustBeInFrom10To500 {
+    return Intl.message(
+      'Length of content must be in from 10 to 500',
+      name: 'lengthOfContentMustBeInFrom10To500',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

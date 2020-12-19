@@ -253,8 +253,9 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
         floatingActionButton: RxStreamBuilder<bool>(
           stream: fabVisible$,
           builder: (context, snapshot) {
-            return Visibility(
-              visible: snapshot.data,
+            return AnimatedOpacity(
+              opacity: snapshot.requireData ? 1 : 0,
+              duration: const Duration(milliseconds: 200),
               child: FloatingActionButton.extended(
                 onPressed: () async {
                   final added = await AppScaffold.of(context).pushNamedX(
@@ -314,6 +315,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
             return ListView.builder(
               controller: listController,
               itemCount: cards.length,
+              physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 final card = cards[index];
 
