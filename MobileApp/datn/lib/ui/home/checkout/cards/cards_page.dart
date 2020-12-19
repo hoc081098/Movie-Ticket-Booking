@@ -314,9 +314,14 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
             final selectedCard = snapshot.data.item2;
             return ListView.builder(
               controller: listController,
-              itemCount: cards.length,
+              itemCount: cards.length + 1,
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (context, index) {
+                if (index == cards.length) {
+                  return const SizedBox(
+                      height: kFloatingActionButtonMargin + 56);
+                }
+
                 final card = cards[index];
 
                 return InkWell(
