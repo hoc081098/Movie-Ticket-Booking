@@ -5,6 +5,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:movie_admin/domain/model/exception.dart';
 import 'package:movie_admin/domain/model/user.dart';
 import 'package:movie_admin/domain/repository/user_repository.dart';
+import 'package:movie_admin/ui/qr/qrcode_page.dart';
 import 'package:movie_admin/ui/report/report_page.dart';
 import 'package:movie_admin/ui/show_times/show_times_page.dart';
 import 'package:movie_admin/ui/theatres/theatre_info_page.dart';
@@ -95,6 +96,15 @@ class _HomePageState extends State<HomePage> {
                 TheatresPage.routeName,
                 arguments: TheatresMode.report,
               ),
+            ),
+            card(
+              Icons.movie_creation,
+              "Scan QR code",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(
+                QRCodePage.routeName,
+              ),
             )
           ],
         ),
@@ -130,6 +140,15 @@ class _HomePageState extends State<HomePage> {
               () => Navigator.of(context).pushNamed(
                 ReportPage.routeName,
                 arguments: user.theatre,
+              ),
+            ),
+            card(
+              Icons.movie_creation,
+              "Scan QR code",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(
+                QRCodePage.routeName,
               ),
             )
           ],

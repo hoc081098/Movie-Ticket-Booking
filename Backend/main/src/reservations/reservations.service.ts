@@ -548,4 +548,99 @@ export class ReservationsService {
       return item;
     });
   }
+
+  async findById(id: string, userPayload: UserPayload) {
+    const item = await this.reservationModel.aggregate([
+      { $match: { _id: new Types.ObjectId(id) } },
+      { $limit: 1 },
+      { $sort: { createdAt: -1 } },
+      {
+        $lookup: {
+          from: 'show_times',
+          localField: 'show_time',
+          foreignField: '_id',
+          as: 'show_time',
+        }
+      },
+      { $unwind: '$show_time' },
+      {
+        $lookup: {
+          from: 'movies',
+          localField: 'show_time.movie',
+          foreignField: '_id',
+          as: 'show_time.movie',
+        }
+      },
+      { $unwind: '$show_time.movie' },
+      {
+        $lookup: {
+          from: 'theatres',
+          localField: 'show_time.theatre',
+          foreignField: '_id',
+          as: 'show_time.theatre',
+        }
+      },
+      { $unwind: '$show_time.theatre' },
+      {
+        $lookup: {
+          from: 'promotions',
+          localField: 'promotion_id',
+          foreignField: '_id',
+          as: 'promotion_id',
+        }
+      },
+      {
+        $unwind: {
+          path: '$promotion_id',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'products.id',
+          foreignField: '_id',
+          as: 'product_objects',
+        }
+      },
+      {
+        $lookup: {
+          from: 'tickets',
+          localField: '_id',
+          foreignField: 'reservation',
+          as: 'tickets',
+        }
+      },
+      {
+        $lookup: {
+          from: 'seats',
+          localField: 'tickets.seat',
+          foreignField: '_id',
+          as: 'seats',
+        },
+      },
+    ]).exec().then(v => v[0]);
+
+    item.products = item.product_objects?.map(prodObj => {
+      return {
+        product_id: prodObj,
+        quantity: item.products.find(p => p.id.toHexString() === prodObj._id.toHexString()).quantity,
+      };
+    }) ?? [];
+    delete item.product_objects;
+
+    item.tickets = item.tickets?.map(ticket => {
+      ticket.seat = item.seats.find(s => s._id.toHexString() === ticket.seat.toHexString());
+      return ticket;
+    }) ?? [];
+    delete item.seats;
+
+    try {
+      checkStaffPermission(userPayload, item.show_time.theatre._id.toString());
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+
+    return item;
+  }
 }
