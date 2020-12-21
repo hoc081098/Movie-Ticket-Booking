@@ -17,7 +17,8 @@ export class PromotionsService {
   constructor(
       @InjectModel(Promotion.name) private readonly promotionModel: Model<Promotion>,
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
-  ) {}
+  ) {
+  }
 
   async getByShowTimeIdForCurrentUser(userPayload: UserPayload, showTimeId: string): Promise<Promotion[]> {
     const user = checkCompletedLogin(userPayload);
@@ -35,34 +36,57 @@ export class PromotionsService {
   async seed(userPayload: UserPayload) {
     const user = checkCompletedLogin(userPayload);
 
-    const now = new Date();
-    const end = dayjs().startOf('day').add(7, 'day').toDate();
+    const now = dayjs().utcOffset(420, false).startOf('day').subtract(1, 'day');
+    const end = now.add(10, 'day').toDate();
 
-    const showTimes = await this.showTimeModel.find({ start_time: { $gte: now } });
+    const showTimes = [
+      ...(await this.showTimeModel
+          .find({ start_time: { $gte: now.toDate() } })
+          .sort({ start_time: -1 })
+          .limit(400)),
+      ...(await this.showTimeModel
+          .find({ start_time: { $gte: now.toDate() } })
+          .sort({ start_time: 1 })
+          .limit(300)),
+    ];
+
+    const infos = [
+      {
+        code: 'christmas_2020',
+        name: 'Mừng Giáng sinh giảm 5%',
+        discount: 0.05,
+      },
+      {
+        code: 'new_year_2021',
+        name: 'Giảm 10% năm mới 2021',
+        discount: 0.1,
+      },
+    ];
 
     let count = 0;
     for (const showTime of showTimes) {
-      for (let i = 0; i < 10; i++) {
-        const name = faker.lorem.words(5);
-        const code = slugify(name, '_');
+
+      for (const info of infos) {
+        if (await this.promotionModel.findOne({ code: info.code, name: info.name, show_time: showTime._id })) {
+          this.logger.debug(`Dup`);
+          continue;
+        }
 
         const doc: Omit<CreateDocumentDefinition<Promotion>, '_id'> = {
-          code,
-          discount: Math.random() * 0.5,
+          code: info.code,
+          discount: info.discount,
           end_time: end,
           is_active: true,
-          name,
-          start_time: now,
+          name: info.name,
+          start_time: now.toDate(),
           user_ids_used: null,
           creator: user._id,
           show_time: showTime._id,
         };
-
         await this.promotionModel.create(doc);
-        ++count;
-
-        this.logger.debug(`Done ${count}`);
       }
+
+      this.logger.debug(`Done ${count++}`);
     }
 
     return count;

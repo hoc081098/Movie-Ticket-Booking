@@ -10,6 +10,7 @@ import { PaginationDto } from '../common/pagination.dto';
 import { CommentsAndRatingSummary, CreateCommentDto } from './comment.dto';
 import { UserPayload } from '../auth/get-user.decorator';
 import { MoviesService } from '../movies/movies.service';
+import { ShowTime } from "../show-times/show-time.schema";
 
 const rateStars = [1, 2, 3, 4, 5];
 

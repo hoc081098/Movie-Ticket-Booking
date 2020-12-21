@@ -375,7 +375,7 @@ export class Neo4jService {
       rate_star: 1
     })
         .sort({ createdAt: -1 })
-        .limit(1_000)
+        .limit(5_000)
         .lean();
 
     await this.runTransaction(

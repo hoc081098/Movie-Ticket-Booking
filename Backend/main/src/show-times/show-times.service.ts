@@ -56,7 +56,8 @@ export class ShowTimesService {
       @InjectModel(Seat.name) private readonly seatModel: Model<Seat>,
       @InjectModel(Reservation.name) private readonly reservationModel: Model<Reservation>,
       private readonly seatsService: SeatsService,
-  ) {}
+  ) {
+  }
 
   async seed() {
     // const sts = await this.showTimeModel.find({});
@@ -167,7 +168,7 @@ export class ShowTimesService {
         })
         .sort({ start_time: 1 });
     this.logger.debug(`showTimes ${showTimes.length}`);
-    showTimes.forEach(s => this.logger.debug(`${s.start_time} -> ${s.end_time}`));
+    // showTimes.forEach(s => this.logger.debug(`${s.start_time} -> ${s.end_time}`));
 
     if (showTimes.length == 1) {
       const found = showTimes[0];
@@ -256,7 +257,7 @@ export class ShowTimesService {
       start_time: startTime.toDate(),
     };
     const showTime = await this.showTimeModel.create(doc);
-    await this.seatsService.seedTicketsForSingleShowTime(showTime);
+    //await this.seatsService.seedTicketsForSingleShowTime(showTime);
 
     this.logger.debug(`Saved show time: ${JSON.stringify(showTime)}`);
     return 'Successfully';
@@ -727,6 +728,64 @@ export class ShowTimesService {
     };
     this.logger.debug(report);
     return report;
+  }
+
+  async seed2() {
+    const current = dayjs().utcOffset(420, false).startOf('day');
+    const movies = await this.movieModel.find({
+      $and: [
+        { released_date: { $lte: current.toDate() } },
+        { released_date: { $gte: current.subtract(10, 'day').toDate() } },
+      ],
+    }).sort({ released_date: 1 });
+    const theatres = await this.theatreModel.find({});
+
+    let dDay = 0;
+    let dTh = 0;
+    let successCount = 0;
+
+    for (const mov of movies) {
+      const aDay = current.add(dDay, 'day');
+      const aTheatre = theatres[dTh];
+
+
+      const [startHString, endHString] = aTheatre.opening_hours.split(' - ');
+      const [startH, startM] = startHString.split(':').map(x => +x);
+      const [endH, endM] = endHString.split(':').map(x => +x);
+
+      const thStartTime = aDay.set('hour', startH).set('minute', startM);
+      const thEndTime = aDay.set('hour', endH).set('minute', endM);
+      const hours: number[] = Array.from({ length: endH - startH + 1 }, (_, i) => i + startH);
+
+      let success = false;
+      for (const hour of hours) {
+        if (success) {
+          break;
+        }
+        try {
+          const res = await this.checkAndSave(
+              aDay,
+              hour,
+              mov,
+              aTheatre,
+              '2D 1',
+              thStartTime,
+              thEndTime,
+          );
+          if (res === 'Successfully') {
+            success = true;
+            this.logger.debug(`>>>>>>>>>>>>>>>>>>>>>>>>${successCount++}`);
+          }
+        } catch {
+
+        }
+      }
+
+      dDay = (dDay + 1) % 10;
+      dTh = (dTh + 1) % theatres.length;
+    }
+
+    return { successCount };
   }
 }
 

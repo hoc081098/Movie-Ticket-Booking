@@ -7,6 +7,7 @@ import { ShowTime } from '../show-times/show-time.schema';
 import { Ticket } from './ticket.schema';
 import { checkStaffPermission } from "../common/utils";
 import { UserPayload } from "../auth/get-user.decorator";
+import dayjs = require("dayjs");
 
 @Injectable()
 export class SeatsService {
@@ -18,7 +19,8 @@ export class SeatsService {
       @InjectModel(Theatre.name) private readonly theatreModel: Model<Theatre>,
       @InjectModel(ShowTime.name) private readonly showTimeModel: Model<ShowTime>,
       @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
-  ) {}
+  ) {
+  }
 
   /**
    * Helper: Find ShowTime by id
@@ -40,8 +42,37 @@ export class SeatsService {
     });
   }
 
-  async seedTicketsForSingleShowTime(showTime: ShowTime): Promise<Ticket[]> {
-    const seats: Seat[] = await this.getSeatsByShowTimeId(showTime._id);
+  async seedTicketsForSingleShowTime(showTime: ShowTime): Promise<Ticket[] | undefined> {
+    const [seats, wTickets]: [Seat[], Ticket[]] = await Promise.all([
+      this.getSeatsByShowTimeId(showTime._id),
+      this.ticketModel.find({ show_time: showTime._id }),
+    ]);
+
+    // const seats: Seat[] = await this.getSeatsByShowTimeId(showTime._id);
+    // const wTickets: Ticket[] = await this.ticketModel.find({ show_time: showTime._id });
+
+    if (seats.length === 0) {
+      this.logger.debug(`Seats === 0`);
+      this.logger.debug(showTime);
+      throw showTime;
+      return;
+    }
+
+    if (wTickets.length === 0) {
+      this.logger.debug(`wTickets === 0`);
+    } else {
+      if (seats.length === wTickets.length) {
+        this.logger.debug(`Ignore ${seats.length} === ${wTickets.length}`);
+        return;
+      } else if (seats.length > wTickets.length) {
+        this.logger.debug(`Ignore ${seats.length} > ${wTickets.length}`);
+        return;
+      } else {
+        this.logger.debug(await this.ticketModel.deleteMany({ _id: { $in: wTickets.map(e => e._id) } }));
+        this.logger.debug(`Delete ${seats.length} < ${wTickets.length}`);
+      }
+    }
+
     const price = [60_000, 70_000, 80_000, 100_000].random();
 
     const docs: Omit<DocumentDefinition<Ticket>, '_id'>[] = seats.map(seat => {
@@ -168,9 +199,12 @@ export class SeatsService {
   }
 
   async seedTickets() {
+    await this.seatModel.updateMany({ room: '2D1' }, { room: '2D 1' }).exec();
+
     const showTimes: ShowTime[] = await this
         .showTimeModel
-        .find({ start_time: { $gte: new Date() } });
+        .find({ start_time: { $gte: dayjs().subtract(2, 'day').toDate() } })
+        .sort({ start_time: -1 });
 
     let count = 0;
     for (const st of showTimes) {

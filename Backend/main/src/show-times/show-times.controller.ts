@@ -32,6 +32,7 @@ export class ShowTimesController {
   @ApiOperation({ summary: 'PRIVATE' })
   @Post('seed')
   seed() {
+    return this.showTimesService.seed2();
     return this.showTimesService.seed();
   }
 
