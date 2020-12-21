@@ -10,7 +10,7 @@ export function generateQRCode(
 ): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     toDataURL(
-        JSON.stringify(info),
+        info.reservation_id,
         (error, url) => error ? reject(error) : resolve(url),
     );
   });
