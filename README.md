@@ -3,18 +3,28 @@
 ```
 project
 │   README.md
-│   file001.txt    
 │
-└───folder1
-│   │   file011.txt
-│   │   file012.txt
-│   │
-│   └───subfolder1
-│       │   file111.txt
-│       │   file112.txt
+└───Backend
+│   └───main                   <- [Backend]
+│       │   ...
 │       │   ...
 │   
-└───folder2
-    │   file021.txt
-    │   file022.txt
+└───Docs
+│   │   Diagram.png
+│   │   file022.txt
+│   │   ...
+│
+└───MobileApp
+│   └───datn                   <- [User mobile app]
+│   │   │   ...
+│   │   │   ...
+│   │
+│   └───movie_admin            <- [Admin, staff mobile app]
+│       │   ...
+│       │   ...
+│
+└───Screenshots
+    │   Screenshot_add_card.png
+    │   Screenshot_add_comment.png
+    │   ...
 ```
