@@ -1,5 +1,6 @@
 # DATN
 
+## Directory structure
 ```
 project
 │   README.md
