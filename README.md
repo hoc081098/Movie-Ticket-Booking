@@ -11,9 +11,9 @@ project
 │       │   ...
 │   
 └───Docs
+│   │   Database.zip
 │   │   Diagram.png
-│   │   file022.txt
-│   │   ...
+│   │   diagram_sql.png
 │
 └───MobileApp
 │   └───datn                   <- [User mobile app]
