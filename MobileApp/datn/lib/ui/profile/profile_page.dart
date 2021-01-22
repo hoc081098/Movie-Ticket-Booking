@@ -37,9 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return RxStreamBuilder<Optional<User>>(
       stream: user$,
-      builder: (context, snapshot) {
-        final data = snapshot.data;
-
+      builder: (context, data) {
         return Scaffold(
           body: data == null
               ? Center(

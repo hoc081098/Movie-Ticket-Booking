@@ -24,9 +24,7 @@ class RelatedMovies extends StatelessWidget {
   Widget build(BuildContext context) {
     return RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
       stream: bloc.state$,
-      builder: (context, snapshot) {
-        final state = snapshot.data;
-
+      builder: (context, state) {
         if (state.error != null) {
           return SliverToBoxAdapter(
             child: Container(

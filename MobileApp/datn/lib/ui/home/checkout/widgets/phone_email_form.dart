@@ -31,7 +31,7 @@ class PhoneEmailForm extends StatelessWidget {
         children: [
           RxStreamBuilder<String>(
             stream: bloc.emailError$,
-            builder: (context, snapshot) {
+            builder: (context, data) {
               return TextField(
                 autocorrect: true,
                 keyboardType: TextInputType.emailAddress,
@@ -47,7 +47,7 @@ class PhoneEmailForm extends StatelessWidget {
                   ),
                   labelText: S.of(context).emailToReceiveTickets,
                   labelStyle: TextStyle(fontSize: 13),
-                  errorText: snapshot.data,
+                  errorText: data,
                   border: OutlineInputBorder(),
                 ),
               );
@@ -56,7 +56,7 @@ class PhoneEmailForm extends StatelessWidget {
           const SizedBox(height: 12),
           RxStreamBuilder<String>(
             stream: bloc.phoneError$,
-            builder: (context, snapshot) {
+            builder: (context, data) {
               return TextField(
                 focusNode: phoneNode,
                 autocorrect: true,
@@ -72,7 +72,7 @@ class PhoneEmailForm extends StatelessWidget {
                   ),
                   labelText: S.of(context).phoneNumberToReceiveTickets,
                   labelStyle: TextStyle(fontSize: 13),
-                  errorText: snapshot.data,
+                  errorText: data,
                   border: OutlineInputBorder(),
                 ),
               );

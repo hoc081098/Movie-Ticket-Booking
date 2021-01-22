@@ -109,9 +109,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                 const SizedBox(height: 8),
                 RxStreamBuilder<DateTime>(
                   stream: selectedDayS,
-                  builder: (context, snapshot) {
-                    final selectedDay = snapshot.data;
-
+                  builder: (context, selectedDay) {
                     return Row(
                       children: [
                         const SizedBox(width: 4),
@@ -131,7 +129,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                                       : Colors.white,
                                 ),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
                                       day == startDay
@@ -173,10 +172,10 @@ class _ShowTimesPageState extends State<ShowTimesPage>
             child: Container(
               child: RxStreamBuilder<LoaderState<BuiltList<MovieAndShowTimes>>>(
                 stream: bloc.state$,
-                builder: (context, snapshot) {
+                builder: (context, data) {
                   return AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    child: _buildBottom(snapshot.data),
+                    child: _buildBottom(data),
                   );
                 },
               ),
@@ -254,9 +253,7 @@ class SelectCityWidget extends StatelessWidget {
         Expanded(
           child: RxStreamBuilder<City>(
             stream: cityRepo.selectedCity$,
-            builder: (context, snapshot) {
-              final selected = snapshot.data;
-
+            builder: (context, selected) {
               return PopupMenuButton<City>(
                 initialValue: selected,
                 onSelected: cityRepo.change,

@@ -9,6 +9,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../../domain/model/category.dart';
@@ -18,7 +19,6 @@ import '../../../domain/repository/movie_repository.dart';
 import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
 import '../../../utils/snackbar.dart';
-import '../../../utils/streams.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
 import '../view_all/list_item.dart';
@@ -75,25 +75,25 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
 
     showtimeStartTime$ = showtimeStartTimeS.stream
         .shareValueDistinct(start, sync: true)
-          ..listenNull().disposedBy(bag);
+          ..collect().disposedBy(bag);
     showtimeEndTime$ = showtimeEndTimeS.stream
         .shareValueDistinct(end, sync: true)
-          ..listenNull().disposedBy(bag);
+          ..collect().disposedBy(bag);
 
     minReleasedDate$ = minReleasedDateS.stream
         .shareValueDistinct(start, sync: true)
-          ..listenNull().disposedBy(bag);
+          ..collect().disposedBy(bag);
     maxReleasedDate$ = maxReleasedDateS.stream
         .shareValueDistinct(end, sync: true)
-          ..listenNull().disposedBy(bag);
+          ..collect().disposedBy(bag);
 
     minDuration$ = minDurationS.stream.shareValueDistinct(30, sync: true)
-      ..listenNull().disposedBy(bag);
+      ..collect().disposedBy(bag);
     maxDuration$ = maxDurationS.stream.shareValueDistinct(60 * 3, sync: true)
-      ..listenNull().disposedBy(bag);
+      ..collect().disposedBy(bag);
 
     ageType$ = ageTypeS.stream.shareValueDistinct(AgeType.P, sync: true)
-      ..listenNull().disposedBy(bag);
+      ..collect().disposedBy(bag);
   }
 
   @override
@@ -157,8 +157,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
         actions: [
           RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
             stream: bloc.state$,
-            builder: (context, snapshot) {
-              final state = snapshot.data;
+            builder: (context, state) {
               if (state.isLoading) {
                 return const SizedBox();
               }
@@ -173,9 +172,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
       ),
       body: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
         stream: bloc.state$,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
+        builder: (context, state) {
           if (state.isLoading) {
             return Center(
               child: SizedBox(

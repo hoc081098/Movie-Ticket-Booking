@@ -236,12 +236,9 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                       stream: TicketsCountDownTimerBlocProvider.shared()
                           .bloc
                           .countDown$,
-                      builder: (context, snapshot) {
-                        return snapshot.hasData
-                            ? Text(
-                                snapshot.data,
-                                style: countDownStyle,
-                              )
+                      builder: (context, data) {
+                        return data != null
+                            ? Text(data, style: countDownStyle)
                             : const SizedBox();
                       },
                     ),
@@ -252,9 +249,9 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
         ),
         floatingActionButton: RxStreamBuilder<bool>(
           stream: fabVisible$,
-          builder: (context, snapshot) {
+          builder: (context, data) {
             return AnimatedOpacity(
-              opacity: snapshot.requireData ? 1 : 0,
+              opacity: data ? 1 : 0,
               duration: const Duration(milliseconds: 200),
               child: FloatingActionButton.extended(
                 onPressed: () async {
@@ -275,8 +272,8 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
         body: RxStreamBuilder<
             Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card>>(
           stream: bloc.state$,
-          builder: (context, snapshot) {
-            final state = snapshot.data.item1;
+          builder: (context, data) {
+            final state = data.item1;
 
             if (state.isLoading) {
               return Center(
@@ -311,7 +308,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
               );
             }
 
-            final selectedCard = snapshot.data.item2;
+            final selectedCard = data.item2;
             return ListView.builder(
               controller: listController,
               itemCount: cards.length + 1,

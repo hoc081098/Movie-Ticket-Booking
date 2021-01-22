@@ -92,12 +92,9 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
             child: RxStreamBuilder<String>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? Text(
-                        snapshot.data,
-                        style: countDownStyle,
-                      )
+              builder: (context, data) {
+                return data != null
+                    ? Text(data, style: countDownStyle)
                     : const SizedBox();
               },
             ),
@@ -107,9 +104,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
       ),
       body: RxStreamBuilder<ComboState>(
         stream: bloc.state$,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
+        builder: (context, state) {
           if (state.isLoading) {
             return Center(
               child: SizedBox(

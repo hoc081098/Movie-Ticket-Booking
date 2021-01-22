@@ -6,6 +6,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/card.dart' as domain;
@@ -116,7 +117,7 @@ class CheckoutBloc implements BaseBloc {
         phone$.map((tuple) => tuple.item1).publishValueDistinct(null);
 
     final form$ = _submitS
-        .debug('SUBMIT')
+        .debug(identifier: 'SUBMIT')
         .withLatestFrom4(
           email$.startWith(null),
           phone$.startWith(null),
@@ -137,7 +138,7 @@ class CheckoutBloc implements BaseBloc {
                   ? Tuple4(email.item2, phone.item2, card, promotion)
                   : null,
         )
-        .debug('FORM')
+        .debug(identifier: 'FORM')
         .share();
     _message$ = Rx.merge([
       form$.where((v) => v != null).exhaustMap(
@@ -151,7 +152,7 @@ class CheckoutBloc implements BaseBloc {
                   ticketIds: [for (final t in tickets) t.id].build(),
                   promotion: emailPhoneCardPromotion.item4,
                 )
-                .debug('POST REQUEST')
+                .debug(identifier: 'POST REQUEST')
                 .doOnListen(() => _isLoadingS.add(true))
                 .doOnCancel(() => _isLoadingS.add(false))
                 .mapTo<Message>(const CheckoutSuccess())
@@ -234,12 +235,9 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
             child: RxStreamBuilder<String>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? Text(
-                        snapshot.data,
-                        style: countDownStyle,
-                      )
+              builder: (context, data) {
+                return data != null
+                    ? Text(data, style: countDownStyle)
                     : const SizedBox();
               },
             ),

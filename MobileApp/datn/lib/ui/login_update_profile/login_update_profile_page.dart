@@ -273,8 +273,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             child: Center(
               child: RxStreamBuilder<bool>(
                 stream: isFetching$,
-                builder: (context, snapshot) {
-                  if (snapshot.data) {
+                builder: (context, data) {
+                  if (data) {
                     return SizedBox(
                       width: 64,
                       height: 64,
@@ -357,8 +357,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         child: ClipOval(
           child: RxStreamBuilder<Tuple2<File, String>>(
             stream: avatarTuple$,
-            builder: (context, snapshot) {
-              final data = snapshot.data;
+            builder: (context, data) {
               final avatarFile = data.item1;
               final avatar = data.item2;
 
@@ -724,9 +723,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       ),
       child: RxStreamBuilder<Gender>(
         stream: gender$,
-        builder: (context, snapshot) {
-          final gender = snapshot.data;
-
+        builder: (context, gender) {
           return Row(
             mainAxisSize: MainAxisSize.max,
             children: [

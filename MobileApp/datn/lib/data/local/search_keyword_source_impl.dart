@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../utils/iterable.dart';
-import '../../utils/streams.dart';
 import 'search_keyword_source.dart';
 
 class SearchKeywordSourceImpl implements SearchKeywordSource {
@@ -18,7 +18,7 @@ class SearchKeywordSourceImpl implements SearchKeywordSource {
   final queryS = PublishSubject<Tuple2<String, Completer<void>>>(sync: true);
 
   SearchKeywordSourceImpl(this._prefs) {
-    queryS.asyncExpand(_saveQuery).debug(toString()).listenNull();
+    queryS.asyncExpand(_saveQuery).debug(identifier: toString()).collect();
   }
 
   Stream<dynamic> _saveQuery(Tuple2<String, Completer<void>> tuple2) async* {

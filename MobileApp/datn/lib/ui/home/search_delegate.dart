@@ -6,9 +6,9 @@ import 'package:distinct_value_connectable_stream/distinct_value_connectable_str
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../domain/repository/movie_repository.dart';
-import '../../utils/streams.dart';
 import '../app_scaffold.dart';
 import 'search/search_page.dart';
 
@@ -31,7 +31,7 @@ class MovieSearchDelegate extends SearchDelegate<String> {
           .map(filter)
           .startWith(queries);
     }).shareValueDistinct(null, sync: true)
-      ..listenNull().disposedBy(bag);
+      ..collect().disposedBy(bag);
 
     queryS.disposedBy(bag);
   }
@@ -97,9 +97,7 @@ class MovieSearchDelegate extends SearchDelegate<String> {
 
     return RxStreamBuilder<BuiltList<String>>(
       stream: suggestions$,
-      builder: (context, snapshot) {
-        final data = snapshot.data;
-
+      builder: (context, data) {
         if (data == null) {
           return const SizedBox();
         }

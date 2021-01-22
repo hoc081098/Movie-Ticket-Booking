@@ -18,22 +18,14 @@ import 'data/local/user_local_source_impl.dart';
 import 'data/mappers.dart' as mappers;
 import 'data/remote/auth_client.dart';
 import 'data/repository/city_repository_impl.dart';
-import 'data/repository/comment_repository_impl.dart';
 import 'data/repository/favorites_repository_impl.dart';
 import 'data/repository/movie_repository_impl.dart';
-import 'data/repository/notification_repository_impl.dart';
 import 'data/repository/reservation_repository_impl.dart';
-import 'data/repository/theatre_repository_impl.dart';
-import 'data/repository/ticket_repository_impl.dart';
 import 'data/repository/user_repository_impl.dart';
 import 'domain/repository/city_repository.dart';
-import 'domain/repository/comment_repository.dart';
 import 'domain/repository/favorites_repository.dart';
 import 'domain/repository/movie_repository.dart';
-import 'domain/repository/notification_repository.dart';
 import 'domain/repository/reservation_repository.dart';
-import 'domain/repository/theatre_repository.dart';
-import 'domain/repository/ticket_repository.dart';
 import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
 import 'fcm_notification.dart';
@@ -117,70 +109,61 @@ void main() async {
   );
   _onSignOut = userRepository.logout;
 
-  final movieRepository = MovieRepositoryImpl(
-    authClient,
-    mappers.movieResponseToMovie,
-    mappers.showTimeAndTheatreResponsesToTheatreAndShowTimes,
-    mappers.movieDetailResponseToMovie,
-    mappers.movieAndShowTimeResponsesToMovieAndShowTimes,
-    keywordSource,
-    mappers.categoryResponseToCategory,
-  );
+  final movieRepositoryFactory = (BuildContext _) {
+    return MovieRepositoryImpl(
+      authClient,
+      mappers.movieResponseToMovie,
+      mappers.showTimeAndTheatreResponsesToTheatreAndShowTimes,
+      mappers.movieDetailResponseToMovie,
+      mappers.movieAndShowTimeResponsesToMovieAndShowTimes,
+      keywordSource,
+      mappers.categoryResponseToCategory,
+    );
+  };
 
   final cityRepository = CityRepositoryImpl(preferences, userLocalSource);
 
-  final commentRepository = CommentRepositoryImpl(
-    authClient,
-    mappers.commentsResponseToComments,
-    mappers.commentResponseToComment,
-  );
+  final reservationRepositoryFactory = (BuildContext context) {
+    return ReservationRepositoryImpl(
+      authClient,
+      userLocalSource,
+      mappers.reservationResponseToReservation,
+      mappers.fullReservationResponseToReservation,
+    );
+  };
 
-  final ticketRepository = TicketRepositoryImpl(
-    authClient,
-    mappers.ticketResponseToTicket,
-  );
-
-  final reservationRepository = ReservationRepositoryImpl(
-    authClient,
-    userLocalSource,
-    mappers.reservationResponseToReservation,
-    mappers.fullReservationResponseToReservation,
-  );
-
-  final favoritesRepository = FavoritesRepositoryImpl(
-    authClient,
-    mappers.movieResponseToMovie,
-  );
-
-  final notificationRepository = NotificationRepositoryImpl(
-    authClient,
-    mappers.notificationResponseToNotification,
-  );
-
-  final theatreRepository = TheatreRepositoryImpl(
-    authClient,
-    mappers.theatreResponseToTheatre,
-  );
+  final favoritesRepositoryFactory = (BuildContext context) {
+    return FavoritesRepositoryImpl(
+      authClient,
+      mappers.movieResponseToMovie,
+    );
+  };
 
   final localeBloc = LocaleBloc(preferences);
 
   runApp(
     Providers(
       providers: [
-        Provider<AuthClient>(value: authClient),
-        Provider<UserRepository>(value: userRepository),
-        Provider<MovieRepository>(value: movieRepository),
-        Provider<CityRepository>(value: cityRepository),
-        Provider<CommentRepository>(value: commentRepository),
-        Provider<TicketRepository>(value: ticketRepository),
-        Provider<ReservationRepository>(value: reservationRepository),
-        Provider<FavoritesRepository>(value: favoritesRepository),
-        Provider<NotificationRepository>(value: notificationRepository),
-        Provider<FcmNotificationManager>(value: fcmNotificationManager),
-        Provider<TheatreRepository>(value: theatreRepository),
+        Provider<AuthClient>.value(authClient),
+        // Mappers
+        Provider.value(mappers.commentsResponseToComments),
+        Provider.value(mappers.commentResponseToComment),
+        Provider.value(mappers.ticketResponseToTicket),
+        Provider.value(mappers.notificationResponseToNotification),
+        Provider.value(mappers.theatreResponseToTheatre),
+        Provider.value(mappers.productResponseToProduct),
+        Provider.value(mappers.cardResponseToCard),
+        Provider.value(mappers.promotionResponseToPromotion),
+        // App scope repos
+        Provider<UserRepository>.value(userRepository),
+        Provider<CityRepository>.value(cityRepository),
+        Provider<MovieRepository>.factory(movieRepositoryFactory),
+        Provider<ReservationRepository>.factory(reservationRepositoryFactory),
+        Provider<FavoritesRepository>.factory(favoritesRepositoryFactory),
+        Provider<FcmNotificationManager>.value(fcmNotificationManager),
       ],
       child: BlocProvider(
-        initBloc: () => localeBloc,
+        initBloc: (_) => localeBloc,
         child: MyApp(),
       ),
     ),
