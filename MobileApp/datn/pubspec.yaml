@@ -40,7 +40,6 @@ dependencies:
   flutter_rating_bar: ^3.2.0+1
   rx_redux: ^2.1.1
   built_collection: ^4.3.2
-  stream_loader: ^1.1.0-beta02
   loading_indicator: ^1.2.0
   flutter_facebook_login: ^3.0.0
   google_sign_in: ^4.5.6
@@ -66,6 +65,7 @@ dependencies:
   flutter_bloc_pattern: ^2.0.0-nullsafety.1
   rxdart_ext: ^0.0.1-nullsafety.3
   listenable_stream: ^1.0.0-nullsafety.0
+  stream_loader: ^1.1.0-nullsafety.0
 
   flutter:
     sdk: flutter
