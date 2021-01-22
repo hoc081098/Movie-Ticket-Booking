@@ -23,18 +23,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e568b7fb-d164-4913-b444-a2f4e755f897" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Backup/categories.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/comments.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/movie_category.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/movies.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/people.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/products.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/reservations.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/seats.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/show_times.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/theatres.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/tickets.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backup/users.json" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_add_card.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_add_comment.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_all.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_cards.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_checkout0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_checkout1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_combo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_comments0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_comments1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_email.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_favorites.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_home0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_home1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_home2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_home3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_home4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_home5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_login.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_login1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_movie_info0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_movie_info1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_movie_info2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_notificationbar.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_notifications.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_reservations.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_search.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_search_filter.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_search_result.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_seats0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_seats1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_showtimes0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_showtimes1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_showtimes2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_showtimes3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_showtimes4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_ticket.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_update_profile0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots/Screenshot_update_profile1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +81,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="ju7g3y20" />
+  </component>
   <component name="ProjectId" id="1j7uTiWlxM17gNtdKMRhtF2KkU5" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -63,13 +94,22 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Screenshots" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
     <property name="show.migrate.to.gradle.popup" value="false" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\Desktop\DATN\Screenshots" />
+      <recent name="C:\Users\Admin\Desktop\DATN" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\Desktop\DATN\Docs" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -84,6 +124,21 @@
       <updated>1603167461654</updated>
       <workItem from="1603167463574" duration="193000" />
     </task>
+    <task id="LOCAL-00001" summary="delete Backup, update Docs">
+      <created>1611325947874</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1611325947874</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add Database.zip">
+      <created>1611326036634</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1611326036634</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,7 +181,18 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="delete Backup, update Docs" />
+    <MESSAGE value="Add Database.zip" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Database.zip" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="337" y="0" key="CommitChangelistDialog2" timestamp="1611326035898">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="337" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1611326035898" />
     <state x="93" y="100" width="1167" height="528" key="DiffContextDialog" timestamp="1605928609609">
       <screen x="0" y="0" width="1360" height="728" />
     </state>
@@ -139,9 +205,9 @@
       <screen x="0" y="0" width="1360" height="728" />
     </state>
     <state x="524" y="278" key="VCS.ChangelistChooser/0.0.1360.728@0.0.1360.728" timestamp="1605928390933" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1611325706743">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1611326037225">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1611325706743" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1611326037225" />
   </component>
 </project>
