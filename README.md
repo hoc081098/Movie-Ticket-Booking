@@ -79,6 +79,16 @@ project
             # production mode
             $ npm run start:prod
             ```
+        -   Seed data (Put headers in your request `Authorization: Bearer {{token}}`, token can be get from Mobile App after successfully login).
+            -   Movies: `POST http://localhost:3000/movies/seed`.
+            -   Theatres: `POST http://localhost:3000/theatres/seed`.
+            -   Seats: `POST http://localhost:3000/seats/seed`, body: `{"id": theatreId}`.
+            -   Show times: `POST http://localhost:3000/show-times/seed`.
+            -   Tickets: `POST http://localhost:3000/seats/seed-tickets`.
+            -   Transfer data from MongoDB to Neo4j: `POST http://localhost:3000/neo4j/transfer`.
+            -   Comments _(optional)_: `POST http://localhost:3000/comments/seed`.
+            -   Promotions _(optional)_: `POST http://localhost:3000/promotions/seed`.
+            
     -   Flutter
     
 ## Screenshots
