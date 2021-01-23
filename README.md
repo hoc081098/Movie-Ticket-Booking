@@ -45,7 +45,7 @@ project
     -   [User APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/datn/build/app/outputs/flutter-apk/app-release.apk)
     -   [Admin APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/movie_admin/build/app/outputs/flutter-apk/app-release.apk)
     
--   Before you start
+-   Setup and run
     -   Backend
         -	Install [Node.js](https://nodejs.org/en/download/), [NestJS](https://docs.nestjs.com/)
         -	Install [MongoDB](https://docs.mongodb.com/manual/installation/), [Neo4j](https://neo4j.com/docs/operations-manual/current/installation/windows/)
@@ -90,7 +90,22 @@ project
             -   Promotions _(optional)_: `POST http://localhost:3000/promotions/seed`.
             
     -   Flutter
-    
+        -   Install [Flutter](https://flutter.dev/docs/get-started/install).
+        -   Install all the packages by: 
+            ```bash
+            flutter packages get
+            ```
+        -   Create .env file `./MobileApp/datn/.prod.env` and `./MobileApp/movie_admin/.env` has following structure:
+            ```bash
+            BASE_URL=datn-081098.herokuapp.com
+            WS_URL=https://datn-081098.herokuapp.com/
+            WS_PATH=/socket
+            PLACES_API_KEY=your_places_api_key
+            ```
+        -   Run app on real devices or emulator by:
+            ```bash
+            flutter run
+            ```
 ## Screenshots
 
 |  |  |  |
