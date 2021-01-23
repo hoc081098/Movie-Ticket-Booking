@@ -1,4 +1,4 @@
-# DATN
+# Movie-Ticket-Booking
 
 ## Directory structure
 ```
