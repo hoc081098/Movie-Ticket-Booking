@@ -110,15 +110,15 @@ project
 
 |  |  |  |
 | :---:  | :---:  | :---:  |
-| ![](Screenshots/Screenshot_login0.png)            | ![](Screenshots/Screenshot_login1.png)              | ![](Screenshots/Screenshot_home0.png) 
-| ![](Screenshots/Screenshot_home1.png)             | ![](Screenshots/Screenshot_home2.png)               | ![](Screenshots/Screenshot_home3.png) 
-| ![](Screenshots/Screenshot_home4.png)             | ![](Screenshots/Screenshot_home5.png)               | ![](Screenshots/Screenshot_all.png)
-| ![](Screenshots/Screenshot_showtimes0.png)        | ![](Screenshots/Screenshot_showtimes1.png)          | ![](Screenshots/Screenshot_showtimes2.png)          | ![](Screenshots/Screenshot_showtimes3.png) 
+| ![](Screenshots/Screenshot_login1.png)            | ![](Screenshots/Screenshot_home0.png)               | ![](Screenshots/Screenshot_home1.png)             
+| ![](Screenshots/Screenshot_home2.png)             | ![](Screenshots/Screenshot_home3.png)               | ![](Screenshots/Screenshot_home4.png)             
+| ![](Screenshots/Screenshot_home5.png)             | ![](Screenshots/Screenshot_all.png)                 | ![](Screenshots/Screenshot_showtimes0.png) 
+| ![](Screenshots/Screenshot_showtimes1.png)        | ![](Screenshots/Screenshot_showtimes2.png)          | ![](Screenshots/Screenshot_showtimes3.png)          
 | ![](Screenshots/Screenshot_comments0.png)         | ![](Screenshots/Screenshot_comments1.png)           | ![](Screenshots/Screenshot_add_comment.png) 
 | ![](Screenshots/Screenshot_movie_info0.png)       | ![](Screenshots/Screenshot_movie_info1.png)         | ![](Screenshots/Screenshot_movie_info2.png) 
 | ![](Screenshots/Screenshot_seats0.png)            | ![](Screenshots/Screenshot_seats1.png)              | ![](Screenshots/Screenshot_combo.png) 
 | ![](Screenshots/Screenshot_checkout0.png)         | ![](Screenshots/Screenshot_checkout1.png)           | ![](Screenshots/Screenshot_email.jpg)
-| ![](Screenshots/Screenshot_cards.png)             | ![](Screenshots/Screenshot_add_card.png)            | ![](Screenshots/Screenshot_favorites.png)           | ![](Screenshots/Screenshot_notifications.png) 
-| ![](Screenshots/Screenshot_notificationbar.jpg)   | ![](Screenshots/Screenshot_profile.png)             | ![](Screenshots/Screenshot_update_profile1.png) 
-| ![](Screenshots/Screenshot_search.png)            | ![](Screenshots/Screenshot_search_filter.png)       | ![](Screenshots/Screenshot_search_result.png)
-| ![](Screenshots/Screenshot_reservations.png)      | ![](Screenshots/Screenshot_ticket.png)              | ![](Screenshots/Screenshot_login1.png)
+| ![](Screenshots/Screenshot_cards.png)             | ![](Screenshots/Screenshot_add_card.png)            | ![](Screenshots/Screenshot_favorites.png)
+| ![](Screenshots/Screenshot_notifications.png)     | ![](Screenshots/Screenshot_notificationbar.jpg)     | ![](Screenshots/Screenshot_profile.png)             
+| ![](Screenshots/Screenshot_update_profile1.png)   | ![](Screenshots/Screenshot_search.png)              | ![](Screenshots/Screenshot_search_filter.png) 
+| ![](Screenshots/Screenshot_search_result.png)     | ![](Screenshots/Screenshot_reservations.png)        | ![](Screenshots/Screenshot_ticket.png)             
