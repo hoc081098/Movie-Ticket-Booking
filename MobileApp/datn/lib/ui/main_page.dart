@@ -17,6 +17,7 @@ import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
 import '../domain/repository/notification_repository.dart';
 import '../domain/repository/promotion_repository.dart';
+import '../domain/repository/theatre_repository.dart';
 import '../domain/repository/ticket_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../generated/l10n.dart';
@@ -99,7 +100,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
 
   static final homeRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) {
-      return Provider.factory(
+      return Provider<TheatreRepository>.factory(
         (context) => TheatreRepositoryImpl(context.get(), context.get()),
         child: HomePage(),
       );

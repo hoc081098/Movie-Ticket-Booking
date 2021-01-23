@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Notification, Card;
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -17,11 +17,27 @@ import 'data/local/search_keyword_source_impl.dart';
 import 'data/local/user_local_source_impl.dart';
 import 'data/mappers.dart' as mappers;
 import 'data/remote/auth_client.dart';
+import 'data/remote/response/card_response.dart';
+import 'data/remote/response/comment_response.dart';
+import 'data/remote/response/comments_response.dart';
+import 'data/remote/response/notification_response.dart';
+import 'data/remote/response/product_response.dart';
+import 'data/remote/response/promotion_response.dart';
+import 'data/remote/response/theatre_response.dart';
+import 'data/remote/response/ticket_response.dart';
 import 'data/repository/city_repository_impl.dart';
 import 'data/repository/favorites_repository_impl.dart';
 import 'data/repository/movie_repository_impl.dart';
 import 'data/repository/reservation_repository_impl.dart';
 import 'data/repository/user_repository_impl.dart';
+import 'domain/model/card.dart';
+import 'domain/model/comment.dart';
+import 'domain/model/comments.dart';
+import 'domain/model/notification.dart';
+import 'domain/model/product.dart';
+import 'domain/model/promotion.dart';
+import 'domain/model/theatre.dart';
+import 'domain/model/ticket.dart';
 import 'domain/repository/city_repository.dart';
 import 'domain/repository/favorites_repository.dart';
 import 'domain/repository/movie_repository.dart';
@@ -146,14 +162,22 @@ void main() async {
       providers: [
         Provider<AuthClient>.value(authClient),
         // Mappers
-        Provider.value(mappers.commentsResponseToComments),
-        Provider.value(mappers.commentResponseToComment),
-        Provider.value(mappers.ticketResponseToTicket),
-        Provider.value(mappers.notificationResponseToNotification),
-        Provider.value(mappers.theatreResponseToTheatre),
-        Provider.value(mappers.productResponseToProduct),
-        Provider.value(mappers.cardResponseToCard),
-        Provider.value(mappers.promotionResponseToPromotion),
+        Provider<Function1<CommentsResponse, Comments>>.value(
+            mappers.commentsResponseToComments),
+        Provider<Function1<CommentResponse, Comment>>.value(
+            mappers.commentResponseToComment),
+        Provider<Function1<TicketResponse, Ticket>>.value(
+            mappers.ticketResponseToTicket),
+        Provider<Function1<NotificationResponse, Notification>>.value(
+            mappers.notificationResponseToNotification),
+        Provider<Function1<TheatreResponse, Theatre>>.value(
+            mappers.theatreResponseToTheatre),
+        Provider<Function1<ProductResponse, Product>>.value(
+            mappers.productResponseToProduct),
+        Provider<Function1<CardResponse, Card>>.value(
+            mappers.cardResponseToCard),
+        Provider<Function1<PromotionResponse, Promotion>>.value(
+            mappers.promotionResponseToPromotion),
         // App scope repos
         Provider<UserRepository>.value(userRepository),
         Provider<CityRepository>.value(cityRepository),

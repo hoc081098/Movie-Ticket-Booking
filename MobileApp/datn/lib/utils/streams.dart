@@ -5,9 +5,12 @@ import 'package:listenable_stream/listenable_stream.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 
 extension DebugMapStreamsExtension on Map<String, Stream<dynamic>> {
-  List<StreamSubscription<void>> debug() => entries
-      .map((entry) => entry.value.debug(identifier: entry.key).collect())
-      .toList(growable: false);
+  List<StreamSubscription<dynamic>> debug() {
+    return entries
+        .map((entry) =>
+            entry.value.cast<dynamic>().debug(identifier: entry.key).collect())
+        .toList(growable: false);
+  }
 }
 
 extension ScrollPositionStreamExt on ScrollController {
