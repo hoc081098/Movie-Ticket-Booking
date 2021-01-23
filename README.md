@@ -6,7 +6,7 @@ A movie tickets booking and management application using Flutter and NestJS.
 
 -   Flutter BLoC pattern and RxDart for state management.
 -   Firebase authentication.
--   Backend using NestJS, Mongodb database and Neo4j.
+-   Backend using NestJS, MongoDB database and Neo4j.
 -   Recommendation using Neo4j database and Collaborative filtering via Cypher query.
 
 ## Directory structure
@@ -41,16 +41,84 @@ project
 
 ## Setup and run
 
--   Download APK: 
+-   Download APK
     -   [User APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/datn/build/app/outputs/flutter-apk/app-release.apk)
     -   [Admin APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/movie_admin/build/app/outputs/flutter-apk/app-release.apk)
     
--   Before you start:
-    
+-   Setup and run
+    -   Backend
+        -	Install [Node.js](https://nodejs.org/en/download/), [NestJS](https://docs.nestjs.com/)
+        -	Install [MongoDB](https://docs.mongodb.com/manual/installation/), [Neo4j](https://neo4j.com/docs/operations-manual/current/installation/windows/)
+        -	Create [Stripe secret API key](https://stripe.com/docs/keys), Create [MovieDb api key](https://www.themoviedb.org/settings/api)
+        -   Create MongoDB database, (eg. `movieDb`), and create Neo4j database.
+        -   Start MongoDB and Neo4j.
+        -   Create .env file `./Backend/main/.env` has following structure:
+            ```bash
+            MONGODB_URL=mongodb://localhost:27017/movieDb
+            MOVIE_DB_API_KEY=movie_db_api_key
+            STRIPE_SECRET_API=stripe_secret_api_key
+            EMAIL=your_email@gmail.com
+            EMAIL_PASSWORD=your_email_passwrod
+            NEO4J_URL=bolt://localhost:7687
+            NEO4J_USER=neo4j
+            NEO4J_PASSWORD=password
+            ```
+        -   Installation dependencies
+            ```bash
+            $ npm install
+            ```
+            
+        -   Running the Backend app
+            ```bash
+            # development
+            $ npm run start
+            
+            # watch mode
+            $ npm run start:dev
+            
+            # production mode
+            $ npm run start:prod
+            ```
+        -   Seed data (Put headers in your request `Authorization: Bearer {{token}}`, token can be get from Mobile App after successfully login).
+            -   Movies: `POST http://localhost:3000/movies/seed`.
+            -   Theatres: `POST http://localhost:3000/theatres/seed`.
+            -   Seats: `POST http://localhost:3000/seats/seed`, body: `{"id": theatreId}`.
+            -   Show times: `POST http://localhost:3000/show-times/seed`.
+            -   Tickets: `POST http://localhost:3000/seats/seed-tickets`.
+            -   Transfer data from MongoDB to Neo4j: `POST http://localhost:3000/neo4j/transfer`.
+            -   Comments _(optional)_: `POST http://localhost:3000/comments/seed`.
+            -   Promotions _(optional)_: `POST http://localhost:3000/promotions/seed`.
+            
+    -   Flutter
+        -   Install [Flutter](https://flutter.dev/docs/get-started/install).
+        -   Install all the packages by: 
+            ```bash
+            flutter packages get
+            ```
+        -   Create .env file `./MobileApp/datn/.prod.env` and `./MobileApp/movie_admin/.env` has following structure:
+            ```bash
+            BASE_URL=datn-081098.herokuapp.com
+            WS_URL=https://datn-081098.herokuapp.com/
+            WS_PATH=/socket
+            PLACES_API_KEY=your_places_api_key
+            ```
+        -   Run app on real devices or emulator by:
+            ```bash
+            flutter run
+            ```
 ## Screenshots
 
 |  |  |  |
 | :---:  | :---:  | :---:  |
-| ![](Screenshots/Screenshot_login0.png) | ![](Screenshots/Screenshot_login1.png) | ![](Screenshots/Screenshot_home0.png) 
-| ![](Screenshots/Screenshot_home1.png)  | ![](Screenshots/Screenshot_home2.png)  | ![](Screenshots/Screenshot_home3.png) 
-| ![](Screenshots/Screenshot_home4.png)  | ![](Screenshots/Screenshot_home5.png)  | ![](Screenshots/Screenshot_home0.png) 
+| ![](Screenshots/Screenshot_login0.png)            | ![](Screenshots/Screenshot_login1.png)              | ![](Screenshots/Screenshot_home0.png) 
+| ![](Screenshots/Screenshot_home1.png)             | ![](Screenshots/Screenshot_home2.png)               | ![](Screenshots/Screenshot_home3.png) 
+| ![](Screenshots/Screenshot_home4.png)             | ![](Screenshots/Screenshot_home5.png)               | ![](Screenshots/Screenshot_all.png)
+| ![](Screenshots/Screenshot_showtimes0.png)        | ![](Screenshots/Screenshot_showtimes1.png)          | ![](Screenshots/Screenshot_showtimes2.png)          | ![](Screenshots/Screenshot_showtimes3.png) 
+| ![](Screenshots/Screenshot_comments0.png)         | ![](Screenshots/Screenshot_comments1.png)           | ![](Screenshots/Screenshot_add_comment.png) 
+| ![](Screenshots/Screenshot_movie_info0.png)       | ![](Screenshots/Screenshot_movie_info1.png)         | ![](Screenshots/Screenshot_movie_info2.png) 
+| ![](Screenshots/Screenshot_seats0.png)            | ![](Screenshots/Screenshot_seats1.png)              | ![](Screenshots/Screenshot_combo.png) 
+| ![](Screenshots/Screenshot_checkout0.png)         | ![](Screenshots/Screenshot_checkout1.png)           | ![](Screenshots/Screenshot_email.jpg)
+| ![](Screenshots/Screenshot_cards.png)             | ![](Screenshots/Screenshot_add_card.png)            | ![](Screenshots/Screenshot_favorites.png)           | ![](Screenshots/Screenshot_notifications.png) 
+| ![](Screenshots/Screenshot_notificationbar.jpg)   | ![](Screenshots/Screenshot_profile.png)             | ![](Screenshots/Screenshot_update_profile1.png) 
+| ![](Screenshots/Screenshot_search.png)            | ![](Screenshots/Screenshot_search_filter.png)       | ![](Screenshots/Screenshot_search_result.png)
+| ![](Screenshots/Screenshot_reservations.png)      | ![](Screenshots/Screenshot_ticket.png)              | ![](Screenshots/Screenshot_login1.png)
