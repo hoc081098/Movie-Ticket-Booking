@@ -110,6 +110,9 @@ project
 
 |  |  |  |
 | :---:  | :---:  | :---:  |
-| ![](Screenshots/Screenshot_login0.png) | ![](Screenshots/Screenshot_login1.png) | ![](Screenshots/Screenshot_home0.png) 
-| ![](Screenshots/Screenshot_home1.png)  | ![](Screenshots/Screenshot_home2.png)  | ![](Screenshots/Screenshot_home3.png) 
-| ![](Screenshots/Screenshot_home4.png)  | ![](Screenshots/Screenshot_home5.png)  | ![](Screenshots/Screenshot_home0.png) 
+| ![](Screenshots/Screenshot_login0.png)            | ![](Screenshots/Screenshot_login1.png)              | ![](Screenshots/Screenshot_home0.png) 
+| ![](Screenshots/Screenshot_home1.png)             | ![](Screenshots/Screenshot_home2.png)               | ![](Screenshots/Screenshot_home3.png) 
+| ![](Screenshots/Screenshot_home4.png)             | ![](Screenshots/Screenshot_home5.png)               | ![](Screenshots/Screenshot_showtimes0.png) 
+| ![](Screenshots/Screenshot_showtimes1.png)        | ![](Screenshots/Screenshot_showtimes2.png)          | ![](Screenshots/Screenshot_showtimes3.png) 
+| ![](Screenshots/Screenshot_comments0.png)         | ![](Screenshots/Screenshot_comments1.png)           | ![](Screenshots/Screenshot_add_comment.png) 
+| ![](Screenshots/Screenshot_movie_info0.png)       | ![](Screenshots/Screenshot_movie_info1.png)         | ![](Screenshots/Screenshot_movie_info2.png) 
