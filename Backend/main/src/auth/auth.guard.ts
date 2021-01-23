@@ -6,10 +6,8 @@ import { User } from '../users/user.schema';
 import { UsersService } from '../users/users.service';
 import { RawUserPayload, UserPayload } from './get-user.decorator';
 import { validate } from 'class-validator';
-import * as fs from 'fs';
-import { ConfigKey, ConfigService } from '../config/config.service';
 
-let written = false;
+// let written = false;
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -17,26 +15,24 @@ export class AuthGuard implements CanActivate {
 
   constructor(
       private readonly firebaseAuth: FirebaseAuthenticationService,
-      private readonly usersService: UsersService,
-      private readonly configService: ConfigService
-  ) {
+      private readonly usersService: UsersService  ) {
     this.logger.debug(`Created AuthGuard`);
   }
 
   async canActivate(
       context: ExecutionContext,
   ): Promise<boolean> {
-    const test = this.configService.get(ConfigKey.TEST_AUTH_GUARD);
-    if (test === 'USER' || test === 'ADMIN') {
-      // const me = (await this.usersService.findByUid('l9StgzQlR1h3XpaWCf3juyYgG772'))?.toJSON() ?? {};
-      const me = (await this.usersService.findByUid(test === 'USER' ? 'l9StgzQlR1h3XpaWCf3juyYgG772' : 'NePOX4o5zhPqLUlHR9IY8eigNd92'))?.toJSON() ?? {};
-      // const me = (await this.usersService.findByUid('g6OqSdG6XpQfCBr5k7v0O5Evkb93'))?.toJSON() ?? {};
-      context.switchToHttp().getRequest().user = new UserPayload({ ...me, user_entity: me });
-      this.logger.debug(`>>> TEST ${test}`);
-      this.logger.debug(me);
+    // const test = this.configService.get(ConfigKey.TEST_AUTH_GUARD);
+    // if (test === 'USER' || test === 'ADMIN') {
+    //   // const me = (await this.usersService.findByUid('l9StgzQlR1h3XpaWCf3juyYgG772'))?.toJSON() ?? {};
+    //   const me = (await this.usersService.findByUid(test === 'USER' ? 'l9StgzQlR1h3XpaWCf3juyYgG772' : 'NePOX4o5zhPqLUlHR9IY8eigNd92'))?.toJSON() ?? {};
+    //   // const me = (await this.usersService.findByUid('g6OqSdG6XpQfCBr5k7v0O5Evkb93'))?.toJSON() ?? {};
+    //   context.switchToHttp().getRequest().user = new UserPayload({ ...me, user_entity: me });
+    //   this.logger.debug(`>>> TEST ${test}`);
+    //   this.logger.debug(me);
 
-      return true;
-    }
+    //   return true;
+    // }
 
     const request = context.switchToHttp().getRequest<Request>();
     const decodedIdToken = await this.decodeToken(request);
@@ -89,7 +85,7 @@ export class AuthGuard implements CanActivate {
       this.logger.error('Missing token');
       throw new UnauthorizedException();
     }
-    this.debugToken(token);
+    // this.debugToken(token);
 
     let decodedIdToken: admin.auth.DecodedIdToken;
     try {
@@ -106,18 +102,18 @@ export class AuthGuard implements CanActivate {
     return decodedIdToken;
   }
 
-  private debugToken(token: string) {
-    if (this.configService.get(ConfigKey.WRITE_TOKEN_TO_FILE) !== 'true') {
-      return;
-    }
+  // private debugToken(token: string) {
+    // if (this.configService.get(ConfigKey.WRITE_TOKEN_TO_FILE) !== 'true') {
+    //   return;
+    // }
 
-    if (written) return;
+    // if (written) return;
 
-    written = true;
-    fs.writeFile('./token.txt', token, {}, (error) => {
-      if (error) {
-        throw error;
-      }
-    });
-  }
+    // written = true;
+    // fs.writeFile('./token.txt', token, {}, (error) => {
+    //   if (error) {
+    //     throw error;
+    //   }
+    // });
+  // }
 }
