@@ -1,5 +1,14 @@
 # Movie-Ticket-Booking
 
+A movie tickets booking and management application using Flutter and NestJS.
+
+## Features
+
+-   Flutter BLoC pattern and RxDart for state management.
+-   Firebase authentication.
+-   Backend using NestJS, Mongodb database and Neo4j.
+-   Recommendation using Neo4j database and Collaborative filtering via Cypher query.
+
 ## Directory structure
 ```
 project
@@ -35,6 +44,8 @@ project
 -   Download APK: 
     -   [User APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/datn/build/app/outputs/flutter-apk/app-release.apk)
     -   [Admin APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/movie_admin/build/app/outputs/flutter-apk/app-release.apk)
+    
+-   Before you start:
     
 ## Screenshots
 
