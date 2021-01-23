@@ -263,9 +263,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
     return Scaffold(
       body: RxStreamBuilder<LoaderState<BuiltList<Ticket>>>(
         stream: bloc.state$,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
+        builder: (context, state) {
           if (state.isLoading) {
             return Center(
               child: SizedBox(
@@ -420,12 +418,9 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   child: Center(
                     child: RxStreamBuilder<String>(
                       stream: countDownTimerBloc.countDown$,
-                      builder: (context, snapshot) {
-                        return snapshot.hasData
-                            ? Text(
-                                snapshot.data,
-                                style: countDownStyle,
-                              )
+                      builder: (context, data) {
+                        return data != null
+                            ? Text(data, style: countDownStyle)
                             : const SizedBox();
                       },
                     ),
@@ -651,7 +646,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
 
     return RxStreamBuilder<BuiltList<String>>(
       stream: widget.selectedTicketIds$,
-      builder: (context, snapshot) {
+      builder: (context, snapshotData) {
         return SliverToBoxAdapter(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -678,7 +673,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
                                 context,
                                 row,
                                 col,
-                                snapshot.data,
+                                snapshotData,
                                 widthPerSeat,
                               );
                             },
@@ -1067,7 +1062,7 @@ class BottomWidget extends StatelessWidget {
             ),
             RxStreamBuilder<BuiltList<String>>(
               stream: ids$,
-              builder: (context, snapshot) {
+              builder: (context, data) {
                 return Row(
                   children: [
                     RichText(
@@ -1076,11 +1071,11 @@ class BottomWidget extends StatelessWidget {
                         style: selectTextStyle,
                         children: [
                           TextSpan(
-                            text: ' ${snapshot.data.length} ',
+                            text: ' ${data.length} ',
                             style: seatsCountStyle,
                           ),
                           TextSpan(
-                            text: S.of(context).seat_s(snapshot.data.length),
+                            text: S.of(context).seat_s(data.length),
                             style: selectTextStyle,
                           ),
                         ],
@@ -1089,8 +1084,8 @@ class BottomWidget extends StatelessWidget {
                     Spacer(),
                     RichText(
                       text: TextSpan(
-                        text: currencyFormat.format(snapshot.data
-                            .fold(0, (acc, e) => acc + tickets[e].price)),
+                        text: currencyFormat.format(data.fold<int>(
+                            0, (acc, e) => acc + tickets[e].price)),
                         style: seatsCountStyle,
                         children: [
                           TextSpan(
@@ -1126,8 +1121,7 @@ class SelectedSeatsGridWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       sliver: RxStreamBuilder<BuiltList<String>>(
         stream: ids$,
-        builder: (context, snapshot) {
-          final ids = snapshot.data;
+        builder: (context, ids) {
           return SliverGrid(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
@@ -1154,10 +1148,11 @@ class SelectedSeatsGridWidget extends StatelessWidget {
               childCount: ids.length,
             ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 10,
-                mainAxisSpacing: 2,
-                crossAxisSpacing: 2,
-                childAspectRatio: 1),
+              crossAxisCount: 10,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
+              childAspectRatio: 1,
+            ),
           );
         },
       ),

@@ -28,28 +28,22 @@ class _MyAppState extends State<MyApp> {
   final routes = <String, WidgetBuilder>{
     MainPage.routeName: (context) => MainPage(),
     LoginPage.routeName: (context) {
-      final userRepository = Provider.of<UserRepository>(context);
-
       return BlocProvider<LoginBloc>(
         child: LoginPage(),
-        initBloc: () => LoginBloc(userRepository),
+        initBloc: (context) => LoginBloc(context.get()),
       );
     },
     RegisterPage.routeName: (context) {
-      final userRepository = Provider.of<UserRepository>(context);
-
       return BlocProvider<RegisterBloc>(
         child: RegisterPage(),
-        initBloc: () => RegisterBloc(userRepository),
+        initBloc: (context) => RegisterBloc(context.get()),
       );
     },
     UpdateProfilePage.routeName: (context) => UpdateProfilePage(),
     ResetPasswordPage.routeName: (context) {
-      final userRepository = Provider.of<UserRepository>(context);
-
       return BlocProvider<ResetPasswordBloc>(
         child: ResetPasswordPage(),
-        initBloc: () => ResetPasswordBloc(userRepository),
+        initBloc: (context) => ResetPasswordBloc(context.get()),
       );
     },
   };
@@ -86,14 +80,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final localeBloc = BlocProvider.of<LocaleBloc>(context);
 
-    return Provider<Map<String, WidgetBuilder>>(
-      value: routes,
+    return Provider<Map<String, WidgetBuilder>>.value(
+      routes,
       child: RxStreamBuilder<Locale>(
         stream: localeBloc.locale$,
-        builder: (context, snapshot) {
-          print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${snapshot.data}');
+        builder: (context, data) {
+          print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${data}');
 
-          if (snapshot.data == null) {
+          if (data == null) {
             return Container(
               color: Colors.white,
               width: double.infinity,
@@ -113,7 +107,7 @@ class _MyAppState extends State<MyApp> {
               GlobalWidgetsLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
-            locale: snapshot.requireData,
+            locale: data,
           );
         },
       ),

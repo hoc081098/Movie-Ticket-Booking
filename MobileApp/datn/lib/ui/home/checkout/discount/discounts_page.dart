@@ -89,12 +89,9 @@ class DiscountsPage extends StatelessWidget {
             child: RxStreamBuilder<String>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? Text(
-                        snapshot.data,
-                        style: countDownStyle,
-                      )
+              builder: (context, data) {
+                return data != null
+                    ? Text(data, style: countDownStyle)
                     : const SizedBox();
               },
             ),
@@ -126,7 +123,9 @@ class DiscountsPage extends StatelessWidget {
           if (state.error != null) {
             return Center(
               child: MyErrorWidget(
-                errorText: S.of(context).error_with_message(context.getErrorMessage(state.error)),
+                errorText: S
+                    .of(context)
+                    .error_with_message(context.getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             );
@@ -211,11 +210,13 @@ class DiscountsPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                S.of(context).promotionStart(dateFormat.format(promotion.startTime)),
+                                S.of(context).promotionStart(
+                                    dateFormat.format(promotion.startTime)),
                                 style: timeStyle,
                               ),
                               Text(
-                                S.of(context).promotionEnd(dateFormat.format(promotion.endTime)),
+                                S.of(context).promotionEnd(
+                                    dateFormat.format(promotion.endTime)),
                                 style: timeStyle,
                               ),
                             ],

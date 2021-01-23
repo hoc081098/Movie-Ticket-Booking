@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../domain/model/city.dart';
@@ -20,7 +21,6 @@ import '../../domain/repository/theatre_repository.dart';
 import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/intl.dart';
-import '../../utils/streams.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
       cityRepo.selectedCity$
           .distinct()
-          .debug('[HOME] SELECT CITY')
+          .debug(identifier: '[HOME] SELECT CITY')
           .doOnData((_) {
             nowPlayingBloc.fetch();
             recommendedBloc.fetch();
@@ -338,9 +338,9 @@ class HomeLocationHeader extends StatelessWidget {
                         const SizedBox(width: 8),
                         RxStreamBuilder<City>(
                           stream: cityRepo.selectedCity$,
-                          builder: (context, snapshot) {
+                          builder: (context, data) {
                             return Text(
-                              snapshot.data.localizedName(context),
+                              data.localizedName(context),
                               maxLines: 1,
                               style: textTheme.headline6.copyWith(fontSize: 13),
                             );
@@ -445,9 +445,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
         constraints: BoxConstraints.expand(height: totalHeight),
         child: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
           stream: bloc.state$,
-          builder: (context, snapshot) {
-            final state = snapshot.data;
-
+          builder: (context, state) {
             if (state.error != null) {
               return MyErrorWidget(
                 errorText: S
@@ -974,8 +972,7 @@ class NearbyTheatresList extends StatelessWidget {
   Widget build(BuildContext context) {
     return RxStreamBuilder<LoaderState<BuiltList<Theatre>>>(
       stream: bloc.state$,
-      builder: (context, snapshot) {
-        final state = snapshot.data;
+      builder: (context, state) {
         final height = 200.0;
         const padding = EdgeInsets.symmetric(vertical: 10);
 
@@ -985,8 +982,8 @@ class NearbyTheatresList extends StatelessWidget {
               height: height,
               padding: padding,
               child: MyErrorWidget(
-                errorText:
-                    context.s.error_with_message(context.getErrorMessage(state.error)),
+                errorText: context.s
+                    .error_with_message(context.getErrorMessage(state.error)),
                 onPressed: bloc.fetch,
               ),
             ),

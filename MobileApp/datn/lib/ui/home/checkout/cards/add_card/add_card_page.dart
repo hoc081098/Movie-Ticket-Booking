@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -54,12 +55,9 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                     stream: TicketsCountDownTimerBlocProvider.shared()
                         .bloc
                         .countDown$,
-                    builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? Text(
-                              snapshot.data,
-                              style: countDownStyle,
-                            )
+                    builder: (context, data) {
+                      return data != null
+                          ? Text(data, style: countDownStyle)
                           : const SizedBox();
                     },
                   ),
@@ -76,7 +74,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
               children: [
                 RxStreamBuilder<String>(
                   stream: bloc.cardHolderNameError$,
-                  builder: (context, snapshot) {
+                  builder: (context, data) {
                     return TextField(
                       autocorrect: true,
                       keyboardType: TextInputType.name,
@@ -91,7 +89,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                           child: Icon(Icons.person_rounded),
                         ),
                         labelText: S.of(context).cardHolderName,
-                        errorText: snapshot.data,
+                        errorText: data,
                         border: const OutlineInputBorder(),
                       ),
                     );
@@ -100,7 +98,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                 const SizedBox(height: 16),
                 RxStreamBuilder<String>(
                   stream: bloc.numberError$,
-                  builder: (context, snapshot) {
+                  builder: (context, data) {
                     return TextField(
                       autocorrect: true,
                       keyboardType: TextInputType.number,
@@ -109,7 +107,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                       textInputAction: TextInputAction.next,
                       focusNode: numberNode,
                       maxLength: 16,
-                      maxLengthEnforced: true,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
                       onSubmitted: (_) =>
                           FocusScope.of(context).requestFocus(expNode),
                       decoration: InputDecoration(
@@ -118,7 +116,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                           child: Icon(Icons.credit_card_rounded),
                         ),
                         labelText: S.of(context).cardNumber,
-                        errorText: snapshot.data,
+                        errorText: data,
                         border: const OutlineInputBorder(),
                       ),
                     );
@@ -127,7 +125,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                 const SizedBox(height: 8),
                 RxStreamBuilder<String>(
                   stream: bloc.expError$,
-                  builder: (context, snapshot) {
+                  builder: (context, data) {
                     return TextField(
                       autocorrect: true,
                       keyboardType: TextInputType.datetime,
@@ -136,7 +134,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                       textInputAction: TextInputAction.next,
                       focusNode: expNode,
                       maxLength: 5,
-                      maxLengthEnforced: true,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
                       onSubmitted: (_) =>
                           FocusScope.of(context).requestFocus(cvcNode),
                       decoration: InputDecoration(
@@ -145,7 +143,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                           child: Icon(Icons.date_range_rounded),
                         ),
                         labelText: S.of(context).expireDateMmyy,
-                        errorText: snapshot.data,
+                        errorText: data,
                         border: const OutlineInputBorder(),
                       ),
                     );
@@ -154,7 +152,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                 const SizedBox(height: 8),
                 RxStreamBuilder<String>(
                   stream: bloc.cvcError$,
-                  builder: (context, snapshot) {
+                  builder: (context, data) {
                     return TextField(
                       autocorrect: true,
                       keyboardType: TextInputType.number,
@@ -163,7 +161,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                       textInputAction: TextInputAction.done,
                       focusNode: cvcNode,
                       maxLength: 3,
-                      maxLengthEnforced: true,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
                       onSubmitted: (_) => FocusScope.of(context).unfocus(),
                       decoration: InputDecoration(
                         prefixIcon: const Padding(
@@ -171,7 +169,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                           child: Icon(Icons.security_rounded),
                         ),
                         labelText: 'CVC',
-                        errorText: snapshot.data,
+                        errorText: data,
                         border: const OutlineInputBorder(),
                       ),
                     );
@@ -180,8 +178,8 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                 const SizedBox(height: 16),
                 RxStreamBuilder<bool>(
                   stream: bloc.isLoading$,
-                  builder: (context, snapshot) {
-                    if (snapshot.data) {
+                  builder: (context, data) {
+                    if (data) {
                       return Center(
                         child: SizedBox(
                           width: 56,

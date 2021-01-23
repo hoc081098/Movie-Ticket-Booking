@@ -31,6 +31,7 @@ class _$City extends City {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
+    // ignore: deprecated_member_use_from_same_package
     return other is City && name == other.name && location == other.location;
   }
 

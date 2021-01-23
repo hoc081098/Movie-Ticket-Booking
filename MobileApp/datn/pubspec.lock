@@ -203,14 +203,14 @@ packages:
       name: disposebag
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "1.5.0-nullsafety.0"
   distinct_value_connectable_stream:
     dependency: "direct main"
     description:
       name: distinct_value_connectable_stream
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0-beta02"
+    version: "1.2.0-nullsafety.2"
   expandable:
     dependency: "direct main"
     description:
@@ -334,7 +334,7 @@ packages:
       name: flutter_bloc_pattern
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "2.0.0-nullsafety.1"
   flutter_blurhash:
     dependency: transitive
     description:
@@ -355,7 +355,7 @@ packages:
       name: flutter_disposebag
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0-nullsafety.0"
   flutter_dotenv:
     dependency: "direct main"
     description:
@@ -409,7 +409,7 @@ packages:
       name: flutter_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "2.0.0-nullsafety.0"
   flutter_rating_bar:
     dependency: "direct main"
     description:
@@ -560,6 +560,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  listenable_stream:
+    dependency: "direct main"
+    description:
+      name: listenable_stream
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0-nullsafety.1"
   loading_indicator:
     dependency: "direct main"
     description:
@@ -734,21 +741,28 @@ packages:
       name: rx_shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.4"
+    version: "1.3.5"
   rx_storage:
     dependency: transitive
     description:
       name: rx_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1"
+    version: "0.0.2"
   rxdart:
     dependency: "direct main"
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.25.0"
+    version: "0.26.0-nullsafety.1"
+  rxdart_ext:
+    dependency: "direct main"
+    description:
+      name: rxdart_ext
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1-nullsafety.4"
   shared_preferences:
     dependency: transitive
     description:
@@ -865,7 +879,7 @@ packages:
       name: stream_loader
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0-beta02"
+    version: "1.1.0-nullsafety.1"
   stream_transform:
     dependency: transitive
     description:

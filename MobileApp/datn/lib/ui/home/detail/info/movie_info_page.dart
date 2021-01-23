@@ -119,9 +119,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
     return Scaffold(
       body: RxStreamBuilder<LoaderState<Movie>>(
         stream: bloc.state$,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
+        builder: (context, state) {
           if (state.error != null) {
             return Center(
               child: MyErrorWidget(
@@ -415,9 +413,7 @@ class DetailAppBar extends StatelessWidget {
                       const SizedBox(width: 8),
                       RxStreamBuilder<LoaderState<bool>>(
                         stream: favBloc.state$,
-                        builder: (context, snapshot) {
-                          final state = snapshot.data;
-
+                        builder: (context, state) {
                           if (state.isLoading) {
                             return SizedBox(
                               width: 32,

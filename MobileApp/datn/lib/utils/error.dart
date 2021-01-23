@@ -11,7 +11,8 @@ import '../domain/model/exception.dart';
 import '../generated/l10n.dart';
 
 @deprecated
-String getErrorMessageDeprecated(Object error) => S.current.getErrorMessage(error);
+String getErrorMessageDeprecated(Object error) =>
+    S.current.getErrorMessage(error);
 
 extension ErrorMessageS on S {
   String getErrorMessage(Object error) {
