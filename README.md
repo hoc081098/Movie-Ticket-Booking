@@ -137,3 +137,16 @@ project
     <br>
     <em>Collaborative filtering</em>
 </p>
+
+<p align="center">
+    <img src="https://github.com/hoc081098/Movie-Ticket-Booking/blob/master/Screenshots/graph-jaccard.png?raw=true" />
+    <br>
+    <em>Jaccard index (Jaccard similarity coefficient)</em>
+</p>
+
+
+<p align="center">
+    <img src="https://github.com/hoc081098/Movie-Ticket-Booking/blob/master/Screenshots/content-based-graph.png?raw=true" />
+    <br>
+    <em>Weighted content</em>
+</p>
