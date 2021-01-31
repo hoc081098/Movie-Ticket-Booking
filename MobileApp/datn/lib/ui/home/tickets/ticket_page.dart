@@ -151,7 +151,12 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   @override
   void initState() {
     super.initState();
+
+    selectedTicketIdsS
+        .listen((value) => print('SELECTED COUNT: ${value.length}'))
+        .disposedBy(bag);
     selectedTicketIdsS.disposedBy(bag);
+
     TicketsCountDownTimerBlocProvider.shared()._init(
       countDownTimerBloc,
       widget.fromMovieDetail,
@@ -463,11 +468,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   }
 
   void handleConflictSelection(BuiltSet<Ticket> conflictTickets) {
-    selectedTicketIdsS.add(
-      BuiltSet.of(selectedTicketIdsS.value)
-          .difference(conflictTickets)
-          .toBuiltList(),
-    );
+    final value = selectedTicketIdsS.value;
+    final conflictIds = conflictTickets.map((e) => e.id).toSet();
+    final newSelected = Set.of(value).difference(conflictIds).toBuiltList();
+
+    print(
+        'CURRENT SELECTED COUNT: ${value.length} -> NEW SELECTED COUNT: ${newSelected.length}');
+    selectedTicketIdsS.add(newSelected);
   }
 
   static BuiltSet<Ticket> conflict(
