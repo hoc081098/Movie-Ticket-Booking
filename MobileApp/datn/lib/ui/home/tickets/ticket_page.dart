@@ -9,6 +9,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../../domain/model/movie.dart';
@@ -200,6 +201,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       final userRepo = Provider.of<UserRepository>(context);
 
       loaderBloc.state$
+          .map((event) => event.content)
           .distinct()
           .map((state) => conflict(
                 state,
@@ -469,23 +471,20 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   }
 
   static BuiltSet<Ticket> conflict(
-    LoaderState<BuiltList<Ticket>> state,
+    BuiltList<Ticket> state,
     BuiltList<String> selectedIds,
     Optional<User> userOptional,
   ) {
-    if (state.content == null) {
+    if (state == null) {
       return const <Ticket>{}.build();
     }
 
     final uid = userOptional?.fold(() => null, (u) => u.uid);
+    assert(uid != null);
+    final ticketById = Map.fromEntries(state.map((t) => MapEntry(t.id, t)));
 
-    final map = BuiltMap.of(
-      Map.fromEntries(
-        state.content.map((t) => MapEntry(t.id, t)),
-      ),
-    );
     return selectedIds
-        .map((id) => map[id])
+        .map((id) => ticketById[id])
         .where((ticket) => ticket.reservation == null
             ? ticket.reservationId != null
             : ticket.reservation.user.uid != uid)
