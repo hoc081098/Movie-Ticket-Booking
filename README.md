@@ -91,6 +91,11 @@ project
             
     -   Flutter
         -   Install [Flutter](https://flutter.dev/docs/get-started/install).
+        -   Using **`dev`** channel:
+            ```bash
+            flutter channel dev
+            flutter upgrade
+            ```
         -   Install all the packages by: 
             ```bash
             flutter packages get
@@ -108,6 +113,8 @@ project
             ```
 ## Screenshots
 
+### User mobile app
+
 |  |  |  |
 | :---:  | :---:  | :---:  |
 | ![](Screenshots/Screenshot_login1.png)            | ![](Screenshots/Screenshot_home0.png)               | ![](Screenshots/Screenshot_home1.png)             
@@ -122,3 +129,11 @@ project
 | ![](Screenshots/Screenshot_notifications.png)     | ![](Screenshots/Screenshot_notificationbar.jpg)     | ![](Screenshots/Screenshot_profile.png)             
 | ![](Screenshots/Screenshot_update_profile1.png)   | ![](Screenshots/Screenshot_search.png)              | ![](Screenshots/Screenshot_search_filter.png) 
 | ![](Screenshots/Screenshot_search_result.png)     | ![](Screenshots/Screenshot_reservations.png)        | ![](Screenshots/Screenshot_ticket.png)             
+
+### Neo4j Graph
+
+<p align="center">
+    <img src="https://github.com/hoc081098/Movie-Ticket-Booking/blob/master/Screenshots/collaborative.png?raw=true" />
+    <br>
+    <em>Collaborative filtering</em>
+</p>
