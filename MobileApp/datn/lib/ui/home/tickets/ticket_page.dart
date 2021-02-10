@@ -240,7 +240,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           content:
               Text(S.of(context).timeOutToHoldTheSeatPleaseMakeYourReservation),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('OK'),
               onPressed: () {
                 Navigator.of(dialogContext).pop();
@@ -374,8 +374,10 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                 bottom: 0,
                 child: Container(
                   height: buttonHeight,
-                  child: FlatButton(
-                    color: Theme.of(context).primaryColor,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                     onPressed: () => tapContinue(builtMap),
                     child: Text(
                       S.of(context).CONTINUE,
@@ -509,7 +511,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   .of(context)
                   .someSeatsYouChooseHaveBeenReservedPleaseSelectOther),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('OK'),
                   onPressed: () {
                     Navigator.of(dialogContext).pop();

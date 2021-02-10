@@ -382,7 +382,7 @@ class HomeLocationHeader extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(),
             ),
@@ -946,8 +946,10 @@ class ViewAllButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return FlatButton(
-      padding: const EdgeInsets.all(12),
+    return TextButton(
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.all(12),
+      ),
       onPressed: () => AppScaffold.of(context).pushNamedX(
         ViewAllPage.routeName,
         arguments: movieType,

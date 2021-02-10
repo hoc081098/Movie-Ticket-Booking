@@ -183,13 +183,15 @@ class _LoginPageState extends State<LoginPage>
                       children: [
                         Expanded(
                           child: Center(
-                            child: RaisedButton(
-                              color: Color(0xFFde5246),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFde5246),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.all(8),
+                                elevation: 4,
                               ),
-                              padding: const EdgeInsets.all(8),
-                              elevation: 4,
                               onPressed: googleSignInBloc.submitLogin,
                               child: RxStreamBuilder<bool>(
                                 stream: googleSignInBloc.isLoading$,
@@ -227,13 +229,15 @@ class _LoginPageState extends State<LoginPage>
                         ),
                         Expanded(
                           child: Center(
-                            child: RaisedButton(
-                              color: Color(0xFF1178f2),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF1178f2),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.all(8),
+                                elevation: 4,
                               ),
-                              padding: const EdgeInsets.all(8),
-                              elevation: 4,
                               onPressed: facebookLoginBloc.submitLogin,
                               child: RxStreamBuilder<bool>(
                                 stream: facebookLoginBloc.isLoading$,
@@ -413,7 +417,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Widget needAnAccount(LoginBloc loginBloc) {
-    return FlatButton(
+    return TextButton(
       onPressed: () async {
         final email = await Navigator.of(context).pushNamedX(
           RegisterPage.routeName,
@@ -440,7 +444,7 @@ class _LoginPageState extends State<LoginPage>
     return Stack(
       children: [
         Center(
-          child: FlatButton(
+          child: TextButton(
             onPressed: () async {
               final email = await Navigator.of(context)
                   .pushNamedX(ResetPasswordPage.routeName);

@@ -1,5 +1,5 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:datn/domain/model/user.dart';
+import '../../../domain/model/user.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';

@@ -243,7 +243,7 @@ class DiscountsPage extends StatelessWidget {
           title: Text(S.of(context).selectCouponCode),
           content: Text(promotion.code),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('OK'),
               onPressed: () => Navigator.of(dialogContext).pop(true),
             ),

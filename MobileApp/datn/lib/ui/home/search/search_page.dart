@@ -433,7 +433,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(S.of(context).showtimeStartFrom),
-                      FlatButton(
+                      TextButton(
                         onPressed: () async {
                           final newStart =
                               await pickDateTime(showtimeStartTime);
@@ -448,7 +448,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           setState(() => showtimeStartTime = newStart);
                         },
                         child: Text(dateFormat.format(showtimeStartTime)),
-                        visualDensity: visualDensity,
+                        style: TextButton.styleFrom(
+                          visualDensity: visualDensity,
+                        ),
                       ),
                     ],
                   ),
@@ -456,7 +458,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(S.of(context).to),
-                      FlatButton(
+                      TextButton(
                         onPressed: () async {
                           final newEnd = await pickDateTime(showtimeEndTime);
                           if (newEnd == null) {
@@ -470,7 +472,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           setState(() => showtimeEndTime = newEnd);
                         },
                         child: Text(dateFormat.format(showtimeEndTime)),
-                        visualDensity: visualDensity,
+                        style: TextButton.styleFrom(
+                          visualDensity: visualDensity,
+                        ),
                       ),
                     ],
                   ),
@@ -480,7 +484,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(S.of(context).releasedDateFrom),
-                      FlatButton(
+                      TextButton(
                         onPressed: () async {
                           final newStart = await pickDateTime(minReleasedDate);
                           if (newStart == null) {
@@ -493,7 +497,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           setState(() => minReleasedDate = newStart);
                         },
                         child: Text(dateFormat.format(minReleasedDate)),
-                        visualDensity: visualDensity,
+                        style: TextButton.styleFrom(
+                          visualDensity: visualDensity,
+                        ),
                       ),
                     ],
                   ),
@@ -501,7 +507,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(S.of(context).to),
-                      FlatButton(
+                      TextButton(
                         onPressed: () async {
                           final newEnd = await pickDateTime(maxReleasedDate);
                           if (newEnd == null) {
@@ -514,7 +520,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           setState(() => maxReleasedDate = newEnd);
                         },
                         child: Text(dateFormat.format(maxReleasedDate)),
-                        visualDensity: visualDensity,
+                        style: TextButton.styleFrom(
+                          visualDensity: visualDensity,
+                        ),
                       ),
                     ],
                   ),
@@ -555,28 +563,30 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                 children: [
                   const SizedBox(width: 32),
                   Expanded(
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
                       child: Text(S.of(context).cancel),
-                      color: Theme.of(context).disabledColor,
-                      textTheme: ButtonTextTheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(38 / 2),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).disabledColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38 / 2),
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(width: 32),
                   Expanded(
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () {
                         apply();
                         Navigator.of(context).pop(true);
                       },
                       child: Text(S.of(context).apply),
-                      color: Theme.of(context).primaryColor,
-                      textTheme: ButtonTextTheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(38 / 2),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38 / 2),
+                        ),
                       ),
                     ),
                   ),

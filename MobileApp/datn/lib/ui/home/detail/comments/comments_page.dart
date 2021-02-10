@@ -408,11 +408,11 @@ class CommentItemWidget extends StatelessWidget {
           content:
               Text(S.of(context).doYouWantToDeleteThisCommentThisActionCannot),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(false),
             ),
-            FlatButton(
+            TextButton(
               child: Text('OK'),
               onPressed: () => Navigator.of(dialogContext).pop(true),
             ),

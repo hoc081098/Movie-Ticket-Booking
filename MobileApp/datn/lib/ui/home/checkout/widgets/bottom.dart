@@ -118,8 +118,10 @@ class BottomRow extends StatelessWidget {
                     );
                   }
 
-                  return FlatButton(
-                    color: Theme.of(context).primaryColor,
+                  return TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                     onPressed: () {
                       FocusScope.of(context).unfocus();
                     }.pipe(bloc.submit),
