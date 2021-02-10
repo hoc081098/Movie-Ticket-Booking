@@ -49,9 +49,12 @@ class _MyAppState extends State<MyApp> {
   };
 
   final themeData = ThemeData(
-    primaryColor: const Color(0xff7a69ef),
-    primaryColorDark: const Color(0xff5353cf),
-    accentColor: const Color(0xff02a3f7),
+    colorScheme: ColorScheme.light(
+      primary: const Color(0xff7a69ef),
+      primaryVariant: const Color(0xff5353cf),
+      secondary: const Color(0xff02a3f7),
+      onSecondary: Colors.white,
+    ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: 'Montserrat',
   );

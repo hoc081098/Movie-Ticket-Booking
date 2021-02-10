@@ -121,6 +121,7 @@ class BottomRow extends StatelessWidget {
                   return TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
+                      primary: Theme.of(context).colorScheme.onPrimary,
                     ),
                     onPressed: () {
                       FocusScope.of(context).unfocus();

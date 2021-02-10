@@ -568,6 +568,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                       child: Text(S.of(context).cancel),
                       style: TextButton.styleFrom(
                         backgroundColor: Theme.of(context).disabledColor,
+                        primary: Theme.of(context).colorScheme.onError,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(38 / 2),
                         ),
@@ -584,6 +585,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                       child: Text(S.of(context).apply),
                       style: TextButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor,
+                        primary: Theme.of(context).colorScheme.onPrimary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(38 / 2),
                         ),
