@@ -500,6 +500,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
             style: TextButton.styleFrom(
               backgroundColor: Theme.of(context).primaryColor,
               primary: Theme.of(context).colorScheme.onPrimary,
+              shape: RoundedRectangleBorder(),
             ),
             onPressed: () => tapContinue(comboItems),
             child: Text(

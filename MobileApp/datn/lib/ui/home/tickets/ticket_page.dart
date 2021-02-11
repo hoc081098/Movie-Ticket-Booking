@@ -378,6 +378,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                     style: TextButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
                       primary: Theme.of(context).colorScheme.onPrimary,
+                      shape: RoundedRectangleBorder(),
                     ),
                     onPressed: () => tapContinue(builtMap),
                     child: Text(
