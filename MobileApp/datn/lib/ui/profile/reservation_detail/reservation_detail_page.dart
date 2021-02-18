@@ -248,6 +248,7 @@ class ReservationDetailPage extends StatelessWidget {
                         state.content,
                         width: size,
                         height: size,
+                        fit: BoxFit.cover,
                       ),
                     );
                   },

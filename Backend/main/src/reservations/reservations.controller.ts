@@ -89,4 +89,14 @@ export class AdminReservationsController {
         userPayload
     );
   }
+
+  @ForAdmin()
+  @Roles('ADMIN', 'STAFF')
+  @Get(':id')
+  getReservationById(
+      @Param('id') id: string,
+      @GetUser() userPayload: UserPayload,
+  ) {
+    return this.reservationsService.getReservationById(userPayload, id);
+  }
 }

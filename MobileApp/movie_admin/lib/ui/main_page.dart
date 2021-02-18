@@ -3,6 +3,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:movie_admin/domain/model/theatre.dart';
+import 'package:movie_admin/ui/qr/qrcode_page.dart';
 import 'package:movie_admin/ui/report/report_page.dart';
 
 import '../domain/model/user.dart';
@@ -96,7 +97,8 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     ReportPage.routeName: (c, s) {
       return ReportPage(theatre: s.arguments as Theatre);
-    }
+    },
+    QRCodePage.routeName: (c, s) => QRCodePage(),
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

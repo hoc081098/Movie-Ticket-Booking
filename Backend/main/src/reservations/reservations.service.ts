@@ -550,16 +550,20 @@ export class ReservationsService {
   }
 
   async getReservationById(userPayload: UserPayload, id: string) {
-    const { _id } = checkCompletedLogin(userPayload);
+    const user = checkCompletedLogin(userPayload);
+
+    const match = user.role === 'USER'
+        ? {
+          $and: [
+            { _id: new Types.ObjectId(id) },
+            { user: new Types.ObjectId(user.id) },
+          ],
+        }
+        : { _id: new Types.ObjectId(id) };
 
     const results = await this.reservationModel.aggregate([
       {
-        $match: {
-          $and: [
-            { _id: new Types.ObjectId(id) },
-            { user: new Types.ObjectId(_id) },
-          ],
-        }
+        $match: match,
       },
       { $limit: 1 },
       {
@@ -632,6 +636,12 @@ export class ReservationsService {
     const item = results?.[0];
     if (!item) {
       throw new NotFoundException(`Reservation with id ${id} not found`);
+    }
+
+    try {
+      checkStaffPermission(userPayload, item.show_time.theatre._id.toString());
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
 
     item.products = item.product_objects?.map(prodObj => {
