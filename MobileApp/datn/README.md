@@ -1,16 +1,10 @@
-# datn
+# Movie-Ticket-Booking
 
-DATN
+A movie tickets booking and management application using Flutter and NestJS.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-   Flutter BLoC pattern and [RxDart](https://pub.dev/packages/rxdart), [rx_redux](https://pub.dev/packages/rx_redux), [stream_loader](https://pub.dev/packages/stream_loader) for state management.
+-   Firebase authentication, socket.io.
+-   Backend using NestJS, MongoDB database and Neo4j.
+-   Recommendation using Neo4j database and Collaborative filtering via Cypher query.

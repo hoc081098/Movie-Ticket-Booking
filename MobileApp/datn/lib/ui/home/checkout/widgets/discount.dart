@@ -57,8 +57,7 @@ class SelectDiscount extends StatelessWidget {
               children: [
                 RxStreamBuilder<Promotion>(
                   stream: bloc.selectedPromotion$,
-                  builder: (context, snapshot) {
-                    final pro = snapshot.data;
+                  builder: (context, pro) {
                     return Expanded(
                       child: Text(
                         pro == null

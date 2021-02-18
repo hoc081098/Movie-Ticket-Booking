@@ -1,11 +1,14 @@
 import 'package:built_collection/built_collection.dart';
+import '../../../domain/model/user.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
+import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../domain/model/card.dart' as domain;
@@ -16,6 +19,7 @@ import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../domain/repository/reservation_repository.dart';
+import '../../../domain/repository/user_repository.dart';
 import '../../../generated/l10n.dart';
 import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
@@ -77,6 +81,11 @@ class CheckoutBloc implements BaseBloc {
 
   Function0<void> get submit => () => _submitS.add(null);
 
+  void initializeWith(User user) {
+    _emailS.add(user.email);
+    _phoneS.add(user.phoneNumber);
+  }
+
   /// Outputs
   ValueStream<String> get emailError$ => _emailError$;
 
@@ -101,6 +110,7 @@ class CheckoutBloc implements BaseBloc {
         .map((e) => Tuple2(
             Validator.isValidEmail(e) ? null : S.current.invalidEmailAddress,
             e))
+        .debug(identifier: 'EMAIL')
         .share();
 
     final phone$ = _phoneS
@@ -108,6 +118,7 @@ class CheckoutBloc implements BaseBloc {
         .map((p) => Tuple2(
             phoneNumberRegex.hasMatch(p) ? null : S.current.invalidPhoneNumber,
             p))
+        .debug(identifier: 'PHONE')
         .share();
 
     _emailError$ =
@@ -116,7 +127,7 @@ class CheckoutBloc implements BaseBloc {
         phone$.map((tuple) => tuple.item1).publishValueDistinct(null);
 
     final form$ = _submitS
-        .debug('SUBMIT')
+        .debug(identifier: 'SUBMIT')
         .withLatestFrom4(
           email$.startWith(null),
           phone$.startWith(null),
@@ -137,7 +148,7 @@ class CheckoutBloc implements BaseBloc {
                   ? Tuple4(email.item2, phone.item2, card, promotion)
                   : null,
         )
-        .debug('FORM')
+        .debug(identifier: 'FORM')
         .share();
     _message$ = Rx.merge([
       form$.where((v) => v != null).exhaustMap(
@@ -151,7 +162,7 @@ class CheckoutBloc implements BaseBloc {
                   ticketIds: [for (final t in tickets) t.id].build(),
                   promotion: emailPhoneCardPromotion.item4,
                 )
-                .debug('POST REQUEST')
+                .debug(identifier: 'POST REQUEST')
                 .doOnListen(() => _isLoadingS.add(true))
                 .doOnCancel(() => _isLoadingS.add(false))
                 .mapTo<Message>(const CheckoutSuccess())
@@ -207,6 +218,21 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
 
   Object token;
+  User user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    user = context
+        .get<UserRepository>()
+        .user$
+        .value
+        ?.fold(() => null, (user) => user);
+    assert(user != null);
+
+    context.get<CheckoutBloc>().initializeWith(user);
+  }
 
   @override
   void didChangeDependencies() {
@@ -234,12 +260,9 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
             child: RxStreamBuilder<String>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? Text(
-                        snapshot.data,
-                        style: countDownStyle,
-                      )
+              builder: (context, data) {
+                return data != null
+                    ? Text(data, style: countDownStyle)
                     : const SizedBox();
               },
             ),
@@ -264,7 +287,11 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
                     tickets: widget.tickets,
                   ),
                 ),
-                SliverToBoxAdapter(child: const PhoneEmailForm()),
+                SliverToBoxAdapter(
+                  child: PhoneEmailForm(
+                    user: user,
+                  ),
+                ),
                 SliverToBoxAdapter(
                   child: SelectDiscount(
                     showTime: widget.showTime,

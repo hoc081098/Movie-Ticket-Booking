@@ -9,6 +9,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../../domain/model/category.dart';
@@ -18,7 +19,6 @@ import '../../../domain/repository/movie_repository.dart';
 import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
 import '../../../utils/snackbar.dart';
-import '../../../utils/streams.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
 import '../view_all/list_item.dart';
@@ -75,25 +75,25 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
 
     showtimeStartTime$ = showtimeStartTimeS.stream
         .shareValueDistinct(start, sync: true)
-          ..listenNull().disposedBy(bag);
+          ..collect().disposedBy(bag);
     showtimeEndTime$ = showtimeEndTimeS.stream
         .shareValueDistinct(end, sync: true)
-          ..listenNull().disposedBy(bag);
+          ..collect().disposedBy(bag);
 
     minReleasedDate$ = minReleasedDateS.stream
         .shareValueDistinct(start, sync: true)
-          ..listenNull().disposedBy(bag);
+          ..collect().disposedBy(bag);
     maxReleasedDate$ = maxReleasedDateS.stream
         .shareValueDistinct(end, sync: true)
-          ..listenNull().disposedBy(bag);
+          ..collect().disposedBy(bag);
 
     minDuration$ = minDurationS.stream.shareValueDistinct(30, sync: true)
-      ..listenNull().disposedBy(bag);
+      ..collect().disposedBy(bag);
     maxDuration$ = maxDurationS.stream.shareValueDistinct(60 * 3, sync: true)
-      ..listenNull().disposedBy(bag);
+      ..collect().disposedBy(bag);
 
     ageType$ = ageTypeS.stream.shareValueDistinct(AgeType.P, sync: true)
-      ..listenNull().disposedBy(bag);
+      ..collect().disposedBy(bag);
   }
 
   @override
@@ -157,8 +157,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
         actions: [
           RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
             stream: bloc.state$,
-            builder: (context, snapshot) {
-              final state = snapshot.data;
+            builder: (context, state) {
               if (state.isLoading) {
                 return const SizedBox();
               }
@@ -173,9 +172,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
       ),
       body: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
         stream: bloc.state$,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
+        builder: (context, state) {
           if (state.isLoading) {
             return Center(
               child: SizedBox(
@@ -270,7 +267,15 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
 
     final apply = await showModalBottomSheet<bool>(
       context: context,
-      builder: (context) => _FilterBottomSheet(this),
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        maxChildSize: 1,
+        initialChildSize: 0.4,
+        minChildSize: 0.2,
+        builder: (context, scrollController) =>
+            _FilterBottomSheet(this, scrollController),
+      ),
     );
 
     if (identical(apply, true)) {
@@ -290,8 +295,9 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
 
 class _FilterBottomSheet extends StatefulWidget {
   final _SearchPageState searchPageState;
+  final ScrollController scrollController;
 
-  _FilterBottomSheet(this.searchPageState);
+  _FilterBottomSheet(this.searchPageState, this.scrollController);
 
   @override
   __FilterBottomSheetState createState() => __FilterBottomSheetState();
@@ -362,193 +368,187 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+      child: ListView(
+        controller: widget.scrollController,
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        S.of(context).searchFilter,
-                        style: Theme.of(context).textTheme.headline6.copyWith(
-                              fontSize: 18,
-                              color: const Color(0xff687189),
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                S.of(context).searchFilter,
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                      fontSize: 18,
+                      color: const Color(0xff687189),
+                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-                  Center(
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        Text(S.of(context).ageType),
-                        const SizedBox(width: 16),
-                        DropdownButton<AgeType>(
-                          value: ageType,
-                          items: ageTypes,
-                          onChanged: (val) => setState(() => ageType = val),
-                          underline: divider,
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(S.of(context).durationMinsFrom),
-                      DropdownButton<int>(
-                        value: minDuration,
-                        items: durations,
-                        onChanged: (val) {
-                          if (val > maxDuration) {
-                            return context.showSnackBar(S
-                                .of(context)
-                                .mustBeLessThanOrEqualToMaxDuration);
-                          }
-                          setState(() => minDuration = val);
-                        },
-                        underline: divider,
-                      ),
-                      Text(S.of(context).to),
-                      DropdownButton<int>(
-                        value: maxDuration,
-                        items: durations,
-                        onChanged: (val) {
-                          if (val < minDuration) {
-                            return context.showSnackBar(S
-                                .of(context)
-                                .mustBeGreaterThanOrEqualToMinDuration);
-                          }
-                          setState(() => maxDuration = val);
-                        },
-                        underline: divider,
-                      ),
-                    ],
-                  ),
-                  divider2,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(S.of(context).showtimeStartFrom),
-                      FlatButton(
-                        onPressed: () async {
-                          final newStart =
-                              await pickDateTime(showtimeStartTime);
-                          if (newStart == null) {
-                            return;
-                          }
-                          if (!newStart.isBefore(showtimeEndTime)) {
-                            return context.showSnackBar(S
-                                .of(context)
-                                .showtimeStartTimeMustBeBeforeEndTime);
-                          }
-                          setState(() => showtimeStartTime = newStart);
-                        },
-                        child: Text(dateFormat.format(showtimeStartTime)),
-                        visualDensity: visualDensity,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(S.of(context).to),
-                      FlatButton(
-                        onPressed: () async {
-                          final newEnd = await pickDateTime(showtimeEndTime);
-                          if (newEnd == null) {
-                            return;
-                          }
-                          if (!newEnd.isAfter(showtimeStartTime)) {
-                            return context.showSnackBar(S
-                                .of(context)
-                                .showtimeEndTimeMustBeAfterStartTime);
-                          }
-                          setState(() => showtimeEndTime = newEnd);
-                        },
-                        child: Text(dateFormat.format(showtimeEndTime)),
-                        visualDensity: visualDensity,
-                      ),
-                    ],
-                  ),
-                  ////////////////////////
-                  divider2,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(S.of(context).releasedDateFrom),
-                      FlatButton(
-                        onPressed: () async {
-                          final newStart = await pickDateTime(minReleasedDate);
-                          if (newStart == null) {
-                            return;
-                          }
-                          if (!newStart.isBefore(maxReleasedDate)) {
-                            return context.showSnackBar(
-                                S.of(context).mustBeBeforeMaxReleasedDate);
-                          }
-                          setState(() => minReleasedDate = newStart);
-                        },
-                        child: Text(dateFormat.format(minReleasedDate)),
-                        visualDensity: visualDensity,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(S.of(context).to),
-                      FlatButton(
-                        onPressed: () async {
-                          final newEnd = await pickDateTime(maxReleasedDate);
-                          if (newEnd == null) {
-                            return;
-                          }
-                          if (!newEnd.isAfter(minReleasedDate)) {
-                            return context.showSnackBar(
-                                S.of(context).mustBeAfterMinReleasedDate);
-                          }
-                          setState(() => maxReleasedDate = newEnd);
-                        },
-                        child: Text(dateFormat.format(maxReleasedDate)),
-                        visualDensity: visualDensity,
-                      ),
-                    ],
-                  ),
-                  divider2,
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      for (final cat in cats)
-                        FilterChip(
-                          selectedColor:
-                              Theme.of(context).accentColor.withOpacity(0.3),
-                          label: Text(cat.name),
-                          labelStyle: ChipTheme.of(context).labelStyle.copyWith(
-                                fontSize: 11,
-                              ),
-                          onSelected: (v) {
-                            setState(() {
-                              if (v) {
-                                selectedCatIds.add(cat.id);
-                              } else {
-                                selectedCatIds.remove(cat.id);
-                              }
-                            });
-                          },
-                          selected: selectedCatIds.contains(cat.id),
-                        ),
-                    ],
-                  )
-                ],
               ),
             ),
+          ),
+          Center(
+            child: Row(
+              children: [
+                const Spacer(),
+                Text(S.of(context).ageType),
+                const SizedBox(width: 16),
+                DropdownButton<AgeType>(
+                  value: ageType,
+                  items: ageTypes,
+                  onChanged: (val) => setState(() => ageType = val),
+                  underline: divider,
+                ),
+                const Spacer(),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(S.of(context).durationMinsFrom),
+              DropdownButton<int>(
+                value: minDuration,
+                items: durations,
+                onChanged: (val) {
+                  if (val > maxDuration) {
+                    return context.showSnackBar(
+                        S.of(context).mustBeLessThanOrEqualToMaxDuration);
+                  }
+                  setState(() => minDuration = val);
+                },
+                underline: divider,
+              ),
+              Text(S.of(context).to),
+              DropdownButton<int>(
+                value: maxDuration,
+                items: durations,
+                onChanged: (val) {
+                  if (val < minDuration) {
+                    return context.showSnackBar(
+                        S.of(context).mustBeGreaterThanOrEqualToMinDuration);
+                  }
+                  setState(() => maxDuration = val);
+                },
+                underline: divider,
+              ),
+            ],
+          ),
+          divider2,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(S.of(context).showtimeStartFrom),
+              TextButton(
+                onPressed: () async {
+                  final newStart = await pickDateTime(showtimeStartTime);
+                  if (newStart == null) {
+                    return;
+                  }
+                  if (!newStart.isBefore(showtimeEndTime)) {
+                    return context.showSnackBar(
+                        S.of(context).showtimeStartTimeMustBeBeforeEndTime);
+                  }
+                  setState(() => showtimeStartTime = newStart);
+                },
+                child: Text(dateFormat.format(showtimeStartTime)),
+                style: TextButton.styleFrom(
+                  visualDensity: visualDensity,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(S.of(context).to),
+              TextButton(
+                onPressed: () async {
+                  final newEnd = await pickDateTime(showtimeEndTime);
+                  if (newEnd == null) {
+                    return;
+                  }
+                  if (!newEnd.isAfter(showtimeStartTime)) {
+                    return context.showSnackBar(
+                        S.of(context).showtimeEndTimeMustBeAfterStartTime);
+                  }
+                  setState(() => showtimeEndTime = newEnd);
+                },
+                child: Text(dateFormat.format(showtimeEndTime)),
+                style: TextButton.styleFrom(
+                  visualDensity: visualDensity,
+                ),
+              ),
+            ],
+          ),
+          ////////////////////////
+          divider2,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(S.of(context).releasedDateFrom),
+              TextButton(
+                onPressed: () async {
+                  final newStart = await pickDateTime(minReleasedDate);
+                  if (newStart == null) {
+                    return;
+                  }
+                  if (!newStart.isBefore(maxReleasedDate)) {
+                    return context.showSnackBar(
+                        S.of(context).mustBeBeforeMaxReleasedDate);
+                  }
+                  setState(() => minReleasedDate = newStart);
+                },
+                child: Text(dateFormat.format(minReleasedDate)),
+                style: TextButton.styleFrom(
+                  visualDensity: visualDensity,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(S.of(context).to),
+              TextButton(
+                onPressed: () async {
+                  final newEnd = await pickDateTime(maxReleasedDate);
+                  if (newEnd == null) {
+                    return;
+                  }
+                  if (!newEnd.isAfter(minReleasedDate)) {
+                    return context
+                        .showSnackBar(S.of(context).mustBeAfterMinReleasedDate);
+                  }
+                  setState(() => maxReleasedDate = newEnd);
+                },
+                child: Text(dateFormat.format(maxReleasedDate)),
+                style: TextButton.styleFrom(
+                  visualDensity: visualDensity,
+                ),
+              ),
+            ],
+          ),
+          divider2,
+          Wrap(
+            spacing: 8,
+            children: [
+              for (final cat in cats)
+                FilterChip(
+                  selectedColor: Theme.of(context).accentColor.withOpacity(0.3),
+                  label: Text(cat.name),
+                  labelStyle: ChipTheme.of(context).labelStyle.copyWith(
+                        fontSize: 11,
+                      ),
+                  onSelected: (v) {
+                    setState(() {
+                      if (v) {
+                        selectedCatIds.add(cat.id);
+                      } else {
+                        selectedCatIds.remove(cat.id);
+                      }
+                    });
+                  },
+                  selected: selectedCatIds.contains(cat.id),
+                ),
+            ],
           ),
           Container(
             color: Colors.white,
@@ -558,28 +558,32 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                 children: [
                   const SizedBox(width: 32),
                   Expanded(
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
                       child: Text(S.of(context).cancel),
-                      color: Theme.of(context).disabledColor,
-                      textTheme: ButtonTextTheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(38 / 2),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).disabledColor,
+                        primary: Theme.of(context).colorScheme.onError,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38 / 2),
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(width: 32),
                   Expanded(
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () {
                         apply();
                         Navigator.of(context).pop(true);
                       },
                       child: Text(S.of(context).apply),
-                      color: Theme.of(context).primaryColor,
-                      textTheme: ButtonTextTheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(38 / 2),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        primary: Theme.of(context).colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38 / 2),
+                        ),
                       ),
                     ),
                   ),

@@ -4,21 +4,21 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:pedantic/pedantic.dart';
 
-import '../data/mappers.dart'
-    show
-        productResponseToProduct,
-        cardResponseToCard,
-        promotionResponseToPromotion;
-import '../data/remote/auth_client.dart';
 import '../data/repository/card_repository_impl.dart';
+import '../data/repository/comment_repository_impl.dart';
+import '../data/repository/notification_repository_impl.dart';
 import '../data/repository/product_repository_impl.dart';
 import '../data/repository/promotion_repository_impl.dart';
+import '../data/repository/theatre_repository_impl.dart';
+import '../data/repository/ticket_repository_impl.dart';
 import '../domain/model/card.dart';
 import '../domain/model/movie.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
+import '../domain/repository/notification_repository.dart';
 import '../domain/repository/promotion_repository.dart';
-import '../domain/repository/reservation_repository.dart';
+import '../domain/repository/theatre_repository.dart';
+import '../domain/repository/ticket_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../generated/l10n.dart';
 import '../utils/optional.dart';
@@ -57,7 +57,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> with DisposeBagMixin {
   static final cardPages = <String, AppScaffoldWidgetBuilder>{
     CardsPage.routeName: (context, settings) {
-      final authClient = Provider.of<AuthClient>(context);
       final args = settings.arguments as Map<String, dynamic>;
 
       final mode = args['mode'] as CardPageMode;
@@ -72,20 +71,15 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           mode: mode,
           key: key,
         ),
-        initBloc: () {
+        initBloc: (context) {
           return CardsBloc(
-            CardRepositoryImpl(
-              authClient,
-              cardResponseToCard,
-            ),
+            CardRepositoryImpl(context.get(), context.get()),
             card,
           );
         },
       );
     },
     AddCardPage.routeName: (context, settings) {
-      final authClient = Provider.of<AuthClient>(context);
-
       final mode = settings.arguments as CardPageMode;
       assert(mode != null);
 
@@ -97,50 +91,68 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           key: key,
           mode: mode,
         ),
-        initBloc: () => AddCardBloc(
-          CardRepositoryImpl(
-            authClient,
-            cardResponseToCard,
-          ),
+        initBloc: (context) => AddCardBloc(
+          CardRepositoryImpl(context.get(), context.get()),
         ),
       );
     },
   };
 
   static final homeRoutes = <String, AppScaffoldWidgetBuilder>{
-    Navigator.defaultRouteName: (context, settings) => HomePage(),
+    Navigator.defaultRouteName: (context, settings) {
+      return Provider<TheatreRepository>.factory(
+        (context) => TheatreRepositoryImpl(context.get(), context.get()),
+        child: HomePage(),
+      );
+    },
     MovieDetailPage.routeName: (context, settings) {
       final movie = settings.arguments as Movie;
-      return MovieDetailPage(movie: movie);
+
+      return Provider<CommentRepository>.factory(
+        (context) => CommentRepositoryImpl(
+          context.get(),
+          context.get(),
+          context.get(),
+        ),
+        child: MovieDetailPage(movie: movie),
+      );
     },
     AddCommentPage.routeName: (context, settings) {
-      final repo = Provider.of<CommentRepository>(context);
       final movieId = settings.arguments as String;
 
       return BlocProvider<AddCommentBloc>(
         child: AddCommentPage(),
-        initBloc: () => AddCommentBloc(repo, movieId),
+        initBloc: (context) => AddCommentBloc(
+          CommentRepositoryImpl(
+            context.get(),
+            context.get(),
+            context.get(),
+          ),
+          movieId,
+        ),
       );
     },
     TicketsPage.routeName: (context, settings) {
       final arguments = settings.arguments as Map<String, dynamic>;
 
-      return TicketsPage(
-        theatre: arguments['theatre'],
-        showTime: arguments['showTime'],
-        movie: arguments['movie'],
-        fromMovieDetail: arguments['fromMovieDetail'] ?? true,
+      return Provider<TicketRepository>.factory(
+        (context) => TicketRepositoryImpl(context.get(), context.get()),
+        child: TicketsPage(
+          theatre: arguments['theatre'],
+          showTime: arguments['showTime'],
+          movie: arguments['movie'],
+          fromMovieDetail: arguments['fromMovieDetail'] ?? true,
+        ),
       );
     },
     ComboPage.routeName: (context, settings) {
-      final authClient = Provider.of<AuthClient>(context);
       final arguments = settings.arguments as Map<String, dynamic>;
 
       return BlocProvider<ComboBloc>(
-        initBloc: () => ComboBloc(
+        initBloc: (context) => ComboBloc(
           ProductRepositoryImpl(
-            authClient,
-            productResponseToProduct,
+            context.get(),
+            context.get(),
           ),
         )..fetch(),
         child: ComboPage(
@@ -153,7 +165,6 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     CheckoutPage.routeName: (context, settings) {
       final arguments = settings.arguments as Map<String, dynamic>;
-      final reservationRepository = Provider.of<ReservationRepository>(context);
 
       return BlocProvider<CheckoutBloc>(
         child: CheckoutPage(
@@ -163,8 +174,8 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           movie: arguments['movie'],
           products: arguments['products'],
         ),
-        initBloc: () => CheckoutBloc(
-          reservationRepository: reservationRepository,
+        initBloc: (context) => CheckoutBloc(
+          reservationRepository: context.get(),
           tickets: arguments['tickets'],
           showTime: arguments['showTime'],
           products: arguments['products'],
@@ -173,12 +184,10 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     ...cardPages,
     DiscountsPage.routeName: (context, settings) {
-      final authClient = Provider.of<AuthClient>(context);
-
-      return Provider<PromotionRepository>(
-        value: PromotionRepositoryImpl(
-          authClient,
-          promotionResponseToPromotion,
+      return Provider<PromotionRepository>.factory(
+        (context) => PromotionRepositoryImpl(
+          context.get(),
+          context.get(),
         ),
         child: DiscountsPage(showTimeId: settings.arguments as String),
       );
@@ -214,7 +223,12 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
   };
 
   static final notificationsRoutes = <String, AppScaffoldWidgetBuilder>{
-    Navigator.defaultRouteName: (context, settings) => NotificationsPage(),
+    Navigator.defaultRouteName: (context, settings) {
+      return Provider<NotificationRepository>.factory(
+        (context) => NotificationRepositoryImpl(context.get(), context.get()),
+        child: NotificationsPage(),
+      );
+    },
   };
 
   dynamic listenToken;

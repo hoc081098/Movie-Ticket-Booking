@@ -9,6 +9,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../../domain/model/movie.dart';
@@ -150,7 +151,12 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   @override
   void initState() {
     super.initState();
+
+    selectedTicketIdsS
+        .listen((value) => print('SELECTED COUNT: ${value.length}'))
+        .disposedBy(bag);
     selectedTicketIdsS.disposedBy(bag);
+
     TicketsCountDownTimerBlocProvider.shared()._init(
       countDownTimerBloc,
       widget.fromMovieDetail,
@@ -200,6 +206,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       final userRepo = Provider.of<UserRepository>(context);
 
       loaderBloc.state$
+          .map((event) => event.content)
           .distinct()
           .map((state) => conflict(
                 state,
@@ -233,7 +240,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           content:
               Text(S.of(context).timeOutToHoldTheSeatPleaseMakeYourReservation),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('OK'),
               onPressed: () {
                 Navigator.of(dialogContext).pop();
@@ -263,9 +270,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
     return Scaffold(
       body: RxStreamBuilder<LoaderState<BuiltList<Ticket>>>(
         stream: bloc.state$,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
+        builder: (context, state) {
           if (state.isLoading) {
             return Center(
               child: SizedBox(
@@ -369,8 +374,12 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                 bottom: 0,
                 child: Container(
                   height: buttonHeight,
-                  child: FlatButton(
-                    color: Theme.of(context).primaryColor,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      primary: Theme.of(context).colorScheme.onPrimary,
+                      shape: RoundedRectangleBorder(),
+                    ),
                     onPressed: () => tapContinue(builtMap),
                     child: Text(
                       S.of(context).CONTINUE,
@@ -420,12 +429,9 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   child: Center(
                     child: RxStreamBuilder<String>(
                       stream: countDownTimerBloc.countDown$,
-                      builder: (context, snapshot) {
-                        return snapshot.hasData
-                            ? Text(
-                                snapshot.data,
-                                style: countDownStyle,
-                              )
+                      builder: (context, data) {
+                        return data != null
+                            ? Text(data, style: countDownStyle)
                             : const SizedBox();
                       },
                     ),
@@ -466,31 +472,30 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   }
 
   void handleConflictSelection(BuiltSet<Ticket> conflictTickets) {
-    selectedTicketIdsS.add(
-      BuiltSet.of(selectedTicketIdsS.value)
-          .difference(conflictTickets)
-          .toBuiltList(),
-    );
+    final value = selectedTicketIdsS.value;
+    final conflictIds = conflictTickets.map((e) => e.id).toSet();
+    final newSelected = Set.of(value).difference(conflictIds).toBuiltList();
+
+    print(
+        'CURRENT SELECTED COUNT: ${value.length} -> NEW SELECTED COUNT: ${newSelected.length}');
+    selectedTicketIdsS.add(newSelected);
   }
 
   static BuiltSet<Ticket> conflict(
-    LoaderState<BuiltList<Ticket>> state,
+    BuiltList<Ticket> state,
     BuiltList<String> selectedIds,
     Optional<User> userOptional,
   ) {
-    if (state.content == null) {
+    if (state == null) {
       return const <Ticket>{}.build();
     }
 
     final uid = userOptional?.fold(() => null, (u) => u.uid);
+    assert(uid != null);
+    final ticketById = Map.fromEntries(state.map((t) => MapEntry(t.id, t)));
 
-    final map = BuiltMap.of(
-      Map.fromEntries(
-        state.content.map((t) => MapEntry(t.id, t)),
-      ),
-    );
     return selectedIds
-        .map((id) => map[id])
+        .map((id) => ticketById[id])
         .where((ticket) => ticket.reservation == null
             ? ticket.reservationId != null
             : ticket.reservation.user.uid != uid)
@@ -508,7 +513,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   .of(context)
                   .someSeatsYouChooseHaveBeenReservedPleaseSelectOther),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('OK'),
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
@@ -651,7 +656,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
 
     return RxStreamBuilder<BuiltList<String>>(
       stream: widget.selectedTicketIds$,
-      builder: (context, snapshot) {
+      builder: (context, snapshotData) {
         return SliverToBoxAdapter(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -678,7 +683,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
                                 context,
                                 row,
                                 col,
-                                snapshot.data,
+                                snapshotData,
                                 widthPerSeat,
                               );
                             },
@@ -1067,7 +1072,7 @@ class BottomWidget extends StatelessWidget {
             ),
             RxStreamBuilder<BuiltList<String>>(
               stream: ids$,
-              builder: (context, snapshot) {
+              builder: (context, data) {
                 return Row(
                   children: [
                     RichText(
@@ -1076,11 +1081,11 @@ class BottomWidget extends StatelessWidget {
                         style: selectTextStyle,
                         children: [
                           TextSpan(
-                            text: ' ${snapshot.data.length} ',
+                            text: ' ${data.length} ',
                             style: seatsCountStyle,
                           ),
                           TextSpan(
-                            text: S.of(context).seat_s(snapshot.data.length),
+                            text: S.of(context).seat_s(data.length),
                             style: selectTextStyle,
                           ),
                         ],
@@ -1089,8 +1094,8 @@ class BottomWidget extends StatelessWidget {
                     Spacer(),
                     RichText(
                       text: TextSpan(
-                        text: currencyFormat.format(snapshot.data
-                            .fold(0, (acc, e) => acc + tickets[e].price)),
+                        text: currencyFormat.format(data.fold<int>(
+                            0, (acc, e) => acc + tickets[e].price)),
                         style: seatsCountStyle,
                         children: [
                           TextSpan(
@@ -1126,8 +1131,7 @@ class SelectedSeatsGridWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       sliver: RxStreamBuilder<BuiltList<String>>(
         stream: ids$,
-        builder: (context, snapshot) {
-          final ids = snapshot.data;
+        builder: (context, ids) {
           return SliverGrid(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
@@ -1154,10 +1158,11 @@ class SelectedSeatsGridWidget extends StatelessWidget {
               childCount: ids.length,
             ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 10,
-                mainAxisSpacing: 2,
-                crossAxisSpacing: 2,
-                childAspectRatio: 1),
+              crossAxisCount: 10,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
+              childAspectRatio: 1,
+            ),
           );
         },
       ),

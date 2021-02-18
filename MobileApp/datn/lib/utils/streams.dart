@@ -1,91 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart' hide Notification;
-import 'package:rxdart/rxdart.dart';
+import 'package:listenable_stream/listenable_stream.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 extension DebugMapStreamsExtension on Map<String, Stream<dynamic>> {
-  List<StreamSubscription> debug() => entries
-      .map((entry) =>
-          entry.value.listen((data) => print('[DEBUG] [${entry.key}] = $data')))
-      .toList();
-}
-
-extension NotificationExt<T> on Notification<T> {
-  String get description {
-    switch (kind) {
-      case Kind.OnData:
-        return 'data($value)';
-      case Kind.OnDone:
-        return 'done';
-      case Kind.OnError:
-        return 'error(${errorAndStackTrace.error}, ${errorAndStackTrace.stackTrace})';
-    }
-    return '';
+  List<StreamSubscription<dynamic>> debug() {
+    return entries
+        .map((entry) =>
+            entry.value.cast<dynamic>().debug(identifier: entry.key).collect())
+        .toList(growable: false);
   }
-}
-
-extension DebugExt<T> on Stream<T> {
-  Stream<T> debug([String identifier]) {
-    identifier ??= 'Debug';
-
-    void logEvent(String content) =>
-        print('${DateTime.now()}: $identifier -> $content');
-
-    return transform(
-      DoStreamTransformer(
-        onEach: (notification) => logEvent('Event ${notification.description}'),
-        onListen: () => logEvent('Listened'),
-        onCancel: () => logEvent('Cancelled'),
-        onPause: ([_]) => logEvent('Paused'),
-        onResume: () => logEvent('Resumed'),
-      ),
-    );
-  }
-}
-
-extension MapNotNullStreamExt<T> on Stream<T> {
-  Stream<R> mapNotNull<R>(R Function(T) mapper) {
-    return transform(StreamTransformer<T, R>.fromHandlers(
-      handleData: (data, sink) {
-        final mapped = mapper(data);
-        if (mapped != null) {
-          sink.add(mapped);
-        }
-      },
-      handleError: (e, st, sink) => sink.addError(e, st),
-      handleDone: (sink) => sink.close(),
-    ));
-  }
-}
-
-extension ListenNullStreamExt<T> on Stream<T> {
-  StreamSubscription<T> listenNull() => listen(null);
 }
 
 extension ScrollPositionStreamExt on ScrollController {
-  Stream<ScrollController> scroll$() {
-    StreamController<ScrollController> controller;
-    VoidCallback listener;
-
-    controller = StreamController<ScrollController>(
-      sync: true,
-      onListen: () => addListener(listener = () => controller.add(this)),
-      onCancel: () {
-        try {
-          removeListener(listener);
-          listener = null;
-        } catch (_) {}
-      },
-    );
-
-    return controller.stream;
-  }
-
-  Stream<void> nearBottomEdge$() => scroll$()
-      .debounceTime(const Duration(milliseconds: 100))
-      .where(
-        (sc) =>
-            sc.hasClients && sc.offset + 56 * 2 >= sc.position.maxScrollExtent,
+  Stream<void> nearBottomEdge$() => toStream()
+      .throttleTime(
+        const Duration(milliseconds: 100),
+        trailing: true,
+        leading: true,
       )
+      .where((sc) =>
+          sc.hasClients && sc.offset + 56 * 2 >= sc.position.maxScrollExtent)
       .mapTo<void>(null);
 }

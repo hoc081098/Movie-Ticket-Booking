@@ -2,9 +2,9 @@ import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../../domain/model/reservation.dart';
-import '../../../utils/streams.dart';
 import 'reservations_state.dart';
 
 typedef GetReservations = Stream<BuiltList<Reservation>> Function({
@@ -79,7 +79,7 @@ class SideEffects {
     return getReservations(page: nextPage, perPage: perPage)
         .map<ReservationsAction>((items) => SuccessAction(items))
         .startWith(loadingAction)
-        .debug(toString())
+        .debug(identifier: toString())
         .onErrorReturnWith((error) => FailureAction(error));
   }
 
@@ -87,6 +87,6 @@ class SideEffects {
       getReservations(page: 1, perPage: perPage)
           .map<ReservationsAction>((items) => RefreshSuccessAction(items))
           .onErrorReturnWith((error) => RefreshFailureAction(error))
-          .debug(toString())
+          .debug(identifier: toString())
           .doOnCancel(() => action.completer.complete());
 }

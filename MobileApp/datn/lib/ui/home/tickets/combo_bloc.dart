@@ -4,12 +4,11 @@ import 'package:built_collection/built_collection.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../domain/repository/product_repository.dart';
 import '../../../utils/iterable.dart';
-import '../../../utils/streams.dart';
 import 'combo_state.dart';
 
 class MaxComboCount {
@@ -38,7 +37,7 @@ class ComboBloc extends BaseBloc {
     );
 
     final fetchState$ = _fetchS.stream
-        .debug('FETCH')
+        .debug(identifier: 'FETCH')
         .exhaustMap(
           (_) => productRepository
               .getProducts()
@@ -65,7 +64,7 @@ class ComboBloc extends BaseBloc {
                 ),
               ),
         )
-        .debug('FETCH STATE');
+        .debug(identifier: 'FETCH STATE');
 
     final stateS = BehaviorSubject.seeded(loadingState);
     final incDecState$ = Rx.merge([

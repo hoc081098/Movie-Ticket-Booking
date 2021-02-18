@@ -90,9 +90,7 @@ class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
               padding: const EdgeInsets.all(8.0),
               child: RxStreamBuilder<Tuple2<bool, String>>(
                 stream: bloc.isLoadingContentError$,
-                builder: (context, snapshot) {
-                  final tuple = snapshot.data;
-
+                builder: (context, tuple) {
                   if (tuple.item1) {
                     return Center(
                       child: CircularProgressIndicator(),

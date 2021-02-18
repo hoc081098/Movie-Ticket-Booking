@@ -14,33 +14,49 @@ class MyErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          errorText,
-          style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15),
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
+        Row(
+          children: [
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                errorText,
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2
+                    .copyWith(fontSize: 15),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
+          ],
         ),
         const SizedBox(height: 12),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          child: RaisedButton(
+        Center(
+          child: ElevatedButton(
             child: Text(S.of(context).retry),
-            padding: const EdgeInsets.symmetric(
-              vertical: 16,
-              horizontal: 32,
-            ),
             onPressed: onPressed,
-            color: Theme.of(context).canvasColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-              side: BorderSide(
-                color: Theme.of(context).primaryColor,
-                width: 1,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 32,
+              ),
+              primary: themeData.colorScheme.surface,
+              onPrimary: themeData.colorScheme.onSurface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+                side: BorderSide(
+                  color: themeData.primaryColor,
+                  width: 1,
+                ),
               ),
             ),
           ),
@@ -79,7 +95,7 @@ class DarkMyErrorWidget extends StatelessWidget {
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 4),
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Text(
               'Retry',
               style: Theme.of(context)
@@ -87,17 +103,19 @@ class DarkMyErrorWidget extends StatelessWidget {
                   .button
                   .copyWith(color: Colors.white),
             ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 16,
-              horizontal: 32,
-            ),
             onPressed: onPressed,
-            color: const Color(0xff0ed3f9),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-              side: BorderSide(
-                color: Theme.of(context).primaryColor,
-                width: 1,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 32,
+              ),
+              primary: const Color(0xff0ed3f9),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+                side: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                  width: 1,
+                ),
               ),
             ),
           ),

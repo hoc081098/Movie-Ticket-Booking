@@ -188,5 +188,6 @@
   "updateProfileFailedMsg": "Update profile failed: {msg}",
   "male": "Male",
   "female": "Female",
-  "lengthOfContentMustBeInFrom10To500": "Length of content must be in from 10 to 500"
+  "lengthOfContentMustBeInFrom10To500": "Length of content must be in from 10 to 500",
+  "loading": "Loading..."
 }

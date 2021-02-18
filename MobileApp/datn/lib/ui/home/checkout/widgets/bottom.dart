@@ -44,9 +44,7 @@ class BottomRow extends StatelessWidget {
 
     return RxStreamBuilder<Promotion>(
       stream: bloc.selectedPromotion$,
-      builder: (context, snapshot) {
-        final promotion = snapshot.data;
-
+      builder: (context, promotion) {
         final totalPrice = promotion != null
             ? (originalTotalPrice * (1 - promotion.discount)).ceil()
             : originalTotalPrice;
@@ -111,8 +109,8 @@ class BottomRow extends StatelessWidget {
             Expanded(
               child: RxStreamBuilder<bool>(
                 stream: bloc.isLoading$,
-                builder: (context, snapshot) {
-                  if (snapshot.data) {
+                builder: (context, data) {
+                  if (data) {
                     return Center(
                       child: CircularProgressIndicator(
                         strokeWidth: 3,
@@ -120,8 +118,12 @@ class BottomRow extends StatelessWidget {
                     );
                   }
 
-                  return FlatButton(
-                    color: Theme.of(context).primaryColor,
+                  return TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      primary: Theme.of(context).colorScheme.onPrimary,
+                      shape: RoundedRectangleBorder(),
+                    ),
                     onPressed: () {
                       FocusScope.of(context).unfocus();
                     }.pipe(bloc.submit),

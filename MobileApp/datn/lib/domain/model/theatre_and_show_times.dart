@@ -18,4 +18,3 @@ abstract class TheatreAndShowTimes
           [void Function(TheatreAndShowTimesBuilder) updates]) =
       _$TheatreAndShowTimes;
 }
-

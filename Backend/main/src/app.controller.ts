@@ -11,22 +11,22 @@ export class AppController {
       private readonly appService: AppService,
   ) {}
 
-  @ApiOperation({ summary: 'PRIVATE' })
-  @Post('token')
-  token() {
-    return this.appService.generateToken();
-  }
+  // @ApiOperation({ summary: 'PRIVATE' })
+  // @Post('token')
+  // token() {
+  //   return this.appService.generateToken();
+  // }
 
-  @UseGuards(AuthGuard, RolesGuard)
-  @Get('/normal')
-  get() {
-    return 'nice';
-  }
+  // @UseGuards(AuthGuard, RolesGuard)
+  // @Get('/normal')
+  // get() {
+  //   return 'nice';
+  // }
 
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles('ADMIN')
-  @Get('/admin')
-  getAdmin() {
-    return 'nice';
-  }
+  // @UseGuards(AuthGuard, RolesGuard)
+  // @Roles('ADMIN')
+  // @Get('/admin')
+  // getAdmin() {
+  //   return 'nice';
+  // }
 }

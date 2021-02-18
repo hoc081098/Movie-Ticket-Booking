@@ -71,9 +71,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
         constraints: BoxConstraints.expand(),
         child: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
           stream: bloc.state$,
-          builder: (context, snapshot) {
-            final state = snapshot.data;
-
+          builder: (context, state) {
             if (state.isLoading) {
               return Center(
                 child: SizedBox(

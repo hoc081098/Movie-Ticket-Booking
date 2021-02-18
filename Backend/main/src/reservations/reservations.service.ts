@@ -549,11 +549,23 @@ export class ReservationsService {
     });
   }
 
-  async findById(id: string, userPayload: UserPayload) {
-    const item = await this.reservationModel.aggregate([
-      { $match: { _id: new Types.ObjectId(id) } },
+  async getReservationById(userPayload: UserPayload, id: string) {
+    const user = checkCompletedLogin(userPayload);
+
+    const match = user.role === 'USER'
+        ? {
+          $and: [
+            { _id: new Types.ObjectId(id) },
+            { user: new Types.ObjectId(user.id) },
+          ],
+        }
+        : { _id: new Types.ObjectId(id) };
+
+    const results = await this.reservationModel.aggregate([
+      {
+        $match: match,
+      },
       { $limit: 1 },
-      { $sort: { createdAt: -1 } },
       {
         $lookup: {
           from: 'show_times',
@@ -619,7 +631,18 @@ export class ReservationsService {
           as: 'seats',
         },
       },
-    ]).exec().then(v => v[0]);
+    ]).exec();
+
+    const item = results?.[0];
+    if (!item) {
+      throw new NotFoundException(`Reservation with id ${id} not found`);
+    }
+
+    try {
+      checkStaffPermission(userPayload, item.show_time.theatre._id.toString());
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
 
     item.products = item.product_objects?.map(prodObj => {
       return {
@@ -634,12 +657,6 @@ export class ReservationsService {
       return ticket;
     }) ?? [];
     delete item.seats;
-
-    try {
-      checkStaffPermission(userPayload, item.show_time.theatre._id.toString());
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
 
     return item;
   }

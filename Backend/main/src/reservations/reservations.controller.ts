@@ -39,6 +39,17 @@ export class ReservationsController {
     );
   }
 
+  @Get(':id')
+  getReservationById(
+      @GetUser() userPayload: UserPayload,
+      @Param('id') id: string,
+  ) {
+    return this.reservationsService.getReservationById(
+        userPayload,
+        id,
+    );
+  }
+
   @Get('qrcode/:id')
   getQrCode(
       @Param('id')  id: string,
@@ -82,10 +93,10 @@ export class AdminReservationsController {
   @ForAdmin()
   @Roles('ADMIN', 'STAFF')
   @Get(':id')
-  getById(
+  getReservationById(
       @Param('id') id: string,
       @GetUser() userPayload: UserPayload,
   ) {
-    return this.reservationsService.findById(id, userPayload);
+    return this.reservationsService.getReservationById(userPayload, id);
   }
 }
