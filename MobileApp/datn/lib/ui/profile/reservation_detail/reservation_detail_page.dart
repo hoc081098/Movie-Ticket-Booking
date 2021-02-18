@@ -243,11 +243,12 @@ class ReservationDetailPage extends StatelessWidget {
                       );
                     }
 
+                    final qrCodeSize = size * 0.7;
                     return Center(
                       child: Image.memory(
                         state.content,
-                        width: size,
-                        height: size,
+                        width: qrCodeSize,
+                        height: qrCodeSize,
                         fit: BoxFit.cover,
                       ),
                     );
