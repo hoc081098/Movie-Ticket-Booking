@@ -39,6 +39,17 @@ export class ReservationsController {
     );
   }
 
+  @Get(':id')
+  getReservationById(
+      @GetUser() userPayload: UserPayload,
+      @Param('id') id: string,
+  ) {
+    return this.reservationsService.getReservationById(
+        userPayload,
+        id,
+    );
+  }
+
   @Get('qrcode/:id')
   getQrCode(
       @Param('id')  id: string,

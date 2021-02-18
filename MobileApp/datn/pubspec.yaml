@@ -81,7 +81,7 @@ dependency_overrides:
   flutter_google_places:
     git:
       url: https://github.com/hoc081098/flutter_google_places.git
-      ref: feature/restricted-api-keys
+      ref: 4fefbf5bfe6d7458521710764840f22af2cbbaa8
   rxdart: ^0.26.0-nullsafety.1
   intl: ^0.17.0
   meta: ^1.3.0

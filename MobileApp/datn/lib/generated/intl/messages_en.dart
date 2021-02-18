@@ -171,6 +171,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loadedAllMovies" : MessageLookupByLibrary.simpleMessage("Loaded all movies"),
     "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Loaded all notifications"),
     "loadedAllReservations" : MessageLookupByLibrary.simpleMessage("Loaded all reservations"),
+    "loading" : MessageLookupByLibrary.simpleMessage("Loading..."),
     "loggedOutSuccessfully" : MessageLookupByLibrary.simpleMessage("Logged out successfully"),
     "loginErrorGeterrormessagedeprecatederror" : m13,
     "loginSuccessfully" : MessageLookupByLibrary.simpleMessage("Login successfully"),

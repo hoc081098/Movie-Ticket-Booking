@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart' hide Notification, Action;
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -5,14 +7,18 @@ import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart/rxdart.dart' hide Notification;
+import 'package:rxdart_ext/rxdart_ext.dart' hide Notification;
 
 import '../../domain/model/notification.dart';
+import '../../domain/model/reservation.dart';
 import '../../domain/repository/notification_repository.dart';
+import '../../domain/repository/reservation_repository.dart';
 import '../../fcm_notification.dart';
 import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/utils.dart';
 import '../app_scaffold.dart';
+import '../profile/reservation_detail/reservation_detail_page.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'action.dart';
@@ -32,9 +38,72 @@ class _NotificationsPageState extends State<NotificationsPage>
   RxReduxStore<Action, st.State> store;
   final listController = ScrollController();
 
+  final onTapItemS = StreamController<Reservation>(sync: true);
+  Object setupOnTapItem;
+
+  @override
+  void initState() {
+    super.initState();
+    onTapItemS.disposedBy(bag);
+  }
+
+  void showLoading() {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            width: 128,
+            height: 128,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  S.of(context).loading,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    setupOnTapItem ??= onTapItemS.stream
+        .exhaustMap(
+          (r) => context
+              .get<ReservationRepository>()
+              .getReservationById(r.id)
+              .doOnListen(showLoading)
+              .doOnCancel(
+                  () => Navigator.of(context, rootNavigator: true).pop())
+              .doOnError((e, s) => context.showSnackBar(
+                  S.of(context).error_with_message(getErrorMessage(e)))),
+        )
+        .doOnData(
+          (r) => AppScaffold.of(context, newTabIndex: 3).pushNamedX(
+            ReservationDetailPage.routeName,
+            arguments: r,
+          ),
+        )
+        .collect()
+        .disposedBy(bag);
 
     store ??= () {
       final s = createStore(
@@ -160,6 +229,7 @@ class _NotificationsPageState extends State<NotificationsPage>
                     items[index],
                     dateFormat,
                     onDelete,
+                    onTapItemS.add,
                   );
                 }
 

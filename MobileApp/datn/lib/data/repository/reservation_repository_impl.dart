@@ -181,6 +181,16 @@ class ReservationRepositoryImpl implements ReservationRepository {
   }
 
   @override
+  Stream<Reservation> getReservationById(String id) {
+    return Rx.fromCallable(
+      () => _authClient.getBody(
+        buildUrl('/reservations/${ArgumentError.checkNotNull(id, 'id')}'),
+      ),
+    ).map((json) => _fullReservationResponseToReservation(
+        FullReservationResponse.fromJson(json)));
+  }
+
+  @override
   Stream<Uint8List> getQrCode(String id) => Rx.fromCallable(
         () => _authClient
             .get(buildUrl('/reservations/qrcode/$id'))
