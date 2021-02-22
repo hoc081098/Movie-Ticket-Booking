@@ -231,14 +231,14 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.3"
+    version: "1.0.0"
   file:
     dependency: transitive
     description:
       name: file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.2.1"
+    version: "6.1.0"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -374,8 +374,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "4fefbf5bfe6d7458521710764840f22af2cbbaa8"
-      resolved-ref: "4fefbf5bfe6d7458521710764840f22af2cbbaa8"
+      ref: "00159b26b6ccc58792b7273b8e637fefb46d1988"
+      resolved-ref: "00159b26b6ccc58792b7273b8e637fefb46d1988"
       url: "https://github.com/hoc081098/flutter_google_places.git"
     source: git
     version: "0.2.5"
@@ -654,40 +654,40 @@ packages:
     source: hosted
     version: "1.8.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.21"
+    version: "2.0.0-nullsafety.1"
   path_provider_linux:
     dependency: transitive
     description:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+2"
+    version: "0.2.0-nullsafety"
   path_provider_macos:
     dependency: transitive
     description:
       name: path_provider_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+4"
+    version: "0.0.5-nullsafety"
   path_provider_platform_interface:
     dependency: transitive
     description:
       name: path_provider_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "2.0.0"
   path_provider_windows:
     dependency: transitive
     description:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+1"
+    version: "0.1.0-nullsafety.3"
   pedantic:
     dependency: "direct dev"
     description:
@@ -701,7 +701,7 @@ packages:
       name: platform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "3.0.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -722,7 +722,7 @@ packages:
       name: process
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.13"
+    version: "4.1.0"
   pub_semver:
     dependency: transitive
     description:
@@ -754,17 +754,21 @@ packages:
   rx_shared_preferences:
     dependency: "direct main"
     description:
-      name: rx_shared_preferences
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.5"
+      path: "."
+      ref: b509ec4ac6d66e6b8c66fbf2ef027f0b146c537c
+      resolved-ref: b509ec4ac6d66e6b8c66fbf2ef027f0b146c537c
+      url: "https://github.com/hoc081098/rx_shared_preferences.git"
+    source: git
+    version: "2.0.0-nullsafety.0"
   rx_storage:
     dependency: transitive
     description:
-      name: rx_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
+      path: "."
+      ref: "4d58dfc3fc2590db08ed0ee64230aa18bc835f0b"
+      resolved-ref: "4d58dfc3fc2590db08ed0ee64230aa18bc835f0b"
+      url: "https://github.com/Flutter-Dart-Open-Source/rx_storage.git"
+    source: git
+    version: "1.0.0-nullsafety.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -780,40 +784,49 @@ packages:
     source: hosted
     version: "0.0.1-nullsafety.7"
   shared_preferences:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: shared_preferences
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.10"
+      path: "packages/shared_preferences/shared_preferences"
+      ref: update_prefs
+      resolved-ref: "051e38e939272c6c60546c4689d9a15e01df17ad"
+      url: "https://github.com/Flutter-Dart-Open-Source/plugins.git"
+    source: git
+    version: "2.0.0-nullsafety.2"
   shared_preferences_linux:
     dependency: transitive
     description:
       name: shared_preferences_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2+2"
+    version: "0.0.4-nullsafety"
   shared_preferences_macos:
     dependency: transitive
     description:
       name: shared_preferences_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+10"
+    version: "0.0.2-nullsafety"
   shared_preferences_platform_interface:
     dependency: transitive
     description:
       name: shared_preferences_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "2.0.0-nullsafety"
   shared_preferences_web:
     dependency: transitive
     description:
       name: shared_preferences_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2+7"
+    version: "0.2.0-nullsafety"
+  shared_preferences_windows:
+    dependency: transitive
+    description:
+      name: shared_preferences_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3-nullsafety"
   shelf:
     dependency: transitive
     description:
@@ -1035,14 +1048,14 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.3"
+    version: "2.0.0"
   xdg_directories:
     dependency: transitive
     description:
       name: xdg_directories
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2"
+    version: "0.2.0"
   yaml:
     dependency: transitive
     description:
@@ -1051,5 +1064,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.12.0-0.0 <3.0.0"
+  dart: ">=2.12.0-259.9.beta <3.0.0"
   flutter: ">=1.22.0"
