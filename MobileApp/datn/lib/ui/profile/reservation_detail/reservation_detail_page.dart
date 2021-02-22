@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../../domain/model/reservation.dart';
@@ -205,6 +206,10 @@ class ReservationDetailPage extends StatelessWidget {
                   }).toList(growable: false),
                 ),
                 const SizedBox(height: 16),
+                if (reservation.productIdWithCounts.isNotEmpty) ...[
+                  buildCombo(context, reservation.productIdWithCounts),
+                  const SizedBox(height: 16),
+                ],
                 const MySeparator(),
                 const SizedBox(height: 16),
                 LoaderWidget<Uint8List>(
@@ -285,6 +290,73 @@ class ReservationDetailPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildCombo(
+    BuildContext context,
+    BuiltList<ProductAndQuantity> productIdWithCounts,
+  ) {
+    final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
+
+    final textTheme = Theme.of(context).textTheme;
+    final titleStyle = textTheme.subtitle2.copyWith(fontSize: 15);
+    final caption = textTheme.caption;
+    final countStyle = titleStyle.copyWith(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+    );
+    final priceStyle = textTheme.subtitle1.copyWith(
+      color: Theme.of(context).primaryColor,
+      fontWeight: FontWeight.w500,
+    );
+
+    return Column(
+      children: [
+        for (final item in productIdWithCounts)
+          Container(
+            color: Colors.white,
+            child: ExpansionTile(
+              title: Text(
+                item.product.name,
+                style: titleStyle,
+              ),
+              subtitle: Text(
+                '${currencyFormat.format(item.product.price)} VND',
+                style: priceStyle,
+              ),
+              leading: OctoImage(
+                image: NetworkImage(item.product.image),
+                width: 64,
+                height: 64,
+                fit: BoxFit.cover,
+                progressIndicatorBuilder: (context, event) {
+                  return const Center(
+                    child: SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (_, __, ___) => const SizedBox(),
+              ),
+              childrenPadding: const EdgeInsets.all(8.0),
+              children: [
+                Text(
+                  item.product.description,
+                  style: caption,
+                ),
+              ],
+              trailing: Text(
+                item.quantity.toString(),
+                style: countStyle,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
