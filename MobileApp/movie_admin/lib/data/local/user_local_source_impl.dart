@@ -15,13 +15,13 @@ class UserLocalSourceImpl implements UserLocalSource {
   UserLocalSourceImpl(this._preferences);
 
   @override
-  Future<bool> saveToken(String token) =>
+  Future<void> saveToken(String token) =>
       _preferences.setString(_tokenKey, token);
 
   @override
-  Future<bool> saveUser(UserLocal user) async => user == null
-      ? await _preferences.remove(_userKey)
-      : await _preferences.setString(_userKey, jsonEncode(user));
+  Future<void> saveUser(UserLocal user) => user == null
+      ? _preferences.remove(_userKey)
+      : _preferences.write<UserLocal>(_userKey, user, jsonEncode);
 
   @override
   Stream<String> get token$ =>
@@ -29,13 +29,10 @@ class UserLocalSourceImpl implements UserLocalSource {
 
   @override
   Stream<UserLocal> get user$ => _preferences
-      .getStringStream(_userKey)
-      .map(_toUserLocal)
+      .observe<UserLocal>(_userKey, _toUserLocal)
       .onErrorReturn(null);
 
-  static UserLocal _toUserLocal(String jsonString) {
-    return jsonString == null
-        ? null
-        : UserLocal.fromJson(jsonDecode(jsonString));
-  }
+  static UserLocal _toUserLocal(Object jsonString) => jsonString == null
+      ? null
+      : UserLocal.fromJson(jsonDecode(jsonString as String));
 }

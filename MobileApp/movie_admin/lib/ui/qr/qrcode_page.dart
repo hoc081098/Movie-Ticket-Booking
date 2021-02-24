@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
-import 'package:movie_admin/data/remote/auth_client.dart';
-import 'package:movie_admin/data/remote/base_url.dart';
-import 'package:movie_admin/ui/app_scaffold.dart';
-import 'package:movie_admin/utils/error.dart';
-import 'package:movie_admin/utils/snackbar.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../data/remote/auth_client.dart';
+import '../../data/remote/base_url.dart';
+import '../../utils/error.dart';
+import '../../utils/snackbar.dart';
+import '../app_scaffold.dart';
 
 class QRCodePage extends StatefulWidget {
   static const routeName = '/home/qrcode';
@@ -53,7 +54,7 @@ class _QRCodePageState extends State<QRCodePage> with DisposeBagMixin {
 
     controller.scannedDataStream
         .where((event) => event != null && event.isNotEmpty)
-        .startWith('5fdf4b930976ba0004b08358')
+        // .startWith('5fdf4b930976ba0004b08358')
         .switchMap(
           (id) => Rx.fromCallable(
             () => Provider.of<AuthClient>(context)
