@@ -82,7 +82,7 @@ class TheatreResponse {
       'opening_hours': openingHours,
       'room_summary': roomSummary,
       'createdAt': createdAt.toUtc().toIso8601String(),
-      'updatedAt':updatedAt.toUtc().toIso8601String(),
+      'updatedAt': updatedAt.toUtc().toIso8601String(),
       'cover': cover,
       'thumbnail': thumbnail,
     };

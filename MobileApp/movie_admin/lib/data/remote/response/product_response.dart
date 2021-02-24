@@ -28,7 +28,7 @@ abstract class ProductResponse
   ProductResponse._();
 
   factory ProductResponse([void Function(ProductResponseBuilder) updates]) =
-  _$ProductResponse;
+      _$ProductResponse;
 
   static Serializer<ProductResponse> get serializer =>
       _$productResponseSerializer;

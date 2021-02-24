@@ -7,13 +7,13 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:stream_loader/stream_loader.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../domain/model/theatre.dart';
 import '../../domain/repository/show_times_repository.dart';
 import '../../utils/error.dart';
-import '../../utils/streams.dart';
 import '../widgets/error_widget.dart';
 
 class ReportPage extends StatefulWidget {
@@ -55,11 +55,11 @@ class _ReportPageState extends State<ReportPage> with DisposeBagMixin {
       );
 
       dayS
-          .debug('DAYS')
+          .debug(identifier: 'DAYS')
           .map((date) => date == null ? null : formatter.format(date))
           .distinct()
           .where((event) => event != null)
-          .debug('FETCH')
+          .debug(identifier: 'FETCH')
           .listen((event) => s.fetch())
           .disposedBy(bag);
 

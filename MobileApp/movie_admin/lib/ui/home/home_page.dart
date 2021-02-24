@@ -2,18 +2,20 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
-import 'package:movie_admin/domain/model/exception.dart';
-import 'package:movie_admin/domain/model/user.dart';
-import 'package:movie_admin/domain/repository/user_repository.dart';
-import 'package:movie_admin/ui/report/report_page.dart';
-import 'package:movie_admin/ui/show_times/show_times_page.dart';
-import 'package:movie_admin/ui/theatres/theatre_info_page.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
+import '../../domain/model/exception.dart';
+import '../../domain/model/user.dart';
+import '../../domain/repository/user_repository.dart';
 import '../../ui/movies/movies_page.dart';
 import '../../ui/movies/upload_movie/movie_upload_page.dart';
 import '../../ui/theatres/theatre_page.dart';
 import '../../utils/type_defs.dart';
 import '../app_scaffold.dart';
+import '../report/report_page.dart';
+import '../show_times/show_times_page.dart';
+import '../theatres/theatre_info_page.dart';
 import '../users/manager_users_page.dart';
 
 // ignore_for_file: prefer_single_quotes

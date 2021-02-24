@@ -20,19 +20,20 @@ class CategoryResponse {
 
   String toRawJson() => json.encode(toJson());
 
-  factory CategoryResponse.fromJson(Map<String, dynamic> json) => CategoryResponse(
-    id: json['_id'],
-    name: json['name'],
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: DateTime.parse(json['updatedAt']),
-    categoryId: json['id'],
-  );
+  factory CategoryResponse.fromJson(Map<String, dynamic> json) =>
+      CategoryResponse(
+        id: json['_id'],
+        name: json['name'],
+        createdAt: DateTime.parse(json['createdAt']),
+        updatedAt: DateTime.parse(json['updatedAt']),
+        categoryId: json['id'],
+      );
 
   Map<String, dynamic> toJson() => {
-    '_id': id,
-    'name': name,
-    'createdAt': createdAt.toIso8601String(),
-    'updatedAt': updatedAt.toIso8601String(),
-    'id': categoryId,
-  };
+        '_id': id,
+        'name': name,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+        'id': categoryId,
+      };
 }

@@ -2,6 +2,7 @@ import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../domain/model/movie.dart';
@@ -46,7 +47,7 @@ class MovieBloc extends DisposeCallbackBaseBloc {
             .scan((accumulated, value, index) =>
                 <Movie>[...?accumulated, ...value])
             .doOnData((list) => currentLengthList = list.length)
-            .debug('??????'),
+            .debug(identifier: '??????'),
         loadingSubject.stream,
         (List<Movie> v1, bool v2) => Tuple2(v1, v2)).share();
 

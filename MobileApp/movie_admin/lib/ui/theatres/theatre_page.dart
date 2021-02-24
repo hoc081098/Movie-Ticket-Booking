@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:movie_admin/ui/report/report_page.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 
@@ -11,6 +10,7 @@ import '../../domain/repository/theatres_repository.dart';
 import '../../ui/app_scaffold.dart';
 import '../../ui/show_times/show_times_page.dart';
 import '../../utils/error.dart';
+import '../report/report_page.dart';
 import '../widgets/empty_widget.dart';
 import '../widgets/error_widget.dart';
 import 'add/add_theatre_page.dart';
@@ -66,9 +66,7 @@ class _TheatresPageState extends State<TheatresPage> {
         constraints: BoxConstraints.expand(),
         child: RxStreamBuilder<LoaderState<List<Theatre>>>(
           stream: bloc.state$,
-          builder: (context, snapshot) {
-            final state = snapshot.data;
-
+          builder: (context, state) {
             if (state.isLoading) {
               return Center(
                 child: SizedBox(
@@ -138,14 +136,14 @@ class _TheatresPageState extends State<TheatresPage> {
                                 return AlertDialog(
                                   title: Text('Select this theatre'),
                                   actions: <Widget>[
-                                    FlatButton(
+                                    TextButton(
                                       child: Text('Cancel'),
                                       onPressed: () {
                                         Navigator.of(dialogContext)
                                             .pop(false); // Dismiss alert dialog
                                       },
                                     ),
-                                    FlatButton(
+                                    TextButton(
                                       child: Text('OK'),
                                       onPressed: () {
                                         Navigator.of(dialogContext)

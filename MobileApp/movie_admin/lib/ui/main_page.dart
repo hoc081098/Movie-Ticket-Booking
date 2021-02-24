@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
-import 'package:movie_admin/domain/model/theatre.dart';
-import 'package:movie_admin/ui/report/report_page.dart';
 
+import '../domain/model/theatre.dart';
 import '../domain/model/user.dart';
-import '../domain/repository/manager_repository.dart';
-import '../domain/repository/movie_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../ui/movies/movie_info.dart';
 import '../ui/movies/upload_movie/movie_upload_bloc.dart';
@@ -25,6 +22,7 @@ import 'login_update_profile/login_update_profile_page.dart';
 import 'movies/movie_bloc.dart';
 import 'movies/movies_page.dart';
 import 'profile/profile_page.dart';
+import 'report/report_page.dart';
 import 'show_times/add_show_time_page.dart';
 import 'theatres/add/seats_page.dart';
 import 'theatres/theatre_info_page.dart';
@@ -42,27 +40,24 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
   static final homeRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) => HomePage(),
     ManagerUsersPage.routeName: (context, setting) {
-      final managerRepository = Provider.of<ManagerRepository>(context);
       return BlocProvider<ManagerUsersBloc>(
         child: ManagerUsersPage(),
-        initBloc: () => ManagerUsersBloc(managerRepository),
+        initBloc: (context) => ManagerUsersBloc(context.get()),
       );
     },
     MoviePage.routeName: (context, setting) {
-      final movieRepository = Provider.of<MovieRepository>(context);
       return BlocProvider<MovieBloc>(
         child: MoviePage(),
-        initBloc: () => MovieBloc(movieRepository),
+        initBloc: (context) => MovieBloc(context.get()),
       );
     },
     MovieInfoPage.routeName: (context, setting) {
       return MovieInfoPage(movie: setting.arguments);
     },
     UploadMoviePage.routeName: (context, setting) {
-      final movieRepository = Provider.of<MovieRepository>(context);
       return BlocProvider<MovieUploadBloc>(
         child: UploadMoviePage(),
-        initBloc: () => MovieUploadBloc(movieRepository),
+        initBloc: (context) => MovieUploadBloc(context.get()),
       );
     },
     TheatresPage.routeName: (context, setting) {

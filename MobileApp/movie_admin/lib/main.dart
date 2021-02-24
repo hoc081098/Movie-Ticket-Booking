@@ -89,14 +89,14 @@ void main() async {
   runApp(
     Providers(
       providers: [
-        Provider<AuthClient>(value: authClient),
-        Provider<UserRepository>(value: userRepository),
-        Provider<ManagerRepository>(value: managerUsersRepository),
-        Provider<MovieRepository>(value: movieRepository),
-        Provider<TheatresRepository>(value: theatresRepository),
-        Provider<ShowTimesRepository>(
-            value: ShowTimesRepositoryImpl(authClient)),
-        Provider<TicketRepository>(value: TicketRepositoryImpl(authClient)),
+        Provider<AuthClient>.value(authClient),
+        Provider<UserRepository>.value(userRepository),
+        Provider<ManagerRepository>.value(managerUsersRepository),
+        Provider<MovieRepository>.value(movieRepository),
+        Provider<TheatresRepository>.value(theatresRepository),
+        Provider<ShowTimesRepository>.value(
+            ShowTimesRepositoryImpl(authClient)),
+        Provider<TicketRepository>.value(TicketRepositoryImpl(authClient)),
       ],
       child: MyApp(),
     ),

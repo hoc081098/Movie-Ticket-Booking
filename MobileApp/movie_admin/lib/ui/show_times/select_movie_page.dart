@@ -7,8 +7,9 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:movie_admin/ui/app_scaffold.dart';
+import '../app_scaffold.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../domain/model/movie.dart';
 import '../../domain/model/theatre.dart';
@@ -55,7 +56,7 @@ class _SelectMoviePageState extends State<SelectMoviePage>
           .debounceTime(const Duration(milliseconds: 400))
           .distinct()
           .mergeWith([retryS.stream])
-          .debug('TERM')
+          .debug(identifier: 'TERM')
           .switchMap(
             (value) => Rx.fromCallable(() => repo.search(value))
                 .map((movies) => SearchState(movies, null, false))
@@ -126,9 +127,7 @@ class _SelectMoviePageState extends State<SelectMoviePage>
   Widget _buildListView() {
     return RxStreamBuilder<SearchState>(
       stream: state$,
-      builder: (context, snapshot) {
-        final state = snapshot.data;
-
+      builder: (context, state) {
         if (state.isLoading) {
           return Center(
             child: SizedBox(
