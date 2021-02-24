@@ -111,6 +111,7 @@ class FcmNotificationManager {
 
   Future<void> onSelectNotification(String payload) async {
     print('TODO: onSelectNotification $payload');
+    // I/flutter ( 4279): TODO: onSelectNotification {"updatedAt":"Wed Feb 24 2021 10:32:57 GMT+0000 (Coordinated Universal Time)","reservation":"60362b59bda8c80004e11a14","to_user":"5f81d8aa143d55317849b693","__v":"0","_id":"60362b59bda8c80004e11a17","body":"Please check email to get ticket","image":"https://image.tmdb.org/t/p/w342/1g9R5lpmJ77kRcx4agxc3oIzN1C.jpg","title":"Ticket booking successfully: Anastasia: Once Upon a Time","createdAt":"Wed Feb 24 2021 10:32:57 GMT+0000 (Coordinated Universal Time)"}
   }
 
   Stream<Notification> get notification$ => _notification$;
