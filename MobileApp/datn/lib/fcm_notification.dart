@@ -4,6 +4,8 @@ import 'package:file/src/interface/file.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_provider/flutter_provider.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart' hide Notification;
 
 import 'data/mappers.dart' show notificationResponseToNotification;
@@ -20,21 +22,16 @@ Future<void> setupNotification(BuildContext context) async {
     android: initializationSettingsAndroid,
   );
 
+  final fcmNotificationManager = context.get<FcmNotificationManager>();
+
   await FlutterLocalNotificationsPlugin().initialize(
     initializationSettings,
-    onSelectNotification: (payload) => onSelectNotification(context, payload),
+    onSelectNotification: fcmNotificationManager.onSelectNotification,
   );
-}
 
-Future<void> onSelectNotification(
-  BuildContext context,
-  String payload,
-) async {
-  print(
-      '<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-  print('tap $payload');
-  print(
-      '<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+  final details =
+      await FlutterLocalNotificationsPlugin().getNotificationAppLaunchDetails();
+  unawaited(fcmNotificationManager.onSelectNotification(details.payload));
 }
 
 class FcmNotificationManager {
@@ -110,6 +107,10 @@ class FcmNotificationManager {
     } catch (e, s) {
       print('>>>>>>>>>>> onMessage: $message error: $e $s');
     }
+  }
+
+  Future<void> onSelectNotification(String payload) async {
+    print('TODO: onSelectNotification $payload');
   }
 
   Stream<Notification> get notification$ => _notification$;
