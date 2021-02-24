@@ -754,20 +754,16 @@ packages:
   rx_shared_preferences:
     dependency: "direct main"
     description:
-      path: "."
-      ref: b509ec4ac6d66e6b8c66fbf2ef027f0b146c537c
-      resolved-ref: b509ec4ac6d66e6b8c66fbf2ef027f0b146c537c
-      url: "https://github.com/hoc081098/rx_shared_preferences.git"
-    source: git
+      name: rx_shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.0.0-nullsafety.0"
   rx_storage:
     dependency: transitive
     description:
-      path: "."
-      ref: "4d58dfc3fc2590db08ed0ee64230aa18bc835f0b"
-      resolved-ref: "4d58dfc3fc2590db08ed0ee64230aa18bc835f0b"
-      url: "https://github.com/Flutter-Dart-Open-Source/rx_storage.git"
-    source: git
+      name: rx_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.0-nullsafety.0"
   rxdart:
     dependency: "direct main"
@@ -787,7 +783,7 @@ packages:
     dependency: "direct overridden"
     description:
       path: "packages/shared_preferences/shared_preferences"
-      ref: update_prefs
+      ref: "051e38e939272c6c60546c4689d9a15e01df17ad"
       resolved-ref: "051e38e939272c6c60546c4689d9a15e01df17ad"
       url: "https://github.com/Flutter-Dart-Open-Source/plugins.git"
     source: git
