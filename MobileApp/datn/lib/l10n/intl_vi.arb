@@ -188,5 +188,6 @@
   "updateProfileFailedMsg": "Cập nhật không thành công: {msg}",
   "male": "Nam",
   "female": "Nữ",
-  "lengthOfContentMustBeInFrom10To500": "Độ dài phải từ 10 đến 500"
+  "lengthOfContentMustBeInFrom10To500": "Độ dài phải từ 10 đến 500",
+  "loading": "Đang tải..."
 }

@@ -13,6 +13,7 @@ import '../../ui/movies/upload_movie/movie_upload_page.dart';
 import '../../ui/theatres/theatre_page.dart';
 import '../../utils/type_defs.dart';
 import '../app_scaffold.dart';
+import '../qr/qrcode_page.dart';
 import '../report/report_page.dart';
 import '../show_times/show_times_page.dart';
 import '../theatres/theatre_info_page.dart';
@@ -97,6 +98,15 @@ class _HomePageState extends State<HomePage> {
                 TheatresPage.routeName,
                 arguments: TheatresMode.report,
               ),
+            ),
+            card(
+              Icons.movie_creation,
+              "Scan QR code",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(
+                QRCodePage.routeName,
+              ),
             )
           ],
         ),
@@ -132,6 +142,15 @@ class _HomePageState extends State<HomePage> {
               () => Navigator.of(context).pushNamed(
                 ReportPage.routeName,
                 arguments: user.theatre,
+              ),
+            ),
+            card(
+              Icons.movie_creation,
+              "Scan QR code",
+              "${Random().nextInt(10) + 1} notifications",
+              Colors.red,
+              () => Navigator.of(context).pushNamed(
+                QRCodePage.routeName,
               ),
             )
           ],

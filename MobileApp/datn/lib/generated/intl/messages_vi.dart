@@ -171,6 +171,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loadedAllMovies" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả phim"),
     "loadedAllNotifications" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả thông báo"),
     "loadedAllReservations" : MessageLookupByLibrary.simpleMessage("Đã tải tất cả đặt chỗ"),
+    "loading" : MessageLookupByLibrary.simpleMessage("Đang tải..."),
     "loggedOutSuccessfully" : MessageLookupByLibrary.simpleMessage("Đăng xuất thành công"),
     "loginErrorGeterrormessagedeprecatederror" : m13,
     "loginSuccessfully" : MessageLookupByLibrary.simpleMessage("Đăng nhập thành công"),

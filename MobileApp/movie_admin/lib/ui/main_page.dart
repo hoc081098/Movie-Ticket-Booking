@@ -22,6 +22,7 @@ import 'login_update_profile/login_update_profile_page.dart';
 import 'movies/movie_bloc.dart';
 import 'movies/movies_page.dart';
 import 'profile/profile_page.dart';
+import 'qr/qrcode_page.dart';
 import 'report/report_page.dart';
 import 'show_times/add_show_time_page.dart';
 import 'theatres/add/seats_page.dart';
@@ -91,7 +92,8 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
     ReportPage.routeName: (c, s) {
       return ReportPage(theatre: s.arguments as Theatre);
-    }
+    },
+    QRCodePage.routeName: (c, s) => QRCodePage(),
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{

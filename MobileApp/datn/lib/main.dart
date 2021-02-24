@@ -87,7 +87,7 @@ void main() async {
   //
   // Local and remote
   //
-  RxSharedPreferencesConfigs.logger = null;
+  RxSharedPreferencesConfigs.logger = const RxSharedPreferencesDefaultLogger();
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
   final keywordSource = SearchKeywordSourceImpl(preferences);

@@ -9,7 +9,7 @@ abstract class UserLocalSource {
 
   Future<String> get token;
 
-  Future<bool> saveToken(String token);
+  Future<void> saveToken(String token);
 
-  Future<bool> saveUser(UserLocal user);
+  Future<void> saveUser(UserLocal user);
 }
