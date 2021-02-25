@@ -30,7 +30,6 @@ dependencies:
   uuid: ^2.2.2
   firebase_core: ^0.5.2+1
   octo_image: ^0.3.0
-  firebase_remote_config: ^0.4.2
   flutter_slidable: ^0.5.7
   url_launcher: ^5.7.10
   expandable: ^4.1.4
