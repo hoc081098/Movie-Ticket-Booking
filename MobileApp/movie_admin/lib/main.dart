@@ -1,7 +1,9 @@
+import 'package:disposebag/disposebag.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -33,6 +35,7 @@ import 'utils/type_defs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  DisposeBagConfigs.logger = kReleaseMode ? null : disposeBagDefaultLogger;
 
   //
   // Env
@@ -50,7 +53,8 @@ void main() async {
   //
   // Local and remote
   //
-  RxSharedPreferencesConfigs.logger = null;
+  RxSharedPreferencesConfigs.logger =
+      kReleaseMode ? null : const RxSharedPreferencesDefaultLogger();
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
 
@@ -89,14 +93,14 @@ void main() async {
   runApp(
     Providers(
       providers: [
-        Provider<AuthClient>(value: authClient),
-        Provider<UserRepository>(value: userRepository),
-        Provider<ManagerRepository>(value: managerUsersRepository),
-        Provider<MovieRepository>(value: movieRepository),
-        Provider<TheatresRepository>(value: theatresRepository),
-        Provider<ShowTimesRepository>(
-            value: ShowTimesRepositoryImpl(authClient)),
-        Provider<TicketRepository>(value: TicketRepositoryImpl(authClient)),
+        Provider<AuthClient>.value(authClient),
+        Provider<UserRepository>.value(userRepository),
+        Provider<ManagerRepository>.value(managerUsersRepository),
+        Provider<MovieRepository>.value(movieRepository),
+        Provider<TheatresRepository>.value(theatresRepository),
+        Provider<ShowTimesRepository>.value(
+            ShowTimesRepositoryImpl(authClient)),
+        Provider<TicketRepository>.value(TicketRepositoryImpl(authClient)),
       ],
       child: MyApp(),
     ),

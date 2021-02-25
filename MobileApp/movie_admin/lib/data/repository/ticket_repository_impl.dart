@@ -1,15 +1,15 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:movie_admin/data/remote/response/seat_response.dart';
-import 'package:movie_admin/domain/model/seat.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/reservation.dart';
+import '../../domain/model/seat.dart';
 import '../../domain/model/ticket.dart';
 import '../../domain/repository/ticket_repo.dart';
 import '../mappers.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/full_reservation_response.dart';
+import '../remote/response/seat_response.dart';
 import '../remote/response/ticket_response.dart';
 import '../serializers.dart';
 

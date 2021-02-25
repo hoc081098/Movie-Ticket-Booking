@@ -35,8 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: RxStreamBuilder<Optional<User>>(
         stream: user$,
-        builder: (context, snapshot) {
-          final data = snapshot.data;
+        builder: (context, data) {
           if (data == null) {
             return Center(
               child: CircularProgressIndicator(

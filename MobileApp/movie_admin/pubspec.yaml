@@ -27,37 +27,41 @@ environment:
 dependencies:
   qr_code_scanner: ^0.1.0
   charts_flutter: ^0.9.0
-  built_value: ^7.1.0
-  octo_image: ^0.3.0
   uuid: ^2.2.2
-  distinct_value_connectable_stream: 1.2.0-beta02
-  built_collection: ^4.3.2
+  firebase_core: ^0.5.2+1
+  octo_image: ^0.3.0
   flutter_slidable: ^0.5.7
-  url_launcher: ^5.7.2
+  url_launcher: ^5.7.10
   expandable: ^4.1.4
-  meta: ^1.2.3
-  flutter_rating_bar: ^3.2.0+1
-  rx_redux: ^2.1.1
-  stream_loader: ^1.1.0-beta02
+  meta: ^1.3.0
+  built_collection: ^4.3.2
   loading_indicator: ^1.2.0
   google_sign_in: ^4.5.6
   font_awesome_flutter: ^8.10.0
-  image_picker: ^0.6.7+11
+  image_picker: ^0.6.7+14
   cached_network_image: ^2.4.1
   firebase_storage: ^5.1.0
   flutter_dotenv: ^2.1.0
   flutter_google_places: 0.2.6
   datetime_picker_formfield: ^1.0.0
-  intl: ^0.16.1
+  intl: ^0.17.0
   tuple: ^1.0.3
   rxdart: ^0.25.0
-  flutter_bloc_pattern: ^1.2.0
-  flutter_disposebag: ^1.0.0
-  disposebag: ^1.4.0
-  flutter_provider: ^1.1.1
   http: ^0.12.2
-  rx_shared_preferences: ^1.3.4
   firebase_auth: ^0.18.3+1
+  built_value: ^7.1.0
+
+  rx_redux: ^2.2.0-nullsafety.2
+  distinct_value_connectable_stream: ^1.2.0-nullsafety.5
+  flutter_provider: ^2.0.0-nullsafety.0
+  rx_shared_preferences: ^2.0.0-nullsafety.0
+  disposebag: ^1.5.0-nullsafety.1
+  flutter_disposebag: ^1.1.0-nullsafety.1
+  flutter_bloc_pattern: ^2.0.0-nullsafety.1
+  rxdart_ext: ^0.0.1-nullsafety.7
+  listenable_stream: ^1.0.0-nullsafety.1
+  stream_loader: ^1.1.0-nullsafety.2
+
   flutter:
     sdk: flutter
 
@@ -71,7 +75,22 @@ dev_dependencies:
     sdk: flutter
 
 dependency_overrides:
-  rxdart: 0.25.0
+  analyzer: ^0.41.1
+  path_provider: 2.0.0-nullsafety.1
+  shared_preferences:
+    git:
+      url: https://github.com/Flutter-Dart-Open-Source/plugins.git
+      path: packages/shared_preferences/shared_preferences
+      ref: 051e38e939272c6c60546c4689d9a15e01df17ad
+  flutter_google_places:
+    git:
+      url: https://github.com/hoc081098/flutter_google_places.git
+      ref: 00159b26b6ccc58792b7273b8e637fefb46d1988
+  rxdart: ^0.26.0-nullsafety.1
+  intl: ^0.17.0
+  meta: ^1.3.0
+  clock: ^1.1.0
+  path: ^1.8.0
 
 flutter:
   uses-material-design: true

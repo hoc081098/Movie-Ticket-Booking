@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:movie_admin/domain/model/theatre.dart';
 
 import 'location.dart';
+import 'theatre.dart';
 
 enum Gender { MALE, FEMALE }
 enum Role { ADMIN, STAFF, USER }

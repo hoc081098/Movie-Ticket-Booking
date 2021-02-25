@@ -22,20 +22,16 @@ class _MyAppState extends State<MyApp> {
   final routes = <String, WidgetBuilder>{
     MainPage.routeName: (context) => MainPage(),
     LoginPage.routeName: (context) {
-      final userRepository = Provider.of<UserRepository>(context);
-
       return BlocProvider<LoginBloc>(
         child: LoginPage(),
-        initBloc: () => LoginBloc(userRepository),
+        initBloc: (context) => LoginBloc(context.get()),
       );
     },
     UpdateProfilePage.routeName: (context) => UpdateProfilePage(),
     ResetPasswordPage.routeName: (context) {
-      final userRepository = Provider.of<UserRepository>(context);
-
       return BlocProvider<ResetPasswordBloc>(
         child: ResetPasswordPage(),
-        initBloc: () => ResetPasswordBloc(userRepository),
+        initBloc: (context) => ResetPasswordBloc(context.get()),
       );
     },
   };
@@ -66,8 +62,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<Map<String, WidgetBuilder>>(
-      value: routes,
+    return Provider<Map<String, WidgetBuilder>>.value(
+      routes,
       child: MaterialApp(
         title: 'Movie ticket',
         theme: themeData,

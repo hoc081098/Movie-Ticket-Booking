@@ -2,6 +2,7 @@ import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../../domain/model/category.dart';
 import '../../../domain/model/movie.dart';
@@ -60,9 +61,9 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
         .publish();
 
     final uploadStream = uploadMovieSubject
-        .debug('11111111111111111')
+        .debug(identifier: '11111111111111111')
         .where((e) => e.isHasData())
-        .debug('22222222222222')
+        .debug(identifier: '22222222222222')
         .exhaustMap((input) async* {
           yield ButtonState.loading;
 
@@ -115,7 +116,7 @@ class MovieUploadBloc extends DisposeCallbackBaseBloc {
             yield ButtonState.fail;
           }
         })
-        .debug('33333333333333333333333')
+        .debug(identifier: '33333333333333333333333')
         .publish();
 
     final controllers = [

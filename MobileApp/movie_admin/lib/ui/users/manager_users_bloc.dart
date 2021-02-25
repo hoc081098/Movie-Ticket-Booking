@@ -2,6 +2,7 @@ import 'package:disposebag/disposebag.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../data/remote/response/error_response.dart';
@@ -106,7 +107,9 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
                       .add(removingUserIds.value..remove(entry.item1.uid));
                 }
               },
-            ).map((user) => MapEntry(user, entry.item2)).debug('acccccccacac'));
+            )
+                .map((user) => MapEntry(user, entry.item2))
+                .debug(identifier: 'acccccccacac'));
 
     final renderListStream = Rx.merge<ManageUserState>([
       getUsersController.stream
@@ -136,6 +139,7 @@ class ManagerUsersBloc extends DisposeCallbackBaseBloc {
           case DestroyUserType.CHANGE_ROLE:
             return ChangeRoleSuccess(user: entry.key);
         }
+        throw entry;
       })
     ]).publish();
 

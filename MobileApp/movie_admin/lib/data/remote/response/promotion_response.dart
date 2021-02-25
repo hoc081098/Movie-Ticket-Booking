@@ -33,7 +33,7 @@ abstract class PromotionResponse
   PromotionResponse._();
 
   factory PromotionResponse([void Function(PromotionResponseBuilder) updates]) =
-  _$PromotionResponse;
+      _$PromotionResponse;
 
   static Serializer<PromotionResponse> get serializer =>
       _$promotionResponseSerializer;

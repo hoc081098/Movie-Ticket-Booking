@@ -60,13 +60,15 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       return LoaderBloc(
         loaderFunction: () =>
             ticketRepository.getTicketsByShowTimeId(widget.showTime.id),
-        logger: print,      )..fetch();
+        logger: print,
+      )..fetch();
     }();
 
     resBloc ??= LoaderBloc(
       loaderFunction: () =>
           ticketRepository.getReservationsByShowTimeId(widget.showTime.id),
-      logger: print,    )..fetch();
+      logger: print,
+    )..fetch();
   }
 
   @override
@@ -74,9 +76,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
     return Scaffold(
       body: RxStreamBuilder<LoaderState<BuiltList<Ticket>>>(
         stream: bloc.state$,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
+        builder: (context, state) {
           if (state.isLoading) {
             return Center(
               child: SizedBox(
@@ -720,9 +720,7 @@ class ResList extends StatelessWidget {
   Widget build(BuildContext context) {
     return RxStreamBuilder<LoaderState<BuiltList<Reservation>>>(
       stream: bloc.state$,
-      builder: (context, snapshot) {
-        final state = snapshot.data;
-
+      builder: (context, state) {
         if (state.error != null) {
           return SliverToBoxAdapter(
             child: Container(

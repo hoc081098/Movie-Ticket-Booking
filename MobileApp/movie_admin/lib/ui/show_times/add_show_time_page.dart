@@ -9,24 +9,25 @@ import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:movie_admin/domain/repository/show_times_repository.dart';
-import 'package:movie_admin/ui/show_times/show_times_page.dart';
-import 'package:movie_admin/ui/widgets/empty_widget.dart';
-import 'package:movie_admin/ui/widgets/loading_button.dart';
-import 'package:movie_admin/utils/date_time.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:stream_loader/stream_loader.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../domain/model/movie.dart';
 import '../../domain/model/seat.dart';
 import '../../domain/model/theatre.dart';
+import '../../domain/repository/show_times_repository.dart';
 import '../../domain/repository/ticket_repo.dart';
 import '../../ui/show_times/ticket_page.dart' show ScreenWidget;
 import '../../ui/widgets/age_type.dart';
 import '../../ui/widgets/error_widget.dart';
+import '../../utils/date_time.dart';
 import '../../utils/utils.dart';
 import '../app_scaffold.dart';
+import '../widgets/empty_widget.dart';
+import '../widgets/loading_button.dart';
+import 'show_times_page.dart';
 
 class AppShowTimePage extends StatefulWidget {
   static const routeName = '/show-times/add';
@@ -48,7 +49,7 @@ class _AppShowTimePageState extends State<AppShowTimePage>
   LoaderBloc<BuiltList<Seat>> bloc;
   DateTime startTime;
   final buttonStateS = BehaviorSubject.seeded(ButtonState.idle);
-  final prices = BehaviorSubject<List<Tuple2<Seat, int>>>.seeded(null);
+  final prices = ValueSubject<List<Tuple2<Seat, int>>>(null);
 
   @override
   void initState() {
@@ -65,7 +66,8 @@ class _AppShowTimePageState extends State<AppShowTimePage>
       final b = LoaderBloc(
         loaderFunction: () => Provider.of<TicketRepository>(context)
             .getSeatsByTheatreId(widget.theatre.id),
-        logger: print,      );
+        logger: print,
+      );
 
       b.state$.listen((event) {
         final tuples = event.content
@@ -89,9 +91,7 @@ class _AppShowTimePageState extends State<AppShowTimePage>
     return Scaffold(
       body: RxStreamBuilder<LoaderState<BuiltList<Seat>>>(
         stream: bloc.state$,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
+        builder: (context, state) {
           if (state.isLoading) {
             return Center(
               child: SizedBox(
@@ -259,7 +259,6 @@ class _AppShowTimePageState extends State<AppShowTimePage>
                   title: Text('Available periods'),
                   content: LoaderWidget<List<Tuple2<DateTime, DateTime>>>(
                     builder: (context, state, bloc) {
-
                       if (state.error != null) {
                         return Container(
                           color: Color(0xFFFCFCFC),
@@ -294,7 +293,8 @@ class _AppShowTimePageState extends State<AppShowTimePage>
                           color: Color(0xFFFCFCFC),
                           constraints: BoxConstraints.expand(height: 250),
                           child: Center(
-                            child: EmptyWidget(message: 'Empty available period'),
+                            child:
+                                EmptyWidget(message: 'Empty available period'),
                           ),
                         );
                       }
@@ -304,26 +304,32 @@ class _AppShowTimePageState extends State<AppShowTimePage>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            for(final i in movies)
-                              ...[
-                                Row(
-                                  children: [
-                                    Icon(Icons.access_time ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                                        children: [
-                                          Text('From ${startTimeFormat.format(i.item1)}', style: TextStyle(fontSize: 13),),
-                                         const SizedBox(height: 6),
-                                         Text('From ${startTimeFormat.format(i.item2)}',style: TextStyle(fontSize: 13),),
-                                        ],
-                                      ),
+                            for (final i in movies) ...[
+                              Row(
+                                children: [
+                                  Icon(Icons.access_time),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Text(
+                                          'From ${startTimeFormat.format(i.item1)}',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          'From ${startTimeFormat.format(i.item2)}',
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                const Divider(),
-                              ]
+                                  ),
+                                ],
+                              ),
+                              const Divider(),
+                            ]
                           ],
                         ),
                       );
@@ -331,10 +337,11 @@ class _AppShowTimePageState extends State<AppShowTimePage>
                     blocProvider: () => LoaderBloc(
                       loaderFunction: () =>
                           Rx.fromCallable(() => repo.availablePeriods(id, day)),
-                      logger: print,                    ),
+                      logger: print,
+                    ),
                   ),
                   actions: <Widget>[
-                    FlatButton(
+                    TextButton(
                       child: Text('OK'),
                       onPressed: () {
                         Navigator.of(dialogContext)
@@ -356,8 +363,8 @@ class _AppShowTimePageState extends State<AppShowTimePage>
   Widget _buildChangeAllPrices() {
     return RxStreamBuilder<List<Tuple2<Seat, int>>>(
         stream: prices,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+        builder: (context, data) {
+          if (data == null) {
             return const SliverToBoxAdapter(child: SizedBox.shrink());
           }
 
@@ -370,8 +377,7 @@ class _AppShowTimePageState extends State<AppShowTimePage>
                     borderRadius: BorderRadius.circular(20),
                     side: BorderSide(color: Colors.deepPurpleAccent)),
                 onPressed: () async {
-                  final price =
-                      await pickPrice(snapshot.requireData.first.item2);
+                  final price = await pickPrice(data.first.item2);
                   if (price == null) {
                     return;
                   }
@@ -587,14 +593,14 @@ class _AppShowTimePageState extends State<AppShowTimePage>
   Widget _buildListTickets() {
     return RxStreamBuilder<List<Tuple2<Seat, int>>>(
       stream: prices,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+      builder: (context, data) {
+        if (data == null) {
           return const SliverToBoxAdapter(child: SizedBox.shrink());
         }
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              final item = snapshot.requireData[index];
+              final item = data[index];
               return ListTile(
                 title: Text.rich(
                   TextSpan(
@@ -644,7 +650,7 @@ class _AppShowTimePageState extends State<AppShowTimePage>
                 ),
               );
             },
-            childCount: snapshot.requireData.length,
+            childCount: data.length,
           ),
         );
       },
@@ -685,13 +691,13 @@ class _AppShowTimePageState extends State<AppShowTimePage>
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('Cancel'),
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text('OK'),
               onPressed: () {
                 if (price == null || price <= 0) {

@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:movie_admin/domain/model/theatre.dart';
-import 'package:movie_admin/ui/app_scaffold.dart';
-import 'package:movie_admin/ui/theatres/theatre_page.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../domain/model/theatre.dart';
 import '../../domain/model/user.dart';
 import '../../utils/snackbar.dart';
+import '../app_scaffold.dart';
+import '../theatres/theatre_page.dart';
 import 'manage_user_state.dart';
 import 'manager_users_bloc.dart';
 
@@ -22,7 +22,8 @@ class ManagerUsersPage extends StatefulWidget {
   _ManagerUsersPageState createState() => _ManagerUsersPageState();
 }
 
-class _ManagerUsersPageState extends State<ManagerUsersPage> with DisposeBagMixin{
+class _ManagerUsersPageState extends State<ManagerUsersPage>
+    with DisposeBagMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isOpeningSlide = false;
   ScrollController _listUserController;
@@ -58,7 +59,9 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> with DisposeBagMixi
     if (_bloc == null) {
       _bloc = BlocProvider.of<ManagerUsersBloc>(context);
       _bloc.loadUsers(_listUsers.length);
-      _bloc.showSnackBar$.listen((text) => context.showSnackBar(text)).disposedBy(bag);
+      _bloc.showSnackBar$
+          .listen((text) => context.showSnackBar(text))
+          .disposedBy(bag);
     }
   }
 
@@ -130,11 +133,11 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> with DisposeBagMixi
           title: Text(text),
           content: Text(description),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('Cancel'),
               onPressed: () => Navigator.of(context).pop(false),
             ),
-            FlatButton(
+            TextButton(
               child: Text('Ok'),
               onPressed: () => Navigator.of(context).pop(true),
             ),
@@ -262,27 +265,24 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> with DisposeBagMixi
     final state = snapshot.data;
     print('##### $state');
     if (state is LoadUserSuccess) {
-      final data = state as LoadUserSuccess;
       _listUsers.addAll(
-        data.users.where(
+        state.users.where(
           (user) => !_isHasUserInList(user, _listUsers),
         ),
       );
     }
     if (state is DeleteUserSuccess) {
-      final data = state as DeleteUserSuccess;
-      _listUsers.removeWhere((e) => e.uid == data.idUserDelete);
+      _listUsers.removeWhere((e) => e.uid == state.idUserDelete);
     }
     if (state is BlockUserSuccess) {
-      final data = state as BlockUserSuccess;
-      final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
+      final index = _listUsers.indexWhere((e) => e.uid == state.user.uid);
       if (index != -1) {
         _listUsers.removeAt(index);
-        _listUsers.insert(index, data.user);
+        _listUsers.insert(index, state.user);
       }
     }
     if (state is UnblockUserSuccess) {
-      final data = state as UnblockUserSuccess;
+      final data = state;
       final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
       if (index != -1) {
         _listUsers.removeAt(index);
@@ -290,7 +290,7 @@ class _ManagerUsersPageState extends State<ManagerUsersPage> with DisposeBagMixi
       }
     }
     if (state is ChangeRoleSuccess) {
-      final data = state as ChangeRoleSuccess;
+      final data = state;
       final index = _listUsers.indexWhere((e) => e.uid == data.user.uid);
       print(index);
       if (index != -1) {

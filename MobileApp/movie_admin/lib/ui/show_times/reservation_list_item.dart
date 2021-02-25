@@ -98,7 +98,6 @@ class ReservationListItem extends StatelessWidget {
             ]),
           ),
           const SizedBox(height: 8),
-
           RichText(
             text: TextSpan(text: 'Booked when: ', style: textStyle, children: [
               TextSpan(

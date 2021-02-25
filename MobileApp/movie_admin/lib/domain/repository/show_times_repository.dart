@@ -18,9 +18,9 @@ abstract class ShowTimesRepository {
   });
 
   Future<List<Tuple2<DateTime, DateTime>>> availablePeriods(
-      String theatre_id,
-      DateTime day,
-      );
+    String theatre_id,
+    DateTime day,
+  );
 
   Future<BuiltMap<String, int>> report(String theatre_id, String MMyyyy);
 }

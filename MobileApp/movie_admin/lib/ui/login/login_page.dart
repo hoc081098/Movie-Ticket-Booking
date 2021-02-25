@@ -184,8 +184,8 @@ class _LoginPageState extends State<LoginPage>
                               onPressed: googleSignInBloc.submitLogin,
                               child: RxStreamBuilder<bool>(
                                 stream: googleSignInBloc.isLoading$,
-                                builder: (context, snapshot) {
-                                  if (snapshot.data) {
+                                builder: (context, data) {
+                                  if (data) {
                                     return CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation(
@@ -355,7 +355,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Widget forgotPassword(LoginBloc loginBloc) {
-    return FlatButton(
+    return TextButton(
       onPressed: () async {
         final email = await Navigator.pushNamed(
           context,

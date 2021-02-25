@@ -78,11 +78,11 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
               title: Text('Exit'),
               content: Text('Changes will not be saved'),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('Cancel'),
                   onPressed: () => Navigator.of(dialogContext).pop(false),
                 ),
-                FlatButton(
+                TextButton(
                   child: Text('OK'),
                   onPressed: () => Navigator.of(dialogContext).pop(true),
                 ),
@@ -99,9 +99,9 @@ class _SeatsPageState extends State<SeatsPage> with DisposeBagMixin {
           actions: [
             RxStreamBuilder<BuiltSet<Seat>>(
               stream: longSelectedS,
-              builder: (context, snapshot) {
-                if (snapshot.data.isNotEmpty) {
-                  return FlatButton(
+              builder: (context, data) {
+                if (data.isNotEmpty) {
+                  return TextButton(
                     child: Text(
                       'Merge',
                       style: TextStyle(

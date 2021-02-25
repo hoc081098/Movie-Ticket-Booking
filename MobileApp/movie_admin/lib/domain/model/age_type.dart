@@ -4,5 +4,3 @@ enum AgeType {
   C16,
   C18,
 }
-
-

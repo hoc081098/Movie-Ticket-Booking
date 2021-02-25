@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:movie_admin/data/remote/response/theatre_response.dart';
+
+import 'theatre_response.dart';
 
 class LocationResponse {
   final List<double> coordinates;
