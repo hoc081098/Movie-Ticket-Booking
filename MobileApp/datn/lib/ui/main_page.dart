@@ -234,6 +234,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
   };
 
+  final appScaffoldKey = GlobalKey();
   Object listenToken;
   Object setupLocalNotification;
 
@@ -249,9 +250,9 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         .disposedBy(bag);
 
     setupLocalNotification ??= () {
-      context
-          .get<FcmNotificationManager>()
-          .reservationId$
+      final notificationManager = context.get<FcmNotificationManager>();
+
+      notificationManager.reservationId$
           .exhaustMap(
             (id) => context
                 .get<ReservationRepository>()
@@ -262,19 +263,20 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
                 .doOnError((e, s) => context.showSnackBar(
                     S.of(context).error_with_message(getErrorMessage(e)))),
           )
-          .doOnData(
-            (r) => print(r),
-          )
+          .doOnData((r) =>
+              AppScaffold.of(appScaffoldKey.currentContext, newTabIndex: 3)
+                  .pushNamedX(ReservationDetailPage.routeName, arguments: r))
           .collect()
           .disposedBy(bag);
 
-      return setupNotification(context);
+      return notificationManager.setupNotification();
     }();
   }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
+      key: appScaffoldKey,
       builders: [
         (context, settings) => homeRoutes[settings.name](context, settings),
         (context, settings) =>
