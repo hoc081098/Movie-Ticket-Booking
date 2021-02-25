@@ -33,6 +33,8 @@ import 'users/manager_users_page.dart';
 class MainPage extends StatefulWidget {
   static const routeName = '/main';
 
+  const MainPage({Key key}) : super(key: key);
+
   @override
   _MainPageState createState() => _MainPageState();
 }
