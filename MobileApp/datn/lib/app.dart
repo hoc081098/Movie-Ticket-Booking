@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 
 import 'domain/repository/user_repository.dart';
-import 'fcm_notification.dart';
 import 'generated/l10n.dart';
 import 'locale_bloc.dart';
 import 'ui/login/login_bloc.dart';
@@ -57,8 +56,6 @@ class _MyAppState extends State<MyApp> {
     fontFamily: 'Montserrat',
   );
 
-  Object setupLocalNotification;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -73,8 +70,6 @@ class _MyAppState extends State<MyApp> {
         context,
       ),
     ]);
-
-    setupLocalNotification ??= setupNotification(context);
   }
 
   @override

@@ -1,4 +1,5 @@
 export 'delay.dart';
+export 'dialog.dart';
 export 'error.dart';
 export 'intl.dart';
 export 'iterable.dart';

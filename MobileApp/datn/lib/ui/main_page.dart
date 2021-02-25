@@ -3,6 +3,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:pedantic/pedantic.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../data/repository/card_repository_impl.dart';
 import '../data/repository/comment_repository_impl.dart';
@@ -17,9 +18,11 @@ import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
 import '../domain/repository/notification_repository.dart';
 import '../domain/repository/promotion_repository.dart';
+import '../domain/repository/reservation_repository.dart';
 import '../domain/repository/theatre_repository.dart';
 import '../domain/repository/ticket_repository.dart';
 import '../domain/repository/user_repository.dart';
+import '../fcm_notification.dart';
 import '../generated/l10n.dart';
 import '../utils/optional.dart';
 import '../utils/utils.dart';
@@ -231,17 +234,42 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     },
   };
 
-  dynamic listenToken;
+  Object listenToken;
+  Object setupLocalNotification;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     listenToken ??= Provider.of<UserRepository>(context)
         .user$
         .where((userOptional) => userOptional != null && userOptional is None)
         .take(1)
         .listen(onLoggedOut)
         .disposedBy(bag);
+
+    setupLocalNotification ??= () {
+      context
+          .get<FcmNotificationManager>()
+          .reservationId$
+          .exhaustMap(
+            (id) => context
+                .get<ReservationRepository>()
+                .getReservationById(id)
+                .doOnListen(context.showLoading)
+                .doOnCancel(
+                    () => Navigator.of(context, rootNavigator: true).pop())
+                .doOnError((e, s) => context.showSnackBar(
+                    S.of(context).error_with_message(getErrorMessage(e)))),
+          )
+          .doOnData(
+            (r) => print(r),
+          )
+          .collect()
+          .disposedBy(bag);
+
+      return setupNotification(context);
+    }();
   }
 
   @override
