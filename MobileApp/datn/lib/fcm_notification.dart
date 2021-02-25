@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:file/src/interface/file.dart';
-import 'package:flutter/material.dart' hide Notification;
+import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart' hide Notification;
 
 import 'data/mappers.dart' show notificationResponseToNotification;
@@ -12,37 +13,14 @@ import 'data/remote/base_url.dart';
 import 'data/remote/response/notification_response.dart';
 import 'domain/model/notification.dart';
 
-Future<void> setupNotification(BuildContext context) async {
-  const initializationSettingsAndroid =
-      AndroidInitializationSettings('app_icon');
-
-  final initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
-
-  await FlutterLocalNotificationsPlugin().initialize(
-    initializationSettings,
-    onSelectNotification: (payload) => onSelectNotification(context, payload),
-  );
-}
-
-Future<void> onSelectNotification(
-  BuildContext context,
-  String payload,
-) async {
-  print(
-      '<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-  print('tap $payload');
-  print(
-      '<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-}
-
 class FcmNotificationManager {
   final AuthClient _authClient;
 
   var _id = 0;
+  var _setupNotification = false;
   final _cacheManager = DefaultCacheManager();
   final _notificationS = PublishSubject<Map<dynamic, dynamic>>();
+  final _reservationIdS = PublishSubject<String>();
 
   Stream<Notification> _notification$;
 
@@ -60,6 +38,30 @@ class FcmNotificationManager {
                   NotificationResponse.fromJson(json)),
             ),
       );
+
+  Future<void> setupNotification() async {
+    if (_setupNotification) {
+      return;
+    }
+
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+
+    final initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await FlutterLocalNotificationsPlugin().initialize(
+      initializationSettings,
+      onSelectNotification: onSelectNotification,
+    );
+
+    final details = await FlutterLocalNotificationsPlugin()
+        .getNotificationAppLaunchDetails();
+    unawaited(onSelectNotification(details.payload));
+
+    _setupNotification = true;
+  }
 
   Future<void> onMessage(Map<String, dynamic> message) async {
     try {
@@ -112,7 +114,24 @@ class FcmNotificationManager {
     }
   }
 
+  Future<void> onSelectNotification(String payload) {
+    if (payload == null) {
+      return SynchronousFuture(null);
+    }
+
+    final map = jsonDecode(payload) as Map<String, dynamic>;
+    final reservationId = map['reservation'] as String;
+    if (reservationId != null) {
+      print('>>>>>>>>>>> onSelectNotification: reservationId=$reservationId');
+      _reservationIdS.add(reservationId);
+    }
+
+    return SynchronousFuture(null);
+  }
+
   Stream<Notification> get notification$ => _notification$;
+
+  Stream<String> get reservationId$ => _reservationIdS;
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
