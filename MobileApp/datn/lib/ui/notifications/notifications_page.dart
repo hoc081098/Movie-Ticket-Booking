@@ -47,40 +47,6 @@ class _NotificationsPageState extends State<NotificationsPage>
     onTapItemS.disposedBy(bag);
   }
 
-  void showLoading() {
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Center(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            width: 128,
-            height: 128,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: const CircularProgressIndicator(strokeWidth: 2),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  S.of(context).loading,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -90,7 +56,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           (r) => context
               .get<ReservationRepository>()
               .getReservationById(r.id)
-              .doOnListen(showLoading)
+              .doOnListen(context.showLoading)
               .doOnCancel(
                   () => Navigator.of(context, rootNavigator: true).pop())
               .doOnError((e, s) => context.showSnackBar(
