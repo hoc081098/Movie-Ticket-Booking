@@ -153,6 +153,7 @@ project
     <br>
     <em>Weighted content</em>
 </p>
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
