@@ -163,6 +163,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://www.linkedin.com/in/hoc081098/"><img src="https://avatars.githubusercontent.com/u/36917223?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Petrus Nguyễn Thái Học</b></sub></a><br /><a href="https://github.com/hoc081098/Movie-Ticket-Booking/commits?author=hoc081098" title="Code">💻</a> <a href="https://github.com/hoc081098/Movie-Ticket-Booking/commits?author=hoc081098" title="Documentation">📖</a> <a href="#maintenance-hoc081098" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/phong016688"><img src="https://avatars.githubusercontent.com/u/37899092?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Phong</b></sub></a><br /><a href="https://github.com/hoc081098/Movie-Ticket-Booking/commits?author=phong016688" title="Code">💻</a></td>
   </tr>
 </table>
 
