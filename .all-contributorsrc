@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "hoc081098",
+      "name": "Petrus Nguyễn Thái Học",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36917223?v=4",
+      "profile": "https://www.linkedin.com/in/hoc081098/",
+      "contributions": [
+        "code",
+        "doc",
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Movie-Ticket-Booking",
+  "projectOwner": "hoc081098",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
