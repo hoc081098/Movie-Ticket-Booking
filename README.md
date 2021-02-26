@@ -1,6 +1,6 @@
 # Movie-Ticket-Booking
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section --> 
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
@@ -118,6 +118,9 @@ project
 ## Screenshots
 
 ### User mobile app
+<details>
+<summary>View Screenshots</summary>
+<br>
 
 |  |  |  |
 | :---:  | :---:  | :---:  |
@@ -132,7 +135,9 @@ project
 | ![](Screenshots/Screenshot_cards.png)             | ![](Screenshots/Screenshot_add_card.png)            | ![](Screenshots/Screenshot_favorites.png)
 | ![](Screenshots/Screenshot_notifications.png)     | ![](Screenshots/Screenshot_notificationbar.jpg)     | ![](Screenshots/Screenshot_profile.png)             
 | ![](Screenshots/Screenshot_update_profile1.png)   | ![](Screenshots/Screenshot_search.png)              | ![](Screenshots/Screenshot_search_filter.png) 
-| ![](Screenshots/Screenshot_search_result.png)     | ![](Screenshots/Screenshot_reservations.png)        | ![](Screenshots/Screenshot_ticket.png)             
+| ![](Screenshots/Screenshot_search_result.png)     | ![](Screenshots/Screenshot_reservations.png)        | ![](Screenshots/Screenshot_ticket.png) 
+
+</details>  
 
 ### Neo4j Graph
 
