@@ -24,6 +24,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "gunasekharravilla",
+      "name": "Gunasekhar Ravilla",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53616269?v=4",
+      "profile": "https://github.com/gunasekharravilla",
+      "contributions": [
+        "bug",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
