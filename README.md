@@ -141,6 +141,10 @@ project
 
 ### Neo4j Graph
 
+<details>
+<summary>View Images</summary>
+<br>
+
 <p align="center">
     <img src="https://github.com/hoc081098/Movie-Ticket-Booking/blob/master/Screenshots/collaborative.png?raw=true" />
     <br>
@@ -159,6 +163,8 @@ project
     <br>
     <em>Weighted content</em>
 </p>
+
+<details>
 
 ## Contributors ✨
 
