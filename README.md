@@ -119,7 +119,7 @@ project
 
 ### User mobile app
 <details>
-<summary>View Screenshots</summary>
+    <summary><b>View Screenshots</b></summary>
 <br>
 
 |  |  |  |
@@ -141,6 +141,10 @@ project
 
 ### Neo4j Graph
 
+<details>
+    <summary><b>View Images</b></summary>
+<br>
+
 <p align="center">
     <img src="https://github.com/hoc081098/Movie-Ticket-Booking/blob/master/Screenshots/collaborative.png?raw=true" />
     <br>
@@ -159,6 +163,8 @@ project
     <br>
     <em>Weighted content</em>
 </p>
+
+</details>
 
 ## Contributors ✨
 
