@@ -1,9 +1,10 @@
 # Movie-Ticket-Booking
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section --> 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b231badd3e184bf1b1cac6df7e21a374)](https://app.codacy.com/gh/hoc081098/Movie-Ticket-Booking?utm_source=github.com&utm_medium=referral&utm_content=hoc081098/Movie-Ticket-Booking&utm_campaign=Badge_Grade_Settings)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b231badd3e184bf1b1cac6df7e21a374)](https://app.codacy.com/gh/hoc081098/Movie-Ticket-Booking?utm_source=github.com&utm_medium=referral&utm_content=hoc081098/Movie-Ticket-Booking&utm_campaign=Badge_Grade_Settings)
 
 A movie tickets booking and management application using Flutter and NestJS.
 
