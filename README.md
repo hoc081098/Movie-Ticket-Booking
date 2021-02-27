@@ -119,7 +119,7 @@ project
 
 ### User mobile app
 <details>
-<summary>View Screenshots</summary>
+    <summary><b>View Screenshots</b></summary>
 <br>
 
 |  |  |  |
@@ -142,7 +142,7 @@ project
 ### Neo4j Graph
 
 <details>
-<summary>View Images</summary>
+    <summary><b>View Images</b></summary>
 <br>
 
 <p align="center">
@@ -164,7 +164,7 @@ project
     <em>Weighted content</em>
 </p>
 
-<details>
+</details>
 
 ## Contributors ✨
 
