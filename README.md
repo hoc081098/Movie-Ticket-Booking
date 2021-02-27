@@ -48,8 +48,8 @@ project
 ## Setup and run
 
 <details>
-    <summary><b>Click to expand</b></summary>
-<br>
+    <summary>Click to expand</summary>
+    <br>
 
 -   Download APK
     -   [User APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/datn/build/app/outputs/flutter-apk/app-release.apk)
@@ -127,9 +127,10 @@ project
 ## Screenshots
 
 ### User mobile app
+
 <details>
-    <summary><b>View Screenshots</b></summary>
-<br>
+    <summary>View Screenshots</summary>
+    <br>
 
 |  |  |  |
 | :---:  | :---:  | :---:  |
@@ -151,8 +152,8 @@ project
 ### Neo4j Graph
 
 <details>
-    <summary><b>View Images</b></summary>
-<br>
+    <summary>View Images</summary>
+    <br>
 
 <p align="center">
     <img src="https://github.com/hoc081098/Movie-Ticket-Booking/blob/master/Screenshots/collaborative.png?raw=true" />
