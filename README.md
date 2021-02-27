@@ -47,6 +47,10 @@ project
 
 ## Setup and run
 
+<details>
+    <summary><b>Click to expand</b></summary>
+<br>
+
 -   Download APK
     -   [User APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/datn/build/app/outputs/flutter-apk/app-release.apk)
     -   [Admin APK](https://github.com/hoc081098/DATN/blob/master/MobileApp/movie_admin/build/app/outputs/flutter-apk/app-release.apk)
@@ -117,6 +121,8 @@ project
             ```bash
             flutter run
             ```
+            
+</details>
 ## Screenshots
 
 ### User mobile app
