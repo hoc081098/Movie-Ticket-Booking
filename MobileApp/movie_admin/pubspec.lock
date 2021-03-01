@@ -378,7 +378,7 @@ packages:
       name: flutter_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-nullsafety.0"
+    version: "2.0.0"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -724,14 +724,14 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.26.0-nullsafety.1"
+    version: "0.26.0"
   rxdart_ext:
     dependency: "direct main"
     description:
       name: rxdart_ext
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1-nullsafety.7"
+    version: "0.0.1"
   shared_preferences:
     dependency: "direct overridden"
     description:
