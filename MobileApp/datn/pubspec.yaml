@@ -51,19 +51,19 @@ dependencies:
   datetime_picker_formfield: ^1.0.0
   intl: ^0.17.0
   tuple: ^1.0.3
-  rxdart: ^0.25.0
+  rxdart: ^0.26.0
   http: ^0.12.2
   firebase_auth: ^0.18.3+1
   built_value: ^7.1.0
 
   rx_redux: ^2.2.0-nullsafety.2
   distinct_value_connectable_stream: ^1.2.0-nullsafety.5
-  flutter_provider: ^2.0.0-nullsafety.0
+  flutter_provider: ^2.0.0
   rx_shared_preferences: ^2.0.0-nullsafety.0
   disposebag: ^1.5.0-nullsafety.1
   flutter_disposebag: ^1.1.0-nullsafety.1
   flutter_bloc_pattern: ^2.0.0-nullsafety.1
-  rxdart_ext: ^0.0.1-nullsafety.7
+  rxdart_ext: ^0.0.1
   listenable_stream: ^1.0.0-nullsafety.1
   stream_loader: ^1.1.0-nullsafety.2
 
@@ -89,7 +89,7 @@ dependency_overrides:
     git:
       url: https://github.com/hoc081098/flutter_google_places.git
       ref: 00159b26b6ccc58792b7273b8e637fefb46d1988
-  rxdart: ^0.26.0-nullsafety.1
+  rxdart: ^0.26.0
   intl: ^0.17.0
   meta: ^1.3.0
   clock: ^1.1.0
