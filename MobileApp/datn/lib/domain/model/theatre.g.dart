@@ -61,48 +61,24 @@ class _$Theatre extends Theatre {
       this.thumbnail,
       this.cover})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'id');
-    }
-    if (location == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'location');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'is_active');
-    }
-    if (rooms == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'rooms');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'name');
-    }
-    if (address == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'address');
-    }
-    if (phone_number == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'phone_number');
-    }
-    if (description == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'description');
-    }
-    if (opening_hours == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'opening_hours');
-    }
-    if (room_summary == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'room_summary');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'updatedAt');
-    }
-    if (thumbnail == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'thumbnail');
-    }
-    if (cover == null) {
-      throw new BuiltValueNullFieldError('Theatre', 'cover');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Theatre', 'id');
+    BuiltValueNullFieldError.checkNotNull(location, 'Theatre', 'location');
+    BuiltValueNullFieldError.checkNotNull(is_active, 'Theatre', 'is_active');
+    BuiltValueNullFieldError.checkNotNull(rooms, 'Theatre', 'rooms');
+    BuiltValueNullFieldError.checkNotNull(name, 'Theatre', 'name');
+    BuiltValueNullFieldError.checkNotNull(address, 'Theatre', 'address');
+    BuiltValueNullFieldError.checkNotNull(
+        phone_number, 'Theatre', 'phone_number');
+    BuiltValueNullFieldError.checkNotNull(
+        description, 'Theatre', 'description');
+    BuiltValueNullFieldError.checkNotNull(
+        opening_hours, 'Theatre', 'opening_hours');
+    BuiltValueNullFieldError.checkNotNull(
+        room_summary, 'Theatre', 'room_summary');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Theatre', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Theatre', 'updatedAt');
+    BuiltValueNullFieldError.checkNotNull(thumbnail, 'Theatre', 'thumbnail');
+    BuiltValueNullFieldError.checkNotNull(cover, 'Theatre', 'cover');
   }
 
   @override
@@ -267,23 +243,24 @@ class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
   TheatreBuilder();
 
   TheatreBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _location = _$v.location?.toBuilder();
-      _is_active = _$v.is_active;
-      _rooms = _$v.rooms?.toBuilder();
-      _name = _$v.name;
-      _address = _$v.address;
-      _phone_number = _$v.phone_number;
-      _description = _$v.description;
-      _email = _$v.email;
-      _opening_hours = _$v.opening_hours;
-      _room_summary = _$v.room_summary;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
-      _distance = _$v.distance;
-      _thumbnail = _$v.thumbnail;
-      _cover = _$v.cover;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _location = $v.location.toBuilder();
+      _is_active = $v.is_active;
+      _rooms = $v.rooms.toBuilder();
+      _name = $v.name;
+      _address = $v.address;
+      _phone_number = $v.phone_number;
+      _description = $v.description;
+      _email = $v.email;
+      _opening_hours = $v.opening_hours;
+      _room_summary = $v.room_summary;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
+      _distance = $v.distance;
+      _thumbnail = $v.thumbnail;
+      _cover = $v.cover;
       _$v = null;
     }
     return this;
@@ -291,9 +268,7 @@ class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
 
   @override
   void replace(Theatre other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Theatre;
   }
 
@@ -308,22 +283,33 @@ class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
     try {
       _$result = _$v ??
           new _$Theatre._(
-              id: id,
+              id: BuiltValueNullFieldError.checkNotNull(id, 'Theatre', 'id'),
               location: location.build(),
-              is_active: is_active,
+              is_active: BuiltValueNullFieldError.checkNotNull(
+                  is_active, 'Theatre', 'is_active'),
               rooms: rooms.build(),
-              name: name,
-              address: address,
-              phone_number: phone_number,
-              description: description,
+              name: BuiltValueNullFieldError.checkNotNull(
+                  name, 'Theatre', 'name'),
+              address: BuiltValueNullFieldError.checkNotNull(
+                  address, 'Theatre', 'address'),
+              phone_number: BuiltValueNullFieldError.checkNotNull(
+                  phone_number, 'Theatre', 'phone_number'),
+              description: BuiltValueNullFieldError.checkNotNull(
+                  description, 'Theatre', 'description'),
               email: email,
-              opening_hours: opening_hours,
-              room_summary: room_summary,
-              createdAt: createdAt,
-              updatedAt: updatedAt,
+              opening_hours: BuiltValueNullFieldError.checkNotNull(
+                  opening_hours, 'Theatre', 'opening_hours'),
+              room_summary: BuiltValueNullFieldError.checkNotNull(
+                  room_summary, 'Theatre', 'room_summary'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'Theatre', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'Theatre', 'updatedAt'),
               distance: distance,
-              thumbnail: thumbnail,
-              cover: cover);
+              thumbnail: BuiltValueNullFieldError.checkNotNull(
+                  thumbnail, 'Theatre', 'thumbnail'),
+              cover:
+                  BuiltValueNullFieldError.checkNotNull(cover, 'Theatre', 'cover'));
     } catch (_) {
       String _$failedField;
       try {

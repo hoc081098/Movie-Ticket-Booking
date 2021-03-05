@@ -18,15 +18,9 @@ class _$Comments extends Comments {
       (new CommentsBuilder()..update(updates)).build();
 
   _$Comments._({this.comments, this.average, this.total}) : super._() {
-    if (comments == null) {
-      throw new BuiltValueNullFieldError('Comments', 'comments');
-    }
-    if (average == null) {
-      throw new BuiltValueNullFieldError('Comments', 'average');
-    }
-    if (total == null) {
-      throw new BuiltValueNullFieldError('Comments', 'total');
-    }
+    BuiltValueNullFieldError.checkNotNull(comments, 'Comments', 'comments');
+    BuiltValueNullFieldError.checkNotNull(average, 'Comments', 'average');
+    BuiltValueNullFieldError.checkNotNull(total, 'Comments', 'total');
   }
 
   @override
@@ -80,10 +74,11 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
   CommentsBuilder();
 
   CommentsBuilder get _$this {
-    if (_$v != null) {
-      _comments = _$v.comments?.toBuilder();
-      _average = _$v.average;
-      _total = _$v.total;
+    final $v = _$v;
+    if ($v != null) {
+      _comments = $v.comments.toBuilder();
+      _average = $v.average;
+      _total = $v.total;
       _$v = null;
     }
     return this;
@@ -91,9 +86,7 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
 
   @override
   void replace(Comments other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Comments;
   }
 
@@ -108,7 +101,11 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
     try {
       _$result = _$v ??
           new _$Comments._(
-              comments: comments.build(), average: average, total: total);
+              comments: comments.build(),
+              average: BuiltValueNullFieldError.checkNotNull(
+                  average, 'Comments', 'average'),
+              total: BuiltValueNullFieldError.checkNotNull(
+                  total, 'Comments', 'total'));
     } catch (_) {
       String _$failedField;
       try {

@@ -53,34 +53,40 @@ class _$TheatreResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
-    if (object.email != null) {
+    value = object.email;
+    if (value != null) {
       result
         ..add('email')
-        ..add(serializers.serialize(object.email,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.distance != null) {
+    value = object.distance;
+    if (value != null) {
       result
         ..add('distance')
-        ..add(serializers.serialize(object.distance,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(double)));
     }
-    if (object.thumbnail != null) {
+    value = object.thumbnail;
+    if (value != null) {
       result
         ..add('thumbnail')
-        ..add(serializers.serialize(object.thumbnail,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.cover != null) {
+    value = object.cover;
+    if (value != null) {
       result
         ..add('cover')
-        ..add(serializers.serialize(object.cover,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -96,7 +102,7 @@ class _$TheatreResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -227,39 +233,25 @@ class _$TheatreResponse extends TheatreResponse {
       this.thumbnail,
       this.cover})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'id');
-    }
-    if (location == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'location');
-    }
-    if (rooms == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'rooms');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'name');
-    }
-    if (address == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'address');
-    }
-    if (phone_number == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'phone_number');
-    }
-    if (description == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'description');
-    }
-    if (opening_hours == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'opening_hours');
-    }
-    if (room_summary == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'room_summary');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('TheatreResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'TheatreResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        location, 'TheatreResponse', 'location');
+    BuiltValueNullFieldError.checkNotNull(rooms, 'TheatreResponse', 'rooms');
+    BuiltValueNullFieldError.checkNotNull(name, 'TheatreResponse', 'name');
+    BuiltValueNullFieldError.checkNotNull(
+        address, 'TheatreResponse', 'address');
+    BuiltValueNullFieldError.checkNotNull(
+        phone_number, 'TheatreResponse', 'phone_number');
+    BuiltValueNullFieldError.checkNotNull(
+        description, 'TheatreResponse', 'description');
+    BuiltValueNullFieldError.checkNotNull(
+        opening_hours, 'TheatreResponse', 'opening_hours');
+    BuiltValueNullFieldError.checkNotNull(
+        room_summary, 'TheatreResponse', 'room_summary');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'TheatreResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'TheatreResponse', 'updatedAt');
   }
 
   @override
@@ -427,23 +419,24 @@ class TheatreResponseBuilder
   TheatreResponseBuilder();
 
   TheatreResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _location = _$v.location?.toBuilder();
-      _is_active = _$v.is_active;
-      _rooms = _$v.rooms?.toBuilder();
-      _name = _$v.name;
-      _address = _$v.address;
-      _phone_number = _$v.phone_number;
-      _description = _$v.description;
-      _email = _$v.email;
-      _opening_hours = _$v.opening_hours;
-      _room_summary = _$v.room_summary;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
-      _distance = _$v.distance;
-      _thumbnail = _$v.thumbnail;
-      _cover = _$v.cover;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _location = $v.location.toBuilder();
+      _is_active = $v.is_active;
+      _rooms = $v.rooms.toBuilder();
+      _name = $v.name;
+      _address = $v.address;
+      _phone_number = $v.phone_number;
+      _description = $v.description;
+      _email = $v.email;
+      _opening_hours = $v.opening_hours;
+      _room_summary = $v.room_summary;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
+      _distance = $v.distance;
+      _thumbnail = $v.thumbnail;
+      _cover = $v.cover;
       _$v = null;
     }
     return this;
@@ -451,9 +444,7 @@ class TheatreResponseBuilder
 
   @override
   void replace(TheatreResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$TheatreResponse;
   }
 
@@ -468,19 +459,28 @@ class TheatreResponseBuilder
     try {
       _$result = _$v ??
           new _$TheatreResponse._(
-              id: id,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'TheatreResponse', 'id'),
               location: location.build(),
               is_active: is_active,
               rooms: rooms.build(),
-              name: name,
-              address: address,
-              phone_number: phone_number,
-              description: description,
+              name: BuiltValueNullFieldError.checkNotNull(
+                  name, 'TheatreResponse', 'name'),
+              address: BuiltValueNullFieldError.checkNotNull(
+                  address, 'TheatreResponse', 'address'),
+              phone_number: BuiltValueNullFieldError.checkNotNull(
+                  phone_number, 'TheatreResponse', 'phone_number'),
+              description: BuiltValueNullFieldError.checkNotNull(
+                  description, 'TheatreResponse', 'description'),
               email: email,
-              opening_hours: opening_hours,
-              room_summary: room_summary,
-              createdAt: createdAt,
-              updatedAt: updatedAt,
+              opening_hours: BuiltValueNullFieldError.checkNotNull(
+                  opening_hours, 'TheatreResponse', 'opening_hours'),
+              room_summary: BuiltValueNullFieldError.checkNotNull(
+                  room_summary, 'TheatreResponse', 'room_summary'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'TheatreResponse', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'TheatreResponse', 'updatedAt'),
               distance: distance,
               thumbnail: thumbnail,
               cover: cover);

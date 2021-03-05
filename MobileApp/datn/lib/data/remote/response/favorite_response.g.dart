@@ -41,7 +41,7 @@ class _$FavoriteResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'movie':
           result.movie.replace(serializers.deserialize(value,
@@ -69,12 +69,9 @@ class _$FavoriteResponse extends FavoriteResponse {
       (new FavoriteResponseBuilder()..update(updates)).build();
 
   _$FavoriteResponse._({this.movie, this.is_favorite}) : super._() {
-    if (movie == null) {
-      throw new BuiltValueNullFieldError('FavoriteResponse', 'movie');
-    }
-    if (is_favorite == null) {
-      throw new BuiltValueNullFieldError('FavoriteResponse', 'is_favorite');
-    }
+    BuiltValueNullFieldError.checkNotNull(movie, 'FavoriteResponse', 'movie');
+    BuiltValueNullFieldError.checkNotNull(
+        is_favorite, 'FavoriteResponse', 'is_favorite');
   }
 
   @override
@@ -123,9 +120,10 @@ class FavoriteResponseBuilder
   FavoriteResponseBuilder();
 
   FavoriteResponseBuilder get _$this {
-    if (_$v != null) {
-      _movie = _$v.movie?.toBuilder();
-      _is_favorite = _$v.is_favorite;
+    final $v = _$v;
+    if ($v != null) {
+      _movie = $v.movie.toBuilder();
+      _is_favorite = $v.is_favorite;
       _$v = null;
     }
     return this;
@@ -133,9 +131,7 @@ class FavoriteResponseBuilder
 
   @override
   void replace(FavoriteResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$FavoriteResponse;
   }
 
@@ -150,7 +146,9 @@ class FavoriteResponseBuilder
     try {
       _$result = _$v ??
           new _$FavoriteResponse._(
-              movie: movie.build(), is_favorite: is_favorite);
+              movie: movie.build(),
+              is_favorite: BuiltValueNullFieldError.checkNotNull(
+                  is_favorite, 'FavoriteResponse', 'is_favorite'));
     } catch (_) {
       String _$failedField;
       try {

@@ -31,11 +31,13 @@ class _$CategoryResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -50,7 +52,7 @@ class _$CategoryResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -98,18 +100,12 @@ class _$CategoryResponse extends CategoryResponse {
   _$CategoryResponse._(
       {this.id, this.name, this.createdAt, this.updatedAt, this.is_active})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('CategoryResponse', 'id');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('CategoryResponse', 'name');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('CategoryResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('CategoryResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'CategoryResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(name, 'CategoryResponse', 'name');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'CategoryResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'CategoryResponse', 'updatedAt');
   }
 
   @override
@@ -178,12 +174,13 @@ class CategoryResponseBuilder
   CategoryResponseBuilder();
 
   CategoryResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _name = _$v.name;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
-      _is_active = _$v.is_active;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _name = $v.name;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
+      _is_active = $v.is_active;
       _$v = null;
     }
     return this;
@@ -191,9 +188,7 @@ class CategoryResponseBuilder
 
   @override
   void replace(CategoryResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$CategoryResponse;
   }
 
@@ -206,10 +201,14 @@ class CategoryResponseBuilder
   _$CategoryResponse build() {
     final _$result = _$v ??
         new _$CategoryResponse._(
-            id: id,
-            name: name,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, 'CategoryResponse', 'id'),
+            name: BuiltValueNullFieldError.checkNotNull(
+                name, 'CategoryResponse', 'name'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, 'CategoryResponse', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, 'CategoryResponse', 'updatedAt'),
             is_active: is_active);
     replace(_$result);
     return _$result;

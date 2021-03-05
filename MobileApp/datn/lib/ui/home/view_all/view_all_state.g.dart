@@ -24,18 +24,12 @@ class _$ViewAllState extends ViewAllState {
   _$ViewAllState._(
       {this.page, this.items, this.isLoading, this.error, this.loadedAll})
       : super._() {
-    if (page == null) {
-      throw new BuiltValueNullFieldError('ViewAllState', 'page');
-    }
-    if (items == null) {
-      throw new BuiltValueNullFieldError('ViewAllState', 'items');
-    }
-    if (isLoading == null) {
-      throw new BuiltValueNullFieldError('ViewAllState', 'isLoading');
-    }
-    if (loadedAll == null) {
-      throw new BuiltValueNullFieldError('ViewAllState', 'loadedAll');
-    }
+    BuiltValueNullFieldError.checkNotNull(page, 'ViewAllState', 'page');
+    BuiltValueNullFieldError.checkNotNull(items, 'ViewAllState', 'items');
+    BuiltValueNullFieldError.checkNotNull(
+        isLoading, 'ViewAllState', 'isLoading');
+    BuiltValueNullFieldError.checkNotNull(
+        loadedAll, 'ViewAllState', 'loadedAll');
   }
 
   @override
@@ -103,12 +97,13 @@ class ViewAllStateBuilder
   ViewAllStateBuilder();
 
   ViewAllStateBuilder get _$this {
-    if (_$v != null) {
-      _page = _$v.page;
-      _items = _$v.items?.toBuilder();
-      _isLoading = _$v.isLoading;
-      _error = _$v.error;
-      _loadedAll = _$v.loadedAll;
+    final $v = _$v;
+    if ($v != null) {
+      _page = $v.page;
+      _items = $v.items.toBuilder();
+      _isLoading = $v.isLoading;
+      _error = $v.error;
+      _loadedAll = $v.loadedAll;
       _$v = null;
     }
     return this;
@@ -116,9 +111,7 @@ class ViewAllStateBuilder
 
   @override
   void replace(ViewAllState other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ViewAllState;
   }
 
@@ -133,11 +126,14 @@ class ViewAllStateBuilder
     try {
       _$result = _$v ??
           new _$ViewAllState._(
-              page: page,
+              page: BuiltValueNullFieldError.checkNotNull(
+                  page, 'ViewAllState', 'page'),
               items: items.build(),
-              isLoading: isLoading,
+              isLoading: BuiltValueNullFieldError.checkNotNull(
+                  isLoading, 'ViewAllState', 'isLoading'),
               error: error,
-              loadedAll: loadedAll);
+              loadedAll: BuiltValueNullFieldError.checkNotNull(
+                  loadedAll, 'ViewAllState', 'loadedAll'));
     } catch (_) {
       String _$failedField;
       try {

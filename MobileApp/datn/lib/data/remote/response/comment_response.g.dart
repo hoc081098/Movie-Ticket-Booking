@@ -41,11 +41,13 @@ class _$CommentResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -60,7 +62,7 @@ class _$CommentResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -132,27 +134,17 @@ class _$CommentResponse extends CommentResponse {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('CommentResponse', 'id');
-    }
-    if (content == null) {
-      throw new BuiltValueNullFieldError('CommentResponse', 'content');
-    }
-    if (rate_star == null) {
-      throw new BuiltValueNullFieldError('CommentResponse', 'rate_star');
-    }
-    if (movie == null) {
-      throw new BuiltValueNullFieldError('CommentResponse', 'movie');
-    }
-    if (user == null) {
-      throw new BuiltValueNullFieldError('CommentResponse', 'user');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('CommentResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('CommentResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'CommentResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        content, 'CommentResponse', 'content');
+    BuiltValueNullFieldError.checkNotNull(
+        rate_star, 'CommentResponse', 'rate_star');
+    BuiltValueNullFieldError.checkNotNull(movie, 'CommentResponse', 'movie');
+    BuiltValueNullFieldError.checkNotNull(user, 'CommentResponse', 'user');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'CommentResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'CommentResponse', 'updatedAt');
   }
 
   @override
@@ -247,15 +239,16 @@ class CommentResponseBuilder
   CommentResponseBuilder();
 
   CommentResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _is_active = _$v.is_active;
-      _content = _$v.content;
-      _rate_star = _$v.rate_star;
-      _movie = _$v.movie;
-      _user = _$v.user?.toBuilder();
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _is_active = $v.is_active;
+      _content = $v.content;
+      _rate_star = $v.rate_star;
+      _movie = $v.movie;
+      _user = $v.user.toBuilder();
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -263,9 +256,7 @@ class CommentResponseBuilder
 
   @override
   void replace(CommentResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$CommentResponse;
   }
 
@@ -280,14 +271,20 @@ class CommentResponseBuilder
     try {
       _$result = _$v ??
           new _$CommentResponse._(
-              id: id,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'CommentResponse', 'id'),
               is_active: is_active,
-              content: content,
-              rate_star: rate_star,
-              movie: movie,
+              content: BuiltValueNullFieldError.checkNotNull(
+                  content, 'CommentResponse', 'content'),
+              rate_star: BuiltValueNullFieldError.checkNotNull(
+                  rate_star, 'CommentResponse', 'rate_star'),
+              movie: BuiltValueNullFieldError.checkNotNull(
+                  movie, 'CommentResponse', 'movie'),
               user: user.build(),
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'CommentResponse', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'CommentResponse', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

@@ -16,12 +16,8 @@ class _$SeatCoordinates extends SeatCoordinates {
       (new SeatCoordinatesBuilder()..update(updates)).build();
 
   _$SeatCoordinates._({this.x, this.y}) : super._() {
-    if (x == null) {
-      throw new BuiltValueNullFieldError('SeatCoordinates', 'x');
-    }
-    if (y == null) {
-      throw new BuiltValueNullFieldError('SeatCoordinates', 'y');
-    }
+    BuiltValueNullFieldError.checkNotNull(x, 'SeatCoordinates', 'x');
+    BuiltValueNullFieldError.checkNotNull(y, 'SeatCoordinates', 'y');
   }
 
   @override
@@ -67,9 +63,10 @@ class SeatCoordinatesBuilder
   SeatCoordinatesBuilder();
 
   SeatCoordinatesBuilder get _$this {
-    if (_$v != null) {
-      _x = _$v.x;
-      _y = _$v.y;
+    final $v = _$v;
+    if ($v != null) {
+      _x = $v.x;
+      _y = $v.y;
       _$v = null;
     }
     return this;
@@ -77,9 +74,7 @@ class SeatCoordinatesBuilder
 
   @override
   void replace(SeatCoordinates other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$SeatCoordinates;
   }
 
@@ -90,7 +85,11 @@ class SeatCoordinatesBuilder
 
   @override
   _$SeatCoordinates build() {
-    final _$result = _$v ?? new _$SeatCoordinates._(x: x, y: y);
+    final _$result = _$v ??
+        new _$SeatCoordinates._(
+            x: BuiltValueNullFieldError.checkNotNull(x, 'SeatCoordinates', 'x'),
+            y: BuiltValueNullFieldError.checkNotNull(
+                y, 'SeatCoordinates', 'y'));
     replace(_$result);
     return _$result;
   }
@@ -133,36 +132,16 @@ class _$Seat extends Seat {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('Seat', 'is_active');
-    }
-    if (coordinates == null) {
-      throw new BuiltValueNullFieldError('Seat', 'coordinates');
-    }
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Seat', 'id');
-    }
-    if (room == null) {
-      throw new BuiltValueNullFieldError('Seat', 'room');
-    }
-    if (theatre == null) {
-      throw new BuiltValueNullFieldError('Seat', 'theatre');
-    }
-    if (column == null) {
-      throw new BuiltValueNullFieldError('Seat', 'column');
-    }
-    if (row == null) {
-      throw new BuiltValueNullFieldError('Seat', 'row');
-    }
-    if (count == null) {
-      throw new BuiltValueNullFieldError('Seat', 'count');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Seat', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Seat', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(is_active, 'Seat', 'is_active');
+    BuiltValueNullFieldError.checkNotNull(coordinates, 'Seat', 'coordinates');
+    BuiltValueNullFieldError.checkNotNull(id, 'Seat', 'id');
+    BuiltValueNullFieldError.checkNotNull(room, 'Seat', 'room');
+    BuiltValueNullFieldError.checkNotNull(theatre, 'Seat', 'theatre');
+    BuiltValueNullFieldError.checkNotNull(column, 'Seat', 'column');
+    BuiltValueNullFieldError.checkNotNull(row, 'Seat', 'row');
+    BuiltValueNullFieldError.checkNotNull(count, 'Seat', 'count');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Seat', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Seat', 'updatedAt');
   }
 
   @override
@@ -275,17 +254,18 @@ class SeatBuilder implements Builder<Seat, SeatBuilder> {
   SeatBuilder();
 
   SeatBuilder get _$this {
-    if (_$v != null) {
-      _is_active = _$v.is_active;
-      _coordinates = _$v.coordinates?.toBuilder();
-      _id = _$v.id;
-      _room = _$v.room;
-      _theatre = _$v.theatre;
-      _column = _$v.column;
-      _row = _$v.row;
-      _count = _$v.count;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _is_active = $v.is_active;
+      _coordinates = $v.coordinates.toBuilder();
+      _id = $v.id;
+      _room = $v.room;
+      _theatre = $v.theatre;
+      _column = $v.column;
+      _row = $v.row;
+      _count = $v.count;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -293,9 +273,7 @@ class SeatBuilder implements Builder<Seat, SeatBuilder> {
 
   @override
   void replace(Seat other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Seat;
   }
 
@@ -310,16 +288,22 @@ class SeatBuilder implements Builder<Seat, SeatBuilder> {
     try {
       _$result = _$v ??
           new _$Seat._(
-              is_active: is_active,
+              is_active: BuiltValueNullFieldError.checkNotNull(
+                  is_active, 'Seat', 'is_active'),
               coordinates: coordinates.build(),
-              id: id,
-              room: room,
-              theatre: theatre,
-              column: column,
-              row: row,
-              count: count,
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              id: BuiltValueNullFieldError.checkNotNull(id, 'Seat', 'id'),
+              room: BuiltValueNullFieldError.checkNotNull(room, 'Seat', 'room'),
+              theatre: BuiltValueNullFieldError.checkNotNull(
+                  theatre, 'Seat', 'theatre'),
+              column: BuiltValueNullFieldError.checkNotNull(
+                  column, 'Seat', 'column'),
+              row: BuiltValueNullFieldError.checkNotNull(row, 'Seat', 'row'),
+              count:
+                  BuiltValueNullFieldError.checkNotNull(count, 'Seat', 'count'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'Seat', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'Seat', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

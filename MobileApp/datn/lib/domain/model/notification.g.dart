@@ -34,27 +34,16 @@ class _$Notification extends Notification {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Notification', 'id');
-    }
-    if (title == null) {
-      throw new BuiltValueNullFieldError('Notification', 'title');
-    }
-    if (body == null) {
-      throw new BuiltValueNullFieldError('Notification', 'body');
-    }
-    if (to_user == null) {
-      throw new BuiltValueNullFieldError('Notification', 'to_user');
-    }
-    if (reservation == null) {
-      throw new BuiltValueNullFieldError('Notification', 'reservation');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Notification', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Notification', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Notification', 'id');
+    BuiltValueNullFieldError.checkNotNull(title, 'Notification', 'title');
+    BuiltValueNullFieldError.checkNotNull(body, 'Notification', 'body');
+    BuiltValueNullFieldError.checkNotNull(to_user, 'Notification', 'to_user');
+    BuiltValueNullFieldError.checkNotNull(
+        reservation, 'Notification', 'reservation');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'Notification', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'Notification', 'updatedAt');
   }
 
   @override
@@ -142,14 +131,15 @@ class NotificationBuilder
   NotificationBuilder();
 
   NotificationBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _title = _$v.title;
-      _body = _$v.body;
-      _to_user = _$v.to_user;
-      _reservation = _$v.reservation?.toBuilder();
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _title = $v.title;
+      _body = $v.body;
+      _to_user = $v.to_user;
+      _reservation = $v.reservation.toBuilder();
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -157,9 +147,7 @@ class NotificationBuilder
 
   @override
   void replace(Notification other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Notification;
   }
 
@@ -174,13 +162,19 @@ class NotificationBuilder
     try {
       _$result = _$v ??
           new _$Notification._(
-              id: id,
-              title: title,
-              body: body,
-              to_user: to_user,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'Notification', 'id'),
+              title: BuiltValueNullFieldError.checkNotNull(
+                  title, 'Notification', 'title'),
+              body: BuiltValueNullFieldError.checkNotNull(
+                  body, 'Notification', 'body'),
+              to_user: BuiltValueNullFieldError.checkNotNull(
+                  to_user, 'Notification', 'to_user'),
               reservation: reservation.build(),
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'Notification', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'Notification', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

@@ -43,11 +43,13 @@ class _$ShowTimeResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -62,7 +64,7 @@ class _$ShowTimeResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -142,30 +144,19 @@ class _$ShowTimeResponse extends ShowTimeResponse {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'id');
-    }
-    if (movie == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'movie');
-    }
-    if (theatre == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'theatre');
-    }
-    if (room == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'room');
-    }
-    if (end_time == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'end_time');
-    }
-    if (start_time == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'start_time');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('ShowTimeResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'ShowTimeResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(movie, 'ShowTimeResponse', 'movie');
+    BuiltValueNullFieldError.checkNotNull(
+        theatre, 'ShowTimeResponse', 'theatre');
+    BuiltValueNullFieldError.checkNotNull(room, 'ShowTimeResponse', 'room');
+    BuiltValueNullFieldError.checkNotNull(
+        end_time, 'ShowTimeResponse', 'end_time');
+    BuiltValueNullFieldError.checkNotNull(
+        start_time, 'ShowTimeResponse', 'start_time');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'ShowTimeResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'ShowTimeResponse', 'updatedAt');
   }
 
   @override
@@ -268,16 +259,17 @@ class ShowTimeResponseBuilder
   ShowTimeResponseBuilder();
 
   ShowTimeResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _is_active = _$v.is_active;
-      _movie = _$v.movie;
-      _theatre = _$v.theatre;
-      _room = _$v.room;
-      _end_time = _$v.end_time;
-      _start_time = _$v.start_time;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _is_active = $v.is_active;
+      _movie = $v.movie;
+      _theatre = $v.theatre;
+      _room = $v.room;
+      _end_time = $v.end_time;
+      _start_time = $v.start_time;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -285,9 +277,7 @@ class ShowTimeResponseBuilder
 
   @override
   void replace(ShowTimeResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ShowTimeResponse;
   }
 
@@ -300,15 +290,23 @@ class ShowTimeResponseBuilder
   _$ShowTimeResponse build() {
     final _$result = _$v ??
         new _$ShowTimeResponse._(
-            id: id,
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, 'ShowTimeResponse', 'id'),
             is_active: is_active,
-            movie: movie,
-            theatre: theatre,
-            room: room,
-            end_time: end_time,
-            start_time: start_time,
-            createdAt: createdAt,
-            updatedAt: updatedAt);
+            movie: BuiltValueNullFieldError.checkNotNull(
+                movie, 'ShowTimeResponse', 'movie'),
+            theatre: BuiltValueNullFieldError.checkNotNull(
+                theatre, 'ShowTimeResponse', 'theatre'),
+            room: BuiltValueNullFieldError.checkNotNull(
+                room, 'ShowTimeResponse', 'room'),
+            end_time: BuiltValueNullFieldError.checkNotNull(
+                end_time, 'ShowTimeResponse', 'end_time'),
+            start_time: BuiltValueNullFieldError.checkNotNull(
+                start_time, 'ShowTimeResponse', 'start_time'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, 'ShowTimeResponse', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, 'ShowTimeResponse', 'updatedAt'));
     replace(_$result);
     return _$result;
   }

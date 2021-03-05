@@ -34,24 +34,12 @@ class _$State extends State {
       this.error,
       this.loadedAll})
       : super._() {
-    if (page == null) {
-      throw new BuiltValueNullFieldError('State', 'page');
-    }
-    if (average == null) {
-      throw new BuiltValueNullFieldError('State', 'average');
-    }
-    if (total == null) {
-      throw new BuiltValueNullFieldError('State', 'total');
-    }
-    if (items == null) {
-      throw new BuiltValueNullFieldError('State', 'items');
-    }
-    if (isLoading == null) {
-      throw new BuiltValueNullFieldError('State', 'isLoading');
-    }
-    if (loadedAll == null) {
-      throw new BuiltValueNullFieldError('State', 'loadedAll');
-    }
+    BuiltValueNullFieldError.checkNotNull(page, 'State', 'page');
+    BuiltValueNullFieldError.checkNotNull(average, 'State', 'average');
+    BuiltValueNullFieldError.checkNotNull(total, 'State', 'total');
+    BuiltValueNullFieldError.checkNotNull(items, 'State', 'items');
+    BuiltValueNullFieldError.checkNotNull(isLoading, 'State', 'isLoading');
+    BuiltValueNullFieldError.checkNotNull(loadedAll, 'State', 'loadedAll');
   }
 
   @override
@@ -137,14 +125,15 @@ class StateBuilder implements Builder<State, StateBuilder> {
   StateBuilder();
 
   StateBuilder get _$this {
-    if (_$v != null) {
-      _page = _$v.page;
-      _average = _$v.average;
-      _total = _$v.total;
-      _items = _$v.items?.toBuilder();
-      _isLoading = _$v.isLoading;
-      _error = _$v.error;
-      _loadedAll = _$v.loadedAll;
+    final $v = _$v;
+    if ($v != null) {
+      _page = $v.page;
+      _average = $v.average;
+      _total = $v.total;
+      _items = $v.items.toBuilder();
+      _isLoading = $v.isLoading;
+      _error = $v.error;
+      _loadedAll = $v.loadedAll;
       _$v = null;
     }
     return this;
@@ -152,9 +141,7 @@ class StateBuilder implements Builder<State, StateBuilder> {
 
   @override
   void replace(State other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$State;
   }
 
@@ -169,13 +156,18 @@ class StateBuilder implements Builder<State, StateBuilder> {
     try {
       _$result = _$v ??
           new _$State._(
-              page: page,
-              average: average,
-              total: total,
+              page:
+                  BuiltValueNullFieldError.checkNotNull(page, 'State', 'page'),
+              average: BuiltValueNullFieldError.checkNotNull(
+                  average, 'State', 'average'),
+              total: BuiltValueNullFieldError.checkNotNull(
+                  total, 'State', 'total'),
               items: items.build(),
-              isLoading: isLoading,
+              isLoading: BuiltValueNullFieldError.checkNotNull(
+                  isLoading, 'State', 'isLoading'),
               error: error,
-              loadedAll: loadedAll);
+              loadedAll: BuiltValueNullFieldError.checkNotNull(
+                  loadedAll, 'State', 'loadedAll'));
     } catch (_) {
       String _$failedField;
       try {

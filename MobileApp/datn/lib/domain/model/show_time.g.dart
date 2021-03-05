@@ -46,33 +46,15 @@ class _$ShowTime extends ShowTime {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'id');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'is_active');
-    }
-    if (movieId == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'movieId');
-    }
-    if (theatreId == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'theatreId');
-    }
-    if (room == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'room');
-    }
-    if (end_time == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'end_time');
-    }
-    if (start_time == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'start_time');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('ShowTime', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'ShowTime', 'id');
+    BuiltValueNullFieldError.checkNotNull(is_active, 'ShowTime', 'is_active');
+    BuiltValueNullFieldError.checkNotNull(movieId, 'ShowTime', 'movieId');
+    BuiltValueNullFieldError.checkNotNull(theatreId, 'ShowTime', 'theatreId');
+    BuiltValueNullFieldError.checkNotNull(room, 'ShowTime', 'room');
+    BuiltValueNullFieldError.checkNotNull(end_time, 'ShowTime', 'end_time');
+    BuiltValueNullFieldError.checkNotNull(start_time, 'ShowTime', 'start_time');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'ShowTime', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'ShowTime', 'updatedAt');
   }
 
   @override
@@ -191,18 +173,19 @@ class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
   ShowTimeBuilder();
 
   ShowTimeBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _is_active = _$v.is_active;
-      _movieId = _$v.movieId;
-      _movie = _$v.movie?.toBuilder();
-      _theatreId = _$v.theatreId;
-      _theatre = _$v.theatre?.toBuilder();
-      _room = _$v.room;
-      _end_time = _$v.end_time;
-      _start_time = _$v.start_time;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _is_active = $v.is_active;
+      _movieId = $v.movieId;
+      _movie = $v.movie?.toBuilder();
+      _theatreId = $v.theatreId;
+      _theatre = $v.theatre?.toBuilder();
+      _room = $v.room;
+      _end_time = $v.end_time;
+      _start_time = $v.start_time;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -210,9 +193,7 @@ class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
 
   @override
   void replace(ShowTime other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ShowTime;
   }
 
@@ -227,17 +208,25 @@ class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
     try {
       _$result = _$v ??
           new _$ShowTime._(
-              id: id,
-              is_active: is_active,
-              movieId: movieId,
+              id: BuiltValueNullFieldError.checkNotNull(id, 'ShowTime', 'id'),
+              is_active: BuiltValueNullFieldError.checkNotNull(
+                  is_active, 'ShowTime', 'is_active'),
+              movieId: BuiltValueNullFieldError.checkNotNull(
+                  movieId, 'ShowTime', 'movieId'),
               movie: _movie?.build(),
-              theatreId: theatreId,
+              theatreId: BuiltValueNullFieldError.checkNotNull(
+                  theatreId, 'ShowTime', 'theatreId'),
               theatre: _theatre?.build(),
-              room: room,
-              end_time: end_time,
-              start_time: start_time,
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              room: BuiltValueNullFieldError.checkNotNull(
+                  room, 'ShowTime', 'room'),
+              end_time: BuiltValueNullFieldError.checkNotNull(
+                  end_time, 'ShowTime', 'end_time'),
+              start_time: BuiltValueNullFieldError.checkNotNull(
+                  start_time, 'ShowTime', 'start_time'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'ShowTime', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'ShowTime', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

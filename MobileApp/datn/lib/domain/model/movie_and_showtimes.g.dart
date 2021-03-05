@@ -17,12 +17,9 @@ class _$MovieAndShowTimes extends MovieAndShowTimes {
       (new MovieAndShowTimesBuilder()..update(updates)).build();
 
   _$MovieAndShowTimes._({this.movie, this.showTimes}) : super._() {
-    if (movie == null) {
-      throw new BuiltValueNullFieldError('MovieAndShowTimes', 'movie');
-    }
-    if (showTimes == null) {
-      throw new BuiltValueNullFieldError('MovieAndShowTimes', 'showTimes');
-    }
+    BuiltValueNullFieldError.checkNotNull(movie, 'MovieAndShowTimes', 'movie');
+    BuiltValueNullFieldError.checkNotNull(
+        showTimes, 'MovieAndShowTimes', 'showTimes');
   }
 
   @override
@@ -72,9 +69,10 @@ class MovieAndShowTimesBuilder
   MovieAndShowTimesBuilder();
 
   MovieAndShowTimesBuilder get _$this {
-    if (_$v != null) {
-      _movie = _$v.movie?.toBuilder();
-      _showTimes = _$v.showTimes?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _movie = $v.movie.toBuilder();
+      _showTimes = $v.showTimes.toBuilder();
       _$v = null;
     }
     return this;
@@ -82,9 +80,7 @@ class MovieAndShowTimesBuilder
 
   @override
   void replace(MovieAndShowTimes other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$MovieAndShowTimes;
   }
 

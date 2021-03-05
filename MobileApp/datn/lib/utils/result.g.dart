@@ -54,8 +54,9 @@ class SuccessBuilder<T> implements Builder<Success<T>, SuccessBuilder<T>> {
   SuccessBuilder();
 
   SuccessBuilder<T> get _$this {
-    if (_$v != null) {
-      _result = _$v.result;
+    final $v = _$v;
+    if ($v != null) {
+      _result = $v.result;
       _$v = null;
     }
     return this;
@@ -63,9 +64,7 @@ class SuccessBuilder<T> implements Builder<Success<T>, SuccessBuilder<T>> {
 
   @override
   void replace(Success<T> other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Success<T>;
   }
 
@@ -92,9 +91,7 @@ class _$Failure<T> extends Failure<T> {
       (new FailureBuilder<T>()..update(updates)).build();
 
   _$Failure._({this.message, this.error}) : super._() {
-    if (message == null) {
-      throw new BuiltValueNullFieldError('Failure', 'message');
-    }
+    BuiltValueNullFieldError.checkNotNull(message, 'Failure', 'message');
     if (T == dynamic) {
       throw new BuiltValueMissingGenericsError('Failure', 'T');
     }
@@ -141,9 +138,10 @@ class FailureBuilder<T> implements Builder<Failure<T>, FailureBuilder<T>> {
   FailureBuilder();
 
   FailureBuilder<T> get _$this {
-    if (_$v != null) {
-      _message = _$v.message;
-      _error = _$v.error;
+    final $v = _$v;
+    if ($v != null) {
+      _message = $v.message;
+      _error = $v.error;
       _$v = null;
     }
     return this;
@@ -151,9 +149,7 @@ class FailureBuilder<T> implements Builder<Failure<T>, FailureBuilder<T>> {
 
   @override
   void replace(Failure<T> other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Failure<T>;
   }
 
@@ -164,7 +160,11 @@ class FailureBuilder<T> implements Builder<Failure<T>, FailureBuilder<T>> {
 
   @override
   _$Failure<T> build() {
-    final _$result = _$v ?? new _$Failure<T>._(message: message, error: error);
+    final _$result = _$v ??
+        new _$Failure<T>._(
+            message: BuiltValueNullFieldError.checkNotNull(
+                message, 'Failure', 'message'),
+            error: error);
     replace(_$result);
     return _$result;
   }

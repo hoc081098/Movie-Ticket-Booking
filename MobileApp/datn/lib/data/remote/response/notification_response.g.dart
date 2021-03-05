@@ -62,7 +62,7 @@ class _$NotificationResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -149,11 +149,13 @@ class _$NotificationResponse_ReservationResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -168,7 +170,7 @@ class _$NotificationResponse_ReservationResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -257,27 +259,18 @@ class _$NotificationResponse extends NotificationResponse {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('NotificationResponse', 'id');
-    }
-    if (title == null) {
-      throw new BuiltValueNullFieldError('NotificationResponse', 'title');
-    }
-    if (body == null) {
-      throw new BuiltValueNullFieldError('NotificationResponse', 'body');
-    }
-    if (to_user == null) {
-      throw new BuiltValueNullFieldError('NotificationResponse', 'to_user');
-    }
-    if (reservation == null) {
-      throw new BuiltValueNullFieldError('NotificationResponse', 'reservation');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('NotificationResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('NotificationResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'NotificationResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        title, 'NotificationResponse', 'title');
+    BuiltValueNullFieldError.checkNotNull(body, 'NotificationResponse', 'body');
+    BuiltValueNullFieldError.checkNotNull(
+        to_user, 'NotificationResponse', 'to_user');
+    BuiltValueNullFieldError.checkNotNull(
+        reservation, 'NotificationResponse', 'reservation');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'NotificationResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'NotificationResponse', 'updatedAt');
   }
 
   @override
@@ -369,14 +362,15 @@ class NotificationResponseBuilder
   NotificationResponseBuilder();
 
   NotificationResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _title = _$v.title;
-      _body = _$v.body;
-      _to_user = _$v.to_user;
-      _reservation = _$v.reservation?.toBuilder();
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _title = $v.title;
+      _body = $v.body;
+      _to_user = $v.to_user;
+      _reservation = $v.reservation.toBuilder();
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -384,9 +378,7 @@ class NotificationResponseBuilder
 
   @override
   void replace(NotificationResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$NotificationResponse;
   }
 
@@ -401,13 +393,19 @@ class NotificationResponseBuilder
     try {
       _$result = _$v ??
           new _$NotificationResponse._(
-              id: id,
-              title: title,
-              body: body,
-              to_user: to_user,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'NotificationResponse', 'id'),
+              title: BuiltValueNullFieldError.checkNotNull(
+                  title, 'NotificationResponse', 'title'),
+              body: BuiltValueNullFieldError.checkNotNull(
+                  body, 'NotificationResponse', 'body'),
+              to_user: BuiltValueNullFieldError.checkNotNull(
+                  to_user, 'NotificationResponse', 'to_user'),
               reservation: reservation.build(),
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'NotificationResponse', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'NotificationResponse', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {
@@ -471,50 +469,28 @@ class _$NotificationResponse_ReservationResponse
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'id');
-    }
-    if (email == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'email');
-    }
-    if (original_price == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'original_price');
-    }
-    if (phone_number == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'phone_number');
-    }
-    if (products == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'products');
-    }
-    if (total_price == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'total_price');
-    }
-    if (show_time == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'show_time');
-    }
-    if (user == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'user');
-    }
-    if (payment_intent_id == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'payment_intent_id');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError(
-          'NotificationResponse_ReservationResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        id, 'NotificationResponse_ReservationResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        email, 'NotificationResponse_ReservationResponse', 'email');
+    BuiltValueNullFieldError.checkNotNull(original_price,
+        'NotificationResponse_ReservationResponse', 'original_price');
+    BuiltValueNullFieldError.checkNotNull(phone_number,
+        'NotificationResponse_ReservationResponse', 'phone_number');
+    BuiltValueNullFieldError.checkNotNull(
+        products, 'NotificationResponse_ReservationResponse', 'products');
+    BuiltValueNullFieldError.checkNotNull(
+        total_price, 'NotificationResponse_ReservationResponse', 'total_price');
+    BuiltValueNullFieldError.checkNotNull(
+        show_time, 'NotificationResponse_ReservationResponse', 'show_time');
+    BuiltValueNullFieldError.checkNotNull(
+        user, 'NotificationResponse_ReservationResponse', 'user');
+    BuiltValueNullFieldError.checkNotNull(payment_intent_id,
+        'NotificationResponse_ReservationResponse', 'payment_intent_id');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'NotificationResponse_ReservationResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'NotificationResponse_ReservationResponse', 'updatedAt');
   }
 
   @override
@@ -654,19 +630,20 @@ class NotificationResponse_ReservationResponseBuilder
   NotificationResponse_ReservationResponseBuilder();
 
   NotificationResponse_ReservationResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _email = _$v.email;
-      _is_active = _$v.is_active;
-      _original_price = _$v.original_price;
-      _phone_number = _$v.phone_number;
-      _products = _$v.products?.toBuilder();
-      _total_price = _$v.total_price;
-      _show_time = _$v.show_time?.toBuilder();
-      _user = _$v.user;
-      _payment_intent_id = _$v.payment_intent_id;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _email = $v.email;
+      _is_active = $v.is_active;
+      _original_price = $v.original_price;
+      _phone_number = $v.phone_number;
+      _products = $v.products.toBuilder();
+      _total_price = $v.total_price;
+      _show_time = $v.show_time.toBuilder();
+      _user = $v.user;
+      _payment_intent_id = $v.payment_intent_id;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -674,9 +651,7 @@ class NotificationResponse_ReservationResponseBuilder
 
   @override
   void replace(NotificationResponse_ReservationResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$NotificationResponse_ReservationResponse;
   }
 
@@ -692,18 +667,25 @@ class NotificationResponse_ReservationResponseBuilder
     try {
       _$result = _$v ??
           new _$NotificationResponse_ReservationResponse._(
-              id: id,
-              email: email,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'NotificationResponse_ReservationResponse', 'id'),
+              email: BuiltValueNullFieldError.checkNotNull(
+                  email, 'NotificationResponse_ReservationResponse', 'email'),
               is_active: is_active,
-              original_price: original_price,
-              phone_number: phone_number,
+              original_price: BuiltValueNullFieldError.checkNotNull(
+                  original_price, 'NotificationResponse_ReservationResponse', 'original_price'),
+              phone_number: BuiltValueNullFieldError.checkNotNull(
+                  phone_number, 'NotificationResponse_ReservationResponse', 'phone_number'),
               products: products.build(),
-              total_price: total_price,
+              total_price: BuiltValueNullFieldError.checkNotNull(
+                  total_price, 'NotificationResponse_ReservationResponse', 'total_price'),
               show_time: show_time.build(),
-              user: user,
-              payment_intent_id: payment_intent_id,
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              user: BuiltValueNullFieldError.checkNotNull(
+                  user, 'NotificationResponse_ReservationResponse', 'user'),
+              payment_intent_id: BuiltValueNullFieldError.checkNotNull(
+                  payment_intent_id, 'NotificationResponse_ReservationResponse', 'payment_intent_id'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(createdAt, 'NotificationResponse_ReservationResponse', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(updatedAt, 'NotificationResponse_ReservationResponse', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

@@ -31,21 +31,11 @@ class _$Person extends Person {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('Person', 'is_active');
-    }
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Person', 'id');
-    }
-    if (full_name == null) {
-      throw new BuiltValueNullFieldError('Person', 'full_name');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Person', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Person', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(is_active, 'Person', 'is_active');
+    BuiltValueNullFieldError.checkNotNull(id, 'Person', 'id');
+    BuiltValueNullFieldError.checkNotNull(full_name, 'Person', 'full_name');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Person', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Person', 'updatedAt');
   }
 
   @override
@@ -122,13 +112,14 @@ class PersonBuilder implements Builder<Person, PersonBuilder> {
   PersonBuilder();
 
   PersonBuilder get _$this {
-    if (_$v != null) {
-      _is_active = _$v.is_active;
-      _id = _$v.id;
-      _avatar = _$v.avatar;
-      _full_name = _$v.full_name;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _is_active = $v.is_active;
+      _id = $v.id;
+      _avatar = $v.avatar;
+      _full_name = $v.full_name;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -136,9 +127,7 @@ class PersonBuilder implements Builder<Person, PersonBuilder> {
 
   @override
   void replace(Person other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Person;
   }
 
@@ -151,12 +140,16 @@ class PersonBuilder implements Builder<Person, PersonBuilder> {
   _$Person build() {
     final _$result = _$v ??
         new _$Person._(
-            is_active: is_active,
-            id: id,
+            is_active: BuiltValueNullFieldError.checkNotNull(
+                is_active, 'Person', 'is_active'),
+            id: BuiltValueNullFieldError.checkNotNull(id, 'Person', 'id'),
             avatar: avatar,
-            full_name: full_name,
-            createdAt: createdAt,
-            updatedAt: updatedAt);
+            full_name: BuiltValueNullFieldError.checkNotNull(
+                full_name, 'Person', 'full_name'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, 'Person', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, 'Person', 'updatedAt'));
     replace(_$result);
     return _$result;
   }

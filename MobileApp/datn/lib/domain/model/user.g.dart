@@ -46,24 +46,12 @@ class _$User extends User {
       this.isCompleted,
       this.isActive})
       : super._() {
-    if (uid == null) {
-      throw new BuiltValueNullFieldError('User', 'uid');
-    }
-    if (email == null) {
-      throw new BuiltValueNullFieldError('User', 'email');
-    }
-    if (fullName == null) {
-      throw new BuiltValueNullFieldError('User', 'fullName');
-    }
-    if (gender == null) {
-      throw new BuiltValueNullFieldError('User', 'gender');
-    }
-    if (isCompleted == null) {
-      throw new BuiltValueNullFieldError('User', 'isCompleted');
-    }
-    if (isActive == null) {
-      throw new BuiltValueNullFieldError('User', 'isActive');
-    }
+    BuiltValueNullFieldError.checkNotNull(uid, 'User', 'uid');
+    BuiltValueNullFieldError.checkNotNull(email, 'User', 'email');
+    BuiltValueNullFieldError.checkNotNull(fullName, 'User', 'fullName');
+    BuiltValueNullFieldError.checkNotNull(gender, 'User', 'gender');
+    BuiltValueNullFieldError.checkNotNull(isCompleted, 'User', 'isCompleted');
+    BuiltValueNullFieldError.checkNotNull(isActive, 'User', 'isActive');
   }
 
   @override
@@ -182,18 +170,19 @@ class UserBuilder implements Builder<User, UserBuilder> {
   UserBuilder();
 
   UserBuilder get _$this {
-    if (_$v != null) {
-      _uid = _$v.uid;
-      _email = _$v.email;
-      _phoneNumber = _$v.phoneNumber;
-      _fullName = _$v.fullName;
-      _gender = _$v.gender;
-      _avatar = _$v.avatar;
-      _address = _$v.address;
-      _birthday = _$v.birthday;
-      _location = _$v.location?.toBuilder();
-      _isCompleted = _$v.isCompleted;
-      _isActive = _$v.isActive;
+    final $v = _$v;
+    if ($v != null) {
+      _uid = $v.uid;
+      _email = $v.email;
+      _phoneNumber = $v.phoneNumber;
+      _fullName = $v.fullName;
+      _gender = $v.gender;
+      _avatar = $v.avatar;
+      _address = $v.address;
+      _birthday = $v.birthday;
+      _location = $v.location?.toBuilder();
+      _isCompleted = $v.isCompleted;
+      _isActive = $v.isActive;
       _$v = null;
     }
     return this;
@@ -201,9 +190,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
 
   @override
   void replace(User other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$User;
   }
 
@@ -218,17 +205,22 @@ class UserBuilder implements Builder<User, UserBuilder> {
     try {
       _$result = _$v ??
           new _$User._(
-              uid: uid,
-              email: email,
+              uid: BuiltValueNullFieldError.checkNotNull(uid, 'User', 'uid'),
+              email:
+                  BuiltValueNullFieldError.checkNotNull(email, 'User', 'email'),
               phoneNumber: phoneNumber,
-              fullName: fullName,
-              gender: gender,
+              fullName: BuiltValueNullFieldError.checkNotNull(
+                  fullName, 'User', 'fullName'),
+              gender: BuiltValueNullFieldError.checkNotNull(
+                  gender, 'User', 'gender'),
               avatar: avatar,
               address: address,
               birthday: birthday,
               location: _location?.build(),
-              isCompleted: isCompleted,
-              isActive: isActive);
+              isCompleted: BuiltValueNullFieldError.checkNotNull(
+                  isCompleted, 'User', 'isCompleted'),
+              isActive: BuiltValueNullFieldError.checkNotNull(
+                  isActive, 'User', 'isActive'));
     } catch (_) {
       String _$failedField;
       try {

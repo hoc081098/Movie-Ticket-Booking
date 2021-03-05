@@ -73,48 +73,23 @@ class _$Movie extends Movie {
       this.totalFavorite,
       this.totalRate})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Movie', 'id');
-    }
-    if (isActive == null) {
-      throw new BuiltValueNullFieldError('Movie', 'isActive');
-    }
-    if (actorIds == null) {
-      throw new BuiltValueNullFieldError('Movie', 'actorIds');
-    }
-    if (directorIds == null) {
-      throw new BuiltValueNullFieldError('Movie', 'directorIds');
-    }
-    if (title == null) {
-      throw new BuiltValueNullFieldError('Movie', 'title');
-    }
-    if (releasedDate == null) {
-      throw new BuiltValueNullFieldError('Movie', 'releasedDate');
-    }
-    if (duration == null) {
-      throw new BuiltValueNullFieldError('Movie', 'duration');
-    }
-    if (originalLanguage == null) {
-      throw new BuiltValueNullFieldError('Movie', 'originalLanguage');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Movie', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Movie', 'updatedAt');
-    }
-    if (ageType == null) {
-      throw new BuiltValueNullFieldError('Movie', 'ageType');
-    }
-    if (rateStar == null) {
-      throw new BuiltValueNullFieldError('Movie', 'rateStar');
-    }
-    if (totalFavorite == null) {
-      throw new BuiltValueNullFieldError('Movie', 'totalFavorite');
-    }
-    if (totalRate == null) {
-      throw new BuiltValueNullFieldError('Movie', 'totalRate');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Movie', 'id');
+    BuiltValueNullFieldError.checkNotNull(isActive, 'Movie', 'isActive');
+    BuiltValueNullFieldError.checkNotNull(actorIds, 'Movie', 'actorIds');
+    BuiltValueNullFieldError.checkNotNull(directorIds, 'Movie', 'directorIds');
+    BuiltValueNullFieldError.checkNotNull(title, 'Movie', 'title');
+    BuiltValueNullFieldError.checkNotNull(
+        releasedDate, 'Movie', 'releasedDate');
+    BuiltValueNullFieldError.checkNotNull(duration, 'Movie', 'duration');
+    BuiltValueNullFieldError.checkNotNull(
+        originalLanguage, 'Movie', 'originalLanguage');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Movie', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Movie', 'updatedAt');
+    BuiltValueNullFieldError.checkNotNull(ageType, 'Movie', 'ageType');
+    BuiltValueNullFieldError.checkNotNull(rateStar, 'Movie', 'rateStar');
+    BuiltValueNullFieldError.checkNotNull(
+        totalFavorite, 'Movie', 'totalFavorite');
+    BuiltValueNullFieldError.checkNotNull(totalRate, 'Movie', 'totalRate');
   }
 
   @override
@@ -315,27 +290,28 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
   MovieBuilder();
 
   MovieBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _isActive = _$v.isActive;
-      _actorIds = _$v.actorIds?.toBuilder();
-      _directorIds = _$v.directorIds?.toBuilder();
-      _title = _$v.title;
-      _trailerVideoUrl = _$v.trailerVideoUrl;
-      _posterUrl = _$v.posterUrl;
-      _overview = _$v.overview;
-      _releasedDate = _$v.releasedDate;
-      _duration = _$v.duration;
-      _originalLanguage = _$v.originalLanguage;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
-      _ageType = _$v.ageType;
-      _actors = _$v.actors?.toBuilder();
-      _directors = _$v.directors?.toBuilder();
-      _categories = _$v.categories?.toBuilder();
-      _rateStar = _$v.rateStar;
-      _totalFavorite = _$v.totalFavorite;
-      _totalRate = _$v.totalRate;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _isActive = $v.isActive;
+      _actorIds = $v.actorIds.toBuilder();
+      _directorIds = $v.directorIds.toBuilder();
+      _title = $v.title;
+      _trailerVideoUrl = $v.trailerVideoUrl;
+      _posterUrl = $v.posterUrl;
+      _overview = $v.overview;
+      _releasedDate = $v.releasedDate;
+      _duration = $v.duration;
+      _originalLanguage = $v.originalLanguage;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
+      _ageType = $v.ageType;
+      _actors = $v.actors?.toBuilder();
+      _directors = $v.directors?.toBuilder();
+      _categories = $v.categories?.toBuilder();
+      _rateStar = $v.rateStar;
+      _totalFavorite = $v.totalFavorite;
+      _totalRate = $v.totalRate;
       _$v = null;
     }
     return this;
@@ -343,9 +319,7 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
 
   @override
   void replace(Movie other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Movie;
   }
 
@@ -360,26 +334,37 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
     try {
       _$result = _$v ??
           new _$Movie._(
-              id: id,
-              isActive: isActive,
+              id: BuiltValueNullFieldError.checkNotNull(id, 'Movie', 'id'),
+              isActive: BuiltValueNullFieldError.checkNotNull(
+                  isActive, 'Movie', 'isActive'),
               actorIds: actorIds.build(),
               directorIds: directorIds.build(),
-              title: title,
+              title: BuiltValueNullFieldError.checkNotNull(
+                  title, 'Movie', 'title'),
               trailerVideoUrl: trailerVideoUrl,
               posterUrl: posterUrl,
               overview: overview,
-              releasedDate: releasedDate,
-              duration: duration,
-              originalLanguage: originalLanguage,
-              createdAt: createdAt,
-              updatedAt: updatedAt,
-              ageType: ageType,
+              releasedDate: BuiltValueNullFieldError.checkNotNull(
+                  releasedDate, 'Movie', 'releasedDate'),
+              duration: BuiltValueNullFieldError.checkNotNull(
+                  duration, 'Movie', 'duration'),
+              originalLanguage: BuiltValueNullFieldError.checkNotNull(
+                  originalLanguage, 'Movie', 'originalLanguage'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'Movie', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'Movie', 'updatedAt'),
+              ageType: BuiltValueNullFieldError.checkNotNull(
+                  ageType, 'Movie', 'ageType'),
               actors: _actors?.build(),
               directors: _directors?.build(),
               categories: _categories?.build(),
-              rateStar: rateStar,
-              totalFavorite: totalFavorite,
-              totalRate: totalRate);
+              rateStar: BuiltValueNullFieldError.checkNotNull(
+                  rateStar, 'Movie', 'rateStar'),
+              totalFavorite: BuiltValueNullFieldError.checkNotNull(
+                  totalFavorite, 'Movie', 'totalFavorite'),
+              totalRate:
+                  BuiltValueNullFieldError.checkNotNull(totalRate, 'Movie', 'totalRate'));
     } catch (_) {
       String _$failedField;
       try {

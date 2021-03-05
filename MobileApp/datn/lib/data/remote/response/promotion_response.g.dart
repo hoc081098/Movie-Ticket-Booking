@@ -65,7 +65,7 @@ class _$PromotionResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -159,39 +159,25 @@ class _$PromotionResponse extends PromotionResponse {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'id');
-    }
-    if (code == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'code');
-    }
-    if (discount == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'discount');
-    }
-    if (end_time == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'end_time');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'is_active');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'name');
-    }
-    if (start_time == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'start_time');
-    }
-    if (creator == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'creator');
-    }
-    if (show_time == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'show_time');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('PromotionResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'PromotionResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(code, 'PromotionResponse', 'code');
+    BuiltValueNullFieldError.checkNotNull(
+        discount, 'PromotionResponse', 'discount');
+    BuiltValueNullFieldError.checkNotNull(
+        end_time, 'PromotionResponse', 'end_time');
+    BuiltValueNullFieldError.checkNotNull(
+        is_active, 'PromotionResponse', 'is_active');
+    BuiltValueNullFieldError.checkNotNull(name, 'PromotionResponse', 'name');
+    BuiltValueNullFieldError.checkNotNull(
+        start_time, 'PromotionResponse', 'start_time');
+    BuiltValueNullFieldError.checkNotNull(
+        creator, 'PromotionResponse', 'creator');
+    BuiltValueNullFieldError.checkNotNull(
+        show_time, 'PromotionResponse', 'show_time');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'PromotionResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'PromotionResponse', 'updatedAt');
   }
 
   @override
@@ -310,18 +296,19 @@ class PromotionResponseBuilder
   PromotionResponseBuilder();
 
   PromotionResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _code = _$v.code;
-      _discount = _$v.discount;
-      _end_time = _$v.end_time;
-      _is_active = _$v.is_active;
-      _name = _$v.name;
-      _start_time = _$v.start_time;
-      _creator = _$v.creator;
-      _show_time = _$v.show_time;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _code = $v.code;
+      _discount = $v.discount;
+      _end_time = $v.end_time;
+      _is_active = $v.is_active;
+      _name = $v.name;
+      _start_time = $v.start_time;
+      _creator = $v.creator;
+      _show_time = $v.show_time;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -329,9 +316,7 @@ class PromotionResponseBuilder
 
   @override
   void replace(PromotionResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$PromotionResponse;
   }
 
@@ -344,17 +329,27 @@ class PromotionResponseBuilder
   _$PromotionResponse build() {
     final _$result = _$v ??
         new _$PromotionResponse._(
-            id: id,
-            code: code,
-            discount: discount,
-            end_time: end_time,
-            is_active: is_active,
-            name: name,
-            start_time: start_time,
-            creator: creator,
-            show_time: show_time,
-            createdAt: createdAt,
-            updatedAt: updatedAt);
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, 'PromotionResponse', 'id'),
+            code: BuiltValueNullFieldError.checkNotNull(
+                code, 'PromotionResponse', 'code'),
+            discount: BuiltValueNullFieldError.checkNotNull(
+                discount, 'PromotionResponse', 'discount'),
+            end_time: BuiltValueNullFieldError.checkNotNull(
+                end_time, 'PromotionResponse', 'end_time'),
+            is_active: BuiltValueNullFieldError.checkNotNull(
+                is_active, 'PromotionResponse', 'is_active'),
+            name: BuiltValueNullFieldError.checkNotNull(
+                name, 'PromotionResponse', 'name'),
+            start_time: BuiltValueNullFieldError.checkNotNull(
+                start_time, 'PromotionResponse', 'start_time'),
+            creator: BuiltValueNullFieldError.checkNotNull(
+                creator, 'PromotionResponse', 'creator'),
+            show_time: BuiltValueNullFieldError.checkNotNull(
+                show_time, 'PromotionResponse', 'show_time'),
+            createdAt:
+                BuiltValueNullFieldError.checkNotNull(createdAt, 'PromotionResponse', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(updatedAt, 'PromotionResponse', 'updatedAt'));
     replace(_$result);
     return _$result;
   }

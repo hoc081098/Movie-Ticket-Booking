@@ -62,11 +62,13 @@ class _$ReservationResponseSerializer
       serializers.serialize(object.user,
           specifiedType: const FullType(UserResponse)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -81,7 +83,7 @@ class _$ReservationResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -176,7 +178,7 @@ class _$ProductIdAndQuantitySerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -231,11 +233,13 @@ class _$ShowTimeFullResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -250,7 +254,7 @@ class _$ShowTimeFullResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -340,41 +344,26 @@ class _$ReservationResponse extends ReservationResponse {
       this.updatedAt,
       this.user})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'id');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'createdAt');
-    }
-    if (email == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'email');
-    }
-    if (original_price == null) {
-      throw new BuiltValueNullFieldError(
-          'ReservationResponse', 'original_price');
-    }
-    if (payment_intent_id == null) {
-      throw new BuiltValueNullFieldError(
-          'ReservationResponse', 'payment_intent_id');
-    }
-    if (phone_number == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'phone_number');
-    }
-    if (products == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'products');
-    }
-    if (show_time == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'show_time');
-    }
-    if (total_price == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'total_price');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'updatedAt');
-    }
-    if (user == null) {
-      throw new BuiltValueNullFieldError('ReservationResponse', 'user');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'ReservationResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'ReservationResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        email, 'ReservationResponse', 'email');
+    BuiltValueNullFieldError.checkNotNull(
+        original_price, 'ReservationResponse', 'original_price');
+    BuiltValueNullFieldError.checkNotNull(
+        payment_intent_id, 'ReservationResponse', 'payment_intent_id');
+    BuiltValueNullFieldError.checkNotNull(
+        phone_number, 'ReservationResponse', 'phone_number');
+    BuiltValueNullFieldError.checkNotNull(
+        products, 'ReservationResponse', 'products');
+    BuiltValueNullFieldError.checkNotNull(
+        show_time, 'ReservationResponse', 'show_time');
+    BuiltValueNullFieldError.checkNotNull(
+        total_price, 'ReservationResponse', 'total_price');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'ReservationResponse', 'updatedAt');
+    BuiltValueNullFieldError.checkNotNull(user, 'ReservationResponse', 'user');
   }
 
   @override
@@ -510,19 +499,20 @@ class ReservationResponseBuilder
   ReservationResponseBuilder();
 
   ReservationResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _createdAt = _$v.createdAt;
-      _email = _$v.email;
-      _is_active = _$v.is_active;
-      _original_price = _$v.original_price;
-      _payment_intent_id = _$v.payment_intent_id;
-      _phone_number = _$v.phone_number;
-      _products = _$v.products?.toBuilder();
-      _show_time = _$v.show_time?.toBuilder();
-      _total_price = _$v.total_price;
-      _updatedAt = _$v.updatedAt;
-      _user = _$v.user?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _createdAt = $v.createdAt;
+      _email = $v.email;
+      _is_active = $v.is_active;
+      _original_price = $v.original_price;
+      _payment_intent_id = $v.payment_intent_id;
+      _phone_number = $v.phone_number;
+      _products = $v.products.toBuilder();
+      _show_time = $v.show_time.toBuilder();
+      _total_price = $v.total_price;
+      _updatedAt = $v.updatedAt;
+      _user = $v.user.toBuilder();
       _$v = null;
     }
     return this;
@@ -530,9 +520,7 @@ class ReservationResponseBuilder
 
   @override
   void replace(ReservationResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ReservationResponse;
   }
 
@@ -547,17 +535,25 @@ class ReservationResponseBuilder
     try {
       _$result = _$v ??
           new _$ReservationResponse._(
-              id: id,
-              createdAt: createdAt,
-              email: email,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'ReservationResponse', 'id'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'ReservationResponse', 'createdAt'),
+              email: BuiltValueNullFieldError.checkNotNull(
+                  email, 'ReservationResponse', 'email'),
               is_active: is_active,
-              original_price: original_price,
-              payment_intent_id: payment_intent_id,
-              phone_number: phone_number,
+              original_price: BuiltValueNullFieldError.checkNotNull(
+                  original_price, 'ReservationResponse', 'original_price'),
+              payment_intent_id: BuiltValueNullFieldError.checkNotNull(
+                  payment_intent_id, 'ReservationResponse', 'payment_intent_id'),
+              phone_number: BuiltValueNullFieldError.checkNotNull(
+                  phone_number, 'ReservationResponse', 'phone_number'),
               products: products.build(),
               show_time: show_time.build(),
-              total_price: total_price,
-              updatedAt: updatedAt,
+              total_price: BuiltValueNullFieldError.checkNotNull(
+                  total_price, 'ReservationResponse', 'total_price'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'ReservationResponse', 'updatedAt'),
               user: user.build());
     } catch (_) {
       String _$failedField;
@@ -591,12 +587,9 @@ class _$ProductIdAndQuantity extends ProductIdAndQuantity {
       (new ProductIdAndQuantityBuilder()..update(updates)).build();
 
   _$ProductIdAndQuantity._({this.id, this.quantity}) : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('ProductIdAndQuantity', 'id');
-    }
-    if (quantity == null) {
-      throw new BuiltValueNullFieldError('ProductIdAndQuantity', 'quantity');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'ProductIdAndQuantity', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        quantity, 'ProductIdAndQuantity', 'quantity');
   }
 
   @override
@@ -645,9 +638,10 @@ class ProductIdAndQuantityBuilder
   ProductIdAndQuantityBuilder();
 
   ProductIdAndQuantityBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _quantity = _$v.quantity;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _quantity = $v.quantity;
       _$v = null;
     }
     return this;
@@ -655,9 +649,7 @@ class ProductIdAndQuantityBuilder
 
   @override
   void replace(ProductIdAndQuantity other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ProductIdAndQuantity;
   }
 
@@ -668,8 +660,12 @@ class ProductIdAndQuantityBuilder
 
   @override
   _$ProductIdAndQuantity build() {
-    final _$result =
-        _$v ?? new _$ProductIdAndQuantity._(id: id, quantity: quantity);
+    final _$result = _$v ??
+        new _$ProductIdAndQuantity._(
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, 'ProductIdAndQuantity', 'id'),
+            quantity: BuiltValueNullFieldError.checkNotNull(
+                quantity, 'ProductIdAndQuantity', 'quantity'));
     replace(_$result);
     return _$result;
   }
@@ -710,30 +706,20 @@ class _$ShowTimeFullResponse extends ShowTimeFullResponse {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'id');
-    }
-    if (movie == null) {
-      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'movie');
-    }
-    if (theatre == null) {
-      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'theatre');
-    }
-    if (room == null) {
-      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'room');
-    }
-    if (end_time == null) {
-      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'end_time');
-    }
-    if (start_time == null) {
-      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'start_time');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('ShowTimeFullResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'ShowTimeFullResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        movie, 'ShowTimeFullResponse', 'movie');
+    BuiltValueNullFieldError.checkNotNull(
+        theatre, 'ShowTimeFullResponse', 'theatre');
+    BuiltValueNullFieldError.checkNotNull(room, 'ShowTimeFullResponse', 'room');
+    BuiltValueNullFieldError.checkNotNull(
+        end_time, 'ShowTimeFullResponse', 'end_time');
+    BuiltValueNullFieldError.checkNotNull(
+        start_time, 'ShowTimeFullResponse', 'start_time');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'ShowTimeFullResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'ShowTimeFullResponse', 'updatedAt');
   }
 
   @override
@@ -839,16 +825,17 @@ class ShowTimeFullResponseBuilder
   ShowTimeFullResponseBuilder();
 
   ShowTimeFullResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _is_active = _$v.is_active;
-      _movie = _$v.movie?.toBuilder();
-      _theatre = _$v.theatre?.toBuilder();
-      _room = _$v.room;
-      _end_time = _$v.end_time;
-      _start_time = _$v.start_time;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _is_active = $v.is_active;
+      _movie = $v.movie.toBuilder();
+      _theatre = $v.theatre.toBuilder();
+      _room = $v.room;
+      _end_time = $v.end_time;
+      _start_time = $v.start_time;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -856,9 +843,7 @@ class ShowTimeFullResponseBuilder
 
   @override
   void replace(ShowTimeFullResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ShowTimeFullResponse;
   }
 
@@ -873,15 +858,21 @@ class ShowTimeFullResponseBuilder
     try {
       _$result = _$v ??
           new _$ShowTimeFullResponse._(
-              id: id,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'ShowTimeFullResponse', 'id'),
               is_active: is_active,
               movie: movie.build(),
               theatre: theatre.build(),
-              room: room,
-              end_time: end_time,
-              start_time: start_time,
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              room: BuiltValueNullFieldError.checkNotNull(
+                  room, 'ShowTimeFullResponse', 'room'),
+              end_time: BuiltValueNullFieldError.checkNotNull(
+                  end_time, 'ShowTimeFullResponse', 'end_time'),
+              start_time: BuiltValueNullFieldError.checkNotNull(
+                  start_time, 'ShowTimeFullResponse', 'start_time'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'ShowTimeFullResponse', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'ShowTimeFullResponse', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

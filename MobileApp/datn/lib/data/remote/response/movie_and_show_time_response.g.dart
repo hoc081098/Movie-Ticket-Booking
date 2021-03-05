@@ -45,7 +45,7 @@ class _$MovieAndShowTimeResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'movie':
           result.movie.replace(serializers.deserialize(value,
@@ -74,13 +74,10 @@ class _$MovieAndShowTimeResponse extends MovieAndShowTimeResponse {
       (new MovieAndShowTimeResponseBuilder()..update(updates)).build();
 
   _$MovieAndShowTimeResponse._({this.movie, this.show_time}) : super._() {
-    if (movie == null) {
-      throw new BuiltValueNullFieldError('MovieAndShowTimeResponse', 'movie');
-    }
-    if (show_time == null) {
-      throw new BuiltValueNullFieldError(
-          'MovieAndShowTimeResponse', 'show_time');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        movie, 'MovieAndShowTimeResponse', 'movie');
+    BuiltValueNullFieldError.checkNotNull(
+        show_time, 'MovieAndShowTimeResponse', 'show_time');
   }
 
   @override
@@ -133,9 +130,10 @@ class MovieAndShowTimeResponseBuilder
   MovieAndShowTimeResponseBuilder();
 
   MovieAndShowTimeResponseBuilder get _$this {
-    if (_$v != null) {
-      _movie = _$v.movie?.toBuilder();
-      _show_time = _$v.show_time?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _movie = $v.movie.toBuilder();
+      _show_time = $v.show_time.toBuilder();
       _$v = null;
     }
     return this;
@@ -143,9 +141,7 @@ class MovieAndShowTimeResponseBuilder
 
   @override
   void replace(MovieAndShowTimeResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$MovieAndShowTimeResponse;
   }
 

@@ -37,30 +37,14 @@ class _$Comment extends Comment {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Comment', 'id');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('Comment', 'is_active');
-    }
-    if (content == null) {
-      throw new BuiltValueNullFieldError('Comment', 'content');
-    }
-    if (rate_star == null) {
-      throw new BuiltValueNullFieldError('Comment', 'rate_star');
-    }
-    if (movie == null) {
-      throw new BuiltValueNullFieldError('Comment', 'movie');
-    }
-    if (user == null) {
-      throw new BuiltValueNullFieldError('Comment', 'user');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Comment', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Comment', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Comment', 'id');
+    BuiltValueNullFieldError.checkNotNull(is_active, 'Comment', 'is_active');
+    BuiltValueNullFieldError.checkNotNull(content, 'Comment', 'content');
+    BuiltValueNullFieldError.checkNotNull(rate_star, 'Comment', 'rate_star');
+    BuiltValueNullFieldError.checkNotNull(movie, 'Comment', 'movie');
+    BuiltValueNullFieldError.checkNotNull(user, 'Comment', 'user');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Comment', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Comment', 'updatedAt');
   }
 
   @override
@@ -153,15 +137,16 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
   CommentBuilder();
 
   CommentBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _is_active = _$v.is_active;
-      _content = _$v.content;
-      _rate_star = _$v.rate_star;
-      _movie = _$v.movie;
-      _user = _$v.user?.toBuilder();
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _is_active = $v.is_active;
+      _content = $v.content;
+      _rate_star = $v.rate_star;
+      _movie = $v.movie;
+      _user = $v.user.toBuilder();
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -169,9 +154,7 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
 
   @override
   void replace(Comment other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Comment;
   }
 
@@ -186,14 +169,20 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
     try {
       _$result = _$v ??
           new _$Comment._(
-              id: id,
-              is_active: is_active,
-              content: content,
-              rate_star: rate_star,
-              movie: movie,
+              id: BuiltValueNullFieldError.checkNotNull(id, 'Comment', 'id'),
+              is_active: BuiltValueNullFieldError.checkNotNull(
+                  is_active, 'Comment', 'is_active'),
+              content: BuiltValueNullFieldError.checkNotNull(
+                  content, 'Comment', 'content'),
+              rate_star: BuiltValueNullFieldError.checkNotNull(
+                  rate_star, 'Comment', 'rate_star'),
+              movie: BuiltValueNullFieldError.checkNotNull(
+                  movie, 'Comment', 'movie'),
               user: user.build(),
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'Comment', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'Comment', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

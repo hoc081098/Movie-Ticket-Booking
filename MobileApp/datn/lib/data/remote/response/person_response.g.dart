@@ -32,16 +32,19 @@ class _$PersonResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
-    if (object.avatar != null) {
+    value = object.avatar;
+    if (value != null) {
       result
         ..add('avatar')
-        ..add(serializers.serialize(object.avatar,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -57,7 +60,7 @@ class _$PersonResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'is_active':
           result.is_active = serializers.deserialize(value,
@@ -115,18 +118,13 @@ class _$PersonResponse extends PersonResponse {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('PersonResponse', 'id');
-    }
-    if (full_name == null) {
-      throw new BuiltValueNullFieldError('PersonResponse', 'full_name');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('PersonResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('PersonResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'PersonResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        full_name, 'PersonResponse', 'full_name');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'PersonResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'PersonResponse', 'updatedAt');
   }
 
   @override
@@ -205,13 +203,14 @@ class PersonResponseBuilder
   PersonResponseBuilder();
 
   PersonResponseBuilder get _$this {
-    if (_$v != null) {
-      _is_active = _$v.is_active;
-      _id = _$v.id;
-      _avatar = _$v.avatar;
-      _full_name = _$v.full_name;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _is_active = $v.is_active;
+      _id = $v.id;
+      _avatar = $v.avatar;
+      _full_name = $v.full_name;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -219,9 +218,7 @@ class PersonResponseBuilder
 
   @override
   void replace(PersonResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$PersonResponse;
   }
 
@@ -235,11 +232,15 @@ class PersonResponseBuilder
     final _$result = _$v ??
         new _$PersonResponse._(
             is_active: is_active,
-            id: id,
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, 'PersonResponse', 'id'),
             avatar: avatar,
-            full_name: full_name,
-            createdAt: createdAt,
-            updatedAt: updatedAt);
+            full_name: BuiltValueNullFieldError.checkNotNull(
+                full_name, 'PersonResponse', 'full_name'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, 'PersonResponse', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, 'PersonResponse', 'updatedAt'));
     replace(_$result);
     return _$result;
   }

@@ -16,9 +16,7 @@ class _$City extends City {
       (new CityBuilder()..update(updates)).build();
 
   _$City._({this.name, this.location}) : super._() {
-    if (name == null) {
-      throw new BuiltValueNullFieldError('City', 'name');
-    }
+    BuiltValueNullFieldError.checkNotNull(name, 'City', 'name');
   }
 
   @override
@@ -63,9 +61,10 @@ class CityBuilder implements Builder<City, CityBuilder> {
   CityBuilder();
 
   CityBuilder get _$this {
-    if (_$v != null) {
-      _name = _$v.name;
-      _location = _$v.location?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _name = $v.name;
+      _location = $v.location?.toBuilder();
       _$v = null;
     }
     return this;
@@ -73,9 +72,7 @@ class CityBuilder implements Builder<City, CityBuilder> {
 
   @override
   void replace(City other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$City;
   }
 
@@ -88,7 +85,10 @@ class CityBuilder implements Builder<City, CityBuilder> {
   _$City build() {
     _$City _$result;
     try {
-      _$result = _$v ?? new _$City._(name: name, location: _location?.build());
+      _$result = _$v ??
+          new _$City._(
+              name: BuiltValueNullFieldError.checkNotNull(name, 'City', 'name'),
+              location: _location?.build());
     } catch (_) {
       String _$failedField;
       try {

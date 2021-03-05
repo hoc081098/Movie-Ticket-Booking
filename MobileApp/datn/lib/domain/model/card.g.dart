@@ -37,30 +37,15 @@ class _$Card extends Card {
       this.id,
       this.last4})
       : super._() {
-    if (brand == null) {
-      throw new BuiltValueNullFieldError('Card', 'brand');
-    }
-    if (card_holder_name == null) {
-      throw new BuiltValueNullFieldError('Card', 'card_holder_name');
-    }
-    if (country == null) {
-      throw new BuiltValueNullFieldError('Card', 'country');
-    }
-    if (exp_month == null) {
-      throw new BuiltValueNullFieldError('Card', 'exp_month');
-    }
-    if (exp_year == null) {
-      throw new BuiltValueNullFieldError('Card', 'exp_year');
-    }
-    if (funding == null) {
-      throw new BuiltValueNullFieldError('Card', 'funding');
-    }
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Card', 'id');
-    }
-    if (last4 == null) {
-      throw new BuiltValueNullFieldError('Card', 'last4');
-    }
+    BuiltValueNullFieldError.checkNotNull(brand, 'Card', 'brand');
+    BuiltValueNullFieldError.checkNotNull(
+        card_holder_name, 'Card', 'card_holder_name');
+    BuiltValueNullFieldError.checkNotNull(country, 'Card', 'country');
+    BuiltValueNullFieldError.checkNotNull(exp_month, 'Card', 'exp_month');
+    BuiltValueNullFieldError.checkNotNull(exp_year, 'Card', 'exp_year');
+    BuiltValueNullFieldError.checkNotNull(funding, 'Card', 'funding');
+    BuiltValueNullFieldError.checkNotNull(id, 'Card', 'id');
+    BuiltValueNullFieldError.checkNotNull(last4, 'Card', 'last4');
   }
 
   @override
@@ -156,15 +141,16 @@ class CardBuilder implements Builder<Card, CardBuilder> {
   CardBuilder();
 
   CardBuilder get _$this {
-    if (_$v != null) {
-      _brand = _$v.brand;
-      _card_holder_name = _$v.card_holder_name;
-      _country = _$v.country;
-      _exp_month = _$v.exp_month;
-      _exp_year = _$v.exp_year;
-      _funding = _$v.funding;
-      _id = _$v.id;
-      _last4 = _$v.last4;
+    final $v = _$v;
+    if ($v != null) {
+      _brand = $v.brand;
+      _card_holder_name = $v.card_holder_name;
+      _country = $v.country;
+      _exp_month = $v.exp_month;
+      _exp_year = $v.exp_year;
+      _funding = $v.funding;
+      _id = $v.id;
+      _last4 = $v.last4;
       _$v = null;
     }
     return this;
@@ -172,9 +158,7 @@ class CardBuilder implements Builder<Card, CardBuilder> {
 
   @override
   void replace(Card other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Card;
   }
 
@@ -187,14 +171,21 @@ class CardBuilder implements Builder<Card, CardBuilder> {
   _$Card build() {
     final _$result = _$v ??
         new _$Card._(
-            brand: brand,
-            card_holder_name: card_holder_name,
-            country: country,
-            exp_month: exp_month,
-            exp_year: exp_year,
-            funding: funding,
-            id: id,
-            last4: last4);
+            brand:
+                BuiltValueNullFieldError.checkNotNull(brand, 'Card', 'brand'),
+            card_holder_name: BuiltValueNullFieldError.checkNotNull(
+                card_holder_name, 'Card', 'card_holder_name'),
+            country: BuiltValueNullFieldError.checkNotNull(
+                country, 'Card', 'country'),
+            exp_month: BuiltValueNullFieldError.checkNotNull(
+                exp_month, 'Card', 'exp_month'),
+            exp_year: BuiltValueNullFieldError.checkNotNull(
+                exp_year, 'Card', 'exp_year'),
+            funding: BuiltValueNullFieldError.checkNotNull(
+                funding, 'Card', 'funding'),
+            id: BuiltValueNullFieldError.checkNotNull(id, 'Card', 'id'),
+            last4:
+                BuiltValueNullFieldError.checkNotNull(last4, 'Card', 'last4'));
     replace(_$result);
     return _$result;
   }

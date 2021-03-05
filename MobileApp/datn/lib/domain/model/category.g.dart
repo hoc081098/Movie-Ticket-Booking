@@ -24,21 +24,11 @@ class _$Category extends Category {
   _$Category._(
       {this.id, this.name, this.createdAt, this.updatedAt, this.is_active})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Category', 'id');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('Category', 'name');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Category', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Category', 'updatedAt');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('Category', 'is_active');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Category', 'id');
+    BuiltValueNullFieldError.checkNotNull(name, 'Category', 'name');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Category', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Category', 'updatedAt');
+    BuiltValueNullFieldError.checkNotNull(is_active, 'Category', 'is_active');
   }
 
   @override
@@ -105,12 +95,13 @@ class CategoryBuilder implements Builder<Category, CategoryBuilder> {
   CategoryBuilder();
 
   CategoryBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _name = _$v.name;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
-      _is_active = _$v.is_active;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _name = $v.name;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
+      _is_active = $v.is_active;
       _$v = null;
     }
     return this;
@@ -118,9 +109,7 @@ class CategoryBuilder implements Builder<Category, CategoryBuilder> {
 
   @override
   void replace(Category other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Category;
   }
 
@@ -133,11 +122,15 @@ class CategoryBuilder implements Builder<Category, CategoryBuilder> {
   _$Category build() {
     final _$result = _$v ??
         new _$Category._(
-            id: id,
-            name: name,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            is_active: is_active);
+            id: BuiltValueNullFieldError.checkNotNull(id, 'Category', 'id'),
+            name:
+                BuiltValueNullFieldError.checkNotNull(name, 'Category', 'name'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, 'Category', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, 'Category', 'updatedAt'),
+            is_active: BuiltValueNullFieldError.checkNotNull(
+                is_active, 'Category', 'is_active'));
     replace(_$result);
     return _$result;
   }

@@ -43,11 +43,13 @@ class _$SeatResponseSerializer implements StructuredSerializer<SeatResponse> {
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -61,7 +63,7 @@ class _$SeatResponseSerializer implements StructuredSerializer<SeatResponse> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'is_active':
           result.is_active = serializers.deserialize(value,
@@ -149,33 +151,18 @@ class _$SeatResponse extends SeatResponse {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (coordinates == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'coordinates');
-    }
-    if (id == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'id');
-    }
-    if (room == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'room');
-    }
-    if (theatre == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'theatre');
-    }
-    if (column == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'column');
-    }
-    if (row == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'row');
-    }
-    if (count == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'count');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('SeatResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        coordinates, 'SeatResponse', 'coordinates');
+    BuiltValueNullFieldError.checkNotNull(id, 'SeatResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(room, 'SeatResponse', 'room');
+    BuiltValueNullFieldError.checkNotNull(theatre, 'SeatResponse', 'theatre');
+    BuiltValueNullFieldError.checkNotNull(column, 'SeatResponse', 'column');
+    BuiltValueNullFieldError.checkNotNull(row, 'SeatResponse', 'row');
+    BuiltValueNullFieldError.checkNotNull(count, 'SeatResponse', 'count');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'SeatResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'SeatResponse', 'updatedAt');
   }
 
   @override
@@ -289,17 +276,18 @@ class SeatResponseBuilder
   SeatResponseBuilder();
 
   SeatResponseBuilder get _$this {
-    if (_$v != null) {
-      _is_active = _$v.is_active;
-      _coordinates = _$v.coordinates?.toBuilder();
-      _id = _$v.id;
-      _room = _$v.room;
-      _theatre = _$v.theatre;
-      _column = _$v.column;
-      _row = _$v.row;
-      _count = _$v.count;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _is_active = $v.is_active;
+      _coordinates = $v.coordinates.toBuilder();
+      _id = $v.id;
+      _room = $v.room;
+      _theatre = $v.theatre;
+      _column = $v.column;
+      _row = $v.row;
+      _count = $v.count;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -307,9 +295,7 @@ class SeatResponseBuilder
 
   @override
   void replace(SeatResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$SeatResponse;
   }
 
@@ -326,14 +312,22 @@ class SeatResponseBuilder
           new _$SeatResponse._(
               is_active: is_active,
               coordinates: coordinates.build(),
-              id: id,
-              room: room,
-              theatre: theatre,
-              column: column,
-              row: row,
-              count: count,
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'SeatResponse', 'id'),
+              room: BuiltValueNullFieldError.checkNotNull(
+                  room, 'SeatResponse', 'room'),
+              theatre: BuiltValueNullFieldError.checkNotNull(
+                  theatre, 'SeatResponse', 'theatre'),
+              column: BuiltValueNullFieldError.checkNotNull(
+                  column, 'SeatResponse', 'column'),
+              row: BuiltValueNullFieldError.checkNotNull(
+                  row, 'SeatResponse', 'row'),
+              count: BuiltValueNullFieldError.checkNotNull(
+                  count, 'SeatResponse', 'count'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'SeatResponse', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'SeatResponse', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

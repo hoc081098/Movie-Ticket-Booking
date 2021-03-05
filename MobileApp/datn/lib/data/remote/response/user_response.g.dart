@@ -22,10 +22,12 @@ class _$LocationResponseSerializer
   Iterable<Object> serialize(Serializers serializers, LocationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.coordinates != null) {
+    Object value;
+    value = object.coordinates;
+    if (value != null) {
       result
         ..add('coordinates')
-        ..add(serializers.serialize(object.coordinates,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(double)])));
     }
@@ -42,7 +44,7 @@ class _$LocationResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'coordinates':
           result.coordinates.replace(serializers.deserialize(value,
@@ -84,41 +86,48 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
       'role',
       serializers.serialize(object.role, specifiedType: const FullType(String)),
     ];
-    if (object.phoneNumber != null) {
+    Object value;
+    value = object.phoneNumber;
+    if (value != null) {
       result
         ..add('phone_number')
-        ..add(serializers.serialize(object.phoneNumber,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.avatar != null) {
+    value = object.avatar;
+    if (value != null) {
       result
         ..add('avatar')
-        ..add(serializers.serialize(object.avatar,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.address != null) {
+    value = object.address;
+    if (value != null) {
       result
         ..add('address')
-        ..add(serializers.serialize(object.address,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.birthday != null) {
+    value = object.birthday;
+    if (value != null) {
       result
         ..add('birthday')
-        ..add(serializers.serialize(object.birthday,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
-    if (object.location != null) {
+    value = object.location;
+    if (value != null) {
       result
         ..add('location')
-        ..add(serializers.serialize(object.location,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(LocationResponse)));
     }
-    if (object.isActive != null) {
+    value = object.isActive;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.isActive,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -132,7 +141,7 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'uid':
           result.uid = serializers.deserialize(value,
@@ -240,8 +249,9 @@ class LocationResponseBuilder
   LocationResponseBuilder();
 
   LocationResponseBuilder get _$this {
-    if (_$v != null) {
-      _coordinates = _$v.coordinates?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _coordinates = $v.coordinates?.toBuilder();
       _$v = null;
     }
     return this;
@@ -249,9 +259,7 @@ class LocationResponseBuilder
 
   @override
   void replace(LocationResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$LocationResponse;
   }
 
@@ -325,24 +333,13 @@ class _$UserResponse extends UserResponse {
       this.isActive,
       this.role})
       : super._() {
-    if (uid == null) {
-      throw new BuiltValueNullFieldError('UserResponse', 'uid');
-    }
-    if (email == null) {
-      throw new BuiltValueNullFieldError('UserResponse', 'email');
-    }
-    if (fullName == null) {
-      throw new BuiltValueNullFieldError('UserResponse', 'fullName');
-    }
-    if (gender == null) {
-      throw new BuiltValueNullFieldError('UserResponse', 'gender');
-    }
-    if (isCompleted == null) {
-      throw new BuiltValueNullFieldError('UserResponse', 'isCompleted');
-    }
-    if (role == null) {
-      throw new BuiltValueNullFieldError('UserResponse', 'role');
-    }
+    BuiltValueNullFieldError.checkNotNull(uid, 'UserResponse', 'uid');
+    BuiltValueNullFieldError.checkNotNull(email, 'UserResponse', 'email');
+    BuiltValueNullFieldError.checkNotNull(fullName, 'UserResponse', 'fullName');
+    BuiltValueNullFieldError.checkNotNull(gender, 'UserResponse', 'gender');
+    BuiltValueNullFieldError.checkNotNull(
+        isCompleted, 'UserResponse', 'isCompleted');
+    BuiltValueNullFieldError.checkNotNull(role, 'UserResponse', 'role');
   }
 
   @override
@@ -471,19 +468,20 @@ class UserResponseBuilder
   UserResponseBuilder();
 
   UserResponseBuilder get _$this {
-    if (_$v != null) {
-      _uid = _$v.uid;
-      _email = _$v.email;
-      _phoneNumber = _$v.phoneNumber;
-      _fullName = _$v.fullName;
-      _gender = _$v.gender;
-      _avatar = _$v.avatar;
-      _address = _$v.address;
-      _birthday = _$v.birthday;
-      _location = _$v.location?.toBuilder();
-      _isCompleted = _$v.isCompleted;
-      _isActive = _$v.isActive;
-      _role = _$v.role;
+    final $v = _$v;
+    if ($v != null) {
+      _uid = $v.uid;
+      _email = $v.email;
+      _phoneNumber = $v.phoneNumber;
+      _fullName = $v.fullName;
+      _gender = $v.gender;
+      _avatar = $v.avatar;
+      _address = $v.address;
+      _birthday = $v.birthday;
+      _location = $v.location?.toBuilder();
+      _isCompleted = $v.isCompleted;
+      _isActive = $v.isActive;
+      _role = $v.role;
       _$v = null;
     }
     return this;
@@ -491,9 +489,7 @@ class UserResponseBuilder
 
   @override
   void replace(UserResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$UserResponse;
   }
 
@@ -508,18 +504,24 @@ class UserResponseBuilder
     try {
       _$result = _$v ??
           new _$UserResponse._(
-              uid: uid,
-              email: email,
+              uid: BuiltValueNullFieldError.checkNotNull(
+                  uid, 'UserResponse', 'uid'),
+              email: BuiltValueNullFieldError.checkNotNull(
+                  email, 'UserResponse', 'email'),
               phoneNumber: phoneNumber,
-              fullName: fullName,
-              gender: gender,
+              fullName: BuiltValueNullFieldError.checkNotNull(
+                  fullName, 'UserResponse', 'fullName'),
+              gender: BuiltValueNullFieldError.checkNotNull(
+                  gender, 'UserResponse', 'gender'),
               avatar: avatar,
               address: address,
               birthday: birthday,
               location: _location?.build(),
-              isCompleted: isCompleted,
+              isCompleted: BuiltValueNullFieldError.checkNotNull(
+                  isCompleted, 'UserResponse', 'isCompleted'),
               isActive: isActive,
-              role: role);
+              role: BuiltValueNullFieldError.checkNotNull(
+                  role, 'UserResponse', 'role'));
     } catch (_) {
       String _$failedField;
       try {
