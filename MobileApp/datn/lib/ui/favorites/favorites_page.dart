@@ -44,7 +44,6 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
       );
 
       AppScaffold.currentIndexStream(context)
-          .startWith(AppScaffold.currentIndex(context))
           .where((i) => i == AppScaffoldIndex.favorites)
           .take(1)
           .debug(identifier: '>>> FAVORITES')

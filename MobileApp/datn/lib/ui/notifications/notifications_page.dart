@@ -93,7 +93,6 @@ class _NotificationsPageState extends State<NotificationsPage>
       }
 
       AppScaffold.currentIndexStream(context)
-          .startWith(AppScaffold.currentIndex(context))
           .where((event) => event == AppScaffoldIndex.notifications)
           .take(1)
           .debug(identifier: '>>> NOTIFICATIONS')

@@ -87,9 +87,6 @@ class AppScaffold extends StatefulWidget {
           BuildContext context) =>
       context.findAncestorStateOfType<_AppScaffoldState>().indexS;
 
-  static AppScaffoldIndex currentIndex(BuildContext context) =>
-      currentIndexStream(context).requireValue;
-
   static NavigatorState navigatorByIndex(
     BuildContext context,
     AppScaffoldIndex index,
@@ -102,8 +99,7 @@ class AppScaffold extends StatefulWidget {
 
 class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
   var navigatorKeys = <GlobalKey<NavigatorState>>[];
-  final indexS =
-      ValueSubject(AppScaffoldIndex.home); // async Controller for safe.
+  final indexS = ValueSubject(AppScaffoldIndex.home, sync: true);
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:tryInline')
