@@ -149,6 +149,11 @@ extension NavigatorStateX on NavigatorState {
     );
   }
 
+  void popUntilX(RoutePredicate predicate) {
+    _removeCurrentSnackBar();
+    popUntil(predicate);
+  }
+
   void _removeCurrentSnackBar() {
     try {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();

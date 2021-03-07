@@ -1,5 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import '../../../domain/model/user.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
@@ -15,15 +15,18 @@ import '../../../domain/model/card.dart' as domain;
 import '../../../domain/model/movie.dart';
 import '../../../domain/model/product.dart';
 import '../../../domain/model/promotion.dart';
+import '../../../domain/model/reservation.dart';
 import '../../../domain/model/show_time.dart';
 import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
+import '../../../domain/model/user.dart';
 import '../../../domain/repository/reservation_repository.dart';
 import '../../../domain/repository/user_repository.dart';
 import '../../../generated/l10n.dart';
 import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
+import '../../profile/reservation_detail/reservation_detail_page.dart';
 import '../detail/movie_detail_page.dart';
 import '../showtimes_by_theatre/show_time_by_theatre_page.dart';
 import '../tickets/ticket_page.dart';
@@ -41,7 +44,9 @@ final phoneNumberRegex = RegExp(
 abstract class Message {}
 
 class CheckoutSuccess implements Message {
-  const CheckoutSuccess();
+  final Reservation reservation;
+
+  const CheckoutSuccess(this.reservation);
 }
 
 class CheckoutFailure implements Message {
@@ -79,7 +84,7 @@ class CheckoutBloc implements BaseBloc {
 
   void selectPromotion(Promotion promotion) => _promotionS.add(promotion);
 
-  Function0<void> get submit => () => _submitS.add(null);
+  void submit() => _submitS.add(null);
 
   void initializeWith(User user) {
     _emailS.add(user.email);
@@ -165,7 +170,7 @@ class CheckoutBloc implements BaseBloc {
                 .debug(identifier: 'POST REQUEST')
                 .doOnListen(() => _isLoadingS.add(true))
                 .doOnCancel(() => _isLoadingS.add(false))
-                .mapTo<Message>(const CheckoutSuccess())
+                .map<Message>((r) => CheckoutSuccess(r))
                 .onErrorReturnWith((error) => CheckoutFailure(error)),
           ),
       form$.where((v) => v == null).mapTo(const MissingRequiredInfo())
@@ -321,6 +326,7 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
               child: BottomRow(
                 tickets: widget.tickets,
                 comboItems: widget.products,
+                onSubmit: onSubmit,
               ),
             ),
           ),
@@ -333,15 +339,22 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
     if (message is CheckoutSuccess) {
       context.showSnackBar(
           S.of(context).checkoutSuccessfullyPleaseCheckEmailToGetTicket);
-      await delay(700);
+      await delay(600);
 
       if (TicketsCountDownTimerBlocProvider.shared().fromDetailPage) {
         AppScaffold.ofIndex(context, 0)
-            .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
+            .popUntilX(ModalRoute.withName(MovieDetailPage.routeName));
       } else {
         AppScaffold.ofIndex(context, 0)
-            .popUntil(ModalRoute.withName(ShowTimesByTheatrePage.routeName));
+            .popUntilX(ModalRoute.withName(ShowTimesByTheatrePage.routeName));
       }
+
+      unawaited(
+        AppScaffold.of(context, newTabIndex: 3).pushNamedX(
+          ReservationDetailPage.routeName,
+          arguments: message.reservation,
+        ),
+      );
     }
     if (message is CheckoutFailure) {
       context.showSnackBar(S
@@ -351,6 +364,37 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
     }
     if (message is MissingRequiredInfo) {
       context.showSnackBar(S.of(context).missingRequiredFields);
+    }
+  }
+
+  void onSubmit() async {
+    FocusScope.of(context).unfocus();
+    final bloc = context.get<CheckoutBloc>();
+
+    final ok = await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text('Confirmation'),
+          content: Text('Pay for your tickets?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).cancel),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+            ),
+            TextButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (identical(ok, true) && mounted) {
+      print('submit');
+      bloc.submit();
     }
   }
 }
