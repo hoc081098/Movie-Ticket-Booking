@@ -13,6 +13,8 @@ enum AppScaffoldIndex {
   profile,
 }
 
+@pragma('vm:prefer-inline')
+@pragma('dart2js:tryInline')
 AppScaffoldIndex _fromRawValue(int rawValue) {
   switch (rawValue) {
     case 0:
