@@ -263,9 +263,10 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
                 .doOnError((e, s) => context.showSnackBar(
                     S.of(context).error_with_message(getErrorMessage(e)))),
           )
-          .doOnData((r) =>
-              AppScaffold.of(appScaffoldKey.currentContext, newTabIndex: 3)
-                  .pushNamedX(ReservationDetailPage.routeName, arguments: r))
+          .doOnData((r) => AppScaffold.navigatorOfCurrentIndex(
+                  appScaffoldKey.currentContext,
+                  switchToNewIndex: AppScaffoldIndex.profile)
+              .pushNamedX(ReservationDetailPage.routeName, arguments: r))
           .collect()
           .disposedBy(bag);
 

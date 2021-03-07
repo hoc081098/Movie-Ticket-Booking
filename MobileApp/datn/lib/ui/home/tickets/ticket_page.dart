@@ -246,10 +246,10 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                 Navigator.of(dialogContext).pop();
 
                 if (widget.fromMovieDetail) {
-                  AppScaffold.ofIndex(context, 0)
+                  AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home)
                       .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
                 } else {
-                  AppScaffold.ofIndex(context, 0).popUntil(
+                  AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home).popUntil(
                       ModalRoute.withName(ShowTimesByTheatrePage.routeName));
                 }
               },
@@ -402,7 +402,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () => AppScaffold.of(context).maybePop(),
+                      onTap: () => AppScaffold.navigatorOfCurrentIndex(context).maybePop(),
                       customBorder: CircleBorder(),
                       splashColor: Colors.white30,
                       child: Padding(
@@ -460,7 +460,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
     }
 
     final tickets = ids.map((id) => ticketsMap[id]).toBuiltList();
-    AppScaffold.of(context).pushNamedX(
+    AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
       ComboPage.routeName,
       arguments: {
         'showTime': widget.showTime,
@@ -518,7 +518,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
 
-                    AppScaffold.ofIndex(context, 0)
+                    AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home)
                         .popUntil(ModalRoute.withName(TicketsPage.routeName));
                   },
                 ),

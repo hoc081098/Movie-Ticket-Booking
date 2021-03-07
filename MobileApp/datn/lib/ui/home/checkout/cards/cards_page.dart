@@ -222,7 +222,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
         final selected = bloc.state$.value.item2;
         print('[DEBUG] pop selected=$selected');
 
-        AppScaffold.of(context).pop(selected);
+        AppScaffold.navigatorOfCurrentIndex(context).pop(selected);
 
         return false;
       },
@@ -255,7 +255,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
               duration: const Duration(milliseconds: 200),
               child: FloatingActionButton.extended(
                 onPressed: () async {
-                  final added = await AppScaffold.of(context).pushNamedX(
+                  final added = await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
                     AddCardPage.routeName,
                     arguments: widget.mode,
                   );
