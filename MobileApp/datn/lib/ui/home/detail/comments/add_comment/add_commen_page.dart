@@ -138,7 +138,7 @@ class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
     if (message is AddCommentSuccessMessage) {
       context.showSnackBar(S.of(context).addCommentSuccessfully);
       await delay(500);
-      AppScaffold.of(context).pop(message.comment);
+      AppScaffold.navigatorOfCurrentIndex(context).pop(message.comment);
       return;
     }
     if (message is AddCommentFailureMessage) {

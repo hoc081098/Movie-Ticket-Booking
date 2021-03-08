@@ -91,7 +91,7 @@ class RelatedMovies extends StatelessWidget {
 
               return InkWell(
                 onTap: () {
-                  AppScaffold.of(context).pushNamedX(
+                  AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
                     MovieDetailPage.routeName,
                     arguments: item,
                   );

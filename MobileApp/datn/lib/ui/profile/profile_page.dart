@@ -84,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           backgroundColor: color,
           onTap: () =>
-              AppScaffold.of(context).pushNamedX(ReservationsPage.routeName),
+              AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(ReservationsPage.routeName),
           label: S.of(context).tickets,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w500,
@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Icons.credit_card,
           ),
           backgroundColor: color,
-          onTap: () => AppScaffold.of(context).pushNamedX(
+          onTap: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
             CardsPage.routeName,
             arguments: {
               'mode': CardPageMode.manage,
@@ -306,7 +306,7 @@ class LoggedIn extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () => AppScaffold.of(context).pushNamedX(
+            onTap: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               UpdateProfilePage.routeName,
               arguments: user,
             ),

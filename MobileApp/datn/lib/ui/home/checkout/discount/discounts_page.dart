@@ -253,7 +253,7 @@ class DiscountsPage extends StatelessWidget {
     );
 
     if (identical(ok, true)) {
-      AppScaffold.of(context).pop(promotion);
+      AppScaffold.navigatorOfCurrentIndex(context).pop(promotion);
     }
   }
 }

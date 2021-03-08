@@ -342,15 +342,17 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
       await delay(600);
 
       if (TicketsCountDownTimerBlocProvider.shared().fromDetailPage) {
-        AppScaffold.ofIndex(context, 0)
+        AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home)
             .popUntilX(ModalRoute.withName(MovieDetailPage.routeName));
       } else {
-        AppScaffold.ofIndex(context, 0)
+        AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home)
             .popUntilX(ModalRoute.withName(ShowTimesByTheatrePage.routeName));
       }
 
       unawaited(
-        AppScaffold.of(context, newTabIndex: 3).pushNamedX(
+        AppScaffold.navigatorOfCurrentIndex(context,
+                switchToNewIndex: AppScaffoldIndex.profile)
+            .pushNamedX(
           ReservationDetailPage.routeName,
           arguments: message.reservation,
         ),

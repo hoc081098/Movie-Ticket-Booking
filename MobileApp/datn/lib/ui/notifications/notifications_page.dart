@@ -63,7 +63,9 @@ class _NotificationsPageState extends State<NotificationsPage>
                   S.of(context).error_with_message(getErrorMessage(e)))),
         )
         .doOnData(
-          (r) => AppScaffold.of(context, newTabIndex: 3).pushNamedX(
+          (r) => AppScaffold.navigatorOfCurrentIndex(context,
+                  switchToNewIndex: AppScaffoldIndex.profile)
+              .pushNamedX(
             ReservationDetailPage.routeName,
             arguments: r,
           ),
@@ -90,9 +92,10 @@ class _NotificationsPageState extends State<NotificationsPage>
         }
       }
 
-      AppScaffold.tapStream(context)
-          .where((event) => event == 2)
+      AppScaffold.currentIndexStream(context)
+          .where((event) => event == AppScaffoldIndex.notifications)
           .take(1)
+          .debug(identifier: '>>> NOTIFICATIONS')
           .doOnData((event) => s.dispatch(const LoadFirstPageAction()))
           .exhaustMap((_) => notificationManager.notification$)
           .map((event) => AddedNotificationAction(event))

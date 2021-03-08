@@ -1,8 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 typedef AppScaffoldWidgetBuilder = Widget Function(BuildContext, RouteSettings);
+
+enum AppScaffoldIndex {
+  home,
+  favorites,
+  notifications,
+  profile,
+}
+
+@pragma('vm:prefer-inline')
+@pragma('dart2js:tryInline')
+AppScaffoldIndex _fromRawValue(int rawValue) {
+  switch (rawValue) {
+    case 0:
+      return AppScaffoldIndex.home;
+    case 1:
+      return AppScaffoldIndex.favorites;
+    case 2:
+      return AppScaffoldIndex.notifications;
+    case 3:
+      return AppScaffoldIndex.profile;
+  }
+  throw StateError('Missing case $rawValue');
+}
+
+extension on AppScaffoldIndex {
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:tryInline')
+  int get rawValue {
+    switch (this) {
+      case AppScaffoldIndex.home:
+        return 0;
+      case AppScaffoldIndex.favorites:
+        return 1;
+      case AppScaffoldIndex.notifications:
+        return 2;
+      case AppScaffoldIndex.profile:
+        return 3;
+    }
+    throw StateError('Missing case $this');
+  }
+}
 
 class AppScaffold extends StatefulWidget {
   final List<BottomNavigationBarItem> items;
@@ -17,42 +60,50 @@ class AppScaffold extends StatefulWidget {
   @override
   _AppScaffoldState createState() => _AppScaffoldState();
 
-  static NavigatorState of(BuildContext context, {int newTabIndex}) {
+  static NavigatorState navigatorOfCurrentIndex(
+    BuildContext context, {
+    AppScaffoldIndex switchToNewIndex,
+  }) {
     final appScaffoldState =
         context is StatefulElement && context.state is _AppScaffoldState
             ? context.state as _AppScaffoldState
             : context.findAncestorStateOfType<_AppScaffoldState>();
 
-    final currentIndex = appScaffoldState.index;
+    final currentIndex = appScaffoldState.currentIndex;
     final navigatorKeys = appScaffoldState.navigatorKeys;
+    final newIndex = switchToNewIndex?.rawValue;
 
-    if (newTabIndex != null &&
-        newTabIndex != currentIndex &&
+    if (newIndex != null &&
+        newIndex != currentIndex &&
         appScaffoldState.mounted) {
-      appScaffoldState.onTap(newTabIndex);
-      return navigatorKeys[newTabIndex].currentState;
+      appScaffoldState.onTap(newIndex);
+      return navigatorKeys[newIndex].currentState;
     }
 
     return navigatorKeys[currentIndex].currentState;
   }
 
-  static Stream<int> tapStream(BuildContext context) {
-    final appScaffoldState =
-        context.findAncestorStateOfType<_AppScaffoldState>();
-    return appScaffoldState.tapS;
-  }
+  static NotReplayValueStream<AppScaffoldIndex> currentIndexStream(
+          BuildContext context) =>
+      context.findAncestorStateOfType<_AppScaffoldState>().indexS;
 
-  static NavigatorState ofIndex(BuildContext context, int index) {
+  static NavigatorState navigatorByIndex(
+    BuildContext context,
+    AppScaffoldIndex index,
+  ) {
     final appScaffoldState =
         context.findAncestorStateOfType<_AppScaffoldState>();
-    return appScaffoldState.navigatorKeys[index].currentState;
+    return appScaffoldState.navigatorKeys[index.rawValue].currentState;
   }
 }
 
 class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
-  var index = 0;
   var navigatorKeys = <GlobalKey<NavigatorState>>[];
-  final tapS = PublishSubject<int>(sync: true);
+  final indexS = ValueSubject(AppScaffoldIndex.home, sync: true);
+
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:tryInline')
+  int get currentIndex => indexS.requireValue.rawValue;
 
   @override
   void initState() {
@@ -62,50 +113,58 @@ class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
       widget.builders.length,
       (_) => GlobalKey<NavigatorState>(),
     );
-    tapS.disposedBy(bag);
+    indexS.disposedBy(bag);
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        final navigatorState = navigatorKeys[index].currentState;
+        final navigatorState = navigatorKeys[currentIndex].currentState;
         final canPop = navigatorState.canPop();
 
         if (canPop) {
           navigatorState.maybePop();
         }
 
-        if (!canPop && index > 0) {
+        if (!canPop && currentIndex > 0) {
           onTap(0);
           return Future.value(false);
         }
 
         return Future.value(!canPop);
       },
-      child: Scaffold(
-        body: buildBody(),
-        bottomNavigationBar: BottomNavigationBar(
-          items: widget.items,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: index,
-          onTap: onTap,
-        ),
+      child: RxStreamBuilder<AppScaffoldIndex>(
+        stream: indexS,
+        builder: (context, snapshot) {
+          assert(snapshot != null);
+          final index = snapshot.rawValue;
+
+          return Scaffold(
+            body: buildBody(index),
+            bottomNavigationBar: BottomNavigationBar(
+              items: widget.items,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: index,
+              onTap: onTap,
+            ),
+          );
+        },
       ),
     );
   }
 
   void onTap(final int newIndex) {
-    if (index == newIndex) {
-      navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
+    if (currentIndex == newIndex) {
+      navigatorKeys[currentIndex]
+          .currentState
+          ?.popUntil((route) => route.isFirst);
     } else {
-      setState(() => index = newIndex);
+      indexS.add(_fromRawValue(newIndex));
     }
-
-    tapS.add(newIndex);
   }
 
-  Widget buildBody() {
+  Widget buildBody(int index) {
     return IndexedStack(
       index: index,
       children: [

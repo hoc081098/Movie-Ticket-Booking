@@ -8,6 +8,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:stream_loader/stream_loader.dart';
 
 import '../../domain/model/movie.dart';
@@ -42,9 +43,10 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
         logger: print,
       );
 
-      AppScaffold.tapStream(context)
-          .where((i) => i == 1)
+      AppScaffold.currentIndexStream(context)
+          .where((i) => i == AppScaffoldIndex.favorites)
           .take(1)
+          .debug(identifier: '>>> FAVORITES')
           .listen((event) => bloc.fetch())
           .disposedBy(bag);
 
@@ -220,7 +222,9 @@ class FavoriteItem extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          onTap: () => AppScaffold.of(context, newTabIndex: 0).pushNamedX(
+          onTap: () => AppScaffold.navigatorOfCurrentIndex(context,
+                  switchToNewIndex: AppScaffoldIndex.home)
+              .pushNamedX(
             MovieDetailPage.routeName,
             arguments: item,
           ),
