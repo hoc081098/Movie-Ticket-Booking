@@ -56,6 +56,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //
+  // Init Firebase
+  //
+  await Firebase.initializeApp();
+
+  //
   // Env
   //
   await _envConfig();
@@ -63,7 +68,6 @@ void main() async {
   //
   // Firebase, Google, Facebook
   //
-  await Firebase.initializeApp();
 
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);

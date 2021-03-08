@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:file/src/interface/file.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,14 +23,23 @@ class FcmNotificationManager {
   static const channelName = 'com.hoc.datn.channel';
   static const channelDescription = 'Enjoy movie notification channel';
   static const _notificationIdKey = 'com.hoc.datn.notification.id';
+  static final _minId = -pow(2, 31).toInt();
+  static final _maxId = pow(2, 31).toInt() - 1;
 
   final AuthClient _authClient;
   final FirebaseMessaging _firebaseMessaging;
   final RxSharedPreferences _prefs;
 
-  Future<int> _getAndIncrementId() => _prefs
-      .getInt(_notificationIdKey)
-      .then((id) => _prefs.setInt(_notificationIdKey, id + 1).then((_) => id));
+  Future<int> _getAndIncrementId() =>
+      _prefs.getInt(_notificationIdKey).then((id) {
+        var newId = id == null ? _minId : id + 1;
+        if (newId > _maxId) {
+          newId = _minId;
+        }
+
+        print('$_minId $_maxId : $id $newId');
+        return _prefs.setInt(_notificationIdKey, newId).then((_) => newId);
+      });
 
   var _setupNotification = false;
   final _cacheManager = DefaultCacheManager();
@@ -44,7 +54,8 @@ class FcmNotificationManager {
 
     _notification$ = Rx.concat([initial$, FirebaseMessaging.onMessage])
         .asyncExpand(_handleRemoteMessage)
-        .asBroadcastStream();
+        .publish()
+          ..connect();
   }
 
   Future<Notification> _getNotificationById(String id) {
@@ -78,7 +89,7 @@ class FcmNotificationManager {
     _setupNotification = true;
   }
 
-  Stream<void> _handleRemoteMessage(RemoteMessage message) async* {
+  Stream<Notification> _handleRemoteMessage(RemoteMessage message) async* {
     try {
       print('>>>>>>>>>>> onMessage: $message');
 
