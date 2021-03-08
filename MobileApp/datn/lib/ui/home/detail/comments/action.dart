@@ -146,13 +146,16 @@ class RemoveCommentSuccess implements Action {
 
   @override
   State reduce(State state) {
-    final avg =
-        (state.total * state.average - comment.rate_star) / (state.total - 1);
+    final newTotal = state.total - 1;
+    final avg = newTotal <= 0
+        ? 0.0
+        : (state.total * state.average - comment.rate_star) /
+            newTotal.toDouble();
 
     return state.rebuild(
       (b) => b
         ..items.removeWhere((item) => item.id == comment.id)
-        ..total = state.total - 1
+        ..total = newTotal
         ..average = avg,
     );
   }
