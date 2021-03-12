@@ -261,7 +261,7 @@ class CommentItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userRepo = Provider.of<UserRepository>(context);
-    final optional = userRepo.user$.value;
+    final optional = userRepo.user$.requireValue;
     final isOwner = optional != null &&
         optional is Some<User> &&
         optional.value.uid == item.user.uid;
@@ -444,7 +444,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userRepo = Provider.of<UserRepository>(context);
-    final avatar = userRepo.user$.value?.fold(() => null, (u) => u.avatar);
+    final avatar = userRepo.user$.requireValue?.fold(() => null, (u) => u.avatar);
 
     return Column(
       children: [
