@@ -76,11 +76,13 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: color,
       visible: true,
       curve: Curves.bounceIn,
+      foregroundColor: Colors.white,
       children: [
         SpeedDialChild(
           child: Icon(
             FontAwesomeIcons.ticketAlt,
             size: 20,
+            color: Colors.white,
           ),
           backgroundColor: color,
           onTap: () =>
@@ -96,6 +98,8 @@ class _ProfilePageState extends State<ProfilePage> {
         SpeedDialChild(
           child: Icon(
             Icons.credit_card,
+            size: 20,
+            color: Colors.white,
           ),
           backgroundColor: color,
           onTap: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
@@ -104,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
               'mode': CardPageMode.manage,
             },
           ),
-          label: 'Cards',
+          label: S.of(context).cards,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w500,
             color: Colors.white,

@@ -54,6 +54,7 @@ class _MyAppState extends State<MyApp> {
     accentColor: const Color(0xff02a3f7),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: 'Montserrat',
+    brightness: Brightness.light,
   );
 
   @override

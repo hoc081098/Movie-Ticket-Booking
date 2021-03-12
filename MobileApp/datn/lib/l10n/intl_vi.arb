@@ -189,5 +189,6 @@
   "male": "Nam",
   "female": "Nữ",
   "lengthOfContentMustBeInFrom10To500": "Độ dài phải từ 10 đến 500",
-  "loading": "Đang tải..."
+  "loading": "Đang tải...",
+  "cards": "Cards"
 }

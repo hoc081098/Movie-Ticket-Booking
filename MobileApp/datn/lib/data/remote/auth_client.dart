@@ -46,7 +46,7 @@ abstract class AppClient extends BaseClient {
           )
           .then(_parseResult);
 
-  Future<dynamic> deleteBody(dynamic url, {Map<String, String> headers}) =>
+  Future<dynamic> deleteBody(Uri url, {Map<String, String> headers}) =>
       this.delete(url, headers: headers).then(_parseResult);
 
   static dynamic _parseResult(Response response) {
