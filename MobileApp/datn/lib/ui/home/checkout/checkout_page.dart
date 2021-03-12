@@ -206,12 +206,12 @@ class CheckoutPage extends StatefulWidget {
   final BuiltList<Tuple2<Product, int>> products;
 
   const CheckoutPage({
-    Key key,
-    @required this.tickets,
-    @required this.showTime,
-    @required this.theatre,
-    @required this.movie,
-    @required this.products,
+    Key? key,
+    required this.tickets,
+    required this.showTime,
+    required this.theatre,
+    required this.movie,
+    required this.products,
   }) : super(key: key);
 
   @override
@@ -222,8 +222,8 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
   final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
 
-  Object token;
-  User user;
+  Object? token;
+  User? user;
 
   @override
   void initState() {
@@ -234,9 +234,9 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
         .user$
         .value
         ?.fold(() => null, (user) => user);
-    assert(user != null);
-
-    context.get<CheckoutBloc>().initializeWith(user);
+    if (user != null) {
+      context.get<CheckoutBloc>().initializeWith(user!);
+    }
   }
 
   @override
@@ -251,10 +251,17 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    if (user == null) {
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+      );
+    }
+
     final buttonHeight = 54.0;
     final countDownStyle = Theme.of(context)
         .textTheme
-        .subtitle2
+        .subtitle2!
         .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
@@ -294,7 +301,7 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
                 ),
                 SliverToBoxAdapter(
                   child: PhoneEmailForm(
-                    user: user,
+                    user: user!,
                   ),
                 ),
                 SliverToBoxAdapter(

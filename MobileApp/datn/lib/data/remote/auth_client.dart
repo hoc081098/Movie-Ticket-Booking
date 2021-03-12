@@ -11,10 +11,10 @@ abstract class AppClient extends BaseClient {
   /// Sends an HTTP GET request with the given headers to the given URL, which can be a Uri or a String.
   /// Returns the resulting Json object.
   /// Throws [ErrorResponse]
-  Future<Object?> getBody(Uri url, {Map<String, String>? headers}) =>
+  Future<dynamic> getBody(Uri url, {Map<String, String>? headers}) =>
       this.get(url, headers: headers).then(_parseResult);
 
-  Future<Object?> postBody(
+  Future<dynamic> postBody(
     Uri url, {
     Map<String, String>? headers,
     Map<String, Object?>? body,
@@ -30,7 +30,7 @@ abstract class AppClient extends BaseClient {
           )
           .then(_parseResult);
 
-  Future<Object?> putBody(
+  Future<dynamic> putBody(
     Uri url, {
     Map<String, String>? headers,
     Map<String, Object?>? body,
@@ -46,7 +46,7 @@ abstract class AppClient extends BaseClient {
           )
           .then(_parseResult);
 
-  Future<Object?> deleteBody(Uri url, {Map<String, String>? headers}) =>
+  Future<dynamic> deleteBody(Uri url, {Map<String, String>? headers}) =>
       this.delete(url, headers: headers).then(_parseResult);
 
   static Object? _parseResult(Response response) {
@@ -64,19 +64,18 @@ abstract class AppClient extends BaseClient {
     try {
       errorResponse = SingleMessageErrorResponse.fromJson(json);
     } catch (e1, s1) {
-      print(
-          '<-- ${request} Parse SingleMessageErrorResponse error: ${e1} ${s1}');
+      print('<-- $request Parse SingleMessageErrorResponse error: $e1 $s1');
 
       try {
         errorResponse = MultipleMessagesErrorResponse.fromJson(json);
       } catch (e2, s2) {
         print(
-            '<-- ${request} Parse MultipleMessagesErrorResponse error: ${e2} ${s2}');
+            '<-- $request Parse MultipleMessagesErrorResponse error: $e2 $s2');
         throw ParseErrorResponseException([e1, e2]);
       }
     }
 
-    print('<-- ${request} errorResponse=$errorResponse');
+    print('<-- $request errorResponse=$errorResponse');
     throw errorResponse;
   }
 }
@@ -89,7 +88,7 @@ class NormalClient extends AppClient {
 
   @override
   Future<StreamedResponse> send(BaseRequest request) {
-    print('--> ${request}');
+    print('--> $request');
     return _client.send(request).timeout(_timeout).then(_logResponse);
   }
 
@@ -121,7 +120,7 @@ class AuthClient extends AppClient {
       request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
     }
 
-    print('--> ${request}');
+    print('--> $request');
     return _client.send(request).timeout(_timeout).then(_handleResponse);
   }
 

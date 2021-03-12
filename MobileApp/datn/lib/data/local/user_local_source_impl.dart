@@ -15,11 +15,11 @@ class UserLocalSourceImpl implements UserLocalSource {
   UserLocalSourceImpl(this._preferences);
 
   @override
-  Future<void> saveToken(String token) =>
+  Future<void> saveToken(String? token) =>
       _preferences.setString(_tokenKey, token);
 
   @override
-  Future<void> saveUser(UserLocal user) => _preferences.write<UserLocal>(
+  Future<void> saveUser(UserLocal? user) => _preferences.write<UserLocal>(
         _userKey,
         user,
         (u) => u == null ? null : jsonEncode(u),

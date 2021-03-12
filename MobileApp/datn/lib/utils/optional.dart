@@ -1,14 +1,15 @@
 import 'package:meta/meta.dart';
 
 @sealed
-abstract class Optional<T> {
+abstract class Optional<T extends Object> {
   const Optional._();
 
   factory Optional.none() = None;
 
   const factory Optional.some(T value) = Some;
 
-  factory Optional.of(T value) => value == null ? None() : Some(value);
+  factory Optional.of(T? value) =>
+      value == null ? None() as Optional<T> : Some<T>(value);
 
   R fold<R>(R Function() none, R Function(T) some) {
     final self = this;
@@ -22,7 +23,7 @@ abstract class Optional<T> {
   }
 }
 
-class Some<T> extends Optional<T> {
+class Some<T extends Object> extends Optional<T> {
   final T value;
 
   const Some(this.value) : super._();
@@ -39,7 +40,7 @@ class Some<T> extends Optional<T> {
   String toString() => 'Some{value: $value}';
 }
 
-class None extends Optional<Null> {
+class None extends Optional<Never> {
   const None._() : super._();
 
   factory None() => const None._();

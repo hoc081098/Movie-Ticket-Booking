@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart'; // TODO: Replace flutter_facebook_login by flutter_facebook_auth
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../domain/model/exception.dart';
 import '../../domain/model/location.dart';
@@ -38,7 +40,7 @@ class UserRepositoryImpl implements UserRepository {
 
   final SearchKeywordSource _searchKeywordSource;
 
-  final ValueConnectableStream<Optional<User>> _user$;
+  final DistinctValueStream<Optional<User>?> _user$;
 
   UserRepositoryImpl(
     this._auth,
@@ -51,32 +53,33 @@ class UserRepositoryImpl implements UserRepository {
     this._facebookLogin,
     this._firebaseMessaging,
     this._searchKeywordSource,
-  ) : _user$ = valueConnectableStream(
+  ) : _user$ = _buildUserStream(
           _auth,
           _userLocalSource,
           userLocalToUserDomain,
         );
 
-  Future<Map<String, String>> get _fcmTokenHeaders =>
-      _firebaseMessaging.getToken().then((token) => {'fcm_token': token});
+  Future<Map<String, String>?> get _fcmTokenHeaders => _firebaseMessaging
+      .getToken()
+      .then((token) => token != null ? {'fcm_token': token} : null);
 
-  static ValueConnectableStream<Optional<User>> valueConnectableStream(
+  static DistinctValueStream<Optional<User>?> _buildUserStream(
     FirebaseAuth _auth,
     UserLocalSource _userLocalSource,
     Function1<UserLocal, User> userLocalToUserDomain,
   ) =>
-      Rx.combineLatest3<dynamic, UserLocal, String, Optional<User>>(
+      Rx.combineLatest3<Object?, UserLocal?, String?, Optional<User>?>(
               _auth.userChanges(),
               _userLocalSource.user$,
               _userLocalSource.token$,
-              (user, UserLocal local, String token) =>
+              (Object? user, UserLocal? local, String? token) =>
                   user == null || local == null || token == null
                       ? Optional.none()
                       : Optional.some(userLocalToUserDomain(local)))
-          .publishValueSeeded(null)
+          .publishValueDistinct(null)
             ..connect();
 
-  Future<AuthState> _isUserLocalCompletedLogin([UserLocal local]) async {
+  Future<AuthState> _isUserLocalCompletedLogin([UserLocal? local]) async {
     local ??= await _userLocalSource.user;
 
     return local == null
@@ -87,13 +90,14 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   Future<AuthState> _checkAuthInternal() async {
-    if (_auth.currentUser == null) {
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) {
       await logout();
       print('[Check auth][1] not logged in');
       return AuthState.notLoggedIn;
     }
 
-    await _userLocalSource.saveToken(await _auth.currentUser.getIdToken(true));
+    await _userLocalSource.saveToken(await currentUser.getIdToken(true));
 
     try {
       final json = await _authClient.getBody(
@@ -137,7 +141,7 @@ class UserRepositoryImpl implements UserRepository {
   Future _checkCompletedLoginAfterFirebaseLogin([
     bool checkVerifyEmail = false,
   ]) async {
-    final currentUser = _auth.currentUser;
+    final currentUser = _auth.currentUser!;
 
     if (checkVerifyEmail) {
       await currentUser.reload();
@@ -221,14 +225,15 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<void> loginUpdateProfile(
-      {String fullName,
-      String phoneNumber,
-      String address,
-      Gender gender,
-      Location location,
-      DateTime birthday,
-      File avatarFile}) async {
+  Future<void> loginUpdateProfile({
+    required String fullName,
+    required String phoneNumber,
+    required String address,
+    required Gender gender,
+    Location? location,
+    DateTime? birthday,
+    File? avatarFile,
+  }) async {
     final currentUser = _auth.currentUser;
     if (currentUser == null) {
       throw const NotLoggedInException();
@@ -290,12 +295,12 @@ class UserRepositoryImpl implements UserRepository {
       email: email,
       password: password,
     );
-    await _auth.currentUser.sendEmailVerification();
+    await _auth.currentUser!.sendEmailVerification();
     await logout();
   }
 
   @override
-  ValueStream<Optional<User>> get user$ => _user$;
+  DistinctValueStream<Optional<User>?> get user$ => _user$;
 
   @override
   Future<void> resetPassword(String email) =>
