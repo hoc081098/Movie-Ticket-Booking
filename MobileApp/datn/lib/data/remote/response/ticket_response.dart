@@ -33,8 +33,9 @@ abstract class TicketResponse
   static Serializer<TicketResponse> get serializer =>
       _$ticketResponseSerializer;
 
-  factory TicketResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<TicketResponse>(serializer, json);
+  factory TicketResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<TicketResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

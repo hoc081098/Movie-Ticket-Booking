@@ -34,8 +34,9 @@ abstract class ShowTimeResponse
   static Serializer<ShowTimeResponse> get serializer =>
       _$showTimeResponseSerializer;
 
-  factory ShowTimeResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<ShowTimeResponse>(serializer, json);
+  factory ShowTimeResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<ShowTimeResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

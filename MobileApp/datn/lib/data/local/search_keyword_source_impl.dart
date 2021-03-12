@@ -17,13 +17,13 @@ class SearchKeywordSourceImpl implements SearchKeywordSource {
   static const _maxLength = 16;
 
   final RxSharedPreferences _prefs;
-  final queryS = PublishSubject<Tuple2<String, Completer<void>>>(sync: true);
+  final queryS = PublishSubject<Tuple2<String?, Completer<void>>>(sync: true);
 
   SearchKeywordSourceImpl(this._prefs) {
     queryS.asyncExpand(_saveQuery).debug(identifier: toString()).collect();
   }
 
-  Stream<dynamic> _saveQuery(Tuple2<String, Completer<void>> tuple2) async* {
+  Stream<Object> _saveQuery(Tuple2<String?, Completer<void>> tuple2) async* {
     final query = tuple2.item1;
     final completer = tuple2.item2;
 
@@ -78,14 +78,13 @@ extension on RxSharedPreferences {
       read<BuiltList<String>>(
         key,
         (s) => serializers.deserialize(
-          jsonDecode(s ?? '[]'),
+          jsonDecode((s as String?) ?? '[]'),
           specifiedType: _type,
         ) as BuiltList<String>,
-      );
+      ).then((v) => v!);
 
   /// [strings] is not null.
   Future<void> setStringsBuildList(String key, BuiltList<String> strings) {
-    assert(strings != null);
     return write<BuiltList<String>>(
       key,
       strings,

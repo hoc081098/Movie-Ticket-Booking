@@ -30,15 +30,18 @@ extension SafeReplaceListBuilderExtension<T> on ListBuilder<T> {
 }
 
 extension FirstOrNullIterableExtension<T> on Iterable<T> {
-  T get firstOrNull => isEmpty ? null : first;
+  T? get firstOrNull => isEmpty ? null : first;
 }
 
 extension RandomIterableExtension<T> on Iterable<T> {
   T random() => elementAt(Random().nextInt(length));
 }
 
-extension IsNullOrEmptyIterableExtension<T> on Iterable<T> {
-  bool get isNullOrEmpty => this == null || isEmpty;
+extension IsNullOrEmptyIterableExtension<T> on Iterable<T>? {
+  bool get isNullOrEmpty {
+    final self = this;
+    return self == null || self.isEmpty;
+  }
 }
 
 extension DistinctIterableExtension<T> on Iterable<T> {

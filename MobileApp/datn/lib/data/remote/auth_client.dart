@@ -11,13 +11,13 @@ abstract class AppClient extends BaseClient {
   /// Sends an HTTP GET request with the given headers to the given URL, which can be a Uri or a String.
   /// Returns the resulting Json object.
   /// Throws [ErrorResponse]
-  Future<dynamic> getBody(Uri url, {Map<String, String> headers}) =>
+  Future<Object?> getBody(Uri url, {Map<String, String>? headers}) =>
       this.get(url, headers: headers).then(_parseResult);
 
-  Future<dynamic> postBody(
+  Future<Object?> postBody(
     Uri url, {
-    Map<String, String> headers,
-    Map<String, dynamic> body,
+    Map<String, String>? headers,
+    Map<String, Object?>? body,
   }) =>
       this
           .post(
@@ -30,10 +30,10 @@ abstract class AppClient extends BaseClient {
           )
           .then(_parseResult);
 
-  Future<dynamic> putBody(
+  Future<Object?> putBody(
     Uri url, {
-    Map<String, String> headers,
-    Map<String, dynamic> body,
+    Map<String, String>? headers,
+    Map<String, Object?>? body,
   }) =>
       this
           .put(
@@ -46,10 +46,10 @@ abstract class AppClient extends BaseClient {
           )
           .then(_parseResult);
 
-  Future<dynamic> deleteBody(Uri url, {Map<String, String> headers}) =>
+  Future<Object?> deleteBody(Uri url, {Map<String, String>? headers}) =>
       this.delete(url, headers: headers).then(_parseResult);
 
-  static dynamic _parseResult(Response response) {
+  static Object? _parseResult(Response response) {
     final statusCode = response.statusCode;
     final json = jsonDecode(response.body);
 
@@ -76,7 +76,6 @@ abstract class AppClient extends BaseClient {
       }
     }
 
-    assert(errorResponse != null);
     print('<-- ${request} errorResponse=$errorResponse');
     throw errorResponse;
   }
@@ -105,7 +104,7 @@ class AuthClient extends AppClient {
   final Duration _timeout;
 
   final Function0<Future<void>> _onSignOut;
-  final Function0<Future<String>> _getToken;
+  final Function0<Future<String?>> _getToken;
 
   AuthClient(
     this._client,

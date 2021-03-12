@@ -18,10 +18,11 @@ abstract class LocationLocal
 
   static Serializer<LocationLocal> get serializer => _$locationLocalSerializer;
 
-  factory LocationLocal.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<LocationLocal>(serializer, json);
+  factory LocationLocal.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<LocationLocal>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class UserLocal implements Built<UserLocal, UserLocalBuilder> {
@@ -64,8 +65,9 @@ abstract class UserLocal implements Built<UserLocal, UserLocalBuilder> {
 
   static Serializer<UserLocal> get serializer => _$userLocalSerializer;
 
-  factory UserLocal.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<UserLocal>(serializer, json);
+  factory UserLocal.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<UserLocal>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

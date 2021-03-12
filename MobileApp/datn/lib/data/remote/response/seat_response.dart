@@ -36,8 +36,9 @@ abstract class SeatResponse
 
   static Serializer<SeatResponse> get serializer => _$seatResponseSerializer;
 
-  factory SeatResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<SeatResponse>(serializer, json);
+  factory SeatResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<SeatResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

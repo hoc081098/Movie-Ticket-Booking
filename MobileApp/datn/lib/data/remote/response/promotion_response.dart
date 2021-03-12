@@ -38,8 +38,9 @@ abstract class PromotionResponse
   static Serializer<PromotionResponse> get serializer =>
       _$promotionResponseSerializer;
 
-  factory PromotionResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<PromotionResponse>(serializer, json);
+  factory PromotionResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<PromotionResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

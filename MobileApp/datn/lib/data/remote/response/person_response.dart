@@ -28,8 +28,9 @@ abstract class PersonResponse
   static Serializer<PersonResponse> get serializer =>
       _$personResponseSerializer;
 
-  factory PersonResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<PersonResponse>(serializer, json);
+  factory PersonResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<PersonResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

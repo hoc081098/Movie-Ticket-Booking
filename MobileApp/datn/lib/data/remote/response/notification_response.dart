@@ -33,10 +33,11 @@ abstract class NotificationResponse
   static Serializer<NotificationResponse> get serializer =>
       _$notificationResponseSerializer;
 
-  factory NotificationResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<NotificationResponse>(serializer, json);
+  factory NotificationResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<NotificationResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class NotificationResponse_ReservationResponse
@@ -78,9 +79,10 @@ abstract class NotificationResponse_ReservationResponse
       _$notificationResponseReservationResponseSerializer;
 
   factory NotificationResponse_ReservationResponse.fromJson(
-          Map<String, dynamic> json) =>
+          Map<String, Object?> json) =>
       serializers.deserializeWith<NotificationResponse_ReservationResponse>(
-          serializer, json);
+          serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

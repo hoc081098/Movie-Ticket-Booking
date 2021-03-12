@@ -26,8 +26,9 @@ abstract class CategoryResponse
   static Serializer<CategoryResponse> get serializer =>
       _$categoryResponseSerializer;
 
-  factory CategoryResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<CategoryResponse>(serializer, json);
+  factory CategoryResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<CategoryResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

@@ -50,8 +50,9 @@ abstract class MovieResponse
 
   static Serializer<MovieResponse> get serializer => _$movieResponseSerializer;
 
-  factory MovieResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<MovieResponse>(serializer, json);
+  factory MovieResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<MovieResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

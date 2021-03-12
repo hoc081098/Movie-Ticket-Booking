@@ -45,10 +45,11 @@ abstract class ReservationResponse
   static Serializer<ReservationResponse> get serializer =>
       _$reservationResponseSerializer;
 
-  factory ReservationResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<ReservationResponse>(serializer, json);
+  factory ReservationResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<ReservationResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class ProductIdAndQuantity
@@ -66,10 +67,11 @@ abstract class ProductIdAndQuantity
   static Serializer<ProductIdAndQuantity> get serializer =>
       _$productIdAndQuantitySerializer;
 
-  factory ProductIdAndQuantity.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<ProductIdAndQuantity>(serializer, json);
+  factory ProductIdAndQuantity.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<ProductIdAndQuantity>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class ShowTimeFullResponse
@@ -102,8 +104,9 @@ abstract class ShowTimeFullResponse
   static Serializer<ShowTimeFullResponse> get serializer =>
       _$showTimeFullResponseSerializer;
 
-  factory ShowTimeFullResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<ShowTimeFullResponse>(serializer, json);
+  factory ShowTimeFullResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<ShowTimeFullResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

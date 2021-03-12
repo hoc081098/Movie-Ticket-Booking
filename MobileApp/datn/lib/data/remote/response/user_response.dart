@@ -12,9 +12,9 @@ abstract class LocationResponse
   @BuiltValueField(wireName: 'coordinates')
   BuiltList<double>? get coordinates;
 
-  double get longitude => coordinates.isNullOrEmpty ? null : coordinates[0];
+  double? get longitude => coordinates.isNullOrEmpty ? null : coordinates![0];
 
-  double get latitude => coordinates.isNullOrEmpty ? null : coordinates[1];
+  double? get latitude => coordinates.isNullOrEmpty ? null : coordinates![1];
 
   LocationResponse._();
 
@@ -24,10 +24,11 @@ abstract class LocationResponse
   static Serializer<LocationResponse> get serializer =>
       _$locationResponseSerializer;
 
-  factory LocationResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<LocationResponse>(serializer, json);
+  factory LocationResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<LocationResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class UserResponse
@@ -74,8 +75,9 @@ abstract class UserResponse
 
   static Serializer<UserResponse> get serializer => _$userResponseSerializer;
 
-  factory UserResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<UserResponse>(serializer, json);
+  factory UserResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<UserResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

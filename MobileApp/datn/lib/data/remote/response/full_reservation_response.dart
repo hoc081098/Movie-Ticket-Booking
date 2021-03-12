@@ -50,10 +50,11 @@ abstract class FullReservationResponse
   static Serializer<FullReservationResponse> get serializer =>
       _$fullReservationResponseSerializer;
 
-  factory FullReservationResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<FullReservationResponse>(serializer, json);
+  factory FullReservationResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<FullReservationResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class ProductAndQuantityResponse
@@ -73,8 +74,10 @@ abstract class ProductAndQuantityResponse
   static Serializer<ProductAndQuantityResponse> get serializer =>
       _$productAndQuantityResponseSerializer;
 
-  factory ProductAndQuantityResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<ProductAndQuantityResponse>(serializer, json);
+  factory ProductAndQuantityResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<ProductAndQuantityResponse>(
+          serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

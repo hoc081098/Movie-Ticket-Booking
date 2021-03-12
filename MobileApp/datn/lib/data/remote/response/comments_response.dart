@@ -23,8 +23,9 @@ abstract class CommentsResponse
   static Serializer<CommentsResponse> get serializer =>
       _$commentsResponseSerializer;
 
-  factory CommentsResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<CommentsResponse>(serializer, json);
+  factory CommentsResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<CommentsResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

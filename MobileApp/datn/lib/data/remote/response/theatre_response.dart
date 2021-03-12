@@ -50,8 +50,9 @@ abstract class TheatreResponse
   static Serializer<TheatreResponse> get serializer =>
       _$theatreResponseSerializer;
 
-  factory TheatreResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<TheatreResponse>(serializer, json);
+  factory TheatreResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<TheatreResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

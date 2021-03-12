@@ -9,7 +9,7 @@ part 'error_response.g.dart';
 abstract class ErrorResponse {
   int get statusCode;
 
-  String get error;
+  String? get error;
 }
 
 class ParseErrorResponseException implements Exception {
@@ -52,10 +52,12 @@ abstract class SingleMessageErrorResponse
   static Serializer<SingleMessageErrorResponse> get serializer =>
       _$singleMessageErrorResponseSerializer;
 
-  factory SingleMessageErrorResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<SingleMessageErrorResponse>(serializer, json);
+  factory SingleMessageErrorResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<SingleMessageErrorResponse>(
+          serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class MultipleMessagesErrorResponse
@@ -81,9 +83,10 @@ abstract class MultipleMessagesErrorResponse
   static Serializer<MultipleMessagesErrorResponse> get serializer =>
       _$multipleMessagesErrorResponseSerializer;
 
-  factory MultipleMessagesErrorResponse.fromJson(Map<String, dynamic> json) =>
+  factory MultipleMessagesErrorResponse.fromJson(Map<String, Object?> json) =>
       serializers.deserializeWith<MultipleMessagesErrorResponse>(
-          serializer, json);
+          serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
