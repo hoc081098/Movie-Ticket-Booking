@@ -37,16 +37,19 @@ class _$TicketResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    if (object.is_active != null) {
+    Object value;
+    value = object.is_active;
+    if (value != null) {
       result
         ..add('is_active')
-        ..add(serializers.serialize(object.is_active,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
-    if (object.reservation != null) {
+    value = object.reservation;
+    if (value != null) {
       result
         ..add('reservation')
-        ..add(serializers.serialize(object.reservation,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -62,7 +65,7 @@ class _$TicketResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -134,24 +137,15 @@ class _$TicketResponse extends TicketResponse {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('TicketResponse', 'id');
-    }
-    if (price == null) {
-      throw new BuiltValueNullFieldError('TicketResponse', 'price');
-    }
-    if (seat == null) {
-      throw new BuiltValueNullFieldError('TicketResponse', 'seat');
-    }
-    if (show_time == null) {
-      throw new BuiltValueNullFieldError('TicketResponse', 'show_time');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('TicketResponse', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('TicketResponse', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'TicketResponse', 'id');
+    BuiltValueNullFieldError.checkNotNull(price, 'TicketResponse', 'price');
+    BuiltValueNullFieldError.checkNotNull(seat, 'TicketResponse', 'seat');
+    BuiltValueNullFieldError.checkNotNull(
+        show_time, 'TicketResponse', 'show_time');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'TicketResponse', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'TicketResponse', 'updatedAt');
   }
 
   @override
@@ -246,15 +240,16 @@ class TicketResponseBuilder
   TicketResponseBuilder();
 
   TicketResponseBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _is_active = _$v.is_active;
-      _price = _$v.price;
-      _reservation = _$v.reservation;
-      _seat = _$v.seat?.toBuilder();
-      _show_time = _$v.show_time;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _is_active = $v.is_active;
+      _price = $v.price;
+      _reservation = $v.reservation;
+      _seat = $v.seat.toBuilder();
+      _show_time = $v.show_time;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -262,9 +257,7 @@ class TicketResponseBuilder
 
   @override
   void replace(TicketResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$TicketResponse;
   }
 
@@ -279,14 +272,19 @@ class TicketResponseBuilder
     try {
       _$result = _$v ??
           new _$TicketResponse._(
-              id: id,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'TicketResponse', 'id'),
               is_active: is_active,
-              price: price,
+              price: BuiltValueNullFieldError.checkNotNull(
+                  price, 'TicketResponse', 'price'),
               reservation: reservation,
               seat: seat.build(),
-              show_time: show_time,
-              createdAt: createdAt,
-              updatedAt: updatedAt);
+              show_time: BuiltValueNullFieldError.checkNotNull(
+                  show_time, 'TicketResponse', 'show_time'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'TicketResponse', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'TicketResponse', 'updatedAt'));
     } catch (_) {
       String _$failedField;
       try {

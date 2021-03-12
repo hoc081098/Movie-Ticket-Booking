@@ -31,16 +31,19 @@ class _$SingleMessageErrorResponseSerializer
       serializers.serialize(object.statusCode,
           specifiedType: const FullType(int)),
     ];
-    if (object.error != null) {
+    Object value;
+    value = object.error;
+    if (value != null) {
       result
         ..add('error')
-        ..add(serializers.serialize(object.error,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.message != null) {
+    value = object.message;
+    if (value != null) {
       result
         ..add('message')
-        ..add(serializers.serialize(object.message,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -56,7 +59,7 @@ class _$SingleMessageErrorResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'statusCode':
           result.statusCode = serializers.deserialize(value,
@@ -96,16 +99,19 @@ class _$MultipleMessagesErrorResponseSerializer
       serializers.serialize(object.statusCode,
           specifiedType: const FullType(int)),
     ];
-    if (object.error != null) {
+    Object value;
+    value = object.error;
+    if (value != null) {
       result
         ..add('error')
-        ..add(serializers.serialize(object.error,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.messages != null) {
+    value = object.messages;
+    if (value != null) {
       result
         ..add('message')
-        ..add(serializers.serialize(object.messages,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
@@ -122,7 +128,7 @@ class _$MultipleMessagesErrorResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'statusCode':
           result.statusCode = serializers.deserialize(value,
@@ -159,10 +165,8 @@ class _$SingleMessageErrorResponse extends SingleMessageErrorResponse {
 
   _$SingleMessageErrorResponse._({this.statusCode, this.error, this.message})
       : super._() {
-    if (statusCode == null) {
-      throw new BuiltValueNullFieldError(
-          'SingleMessageErrorResponse', 'statusCode');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        statusCode, 'SingleMessageErrorResponse', 'statusCode');
   }
 
   @override
@@ -219,10 +223,11 @@ class SingleMessageErrorResponseBuilder
   SingleMessageErrorResponseBuilder();
 
   SingleMessageErrorResponseBuilder get _$this {
-    if (_$v != null) {
-      _statusCode = _$v.statusCode;
-      _error = _$v.error;
-      _message = _$v.message;
+    final $v = _$v;
+    if ($v != null) {
+      _statusCode = $v.statusCode;
+      _error = $v.error;
+      _message = $v.message;
       _$v = null;
     }
     return this;
@@ -230,9 +235,7 @@ class SingleMessageErrorResponseBuilder
 
   @override
   void replace(SingleMessageErrorResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$SingleMessageErrorResponse;
   }
 
@@ -245,7 +248,10 @@ class SingleMessageErrorResponseBuilder
   _$SingleMessageErrorResponse build() {
     final _$result = _$v ??
         new _$SingleMessageErrorResponse._(
-            statusCode: statusCode, error: error, message: message);
+            statusCode: BuiltValueNullFieldError.checkNotNull(
+                statusCode, 'SingleMessageErrorResponse', 'statusCode'),
+            error: error,
+            message: message);
     replace(_$result);
     return _$result;
   }
@@ -266,10 +272,8 @@ class _$MultipleMessagesErrorResponse extends MultipleMessagesErrorResponse {
   _$MultipleMessagesErrorResponse._(
       {this.statusCode, this.error, this.messages})
       : super._() {
-    if (statusCode == null) {
-      throw new BuiltValueNullFieldError(
-          'MultipleMessagesErrorResponse', 'statusCode');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        statusCode, 'MultipleMessagesErrorResponse', 'statusCode');
   }
 
   @override
@@ -328,10 +332,11 @@ class MultipleMessagesErrorResponseBuilder
   MultipleMessagesErrorResponseBuilder();
 
   MultipleMessagesErrorResponseBuilder get _$this {
-    if (_$v != null) {
-      _statusCode = _$v.statusCode;
-      _error = _$v.error;
-      _messages = _$v.messages?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _statusCode = $v.statusCode;
+      _error = $v.error;
+      _messages = $v.messages?.toBuilder();
       _$v = null;
     }
     return this;
@@ -339,9 +344,7 @@ class MultipleMessagesErrorResponseBuilder
 
   @override
   void replace(MultipleMessagesErrorResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$MultipleMessagesErrorResponse;
   }
 
@@ -356,7 +359,8 @@ class MultipleMessagesErrorResponseBuilder
     try {
       _$result = _$v ??
           new _$MultipleMessagesErrorResponse._(
-              statusCode: statusCode,
+              statusCode: BuiltValueNullFieldError.checkNotNull(
+                  statusCode, 'MultipleMessagesErrorResponse', 'statusCode'),
               error: error,
               messages: _messages?.build());
     } catch (_) {

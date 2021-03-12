@@ -41,7 +41,7 @@ class _$LocationLocalSerializer implements StructuredSerializer<LocationLocal> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'latitude':
           result.latitude = serializers.deserialize(value,
@@ -86,34 +86,40 @@ class _$UserLocalSerializer implements StructuredSerializer<UserLocal> {
       serializers.serialize(object.isActive,
           specifiedType: const FullType(bool)),
     ];
-    if (object.phoneNumber != null) {
+    Object value;
+    value = object.phoneNumber;
+    if (value != null) {
       result
         ..add('phone_number')
-        ..add(serializers.serialize(object.phoneNumber,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.avatar != null) {
+    value = object.avatar;
+    if (value != null) {
       result
         ..add('avatar')
-        ..add(serializers.serialize(object.avatar,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.address != null) {
+    value = object.address;
+    if (value != null) {
       result
         ..add('address')
-        ..add(serializers.serialize(object.address,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.birthday != null) {
+    value = object.birthday;
+    if (value != null) {
       result
         ..add('birthday')
-        ..add(serializers.serialize(object.birthday,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
-    if (object.location != null) {
+    value = object.location;
+    if (value != null) {
       result
         ..add('location')
-        ..add(serializers.serialize(object.location,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(LocationLocal)));
     }
     return result;
@@ -128,7 +134,7 @@ class _$UserLocalSerializer implements StructuredSerializer<UserLocal> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'uid':
           result.uid = serializers.deserialize(value,
@@ -191,12 +197,10 @@ class _$LocationLocal extends LocationLocal {
       (new LocationLocalBuilder()..update(updates)).build();
 
   _$LocationLocal._({this.latitude, this.longitude}) : super._() {
-    if (latitude == null) {
-      throw new BuiltValueNullFieldError('LocationLocal', 'latitude');
-    }
-    if (longitude == null) {
-      throw new BuiltValueNullFieldError('LocationLocal', 'longitude');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        latitude, 'LocationLocal', 'latitude');
+    BuiltValueNullFieldError.checkNotNull(
+        longitude, 'LocationLocal', 'longitude');
   }
 
   @override
@@ -243,9 +247,10 @@ class LocationLocalBuilder
   LocationLocalBuilder();
 
   LocationLocalBuilder get _$this {
-    if (_$v != null) {
-      _latitude = _$v.latitude;
-      _longitude = _$v.longitude;
+    final $v = _$v;
+    if ($v != null) {
+      _latitude = $v.latitude;
+      _longitude = $v.longitude;
       _$v = null;
     }
     return this;
@@ -253,9 +258,7 @@ class LocationLocalBuilder
 
   @override
   void replace(LocationLocal other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$LocationLocal;
   }
 
@@ -266,8 +269,12 @@ class LocationLocalBuilder
 
   @override
   _$LocationLocal build() {
-    final _$result =
-        _$v ?? new _$LocationLocal._(latitude: latitude, longitude: longitude);
+    final _$result = _$v ??
+        new _$LocationLocal._(
+            latitude: BuiltValueNullFieldError.checkNotNull(
+                latitude, 'LocationLocal', 'latitude'),
+            longitude: BuiltValueNullFieldError.checkNotNull(
+                longitude, 'LocationLocal', 'longitude'));
     replace(_$result);
     return _$result;
   }
@@ -313,24 +320,13 @@ class _$UserLocal extends UserLocal {
       this.isCompleted,
       this.isActive})
       : super._() {
-    if (uid == null) {
-      throw new BuiltValueNullFieldError('UserLocal', 'uid');
-    }
-    if (email == null) {
-      throw new BuiltValueNullFieldError('UserLocal', 'email');
-    }
-    if (fullName == null) {
-      throw new BuiltValueNullFieldError('UserLocal', 'fullName');
-    }
-    if (gender == null) {
-      throw new BuiltValueNullFieldError('UserLocal', 'gender');
-    }
-    if (isCompleted == null) {
-      throw new BuiltValueNullFieldError('UserLocal', 'isCompleted');
-    }
-    if (isActive == null) {
-      throw new BuiltValueNullFieldError('UserLocal', 'isActive');
-    }
+    BuiltValueNullFieldError.checkNotNull(uid, 'UserLocal', 'uid');
+    BuiltValueNullFieldError.checkNotNull(email, 'UserLocal', 'email');
+    BuiltValueNullFieldError.checkNotNull(fullName, 'UserLocal', 'fullName');
+    BuiltValueNullFieldError.checkNotNull(gender, 'UserLocal', 'gender');
+    BuiltValueNullFieldError.checkNotNull(
+        isCompleted, 'UserLocal', 'isCompleted');
+    BuiltValueNullFieldError.checkNotNull(isActive, 'UserLocal', 'isActive');
   }
 
   @override
@@ -450,18 +446,19 @@ class UserLocalBuilder implements Builder<UserLocal, UserLocalBuilder> {
   UserLocalBuilder();
 
   UserLocalBuilder get _$this {
-    if (_$v != null) {
-      _uid = _$v.uid;
-      _email = _$v.email;
-      _phoneNumber = _$v.phoneNumber;
-      _fullName = _$v.fullName;
-      _gender = _$v.gender;
-      _avatar = _$v.avatar;
-      _address = _$v.address;
-      _birthday = _$v.birthday;
-      _location = _$v.location?.toBuilder();
-      _isCompleted = _$v.isCompleted;
-      _isActive = _$v.isActive;
+    final $v = _$v;
+    if ($v != null) {
+      _uid = $v.uid;
+      _email = $v.email;
+      _phoneNumber = $v.phoneNumber;
+      _fullName = $v.fullName;
+      _gender = $v.gender;
+      _avatar = $v.avatar;
+      _address = $v.address;
+      _birthday = $v.birthday;
+      _location = $v.location?.toBuilder();
+      _isCompleted = $v.isCompleted;
+      _isActive = $v.isActive;
       _$v = null;
     }
     return this;
@@ -469,9 +466,7 @@ class UserLocalBuilder implements Builder<UserLocal, UserLocalBuilder> {
 
   @override
   void replace(UserLocal other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$UserLocal;
   }
 
@@ -486,17 +481,23 @@ class UserLocalBuilder implements Builder<UserLocal, UserLocalBuilder> {
     try {
       _$result = _$v ??
           new _$UserLocal._(
-              uid: uid,
-              email: email,
+              uid: BuiltValueNullFieldError.checkNotNull(
+                  uid, 'UserLocal', 'uid'),
+              email: BuiltValueNullFieldError.checkNotNull(
+                  email, 'UserLocal', 'email'),
               phoneNumber: phoneNumber,
-              fullName: fullName,
-              gender: gender,
+              fullName: BuiltValueNullFieldError.checkNotNull(
+                  fullName, 'UserLocal', 'fullName'),
+              gender: BuiltValueNullFieldError.checkNotNull(
+                  gender, 'UserLocal', 'gender'),
               avatar: avatar,
               address: address,
               birthday: birthday,
               location: _location?.build(),
-              isCompleted: isCompleted,
-              isActive: isActive);
+              isCompleted: BuiltValueNullFieldError.checkNotNull(
+                  isCompleted, 'UserLocal', 'isCompleted'),
+              isActive: BuiltValueNullFieldError.checkNotNull(
+                  isActive, 'UserLocal', 'isActive'));
     } catch (_) {
       String _$failedField;
       try {

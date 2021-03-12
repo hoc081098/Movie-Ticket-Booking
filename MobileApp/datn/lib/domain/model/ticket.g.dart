@@ -40,27 +40,13 @@ class _$Ticket extends Ticket {
       this.updatedAt,
       this.reservation})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Ticket', 'id');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('Ticket', 'is_active');
-    }
-    if (price == null) {
-      throw new BuiltValueNullFieldError('Ticket', 'price');
-    }
-    if (seat == null) {
-      throw new BuiltValueNullFieldError('Ticket', 'seat');
-    }
-    if (show_time == null) {
-      throw new BuiltValueNullFieldError('Ticket', 'show_time');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Ticket', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Ticket', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Ticket', 'id');
+    BuiltValueNullFieldError.checkNotNull(is_active, 'Ticket', 'is_active');
+    BuiltValueNullFieldError.checkNotNull(price, 'Ticket', 'price');
+    BuiltValueNullFieldError.checkNotNull(seat, 'Ticket', 'seat');
+    BuiltValueNullFieldError.checkNotNull(show_time, 'Ticket', 'show_time');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Ticket', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Ticket', 'updatedAt');
   }
 
   @override
@@ -164,16 +150,17 @@ class TicketBuilder implements Builder<Ticket, TicketBuilder> {
   TicketBuilder();
 
   TicketBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _is_active = _$v.is_active;
-      _price = _$v.price;
-      _reservationId = _$v.reservationId;
-      _seat = _$v.seat?.toBuilder();
-      _show_time = _$v.show_time;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
-      _reservation = _$v.reservation?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _is_active = $v.is_active;
+      _price = $v.price;
+      _reservationId = $v.reservationId;
+      _seat = $v.seat.toBuilder();
+      _show_time = $v.show_time;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
+      _reservation = $v.reservation?.toBuilder();
       _$v = null;
     }
     return this;
@@ -181,9 +168,7 @@ class TicketBuilder implements Builder<Ticket, TicketBuilder> {
 
   @override
   void replace(Ticket other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Ticket;
   }
 
@@ -198,14 +183,19 @@ class TicketBuilder implements Builder<Ticket, TicketBuilder> {
     try {
       _$result = _$v ??
           new _$Ticket._(
-              id: id,
-              is_active: is_active,
-              price: price,
+              id: BuiltValueNullFieldError.checkNotNull(id, 'Ticket', 'id'),
+              is_active: BuiltValueNullFieldError.checkNotNull(
+                  is_active, 'Ticket', 'is_active'),
+              price: BuiltValueNullFieldError.checkNotNull(
+                  price, 'Ticket', 'price'),
               reservationId: reservationId,
               seat: seat.build(),
-              show_time: show_time,
-              createdAt: createdAt,
-              updatedAt: updatedAt,
+              show_time: BuiltValueNullFieldError.checkNotNull(
+                  show_time, 'Ticket', 'show_time'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'Ticket', 'createdAt'),
+              updatedAt: BuiltValueNullFieldError.checkNotNull(
+                  updatedAt, 'Ticket', 'updatedAt'),
               reservation: _reservation?.build());
     } catch (_) {
       String _$failedField;

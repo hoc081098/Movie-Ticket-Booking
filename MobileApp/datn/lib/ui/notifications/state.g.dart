@@ -23,18 +23,10 @@ class _$State extends State {
 
   _$State._({this.page, this.items, this.isLoading, this.error, this.loadedAll})
       : super._() {
-    if (page == null) {
-      throw new BuiltValueNullFieldError('State', 'page');
-    }
-    if (items == null) {
-      throw new BuiltValueNullFieldError('State', 'items');
-    }
-    if (isLoading == null) {
-      throw new BuiltValueNullFieldError('State', 'isLoading');
-    }
-    if (loadedAll == null) {
-      throw new BuiltValueNullFieldError('State', 'loadedAll');
-    }
+    BuiltValueNullFieldError.checkNotNull(page, 'State', 'page');
+    BuiltValueNullFieldError.checkNotNull(items, 'State', 'items');
+    BuiltValueNullFieldError.checkNotNull(isLoading, 'State', 'isLoading');
+    BuiltValueNullFieldError.checkNotNull(loadedAll, 'State', 'loadedAll');
   }
 
   @override
@@ -102,12 +94,13 @@ class StateBuilder implements Builder<State, StateBuilder> {
   StateBuilder();
 
   StateBuilder get _$this {
-    if (_$v != null) {
-      _page = _$v.page;
-      _items = _$v.items?.toBuilder();
-      _isLoading = _$v.isLoading;
-      _error = _$v.error;
-      _loadedAll = _$v.loadedAll;
+    final $v = _$v;
+    if ($v != null) {
+      _page = $v.page;
+      _items = $v.items.toBuilder();
+      _isLoading = $v.isLoading;
+      _error = $v.error;
+      _loadedAll = $v.loadedAll;
       _$v = null;
     }
     return this;
@@ -115,9 +108,7 @@ class StateBuilder implements Builder<State, StateBuilder> {
 
   @override
   void replace(State other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$State;
   }
 
@@ -132,11 +123,14 @@ class StateBuilder implements Builder<State, StateBuilder> {
     try {
       _$result = _$v ??
           new _$State._(
-              page: page,
+              page:
+                  BuiltValueNullFieldError.checkNotNull(page, 'State', 'page'),
               items: items.build(),
-              isLoading: isLoading,
+              isLoading: BuiltValueNullFieldError.checkNotNull(
+                  isLoading, 'State', 'isLoading'),
               error: error,
-              loadedAll: loadedAll);
+              loadedAll: BuiltValueNullFieldError.checkNotNull(
+                  loadedAll, 'State', 'loadedAll'));
     } catch (_) {
       String _$failedField;
       try {

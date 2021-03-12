@@ -45,7 +45,7 @@ class _$ShowTimeAndTheatreResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'show_time':
           result.show_time.replace(serializers.deserialize(value,
@@ -75,14 +75,10 @@ class _$ShowTimeAndTheatreResponse extends ShowTimeAndTheatreResponse {
       (new ShowTimeAndTheatreResponseBuilder()..update(updates)).build();
 
   _$ShowTimeAndTheatreResponse._({this.show_time, this.theatre}) : super._() {
-    if (show_time == null) {
-      throw new BuiltValueNullFieldError(
-          'ShowTimeAndTheatreResponse', 'show_time');
-    }
-    if (theatre == null) {
-      throw new BuiltValueNullFieldError(
-          'ShowTimeAndTheatreResponse', 'theatre');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        show_time, 'ShowTimeAndTheatreResponse', 'show_time');
+    BuiltValueNullFieldError.checkNotNull(
+        theatre, 'ShowTimeAndTheatreResponse', 'theatre');
   }
 
   @override
@@ -135,9 +131,10 @@ class ShowTimeAndTheatreResponseBuilder
   ShowTimeAndTheatreResponseBuilder();
 
   ShowTimeAndTheatreResponseBuilder get _$this {
-    if (_$v != null) {
-      _show_time = _$v.show_time?.toBuilder();
-      _theatre = _$v.theatre?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _show_time = $v.show_time.toBuilder();
+      _theatre = $v.theatre.toBuilder();
       _$v = null;
     }
     return this;
@@ -145,9 +142,7 @@ class ShowTimeAndTheatreResponseBuilder
 
   @override
   void replace(ShowTimeAndTheatreResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ShowTimeAndTheatreResponse;
   }
 

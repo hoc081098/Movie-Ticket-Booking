@@ -56,6 +56,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //
+  // Init Firebase
+  //
+  await Firebase.initializeApp();
+
+  //
   // Env
   //
   await _envConfig();
@@ -63,24 +68,22 @@ void main() async {
   //
   // Firebase, Google, Facebook
   //
-  await Firebase.initializeApp();
+
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+
+  /// Update the iOS foreground notification presentation options to allow
+  /// heads up notifications.
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
+  final firebaseMessaging = FirebaseMessaging.instance;
 
-  FcmNotificationManager fcmNotificationManager;
-  final firebaseMessaging = FirebaseMessaging();
-  firebaseMessaging.configure(
-    onMessage: (msg) => fcmNotificationManager.onMessage(msg),
-    onBackgroundMessage: myBackgroundMessageHandler,
-    onLaunch: (Map<String, dynamic> message) async {
-      print('onLaunch: $message');
-      // _navigateToItemDetail(message);
-    },
-    onResume: (Map<String, dynamic> message) async {
-      print('onResume: $message');
-      // _navigateToItemDetail(message);
-    },
-  );
   final googleSignIn = GoogleSignIn();
   final facebookLogin = FacebookLogin();
 
@@ -109,7 +112,11 @@ void main() async {
   //
   // Repositories
   //
-  fcmNotificationManager = FcmNotificationManager(authClient);
+  final fcmNotificationManager = FcmNotificationManager(
+    authClient,
+    firebaseMessaging,
+    preferences,
+  );
 
   final userRepository = UserRepositoryImpl(
     auth,
@@ -198,16 +205,23 @@ Future<void> _envConfig() async {
   final fromRemote = <EnvKey, String>{};
 
   final remoteConfig = await RemoteConfig.instance;
-  await remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
+
+  // Using zero duration to force fetching from remote server.
+  await remoteConfig.setConfigSettings(
+    RemoteConfigSettings(
+      fetchTimeout: Duration(seconds: 10),
+      minimumFetchInterval: Duration.zero,
+    ),
+  );
   try {
-    await remoteConfig.fetch(expiration: Duration.zero);
-    await remoteConfig.activateFetched();
+    await remoteConfig.fetchAndActivate();
 
     final baseUrl =
         remoteConfig.getString(EnvKey.BASE_URL.toString().split('.')[1]);
     if (baseUrl != null && baseUrl.isNotEmpty) {
       fromRemote[EnvKey.BASE_URL] = baseUrl;
     }
+
     print('###### baseUrl=${baseUrl}');
   } catch (e) {
     print('###### error $e');

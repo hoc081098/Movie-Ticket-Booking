@@ -46,39 +46,17 @@ class _$Promotion extends Promotion {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'id');
-    }
-    if (code == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'code');
-    }
-    if (discount == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'discount');
-    }
-    if (endTime == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'endTime');
-    }
-    if (isActive == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'isActive');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'name');
-    }
-    if (startTime == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'startTime');
-    }
-    if (creator == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'creator');
-    }
-    if (showTime == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'showTime');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Promotion', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Promotion', 'id');
+    BuiltValueNullFieldError.checkNotNull(code, 'Promotion', 'code');
+    BuiltValueNullFieldError.checkNotNull(discount, 'Promotion', 'discount');
+    BuiltValueNullFieldError.checkNotNull(endTime, 'Promotion', 'endTime');
+    BuiltValueNullFieldError.checkNotNull(isActive, 'Promotion', 'isActive');
+    BuiltValueNullFieldError.checkNotNull(name, 'Promotion', 'name');
+    BuiltValueNullFieldError.checkNotNull(startTime, 'Promotion', 'startTime');
+    BuiltValueNullFieldError.checkNotNull(creator, 'Promotion', 'creator');
+    BuiltValueNullFieldError.checkNotNull(showTime, 'Promotion', 'showTime');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Promotion', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Promotion', 'updatedAt');
   }
 
   @override
@@ -195,18 +173,19 @@ class PromotionBuilder implements Builder<Promotion, PromotionBuilder> {
   PromotionBuilder();
 
   PromotionBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _code = _$v.code;
-      _discount = _$v.discount;
-      _endTime = _$v.endTime;
-      _isActive = _$v.isActive;
-      _name = _$v.name;
-      _startTime = _$v.startTime;
-      _creator = _$v.creator;
-      _showTime = _$v.showTime;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _code = $v.code;
+      _discount = $v.discount;
+      _endTime = $v.endTime;
+      _isActive = $v.isActive;
+      _name = $v.name;
+      _startTime = $v.startTime;
+      _creator = $v.creator;
+      _showTime = $v.showTime;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -214,9 +193,7 @@ class PromotionBuilder implements Builder<Promotion, PromotionBuilder> {
 
   @override
   void replace(Promotion other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Promotion;
   }
 
@@ -229,17 +206,27 @@ class PromotionBuilder implements Builder<Promotion, PromotionBuilder> {
   _$Promotion build() {
     final _$result = _$v ??
         new _$Promotion._(
-            id: id,
-            code: code,
-            discount: discount,
-            endTime: endTime,
-            isActive: isActive,
-            name: name,
-            startTime: startTime,
-            creator: creator,
-            showTime: showTime,
-            createdAt: createdAt,
-            updatedAt: updatedAt);
+            id: BuiltValueNullFieldError.checkNotNull(id, 'Promotion', 'id'),
+            code: BuiltValueNullFieldError.checkNotNull(
+                code, 'Promotion', 'code'),
+            discount: BuiltValueNullFieldError.checkNotNull(
+                discount, 'Promotion', 'discount'),
+            endTime: BuiltValueNullFieldError.checkNotNull(
+                endTime, 'Promotion', 'endTime'),
+            isActive: BuiltValueNullFieldError.checkNotNull(
+                isActive, 'Promotion', 'isActive'),
+            name: BuiltValueNullFieldError.checkNotNull(
+                name, 'Promotion', 'name'),
+            startTime: BuiltValueNullFieldError.checkNotNull(
+                startTime, 'Promotion', 'startTime'),
+            creator: BuiltValueNullFieldError.checkNotNull(
+                creator, 'Promotion', 'creator'),
+            showTime: BuiltValueNullFieldError.checkNotNull(
+                showTime, 'Promotion', 'showTime'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, 'Promotion', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, 'Promotion', 'updatedAt'));
     replace(_$result);
     return _$result;
   }

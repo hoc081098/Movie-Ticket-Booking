@@ -37,30 +37,15 @@ class _$Product extends Product {
       this.createdAt,
       this.updatedAt})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Product', 'id');
-    }
-    if (description == null) {
-      throw new BuiltValueNullFieldError('Product', 'description');
-    }
-    if (image == null) {
-      throw new BuiltValueNullFieldError('Product', 'image');
-    }
-    if (is_active == null) {
-      throw new BuiltValueNullFieldError('Product', 'is_active');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('Product', 'name');
-    }
-    if (price == null) {
-      throw new BuiltValueNullFieldError('Product', 'price');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Product', 'createdAt');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Product', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Product', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        description, 'Product', 'description');
+    BuiltValueNullFieldError.checkNotNull(image, 'Product', 'image');
+    BuiltValueNullFieldError.checkNotNull(is_active, 'Product', 'is_active');
+    BuiltValueNullFieldError.checkNotNull(name, 'Product', 'name');
+    BuiltValueNullFieldError.checkNotNull(price, 'Product', 'price');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'Product', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(updatedAt, 'Product', 'updatedAt');
   }
 
   @override
@@ -153,15 +138,16 @@ class ProductBuilder implements Builder<Product, ProductBuilder> {
   ProductBuilder();
 
   ProductBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _description = _$v.description;
-      _image = _$v.image;
-      _is_active = _$v.is_active;
-      _name = _$v.name;
-      _price = _$v.price;
-      _createdAt = _$v.createdAt;
-      _updatedAt = _$v.updatedAt;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _description = $v.description;
+      _image = $v.image;
+      _is_active = $v.is_active;
+      _name = $v.name;
+      _price = $v.price;
+      _createdAt = $v.createdAt;
+      _updatedAt = $v.updatedAt;
       _$v = null;
     }
     return this;
@@ -169,9 +155,7 @@ class ProductBuilder implements Builder<Product, ProductBuilder> {
 
   @override
   void replace(Product other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Product;
   }
 
@@ -184,14 +168,21 @@ class ProductBuilder implements Builder<Product, ProductBuilder> {
   _$Product build() {
     final _$result = _$v ??
         new _$Product._(
-            id: id,
-            description: description,
-            image: image,
-            is_active: is_active,
-            name: name,
-            price: price,
-            createdAt: createdAt,
-            updatedAt: updatedAt);
+            id: BuiltValueNullFieldError.checkNotNull(id, 'Product', 'id'),
+            description: BuiltValueNullFieldError.checkNotNull(
+                description, 'Product', 'description'),
+            image: BuiltValueNullFieldError.checkNotNull(
+                image, 'Product', 'image'),
+            is_active: BuiltValueNullFieldError.checkNotNull(
+                is_active, 'Product', 'is_active'),
+            name:
+                BuiltValueNullFieldError.checkNotNull(name, 'Product', 'name'),
+            price: BuiltValueNullFieldError.checkNotNull(
+                price, 'Product', 'price'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, 'Product', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, 'Product', 'updatedAt'));
     replace(_$result);
     return _$result;
   }

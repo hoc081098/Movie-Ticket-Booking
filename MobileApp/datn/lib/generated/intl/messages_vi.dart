@@ -104,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotOpenTrailerVideo" : MessageLookupByLibrary.simpleMessage("Không thể mở video giới thiệu"),
     "cardHolderName" : MessageLookupByLibrary.simpleMessage("Tên chủ thẻ"),
     "cardNumber" : MessageLookupByLibrary.simpleMessage("Số thẻ"),
+    "cards" : MessageLookupByLibrary.simpleMessage("Cards"),
     "castOverview" : MessageLookupByLibrary.simpleMessage("DIỄN VIÊN"),
     "change_language" : MessageLookupByLibrary.simpleMessage("Thay đổi ngôn ngữ"),
     "change_language_error" : m2,

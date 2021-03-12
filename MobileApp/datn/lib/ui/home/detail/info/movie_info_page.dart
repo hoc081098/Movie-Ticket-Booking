@@ -8,6 +8,7 @@ import 'package:flutter_provider/flutter_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_loader/stream_loader.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -455,8 +456,11 @@ class DetailAppBar extends StatelessWidget {
                 alignment: AlignmentDirectional.center,
                 child: InkWell(
                   onTap: () async {
-                    if (await canLaunch(movie.trailerVideoUrl)) {
-                      await launch(movie.trailerVideoUrl);
+                    print('movie.trailerVideoUrl: ${movie.trailerVideoUrl}');
+
+                    if (movie.trailerVideoUrl != null &&
+                        await canLaunch(movie.trailerVideoUrl)) {
+                      unawaited(launch(movie.trailerVideoUrl));
                     } else {
                       context
                           .showSnackBar(S.of(context).cannotOpenTrailerVideo);

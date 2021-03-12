@@ -19,12 +19,9 @@ class _$ProductAndQuantity extends ProductAndQuantity {
       (new ProductAndQuantityBuilder()..update(updates)).build();
 
   _$ProductAndQuantity._({this.id, this.product, this.quantity}) : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('ProductAndQuantity', 'id');
-    }
-    if (quantity == null) {
-      throw new BuiltValueNullFieldError('ProductAndQuantity', 'quantity');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'ProductAndQuantity', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        quantity, 'ProductAndQuantity', 'quantity');
   }
 
   @override
@@ -80,10 +77,11 @@ class ProductAndQuantityBuilder
   ProductAndQuantityBuilder();
 
   ProductAndQuantityBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _product = _$v.product?.toBuilder();
-      _quantity = _$v.quantity;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _product = $v.product?.toBuilder();
+      _quantity = $v.quantity;
       _$v = null;
     }
     return this;
@@ -91,9 +89,7 @@ class ProductAndQuantityBuilder
 
   @override
   void replace(ProductAndQuantity other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ProductAndQuantity;
   }
 
@@ -108,7 +104,11 @@ class ProductAndQuantityBuilder
     try {
       _$result = _$v ??
           new _$ProductAndQuantity._(
-              id: id, product: _product?.build(), quantity: quantity);
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'ProductAndQuantity', 'id'),
+              product: _product?.build(),
+              quantity: BuiltValueNullFieldError.checkNotNull(
+                  quantity, 'ProductAndQuantity', 'quantity'));
     } catch (_) {
       String _$failedField;
       try {
@@ -180,39 +180,25 @@ class _$Reservation extends Reservation {
       this.promotionId,
       this.promotion})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'id');
-    }
-    if (createdAt == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'createdAt');
-    }
-    if (email == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'email');
-    }
-    if (isActive == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'isActive');
-    }
-    if (originalPrice == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'originalPrice');
-    }
-    if (paymentIntentId == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'paymentIntentId');
-    }
-    if (phoneNumber == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'phoneNumber');
-    }
-    if (productIdWithCounts == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'productIdWithCounts');
-    }
-    if (showTimeId == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'showTimeId');
-    }
-    if (totalPrice == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'totalPrice');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Reservation', 'updatedAt');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Reservation', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, 'Reservation', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(email, 'Reservation', 'email');
+    BuiltValueNullFieldError.checkNotNull(isActive, 'Reservation', 'isActive');
+    BuiltValueNullFieldError.checkNotNull(
+        originalPrice, 'Reservation', 'originalPrice');
+    BuiltValueNullFieldError.checkNotNull(
+        paymentIntentId, 'Reservation', 'paymentIntentId');
+    BuiltValueNullFieldError.checkNotNull(
+        phoneNumber, 'Reservation', 'phoneNumber');
+    BuiltValueNullFieldError.checkNotNull(
+        productIdWithCounts, 'Reservation', 'productIdWithCounts');
+    BuiltValueNullFieldError.checkNotNull(
+        showTimeId, 'Reservation', 'showTimeId');
+    BuiltValueNullFieldError.checkNotNull(
+        totalPrice, 'Reservation', 'totalPrice');
+    BuiltValueNullFieldError.checkNotNull(
+        updatedAt, 'Reservation', 'updatedAt');
   }
 
   @override
@@ -382,23 +368,24 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
   ReservationBuilder();
 
   ReservationBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _createdAt = _$v.createdAt;
-      _email = _$v.email;
-      _isActive = _$v.isActive;
-      _originalPrice = _$v.originalPrice;
-      _paymentIntentId = _$v.paymentIntentId;
-      _phoneNumber = _$v.phoneNumber;
-      _productIdWithCounts = _$v.productIdWithCounts?.toBuilder();
-      _showTimeId = _$v.showTimeId;
-      _showTime = _$v.showTime?.toBuilder();
-      _totalPrice = _$v.totalPrice;
-      _updatedAt = _$v.updatedAt;
-      _user = _$v.user?.toBuilder();
-      _tickets = _$v.tickets?.toBuilder();
-      _promotionId = _$v.promotionId;
-      _promotion = _$v.promotion?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _createdAt = $v.createdAt;
+      _email = $v.email;
+      _isActive = $v.isActive;
+      _originalPrice = $v.originalPrice;
+      _paymentIntentId = $v.paymentIntentId;
+      _phoneNumber = $v.phoneNumber;
+      _productIdWithCounts = $v.productIdWithCounts.toBuilder();
+      _showTimeId = $v.showTimeId;
+      _showTime = $v.showTime?.toBuilder();
+      _totalPrice = $v.totalPrice;
+      _updatedAt = $v.updatedAt;
+      _user = $v.user?.toBuilder();
+      _tickets = $v.tickets?.toBuilder();
+      _promotionId = $v.promotionId;
+      _promotion = $v.promotion?.toBuilder();
       _$v = null;
     }
     return this;
@@ -406,9 +393,7 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
 
   @override
   void replace(Reservation other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Reservation;
   }
 
@@ -423,18 +408,28 @@ class ReservationBuilder implements Builder<Reservation, ReservationBuilder> {
     try {
       _$result = _$v ??
           new _$Reservation._(
-              id: id,
-              createdAt: createdAt,
-              email: email,
-              isActive: isActive,
-              originalPrice: originalPrice,
-              paymentIntentId: paymentIntentId,
-              phoneNumber: phoneNumber,
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, 'Reservation', 'id'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'Reservation', 'createdAt'),
+              email: BuiltValueNullFieldError.checkNotNull(
+                  email, 'Reservation', 'email'),
+              isActive: BuiltValueNullFieldError.checkNotNull(
+                  isActive, 'Reservation', 'isActive'),
+              originalPrice: BuiltValueNullFieldError.checkNotNull(
+                  originalPrice, 'Reservation', 'originalPrice'),
+              paymentIntentId: BuiltValueNullFieldError.checkNotNull(
+                  paymentIntentId, 'Reservation', 'paymentIntentId'),
+              phoneNumber: BuiltValueNullFieldError.checkNotNull(
+                  phoneNumber, 'Reservation', 'phoneNumber'),
               productIdWithCounts: productIdWithCounts.build(),
-              showTimeId: showTimeId,
+              showTimeId: BuiltValueNullFieldError.checkNotNull(
+                  showTimeId, 'Reservation', 'showTimeId'),
               showTime: _showTime?.build(),
-              totalPrice: totalPrice,
-              updatedAt: updatedAt,
+              totalPrice: BuiltValueNullFieldError.checkNotNull(
+                  totalPrice, 'Reservation', 'totalPrice'),
+              updatedAt:
+                  BuiltValueNullFieldError.checkNotNull(updatedAt, 'Reservation', 'updatedAt'),
               user: _user?.build(),
               tickets: _tickets?.build(),
               promotionId: promotionId,

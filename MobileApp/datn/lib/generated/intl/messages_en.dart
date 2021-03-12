@@ -104,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotOpenTrailerVideo" : MessageLookupByLibrary.simpleMessage("Cannot open trailer video"),
     "cardHolderName" : MessageLookupByLibrary.simpleMessage("Card holder name"),
     "cardNumber" : MessageLookupByLibrary.simpleMessage("Card number"),
+    "cards" : MessageLookupByLibrary.simpleMessage("Cards"),
     "castOverview" : MessageLookupByLibrary.simpleMessage("CAST OVERVIEW"),
     "change_language" : MessageLookupByLibrary.simpleMessage("Change language"),
     "change_language_error" : m2,

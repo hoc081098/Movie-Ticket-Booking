@@ -16,12 +16,8 @@ class _$Location extends Location {
       (new LocationBuilder()..update(updates)).build();
 
   _$Location._({this.latitude, this.longitude}) : super._() {
-    if (latitude == null) {
-      throw new BuiltValueNullFieldError('Location', 'latitude');
-    }
-    if (longitude == null) {
-      throw new BuiltValueNullFieldError('Location', 'longitude');
-    }
+    BuiltValueNullFieldError.checkNotNull(latitude, 'Location', 'latitude');
+    BuiltValueNullFieldError.checkNotNull(longitude, 'Location', 'longitude');
   }
 
   @override
@@ -67,9 +63,10 @@ class LocationBuilder implements Builder<Location, LocationBuilder> {
   LocationBuilder();
 
   LocationBuilder get _$this {
-    if (_$v != null) {
-      _latitude = _$v.latitude;
-      _longitude = _$v.longitude;
+    final $v = _$v;
+    if ($v != null) {
+      _latitude = $v.latitude;
+      _longitude = $v.longitude;
       _$v = null;
     }
     return this;
@@ -77,9 +74,7 @@ class LocationBuilder implements Builder<Location, LocationBuilder> {
 
   @override
   void replace(Location other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Location;
   }
 
@@ -90,8 +85,12 @@ class LocationBuilder implements Builder<Location, LocationBuilder> {
 
   @override
   _$Location build() {
-    final _$result =
-        _$v ?? new _$Location._(latitude: latitude, longitude: longitude);
+    final _$result = _$v ??
+        new _$Location._(
+            latitude: BuiltValueNullFieldError.checkNotNull(
+                latitude, 'Location', 'latitude'),
+            longitude: BuiltValueNullFieldError.checkNotNull(
+                longitude, 'Location', 'longitude'));
     replace(_$result);
     return _$result;
   }

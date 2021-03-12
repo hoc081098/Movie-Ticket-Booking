@@ -44,7 +44,7 @@ class _$CommentsResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'comments':
           result.comments.replace(serializers.deserialize(value,
@@ -80,15 +80,11 @@ class _$CommentsResponse extends CommentsResponse {
       (new CommentsResponseBuilder()..update(updates)).build();
 
   _$CommentsResponse._({this.comments, this.average, this.total}) : super._() {
-    if (comments == null) {
-      throw new BuiltValueNullFieldError('CommentsResponse', 'comments');
-    }
-    if (average == null) {
-      throw new BuiltValueNullFieldError('CommentsResponse', 'average');
-    }
-    if (total == null) {
-      throw new BuiltValueNullFieldError('CommentsResponse', 'total');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        comments, 'CommentsResponse', 'comments');
+    BuiltValueNullFieldError.checkNotNull(
+        average, 'CommentsResponse', 'average');
+    BuiltValueNullFieldError.checkNotNull(total, 'CommentsResponse', 'total');
   }
 
   @override
@@ -145,10 +141,11 @@ class CommentsResponseBuilder
   CommentsResponseBuilder();
 
   CommentsResponseBuilder get _$this {
-    if (_$v != null) {
-      _comments = _$v.comments?.toBuilder();
-      _average = _$v.average;
-      _total = _$v.total;
+    final $v = _$v;
+    if ($v != null) {
+      _comments = $v.comments.toBuilder();
+      _average = $v.average;
+      _total = $v.total;
       _$v = null;
     }
     return this;
@@ -156,9 +153,7 @@ class CommentsResponseBuilder
 
   @override
   void replace(CommentsResponse other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$CommentsResponse;
   }
 
@@ -173,7 +168,11 @@ class CommentsResponseBuilder
     try {
       _$result = _$v ??
           new _$CommentsResponse._(
-              comments: comments.build(), average: average, total: total);
+              comments: comments.build(),
+              average: BuiltValueNullFieldError.checkNotNull(
+                  average, 'CommentsResponse', 'average'),
+              total: BuiltValueNullFieldError.checkNotNull(
+                  total, 'CommentsResponse', 'total'));
     } catch (_) {
       String _$failedField;
       try {

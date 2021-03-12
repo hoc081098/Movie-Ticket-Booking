@@ -17,12 +17,10 @@ class _$TheatreAndShowTimes extends TheatreAndShowTimes {
       (new TheatreAndShowTimesBuilder()..update(updates)).build();
 
   _$TheatreAndShowTimes._({this.theatre, this.showTimes}) : super._() {
-    if (theatre == null) {
-      throw new BuiltValueNullFieldError('TheatreAndShowTimes', 'theatre');
-    }
-    if (showTimes == null) {
-      throw new BuiltValueNullFieldError('TheatreAndShowTimes', 'showTimes');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        theatre, 'TheatreAndShowTimes', 'theatre');
+    BuiltValueNullFieldError.checkNotNull(
+        showTimes, 'TheatreAndShowTimes', 'showTimes');
   }
 
   @override
@@ -73,9 +71,10 @@ class TheatreAndShowTimesBuilder
   TheatreAndShowTimesBuilder();
 
   TheatreAndShowTimesBuilder get _$this {
-    if (_$v != null) {
-      _theatre = _$v.theatre?.toBuilder();
-      _showTimes = _$v.showTimes?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _theatre = $v.theatre.toBuilder();
+      _showTimes = $v.showTimes.toBuilder();
       _$v = null;
     }
     return this;
@@ -83,9 +82,7 @@ class TheatreAndShowTimesBuilder
 
   @override
   void replace(TheatreAndShowTimes other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$TheatreAndShowTimes;
   }
 
