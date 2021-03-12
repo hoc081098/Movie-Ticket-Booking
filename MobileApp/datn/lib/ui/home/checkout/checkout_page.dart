@@ -232,7 +232,7 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
     user = context
         .get<UserRepository>()
         .user$
-        .value
+        .requireValue
         ?.fold(() => null, (user) => user);
     if (user != null) {
       context.get<CheckoutBloc>().initializeWith(user!);

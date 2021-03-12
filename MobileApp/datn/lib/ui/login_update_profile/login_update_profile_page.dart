@@ -29,9 +29,9 @@ import '../main_page.dart';
 class UpdateProfilePage extends StatefulWidget {
   static const routeName = '/profile_update';
 
-  final User user;
+  final User? user;
 
-  const UpdateProfilePage({Key key, this.user}) : super(key: key);
+  const UpdateProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
   _UpdateProfilePageState createState() => _UpdateProfilePageState();
@@ -157,7 +157,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         await repository.checkAuth();
         await Future.delayed(const Duration(milliseconds: 500));
 
-        yield (await repository.user$.first).fold(() => null, (r) => r);
+        yield repository.user$.value?.fold(() => null, (r) => r);
       }()
           .where((user) => user != null)
           .doOnData((_) => isFetching$.add(false))

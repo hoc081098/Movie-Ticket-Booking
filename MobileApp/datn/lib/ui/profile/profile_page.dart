@@ -7,7 +7,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/user.dart';
 import '../../domain/repository/user_repository.dart';
@@ -18,25 +17,11 @@ import '../home/checkout/cards/cards_page.dart';
 import '../login_update_profile/login_update_profile_page.dart';
 import 'reservations/reservations_page.dart';
 
-class ProfilePage extends StatefulWidget {
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  ValueStream<Optional<User>> user$;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    user$ ??= Provider.of<UserRepository>(context).user$;
-  }
-
+class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RxStreamBuilder<Optional<User>>(
-      stream: user$,
+    return RxStreamBuilder<Optional<User>?>(
+      stream: Provider.of<UserRepository>(context).user$,
       builder: (context, data) {
         return Scaffold(
           body: data == null
@@ -53,21 +38,14 @@ class _ProfilePageState extends State<ProfilePage> {
               ? null
               : data.fold(
                   () => null,
-                  (_) =>
-                      /*FloatingActionButton.extended(
-                    onPressed: () => AppScaffold.of(context)
-                        .pushNamedX(ReservationsPage.routeName),
-                    label: Text(S.of(context).tickets),
-                    icon: FaIcon(FontAwesomeIcons.ticketAlt),
-                  )*/
-                      buildFab(),
+                  (_) => buildFab(context),
                 ),
         );
       },
     );
   }
 
-  Widget buildFab() {
+  Widget buildFab(BuildContext context) {
     const color = Color(0xffA4508B);
 
     return SpeedDial(
@@ -85,8 +63,8 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.white,
           ),
           backgroundColor: color,
-          onTap: () =>
-              AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(ReservationsPage.routeName),
+          onTap: () => AppScaffold.navigatorOfCurrentIndex(context)
+              .pushNamedX(ReservationsPage.routeName),
           label: S.of(context).tickets,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w500,
@@ -309,7 +287,8 @@ class LoggedIn extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
+            onTap: () =>
+                AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               UpdateProfilePage.routeName,
               arguments: user,
             ),

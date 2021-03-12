@@ -235,8 +235,8 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
   };
 
   final appScaffoldKey = GlobalKey();
-  Object listenToken;
-  Object setupLocalNotification;
+  Object? listenToken;
+  Object? setupLocalNotification;
 
   @override
   void didChangeDependencies() {
@@ -244,6 +244,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
 
     listenToken ??= Provider.of<UserRepository>(context)
         .user$
+        .startWith(Provider.of<UserRepository>(context).user$.requireValue)
         .where((userOptional) => userOptional != null && userOptional is None)
         .take(1)
         .listen(onLoggedOut)
@@ -307,7 +308,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     );
   }
 
-  void onLoggedOut(Optional<User> _) async {
+  void onLoggedOut(Optional<User>? _) async {
     context.showSnackBar(S.of(context).loggedOutSuccessfully);
     final navigatorState = Navigator.of(context);
     await delay(500);
