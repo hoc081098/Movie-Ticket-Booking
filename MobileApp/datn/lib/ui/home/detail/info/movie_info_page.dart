@@ -27,7 +27,7 @@ import 'related_movies.dart';
 class MovieInfoPage extends StatefulWidget {
   final String movieId;
 
-  const MovieInfoPage({Key key, this.movieId}) : super(key: key);
+  const MovieInfoPage({Key? key, required this.movieId}) : super(key: key);
 
   @override
   _MovieInfoPageState createState() => _MovieInfoPageState();
@@ -35,13 +35,13 @@ class MovieInfoPage extends StatefulWidget {
 
 class _MovieInfoPageState extends State<MovieInfoPage>
     with AutomaticKeepAliveClientMixin, DisposeBagMixin {
-  LoaderBloc<Movie> bloc;
-  LoaderBloc<bool> favBloc;
-  LoaderBloc<BuiltList<Movie>> relatedBloc;
+  LoaderBloc<Movie>? bloc;
+  LoaderBloc<bool>? favBloc;
+  LoaderBloc<BuiltList<Movie>>? relatedBloc;
 
   final releaseDateFormat = DateFormat('dd/MM/yy');
   final toggleS = PublishSubject<void>(sync: true);
-  Object token;
+  Object? token;
   var firstMsg = true;
 
   @override
@@ -68,7 +68,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       final repository = Provider.of<MovieRepository>(context);
       final loaderFunction = () => repository.getMovieDetail(widget.movieId);
 
-      return LoaderBloc(
+      return LoaderBloc<Movie>(
         loaderFunction: loaderFunction,
         refresherFunction: loaderFunction,
         initialContent: null,
@@ -95,7 +95,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
     relatedBloc ??= () {
       final repository = Provider.of<MovieRepository>(context);
 
-      return LoaderBloc(
+      return LoaderBloc<BuiltList<Movie>>(
         loaderFunction: () => repository.getRelatedMovies(widget.movieId),
         initialContent: null,
         logger: print,
@@ -106,9 +106,12 @@ class _MovieInfoPageState extends State<MovieInfoPage>
   @override
   void dispose() {
     super.dispose();
-    bloc.dispose();
-    favBloc.dispose();
-    relatedBloc.dispose();
+    bloc?.dispose();
+    bloc = null;
+    favBloc?.dispose();
+    favBloc = null;
+    relatedBloc?.dispose();
+    relatedBloc = null;
   }
 
   @override
@@ -116,17 +119,18 @@ class _MovieInfoPageState extends State<MovieInfoPage>
     super.build(context);
 
     final themeData = Theme.of(context);
+    final bloc = this.bloc!;
 
     return Scaffold(
       body: RxStreamBuilder<LoaderState<Movie>>(
         stream: bloc.state$,
         builder: (context, state) {
-          if (state.error != null) {
+          final error = state!.error;
+          if (error != null) {
             return Center(
               child: MyErrorWidget(
-                errorText: S
-                    .of(context)
-                    .error_with_message(getErrorMessage(state.error)),
+                errorText:
+                    S.of(context).error_with_message(getErrorMessage(error)),
                 onPressed: bloc.fetch,
               ),
             );
@@ -145,15 +149,14 @@ class _MovieInfoPageState extends State<MovieInfoPage>
             );
           }
 
-          final movie = state.content;
-          assert(movie != null);
+          final movie = state.content!;
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
               DetailAppBar(
                 movie: movie,
-                favBloc: favBloc,
+                favBloc: favBloc!,
                 onFavPressed: () => toggleS.add(null),
               ),
               SliverToBoxAdapter(
@@ -164,7 +167,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                     children: [
                       Text(
                         movie.title,
-                        style: themeData.textTheme.headline4.copyWith(
+                        style: themeData.textTheme.headline4!.copyWith(
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
                           color: const Color(0xff687189),
@@ -194,11 +197,11 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                       const SizedBox(height: 6),
                       Wrap(
                         children: [
-                          for (var c in movie.categories) ...[
+                          for (var c in movie.categories!) ...[
                             ActionChip(
                               label: Text(
                                 '#${c.name}',
-                                style: themeData.textTheme.subtitle1
+                                style: themeData.textTheme.subtitle1!
                                     .copyWith(fontSize: 12),
                               ),
                               onPressed: () {},
@@ -226,7 +229,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                               child: Text(
                                 S.of(context).storyline,
                                 maxLines: 1,
-                                style: themeData.textTheme.headline6.copyWith(
+                                style: themeData.textTheme.headline6!.copyWith(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
@@ -236,13 +239,13 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                           ],
                         ),
                         collapsed: Text(
-                          movie.overview,
+                          movie.overview ?? '',
                           softWrap: true,
                           maxLines: 4,
                           overflow: TextOverflow.ellipsis,
                         ),
                         expanded: Text(
-                          movie.overview,
+                          movie.overview ?? '',
                           softWrap: true,
                         ),
                       ),
@@ -250,29 +253,29 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                       Text(
                         S.of(context).castOverview,
                         maxLines: 1,
-                        style: themeData.textTheme.headline6.copyWith(
+                        style: themeData.textTheme.headline6!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff687189),
                         ),
                       ),
                       const SizedBox(height: 12),
-                      PeopleList(people: movie.actors),
+                      PeopleList(people: movie.actors!),
                       Text(
                         S.of(context).directors,
                         maxLines: 1,
-                        style: themeData.textTheme.headline6.copyWith(
+                        style: themeData.textTheme.headline6!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff687189),
                         ),
                       ),
                       const SizedBox(height: 12),
-                      PeopleList(people: movie.directors),
+                      PeopleList(people: movie.directors!),
                       Text(
                         S.of(context).relatedMovies,
                         maxLines: 1,
-                        style: themeData.textTheme.headline6.copyWith(
+                        style: themeData.textTheme.headline6!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff687189),
@@ -283,7 +286,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
                   ),
                 ),
               ),
-              RelatedMovies(bloc: relatedBloc),
+              RelatedMovies(bloc: relatedBloc!),
             ],
           );
         },
@@ -297,10 +300,10 @@ class _MovieInfoPageState extends State<MovieInfoPage>
 
 class DetailAppBar extends StatelessWidget {
   const DetailAppBar({
-    Key key,
-    @required this.movie,
-    @required this.onFavPressed,
-    @required this.favBloc,
+    Key? key,
+    required this.movie,
+    required this.onFavPressed,
+    required this.favBloc,
   }) : super(key: key);
 
   final Movie movie;
@@ -347,7 +350,7 @@ class DetailAppBar extends StatelessWidget {
                           S.of(context).load_image_error,
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle2
+                              .subtitle2!
                               .copyWith(fontSize: 12),
                         ),
                       ],
@@ -415,7 +418,7 @@ class DetailAppBar extends StatelessWidget {
                       RxStreamBuilder<LoaderState<bool>>(
                         stream: favBloc.state$,
                         builder: (context, state) {
-                          if (state.isLoading) {
+                          if (state!.isLoading) {
                             return SizedBox(
                               width: 32,
                               height: 32,
@@ -439,7 +442,7 @@ class DetailAppBar extends StatelessWidget {
 
                           return IconButton(
                             icon: Icon(
-                              state.content
+                              state.content!
                                   ? Icons.favorite
                                   : Icons.favorite_border,
                               color: Colors.white,
@@ -456,11 +459,12 @@ class DetailAppBar extends StatelessWidget {
                 alignment: AlignmentDirectional.center,
                 child: InkWell(
                   onTap: () async {
-                    print('movie.trailerVideoUrl: ${movie.trailerVideoUrl}');
+                    final trailerVideoUrl = movie.trailerVideoUrl;
+                    print('movie.trailerVideoUrl: ${trailerVideoUrl}');
 
-                    if (movie.trailerVideoUrl != null &&
-                        await canLaunch(movie.trailerVideoUrl)) {
-                      unawaited(launch(movie.trailerVideoUrl));
+                    if (trailerVideoUrl != null &&
+                        await canLaunch(trailerVideoUrl)) {
+                      unawaited(launch(trailerVideoUrl));
                     } else {
                       context
                           .showSnackBar(S.of(context).cannotOpenTrailerVideo);
@@ -497,8 +501,8 @@ class DetailAppBar extends StatelessWidget {
 
 class PeopleList extends StatelessWidget {
   const PeopleList({
-    Key key,
-    @required this.people,
+    Key? key,
+    required this.people,
   }) : super(key: key);
 
   final BuiltList<Person> people;
@@ -508,7 +512,7 @@ class PeopleList extends StatelessWidget {
     const width = 96.0;
     const height = width * 1.5;
 
-    final textStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final textStyle = Theme.of(context).textTheme.subtitle2!.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w500,
           color: const Color(0xff687189),

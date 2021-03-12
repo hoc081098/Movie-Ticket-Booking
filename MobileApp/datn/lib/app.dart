@@ -22,7 +22,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<void> cacheImage;
+  Future<void>? cacheImage;
 
   final routes = <String, WidgetBuilder>{
     MainPage.routeName: (context) => MainPage(),
@@ -119,7 +119,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   static const minSplashDuration = Duration(seconds: 2);
-  Future<AuthState> checkAuthFuture;
+  Future<AuthState>? checkAuthFuture;
 
   @override
   void didChangeDependencies() {
@@ -143,7 +143,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     final routes = Provider.of<Map<String, WidgetBuilder>>(context);
-    final textStyle = Theme.of(context).textTheme.headline6.copyWith(
+    final textStyle = Theme.of(context).textTheme.headline6!.copyWith(
           fontSize: 18,
           color: Colors.white,
         );
@@ -152,7 +152,7 @@ class _SplashPageState extends State<SplashPage> {
       future: checkAuthFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return routes[MainPage.routeName](context);
+          return routes[MainPage.routeName]!(context);
         }
 
         if (!snapshot.hasData) {
@@ -211,16 +211,14 @@ class _SplashPageState extends State<SplashPage> {
           );
         }
 
-        switch (snapshot.data) {
+        switch (snapshot.requireData) {
           case AuthState.loggedIn:
-            return routes[MainPage.routeName](context);
+            return routes[MainPage.routeName]!(context);
           case AuthState.notLoggedIn:
-            return routes[LoginPage.routeName](context);
+            return routes[LoginPage.routeName]!(context);
           case AuthState.notCompletedLogin:
-            return routes[UpdateProfilePage.routeName](context);
+            return routes[UpdateProfilePage.routeName]!(context);
         }
-
-        throw '???';
       },
     );
   }
