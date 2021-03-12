@@ -24,18 +24,18 @@ class _$Comment extends Comment {
   @override
   final DateTime updatedAt;
 
-  factory _$Comment([void Function(CommentBuilder) updates]) =>
+  factory _$Comment([void Function(CommentBuilder)? updates]) =>
       (new CommentBuilder()..update(updates)).build();
 
   _$Comment._(
-      {this.id,
-      this.is_active,
-      this.content,
-      this.rate_star,
-      this.movie,
-      this.user,
-      this.createdAt,
-      this.updatedAt})
+      {required this.id,
+      required this.is_active,
+      required this.content,
+      required this.rate_star,
+      required this.movie,
+      required this.user,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'Comment', 'id');
     BuiltValueNullFieldError.checkNotNull(is_active, 'Comment', 'is_active');
@@ -100,39 +100,39 @@ class _$Comment extends Comment {
 }
 
 class CommentBuilder implements Builder<Comment, CommentBuilder> {
-  _$Comment _$v;
+  _$Comment? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  String _content;
-  String get content => _$this._content;
-  set content(String content) => _$this._content = content;
+  String? _content;
+  String? get content => _$this._content;
+  set content(String? content) => _$this._content = content;
 
-  int _rate_star;
-  int get rate_star => _$this._rate_star;
-  set rate_star(int rate_star) => _$this._rate_star = rate_star;
+  int? _rate_star;
+  int? get rate_star => _$this._rate_star;
+  set rate_star(int? rate_star) => _$this._rate_star = rate_star;
 
-  String _movie;
-  String get movie => _$this._movie;
-  set movie(String movie) => _$this._movie = movie;
+  String? _movie;
+  String? get movie => _$this._movie;
+  set movie(String? movie) => _$this._movie = movie;
 
-  UserBuilder _user;
+  UserBuilder? _user;
   UserBuilder get user => _$this._user ??= new UserBuilder();
-  set user(UserBuilder user) => _$this._user = user;
+  set user(UserBuilder? user) => _$this._user = user;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   CommentBuilder();
 
@@ -159,7 +159,7 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
   }
 
   @override
-  void update(void Function(CommentBuilder) updates) {
+  void update(void Function(CommentBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -184,7 +184,7 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
               updatedAt: BuiltValueNullFieldError.checkNotNull(
                   updatedAt, 'Comment', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'user';
         user.build();

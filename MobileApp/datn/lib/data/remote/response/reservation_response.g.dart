@@ -24,10 +24,10 @@ class _$ReservationResponseSerializer
   final String wireName = 'ReservationResponse';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, ReservationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'createdAt',
@@ -62,7 +62,7 @@ class _$ReservationResponseSerializer
       serializers.serialize(object.user,
           specifiedType: const FullType(UserResponse)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -75,7 +75,7 @@ class _$ReservationResponseSerializer
 
   @override
   ReservationResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ReservationResponseBuilder();
 
@@ -83,7 +83,7 @@ class _$ReservationResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -116,12 +116,12 @@ class _$ReservationResponseSerializer
         case 'products':
           result.products.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(ProductIdAndQuantity)]))
+                      BuiltList, const [const FullType(ProductIdAndQuantity)]))!
               as BuiltList<Object>);
           break;
         case 'show_time':
           result.show_time.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(ShowTimeFullResponse))
+                  specifiedType: const FullType(ShowTimeFullResponse))!
               as ShowTimeFullResponse);
           break;
         case 'total_price':
@@ -134,7 +134,7 @@ class _$ReservationResponseSerializer
           break;
         case 'user':
           result.user.replace(serializers.deserialize(value,
-              specifiedType: const FullType(UserResponse)) as UserResponse);
+              specifiedType: const FullType(UserResponse))! as UserResponse);
           break;
       }
     }
@@ -154,10 +154,10 @@ class _$ProductIdAndQuantitySerializer
   final String wireName = 'ProductIdAndQuantity';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, ProductIdAndQuantity object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'quantity',
@@ -170,7 +170,7 @@ class _$ProductIdAndQuantitySerializer
 
   @override
   ProductIdAndQuantity deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ProductIdAndQuantityBuilder();
 
@@ -178,7 +178,7 @@ class _$ProductIdAndQuantitySerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -206,10 +206,10 @@ class _$ShowTimeFullResponseSerializer
   final String wireName = 'ShowTimeFullResponse';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, ShowTimeFullResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'movie',
@@ -233,7 +233,7 @@ class _$ShowTimeFullResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -246,7 +246,7 @@ class _$ShowTimeFullResponseSerializer
 
   @override
   ShowTimeFullResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ShowTimeFullResponseBuilder();
 
@@ -254,7 +254,7 @@ class _$ShowTimeFullResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -266,11 +266,11 @@ class _$ShowTimeFullResponseSerializer
           break;
         case 'movie':
           result.movie.replace(serializers.deserialize(value,
-              specifiedType: const FullType(MovieResponse)) as MovieResponse);
+              specifiedType: const FullType(MovieResponse))! as MovieResponse);
           break;
         case 'theatre':
           result.theatre.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(TheatreResponse))
+                  specifiedType: const FullType(TheatreResponse))!
               as TheatreResponse);
           break;
         case 'room':
@@ -308,7 +308,7 @@ class _$ReservationResponse extends ReservationResponse {
   @override
   final String email;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final int original_price;
   @override
@@ -327,22 +327,22 @@ class _$ReservationResponse extends ReservationResponse {
   final UserResponse user;
 
   factory _$ReservationResponse(
-          [void Function(ReservationResponseBuilder) updates]) =>
+          [void Function(ReservationResponseBuilder)? updates]) =>
       (new ReservationResponseBuilder()..update(updates)).build();
 
   _$ReservationResponse._(
-      {this.id,
-      this.createdAt,
-      this.email,
+      {required this.id,
+      required this.createdAt,
+      required this.email,
       this.is_active,
-      this.original_price,
-      this.payment_intent_id,
-      this.phone_number,
-      this.products,
-      this.show_time,
-      this.total_price,
-      this.updatedAt,
-      this.user})
+      required this.original_price,
+      required this.payment_intent_id,
+      required this.phone_number,
+      required this.products,
+      required this.show_time,
+      required this.total_price,
+      required this.updatedAt,
+      required this.user})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'ReservationResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(
@@ -440,61 +440,61 @@ class _$ReservationResponse extends ReservationResponse {
 
 class ReservationResponseBuilder
     implements Builder<ReservationResponse, ReservationResponseBuilder> {
-  _$ReservationResponse _$v;
+  _$ReservationResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  String _email;
-  String get email => _$this._email;
-  set email(String email) => _$this._email = email;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  int _original_price;
-  int get original_price => _$this._original_price;
-  set original_price(int original_price) =>
+  int? _original_price;
+  int? get original_price => _$this._original_price;
+  set original_price(int? original_price) =>
       _$this._original_price = original_price;
 
-  String _payment_intent_id;
-  String get payment_intent_id => _$this._payment_intent_id;
-  set payment_intent_id(String payment_intent_id) =>
+  String? _payment_intent_id;
+  String? get payment_intent_id => _$this._payment_intent_id;
+  set payment_intent_id(String? payment_intent_id) =>
       _$this._payment_intent_id = payment_intent_id;
 
-  String _phone_number;
-  String get phone_number => _$this._phone_number;
-  set phone_number(String phone_number) => _$this._phone_number = phone_number;
+  String? _phone_number;
+  String? get phone_number => _$this._phone_number;
+  set phone_number(String? phone_number) => _$this._phone_number = phone_number;
 
-  ListBuilder<ProductIdAndQuantity> _products;
+  ListBuilder<ProductIdAndQuantity>? _products;
   ListBuilder<ProductIdAndQuantity> get products =>
       _$this._products ??= new ListBuilder<ProductIdAndQuantity>();
-  set products(ListBuilder<ProductIdAndQuantity> products) =>
+  set products(ListBuilder<ProductIdAndQuantity>? products) =>
       _$this._products = products;
 
-  ShowTimeFullResponseBuilder _show_time;
+  ShowTimeFullResponseBuilder? _show_time;
   ShowTimeFullResponseBuilder get show_time =>
       _$this._show_time ??= new ShowTimeFullResponseBuilder();
-  set show_time(ShowTimeFullResponseBuilder show_time) =>
+  set show_time(ShowTimeFullResponseBuilder? show_time) =>
       _$this._show_time = show_time;
 
-  int _total_price;
-  int get total_price => _$this._total_price;
-  set total_price(int total_price) => _$this._total_price = total_price;
+  int? _total_price;
+  int? get total_price => _$this._total_price;
+  set total_price(int? total_price) => _$this._total_price = total_price;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
-  UserResponseBuilder _user;
+  UserResponseBuilder? _user;
   UserResponseBuilder get user => _$this._user ??= new UserResponseBuilder();
-  set user(UserResponseBuilder user) => _$this._user = user;
+  set user(UserResponseBuilder? user) => _$this._user = user;
 
   ReservationResponseBuilder();
 
@@ -525,7 +525,7 @@ class ReservationResponseBuilder
   }
 
   @override
-  void update(void Function(ReservationResponseBuilder) updates) {
+  void update(void Function(ReservationResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -556,7 +556,7 @@ class ReservationResponseBuilder
                   updatedAt, 'ReservationResponse', 'updatedAt'),
               user: user.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'products';
         products.build();
@@ -583,10 +583,11 @@ class _$ProductIdAndQuantity extends ProductIdAndQuantity {
   final int quantity;
 
   factory _$ProductIdAndQuantity(
-          [void Function(ProductIdAndQuantityBuilder) updates]) =>
+          [void Function(ProductIdAndQuantityBuilder)? updates]) =>
       (new ProductIdAndQuantityBuilder()..update(updates)).build();
 
-  _$ProductIdAndQuantity._({this.id, this.quantity}) : super._() {
+  _$ProductIdAndQuantity._({required this.id, required this.quantity})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'ProductIdAndQuantity', 'id');
     BuiltValueNullFieldError.checkNotNull(
         quantity, 'ProductIdAndQuantity', 'quantity');
@@ -625,15 +626,15 @@ class _$ProductIdAndQuantity extends ProductIdAndQuantity {
 
 class ProductIdAndQuantityBuilder
     implements Builder<ProductIdAndQuantity, ProductIdAndQuantityBuilder> {
-  _$ProductIdAndQuantity _$v;
+  _$ProductIdAndQuantity? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  int _quantity;
-  int get quantity => _$this._quantity;
-  set quantity(int quantity) => _$this._quantity = quantity;
+  int? _quantity;
+  int? get quantity => _$this._quantity;
+  set quantity(int? quantity) => _$this._quantity = quantity;
 
   ProductIdAndQuantityBuilder();
 
@@ -654,7 +655,7 @@ class ProductIdAndQuantityBuilder
   }
 
   @override
-  void update(void Function(ProductIdAndQuantityBuilder) updates) {
+  void update(void Function(ProductIdAndQuantityBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -675,7 +676,7 @@ class _$ShowTimeFullResponse extends ShowTimeFullResponse {
   @override
   final String id;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final MovieResponse movie;
   @override
@@ -692,19 +693,19 @@ class _$ShowTimeFullResponse extends ShowTimeFullResponse {
   final DateTime updatedAt;
 
   factory _$ShowTimeFullResponse(
-          [void Function(ShowTimeFullResponseBuilder) updates]) =>
+          [void Function(ShowTimeFullResponseBuilder)? updates]) =>
       (new ShowTimeFullResponseBuilder()..update(updates)).build();
 
   _$ShowTimeFullResponse._(
-      {this.id,
+      {required this.id,
       this.is_active,
-      this.movie,
-      this.theatre,
-      this.room,
-      this.end_time,
-      this.start_time,
-      this.createdAt,
-      this.updatedAt})
+      required this.movie,
+      required this.theatre,
+      required this.room,
+      required this.end_time,
+      required this.start_time,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'ShowTimeFullResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(
@@ -782,45 +783,45 @@ class _$ShowTimeFullResponse extends ShowTimeFullResponse {
 
 class ShowTimeFullResponseBuilder
     implements Builder<ShowTimeFullResponse, ShowTimeFullResponseBuilder> {
-  _$ShowTimeFullResponse _$v;
+  _$ShowTimeFullResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  MovieResponseBuilder _movie;
+  MovieResponseBuilder? _movie;
   MovieResponseBuilder get movie =>
       _$this._movie ??= new MovieResponseBuilder();
-  set movie(MovieResponseBuilder movie) => _$this._movie = movie;
+  set movie(MovieResponseBuilder? movie) => _$this._movie = movie;
 
-  TheatreResponseBuilder _theatre;
+  TheatreResponseBuilder? _theatre;
   TheatreResponseBuilder get theatre =>
       _$this._theatre ??= new TheatreResponseBuilder();
-  set theatre(TheatreResponseBuilder theatre) => _$this._theatre = theatre;
+  set theatre(TheatreResponseBuilder? theatre) => _$this._theatre = theatre;
 
-  String _room;
-  String get room => _$this._room;
-  set room(String room) => _$this._room = room;
+  String? _room;
+  String? get room => _$this._room;
+  set room(String? room) => _$this._room = room;
 
-  DateTime _end_time;
-  DateTime get end_time => _$this._end_time;
-  set end_time(DateTime end_time) => _$this._end_time = end_time;
+  DateTime? _end_time;
+  DateTime? get end_time => _$this._end_time;
+  set end_time(DateTime? end_time) => _$this._end_time = end_time;
 
-  DateTime _start_time;
-  DateTime get start_time => _$this._start_time;
-  set start_time(DateTime start_time) => _$this._start_time = start_time;
+  DateTime? _start_time;
+  DateTime? get start_time => _$this._start_time;
+  set start_time(DateTime? start_time) => _$this._start_time = start_time;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   ShowTimeFullResponseBuilder();
 
@@ -848,7 +849,7 @@ class ShowTimeFullResponseBuilder
   }
 
   @override
-  void update(void Function(ShowTimeFullResponseBuilder) updates) {
+  void update(void Function(ShowTimeFullResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -874,7 +875,7 @@ class ShowTimeFullResponseBuilder
               updatedAt: BuiltValueNullFieldError.checkNotNull(
                   updatedAt, 'ShowTimeFullResponse', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'movie';
         movie.build();

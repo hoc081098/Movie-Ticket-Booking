@@ -24,18 +24,18 @@ class _$Card extends Card {
   @override
   final String last4;
 
-  factory _$Card([void Function(CardBuilder) updates]) =>
+  factory _$Card([void Function(CardBuilder)? updates]) =>
       (new CardBuilder()..update(updates)).build();
 
   _$Card._(
-      {this.brand,
-      this.card_holder_name,
-      this.country,
-      this.exp_month,
-      this.exp_year,
-      this.funding,
-      this.id,
-      this.last4})
+      {required this.brand,
+      required this.card_holder_name,
+      required this.country,
+      required this.exp_month,
+      required this.exp_year,
+      required this.funding,
+      required this.id,
+      required this.last4})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(brand, 'Card', 'brand');
     BuiltValueNullFieldError.checkNotNull(
@@ -103,40 +103,40 @@ class _$Card extends Card {
 }
 
 class CardBuilder implements Builder<Card, CardBuilder> {
-  _$Card _$v;
+  _$Card? _$v;
 
-  String _brand;
-  String get brand => _$this._brand;
-  set brand(String brand) => _$this._brand = brand;
+  String? _brand;
+  String? get brand => _$this._brand;
+  set brand(String? brand) => _$this._brand = brand;
 
-  String _card_holder_name;
-  String get card_holder_name => _$this._card_holder_name;
-  set card_holder_name(String card_holder_name) =>
+  String? _card_holder_name;
+  String? get card_holder_name => _$this._card_holder_name;
+  set card_holder_name(String? card_holder_name) =>
       _$this._card_holder_name = card_holder_name;
 
-  String _country;
-  String get country => _$this._country;
-  set country(String country) => _$this._country = country;
+  String? _country;
+  String? get country => _$this._country;
+  set country(String? country) => _$this._country = country;
 
-  int _exp_month;
-  int get exp_month => _$this._exp_month;
-  set exp_month(int exp_month) => _$this._exp_month = exp_month;
+  int? _exp_month;
+  int? get exp_month => _$this._exp_month;
+  set exp_month(int? exp_month) => _$this._exp_month = exp_month;
 
-  int _exp_year;
-  int get exp_year => _$this._exp_year;
-  set exp_year(int exp_year) => _$this._exp_year = exp_year;
+  int? _exp_year;
+  int? get exp_year => _$this._exp_year;
+  set exp_year(int? exp_year) => _$this._exp_year = exp_year;
 
-  String _funding;
-  String get funding => _$this._funding;
-  set funding(String funding) => _$this._funding = funding;
+  String? _funding;
+  String? get funding => _$this._funding;
+  set funding(String? funding) => _$this._funding = funding;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _last4;
-  String get last4 => _$this._last4;
-  set last4(String last4) => _$this._last4 = last4;
+  String? _last4;
+  String? get last4 => _$this._last4;
+  set last4(String? last4) => _$this._last4 = last4;
 
   CardBuilder();
 
@@ -163,7 +163,7 @@ class CardBuilder implements Builder<Card, CardBuilder> {
   }
 
   @override
-  void update(void Function(CardBuilder) updates) {
+  void update(void Function(CardBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

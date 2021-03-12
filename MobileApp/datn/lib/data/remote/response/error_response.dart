@@ -38,12 +38,10 @@ abstract class SingleMessageErrorResponse
   @override
   int get statusCode;
 
-  @nullable
   @override
-  String get error;
+  String? get error;
 
-  @nullable
-  String get message;
+  String? get message;
 
   SingleMessageErrorResponse._();
 
@@ -68,13 +66,11 @@ abstract class MultipleMessagesErrorResponse
   @override
   int get statusCode;
 
-  @nullable
   @override
-  String get error;
+  String? get error;
 
-  @nullable
   @BuiltValueField(wireName: 'message')
-  BuiltList<String> get messages;
+  BuiltList<String>? get messages;
 
   MultipleMessagesErrorResponse._();
 

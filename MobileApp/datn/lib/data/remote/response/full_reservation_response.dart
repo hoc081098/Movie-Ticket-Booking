@@ -19,8 +19,7 @@ abstract class FullReservationResponse
 
   String get email;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   int get original_price;
 
@@ -40,8 +39,7 @@ abstract class FullReservationResponse
 
   BuiltList<TicketResponse> get tickets;
 
-  @nullable
-  PromotionResponse get promotion_id;
+  PromotionResponse? get promotion_id;
 
   FullReservationResponse._();
 

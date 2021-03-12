@@ -14,10 +14,12 @@ class _$Comments extends Comments {
   @override
   final int total;
 
-  factory _$Comments([void Function(CommentsBuilder) updates]) =>
+  factory _$Comments([void Function(CommentsBuilder)? updates]) =>
       (new CommentsBuilder()..update(updates)).build();
 
-  _$Comments._({this.comments, this.average, this.total}) : super._() {
+  _$Comments._(
+      {required this.comments, required this.average, required this.total})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(comments, 'Comments', 'comments');
     BuiltValueNullFieldError.checkNotNull(average, 'Comments', 'average');
     BuiltValueNullFieldError.checkNotNull(total, 'Comments', 'total');
@@ -56,20 +58,20 @@ class _$Comments extends Comments {
 }
 
 class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
-  _$Comments _$v;
+  _$Comments? _$v;
 
-  ListBuilder<Comment> _comments;
+  ListBuilder<Comment>? _comments;
   ListBuilder<Comment> get comments =>
       _$this._comments ??= new ListBuilder<Comment>();
-  set comments(ListBuilder<Comment> comments) => _$this._comments = comments;
+  set comments(ListBuilder<Comment>? comments) => _$this._comments = comments;
 
-  double _average;
-  double get average => _$this._average;
-  set average(double average) => _$this._average = average;
+  double? _average;
+  double? get average => _$this._average;
+  set average(double? average) => _$this._average = average;
 
-  int _total;
-  int get total => _$this._total;
-  set total(int total) => _$this._total = total;
+  int? _total;
+  int? get total => _$this._total;
+  set total(int? total) => _$this._total = total;
 
   CommentsBuilder();
 
@@ -91,7 +93,7 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
   }
 
   @override
-  void update(void Function(CommentsBuilder) updates) {
+  void update(void Function(CommentsBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -107,7 +109,7 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
               total: BuiltValueNullFieldError.checkNotNull(
                   total, 'Comments', 'total'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'comments';
         comments.build();

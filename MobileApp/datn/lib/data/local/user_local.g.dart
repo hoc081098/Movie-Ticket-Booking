@@ -17,9 +17,9 @@ class _$LocationLocalSerializer implements StructuredSerializer<LocationLocal> {
   final String wireName = 'LocationLocal';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, LocationLocal object,
+  Iterable<Object?> serialize(Serializers serializers, LocationLocal object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'latitude',
       serializers.serialize(object.latitude,
           specifiedType: const FullType(double)),
@@ -33,7 +33,7 @@ class _$LocationLocalSerializer implements StructuredSerializer<LocationLocal> {
 
   @override
   LocationLocal deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new LocationLocalBuilder();
 
@@ -41,7 +41,7 @@ class _$LocationLocalSerializer implements StructuredSerializer<LocationLocal> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'latitude':
           result.latitude = serializers.deserialize(value,
@@ -65,9 +65,9 @@ class _$UserLocalSerializer implements StructuredSerializer<UserLocal> {
   final String wireName = 'UserLocal';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, UserLocal object,
+  Iterable<Object?> serialize(Serializers serializers, UserLocal object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'uid',
       serializers.serialize(object.uid, specifiedType: const FullType(String)),
       'email',
@@ -86,7 +86,7 @@ class _$UserLocalSerializer implements StructuredSerializer<UserLocal> {
       serializers.serialize(object.isActive,
           specifiedType: const FullType(bool)),
     ];
-    Object value;
+    Object? value;
     value = object.phoneNumber;
     if (value != null) {
       result
@@ -126,7 +126,7 @@ class _$UserLocalSerializer implements StructuredSerializer<UserLocal> {
   }
 
   @override
-  UserLocal deserialize(Serializers serializers, Iterable<Object> serialized,
+  UserLocal deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UserLocalBuilder();
 
@@ -134,7 +134,7 @@ class _$UserLocalSerializer implements StructuredSerializer<UserLocal> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'uid':
           result.uid = serializers.deserialize(value,
@@ -170,7 +170,7 @@ class _$UserLocalSerializer implements StructuredSerializer<UserLocal> {
           break;
         case 'location':
           result.location.replace(serializers.deserialize(value,
-              specifiedType: const FullType(LocationLocal)) as LocationLocal);
+              specifiedType: const FullType(LocationLocal))! as LocationLocal);
           break;
         case 'is_completed':
           result.isCompleted = serializers.deserialize(value,
@@ -193,10 +193,11 @@ class _$LocationLocal extends LocationLocal {
   @override
   final double longitude;
 
-  factory _$LocationLocal([void Function(LocationLocalBuilder) updates]) =>
+  factory _$LocationLocal([void Function(LocationLocalBuilder)? updates]) =>
       (new LocationLocalBuilder()..update(updates)).build();
 
-  _$LocationLocal._({this.latitude, this.longitude}) : super._() {
+  _$LocationLocal._({required this.latitude, required this.longitude})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(
         latitude, 'LocationLocal', 'latitude');
     BuiltValueNullFieldError.checkNotNull(
@@ -234,15 +235,15 @@ class _$LocationLocal extends LocationLocal {
 
 class LocationLocalBuilder
     implements Builder<LocationLocal, LocationLocalBuilder> {
-  _$LocationLocal _$v;
+  _$LocationLocal? _$v;
 
-  double _latitude;
-  double get latitude => _$this._latitude;
-  set latitude(double latitude) => _$this._latitude = latitude;
+  double? _latitude;
+  double? get latitude => _$this._latitude;
+  set latitude(double? latitude) => _$this._latitude = latitude;
 
-  double _longitude;
-  double get longitude => _$this._longitude;
-  set longitude(double longitude) => _$this._longitude = longitude;
+  double? _longitude;
+  double? get longitude => _$this._longitude;
+  set longitude(double? longitude) => _$this._longitude = longitude;
 
   LocationLocalBuilder();
 
@@ -263,7 +264,7 @@ class LocationLocalBuilder
   }
 
   @override
-  void update(void Function(LocationLocalBuilder) updates) {
+  void update(void Function(LocationLocalBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -286,39 +287,39 @@ class _$UserLocal extends UserLocal {
   @override
   final String email;
   @override
-  final String phoneNumber;
+  final String? phoneNumber;
   @override
   final String fullName;
   @override
   final String gender;
   @override
-  final String avatar;
+  final String? avatar;
   @override
-  final String address;
+  final String? address;
   @override
-  final DateTime birthday;
+  final DateTime? birthday;
   @override
-  final LocationLocal location;
+  final LocationLocal? location;
   @override
   final bool isCompleted;
   @override
   final bool isActive;
 
-  factory _$UserLocal([void Function(UserLocalBuilder) updates]) =>
+  factory _$UserLocal([void Function(UserLocalBuilder)? updates]) =>
       (new UserLocalBuilder()..update(updates)).build();
 
   _$UserLocal._(
-      {this.uid,
-      this.email,
+      {required this.uid,
+      required this.email,
       this.phoneNumber,
-      this.fullName,
-      this.gender,
+      required this.fullName,
+      required this.gender,
       this.avatar,
       this.address,
       this.birthday,
       this.location,
-      this.isCompleted,
-      this.isActive})
+      required this.isCompleted,
+      required this.isActive})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(uid, 'UserLocal', 'uid');
     BuiltValueNullFieldError.checkNotNull(email, 'UserLocal', 'email');
@@ -396,52 +397,52 @@ class _$UserLocal extends UserLocal {
 }
 
 class UserLocalBuilder implements Builder<UserLocal, UserLocalBuilder> {
-  _$UserLocal _$v;
+  _$UserLocal? _$v;
 
-  String _uid;
-  String get uid => _$this._uid;
-  set uid(String uid) => _$this._uid = uid;
+  String? _uid;
+  String? get uid => _$this._uid;
+  set uid(String? uid) => _$this._uid = uid;
 
-  String _email;
-  String get email => _$this._email;
-  set email(String email) => _$this._email = email;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
-  String _phoneNumber;
-  String get phoneNumber => _$this._phoneNumber;
-  set phoneNumber(String phoneNumber) => _$this._phoneNumber = phoneNumber;
+  String? _phoneNumber;
+  String? get phoneNumber => _$this._phoneNumber;
+  set phoneNumber(String? phoneNumber) => _$this._phoneNumber = phoneNumber;
 
-  String _fullName;
-  String get fullName => _$this._fullName;
-  set fullName(String fullName) => _$this._fullName = fullName;
+  String? _fullName;
+  String? get fullName => _$this._fullName;
+  set fullName(String? fullName) => _$this._fullName = fullName;
 
-  String _gender;
-  String get gender => _$this._gender;
-  set gender(String gender) => _$this._gender = gender;
+  String? _gender;
+  String? get gender => _$this._gender;
+  set gender(String? gender) => _$this._gender = gender;
 
-  String _avatar;
-  String get avatar => _$this._avatar;
-  set avatar(String avatar) => _$this._avatar = avatar;
+  String? _avatar;
+  String? get avatar => _$this._avatar;
+  set avatar(String? avatar) => _$this._avatar = avatar;
 
-  String _address;
-  String get address => _$this._address;
-  set address(String address) => _$this._address = address;
+  String? _address;
+  String? get address => _$this._address;
+  set address(String? address) => _$this._address = address;
 
-  DateTime _birthday;
-  DateTime get birthday => _$this._birthday;
-  set birthday(DateTime birthday) => _$this._birthday = birthday;
+  DateTime? _birthday;
+  DateTime? get birthday => _$this._birthday;
+  set birthday(DateTime? birthday) => _$this._birthday = birthday;
 
-  LocationLocalBuilder _location;
+  LocationLocalBuilder? _location;
   LocationLocalBuilder get location =>
       _$this._location ??= new LocationLocalBuilder();
-  set location(LocationLocalBuilder location) => _$this._location = location;
+  set location(LocationLocalBuilder? location) => _$this._location = location;
 
-  bool _isCompleted;
-  bool get isCompleted => _$this._isCompleted;
-  set isCompleted(bool isCompleted) => _$this._isCompleted = isCompleted;
+  bool? _isCompleted;
+  bool? get isCompleted => _$this._isCompleted;
+  set isCompleted(bool? isCompleted) => _$this._isCompleted = isCompleted;
 
-  bool _isActive;
-  bool get isActive => _$this._isActive;
-  set isActive(bool isActive) => _$this._isActive = isActive;
+  bool? _isActive;
+  bool? get isActive => _$this._isActive;
+  set isActive(bool? isActive) => _$this._isActive = isActive;
 
   UserLocalBuilder();
 
@@ -471,7 +472,7 @@ class UserLocalBuilder implements Builder<UserLocal, UserLocalBuilder> {
   }
 
   @override
-  void update(void Function(UserLocalBuilder) updates) {
+  void update(void Function(UserLocalBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -499,7 +500,7 @@ class UserLocalBuilder implements Builder<UserLocal, UserLocalBuilder> {
               isActive: BuiltValueNullFieldError.checkNotNull(
                   isActive, 'UserLocal', 'isActive'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'location';
         _location?.build();

@@ -48,8 +48,7 @@ abstract class NotificationResponse_ReservationResponse
 
   String get email;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   int get original_price;
 

@@ -24,14 +24,11 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
 
   String get title;
 
-  @nullable
-  String get trailerVideoUrl;
+  String? get trailerVideoUrl;
 
-  @nullable
-  String get posterUrl;
+  String? get posterUrl;
 
-  @nullable
-  String get overview;
+  String? get overview;
 
   DateTime get releasedDate;
 
@@ -45,14 +42,11 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
 
   AgeType get ageType;
 
-  @nullable
-  BuiltList<Person> get actors;
+  BuiltList<Person>? get actors;
 
-  @nullable
-  BuiltList<Person> get directors;
+  BuiltList<Person>? get directors;
 
-  @nullable
-  BuiltList<Category> get categories;
+  BuiltList<Category>? get categories;
 
   double get rateStar;
 

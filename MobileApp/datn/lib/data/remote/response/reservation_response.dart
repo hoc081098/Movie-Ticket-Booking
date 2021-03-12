@@ -18,8 +18,7 @@ abstract class ReservationResponse
 
   String get email;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   int get original_price;
 
@@ -78,8 +77,7 @@ abstract class ShowTimeFullResponse
   @BuiltValueField(wireName: '_id')
   String get id;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   MovieResponse get movie;
 

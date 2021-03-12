@@ -8,8 +8,7 @@ part 'seat_response.g.dart';
 
 abstract class SeatResponse
     implements Built<SeatResponse, SeatResponseBuilder> {
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   BuiltList<int> get coordinates;
 

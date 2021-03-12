@@ -16,8 +16,7 @@ abstract class ViewAllState
 
   bool get isLoading;
 
-  @nullable
-  Object get error;
+  Object? get error;
 
   bool get loadedAll;
 

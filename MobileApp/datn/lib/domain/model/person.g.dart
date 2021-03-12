@@ -12,7 +12,7 @@ class _$Person extends Person {
   @override
   final String id;
   @override
-  final String avatar;
+  final String? avatar;
   @override
   final String full_name;
   @override
@@ -20,16 +20,16 @@ class _$Person extends Person {
   @override
   final DateTime updatedAt;
 
-  factory _$Person([void Function(PersonBuilder) updates]) =>
+  factory _$Person([void Function(PersonBuilder)? updates]) =>
       (new PersonBuilder()..update(updates)).build();
 
   _$Person._(
-      {this.is_active,
-      this.id,
+      {required this.is_active,
+      required this.id,
       this.avatar,
-      this.full_name,
-      this.createdAt,
-      this.updatedAt})
+      required this.full_name,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(is_active, 'Person', 'is_active');
     BuiltValueNullFieldError.checkNotNull(id, 'Person', 'id');
@@ -83,31 +83,31 @@ class _$Person extends Person {
 }
 
 class PersonBuilder implements Builder<Person, PersonBuilder> {
-  _$Person _$v;
+  _$Person? _$v;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _avatar;
-  String get avatar => _$this._avatar;
-  set avatar(String avatar) => _$this._avatar = avatar;
+  String? _avatar;
+  String? get avatar => _$this._avatar;
+  set avatar(String? avatar) => _$this._avatar = avatar;
 
-  String _full_name;
-  String get full_name => _$this._full_name;
-  set full_name(String full_name) => _$this._full_name = full_name;
+  String? _full_name;
+  String? get full_name => _$this._full_name;
+  set full_name(String? full_name) => _$this._full_name = full_name;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   PersonBuilder();
 
@@ -132,7 +132,7 @@ class PersonBuilder implements Builder<Person, PersonBuilder> {
   }
 
   @override
-  void update(void Function(PersonBuilder) updates) {
+  void update(void Function(PersonBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

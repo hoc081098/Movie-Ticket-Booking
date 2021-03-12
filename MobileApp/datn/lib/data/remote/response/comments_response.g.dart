@@ -17,9 +17,9 @@ class _$CommentsResponseSerializer
   final String wireName = 'CommentsResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, CommentsResponse object,
+  Iterable<Object?> serialize(Serializers serializers, CommentsResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'comments',
       serializers.serialize(object.comments,
           specifiedType: const FullType(
@@ -36,7 +36,7 @@ class _$CommentsResponseSerializer
 
   @override
   CommentsResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CommentsResponseBuilder();
 
@@ -44,12 +44,12 @@ class _$CommentsResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'comments':
           result.comments.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(CommentResponse)]))
+                      BuiltList, const [const FullType(CommentResponse)]))!
               as BuiltList<Object>);
           break;
         case 'average':
@@ -76,10 +76,12 @@ class _$CommentsResponse extends CommentsResponse {
   final int total;
 
   factory _$CommentsResponse(
-          [void Function(CommentsResponseBuilder) updates]) =>
+          [void Function(CommentsResponseBuilder)? updates]) =>
       (new CommentsResponseBuilder()..update(updates)).build();
 
-  _$CommentsResponse._({this.comments, this.average, this.total}) : super._() {
+  _$CommentsResponse._(
+      {required this.comments, required this.average, required this.total})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(
         comments, 'CommentsResponse', 'comments');
     BuiltValueNullFieldError.checkNotNull(
@@ -122,21 +124,21 @@ class _$CommentsResponse extends CommentsResponse {
 
 class CommentsResponseBuilder
     implements Builder<CommentsResponse, CommentsResponseBuilder> {
-  _$CommentsResponse _$v;
+  _$CommentsResponse? _$v;
 
-  ListBuilder<CommentResponse> _comments;
+  ListBuilder<CommentResponse>? _comments;
   ListBuilder<CommentResponse> get comments =>
       _$this._comments ??= new ListBuilder<CommentResponse>();
-  set comments(ListBuilder<CommentResponse> comments) =>
+  set comments(ListBuilder<CommentResponse>? comments) =>
       _$this._comments = comments;
 
-  double _average;
-  double get average => _$this._average;
-  set average(double average) => _$this._average = average;
+  double? _average;
+  double? get average => _$this._average;
+  set average(double? average) => _$this._average = average;
 
-  int _total;
-  int get total => _$this._total;
-  set total(int total) => _$this._total = total;
+  int? _total;
+  int? get total => _$this._total;
+  set total(int? total) => _$this._total = total;
 
   CommentsResponseBuilder();
 
@@ -158,7 +160,7 @@ class CommentsResponseBuilder
   }
 
   @override
-  void update(void Function(CommentsResponseBuilder) updates) {
+  void update(void Function(CommentsResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -174,7 +176,7 @@ class CommentsResponseBuilder
               total: BuiltValueNullFieldError.checkNotNull(
                   total, 'CommentsResponse', 'total'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'comments';
         comments.build();

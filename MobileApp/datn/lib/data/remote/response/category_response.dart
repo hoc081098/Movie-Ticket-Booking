@@ -16,8 +16,7 @@ abstract class CategoryResponse
 
   DateTime get updatedAt;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   CategoryResponse._();
 

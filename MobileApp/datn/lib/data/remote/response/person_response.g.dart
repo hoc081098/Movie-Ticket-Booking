@@ -17,9 +17,9 @@ class _$PersonResponseSerializer
   final String wireName = 'PersonResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, PersonResponse object,
+  Iterable<Object?> serialize(Serializers serializers, PersonResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'full_name',
@@ -32,7 +32,7 @@ class _$PersonResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -52,7 +52,7 @@ class _$PersonResponseSerializer
 
   @override
   PersonResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PersonResponseBuilder();
 
@@ -60,7 +60,7 @@ class _$PersonResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'is_active':
           result.is_active = serializers.deserialize(value,
@@ -95,11 +95,11 @@ class _$PersonResponseSerializer
 
 class _$PersonResponse extends PersonResponse {
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final String id;
   @override
-  final String avatar;
+  final String? avatar;
   @override
   final String full_name;
   @override
@@ -107,16 +107,16 @@ class _$PersonResponse extends PersonResponse {
   @override
   final DateTime updatedAt;
 
-  factory _$PersonResponse([void Function(PersonResponseBuilder) updates]) =>
+  factory _$PersonResponse([void Function(PersonResponseBuilder)? updates]) =>
       (new PersonResponseBuilder()..update(updates)).build();
 
   _$PersonResponse._(
       {this.is_active,
-      this.id,
+      required this.id,
       this.avatar,
-      this.full_name,
-      this.createdAt,
-      this.updatedAt})
+      required this.full_name,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'PersonResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(
@@ -174,31 +174,31 @@ class _$PersonResponse extends PersonResponse {
 
 class PersonResponseBuilder
     implements Builder<PersonResponse, PersonResponseBuilder> {
-  _$PersonResponse _$v;
+  _$PersonResponse? _$v;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _avatar;
-  String get avatar => _$this._avatar;
-  set avatar(String avatar) => _$this._avatar = avatar;
+  String? _avatar;
+  String? get avatar => _$this._avatar;
+  set avatar(String? avatar) => _$this._avatar = avatar;
 
-  String _full_name;
-  String get full_name => _$this._full_name;
-  set full_name(String full_name) => _$this._full_name = full_name;
+  String? _full_name;
+  String? get full_name => _$this._full_name;
+  set full_name(String? full_name) => _$this._full_name = full_name;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   PersonResponseBuilder();
 
@@ -223,7 +223,7 @@ class PersonResponseBuilder
   }
 
   @override
-  void update(void Function(PersonResponseBuilder) updates) {
+  void update(void Function(PersonResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

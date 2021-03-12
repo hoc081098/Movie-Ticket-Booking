@@ -14,14 +14,19 @@ class _$State extends State {
   @override
   final bool isLoading;
   @override
-  final Object error;
+  final Object? error;
   @override
   final bool loadedAll;
 
-  factory _$State([void Function(StateBuilder) updates]) =>
+  factory _$State([void Function(StateBuilder)? updates]) =>
       (new StateBuilder()..update(updates)).build();
 
-  _$State._({this.page, this.items, this.isLoading, this.error, this.loadedAll})
+  _$State._(
+      {required this.page,
+      required this.items,
+      required this.isLoading,
+      this.error,
+      required this.loadedAll})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(page, 'State', 'page');
     BuiltValueNullFieldError.checkNotNull(items, 'State', 'items');
@@ -68,28 +73,28 @@ class _$State extends State {
 }
 
 class StateBuilder implements Builder<State, StateBuilder> {
-  _$State _$v;
+  _$State? _$v;
 
-  int _page;
-  int get page => _$this._page;
-  set page(int page) => _$this._page = page;
+  int? _page;
+  int? get page => _$this._page;
+  set page(int? page) => _$this._page = page;
 
-  ListBuilder<Notification> _items;
+  ListBuilder<Notification>? _items;
   ListBuilder<Notification> get items =>
       _$this._items ??= new ListBuilder<Notification>();
-  set items(ListBuilder<Notification> items) => _$this._items = items;
+  set items(ListBuilder<Notification>? items) => _$this._items = items;
 
-  bool _isLoading;
-  bool get isLoading => _$this._isLoading;
-  set isLoading(bool isLoading) => _$this._isLoading = isLoading;
+  bool? _isLoading;
+  bool? get isLoading => _$this._isLoading;
+  set isLoading(bool? isLoading) => _$this._isLoading = isLoading;
 
-  Object _error;
-  Object get error => _$this._error;
-  set error(Object error) => _$this._error = error;
+  Object? _error;
+  Object? get error => _$this._error;
+  set error(Object? error) => _$this._error = error;
 
-  bool _loadedAll;
-  bool get loadedAll => _$this._loadedAll;
-  set loadedAll(bool loadedAll) => _$this._loadedAll = loadedAll;
+  bool? _loadedAll;
+  bool? get loadedAll => _$this._loadedAll;
+  set loadedAll(bool? loadedAll) => _$this._loadedAll = loadedAll;
 
   StateBuilder();
 
@@ -113,7 +118,7 @@ class StateBuilder implements Builder<State, StateBuilder> {
   }
 
   @override
-  void update(void Function(StateBuilder) updates) {
+  void update(void Function(StateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -132,7 +137,7 @@ class StateBuilder implements Builder<State, StateBuilder> {
               loadedAll: BuiltValueNullFieldError.checkNotNull(
                   loadedAll, 'State', 'loadedAll'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'items';
         items.build();

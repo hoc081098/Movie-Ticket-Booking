@@ -11,8 +11,7 @@ abstract class MovieResponse
   @BuiltValueField(wireName: '_id')
   String get id;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   BuiltList<String> get actors;
 
@@ -20,14 +19,11 @@ abstract class MovieResponse
 
   String get title;
 
-  @nullable
-  String get trailer_video_url;
+  String? get trailer_video_url;
 
-  @nullable
-  String get poster_url;
+  String? get poster_url;
 
-  @nullable
-  String get overview;
+  String? get overview;
 
   DateTime get released_date;
 

@@ -11,13 +11,11 @@ abstract class TicketResponse
   @BuiltValueField(wireName: '_id')
   String get id;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   int get price;
 
-  @nullable
-  String get reservation;
+  String? get reservation;
 
   SeatResponse get seat;
 

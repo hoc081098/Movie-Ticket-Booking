@@ -8,9 +8,9 @@ part of 'result.dart';
 
 class _$Success<T> extends Success<T> {
   @override
-  final T result;
+  final T? result;
 
-  factory _$Success([void Function(SuccessBuilder<T>) updates]) =>
+  factory _$Success([void Function(SuccessBuilder<T>)? updates]) =>
       (new SuccessBuilder<T>()..update(updates)).build();
 
   _$Success._({this.result}) : super._() {
@@ -45,11 +45,11 @@ class _$Success<T> extends Success<T> {
 }
 
 class SuccessBuilder<T> implements Builder<Success<T>, SuccessBuilder<T>> {
-  _$Success<T> _$v;
+  _$Success<T>? _$v;
 
-  T _result;
-  T get result => _$this._result;
-  set result(T result) => _$this._result = result;
+  T? _result;
+  T? get result => _$this._result;
+  set result(T? result) => _$this._result = result;
 
   SuccessBuilder();
 
@@ -69,7 +69,7 @@ class SuccessBuilder<T> implements Builder<Success<T>, SuccessBuilder<T>> {
   }
 
   @override
-  void update(void Function(SuccessBuilder<T>) updates) {
+  void update(void Function(SuccessBuilder<T>)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -85,12 +85,12 @@ class _$Failure<T> extends Failure<T> {
   @override
   final String message;
   @override
-  final Object error;
+  final Object? error;
 
-  factory _$Failure([void Function(FailureBuilder<T>) updates]) =>
+  factory _$Failure([void Function(FailureBuilder<T>)? updates]) =>
       (new FailureBuilder<T>()..update(updates)).build();
 
-  _$Failure._({this.message, this.error}) : super._() {
+  _$Failure._({required this.message, this.error}) : super._() {
     BuiltValueNullFieldError.checkNotNull(message, 'Failure', 'message');
     if (T == dynamic) {
       throw new BuiltValueMissingGenericsError('Failure', 'T');
@@ -125,15 +125,15 @@ class _$Failure<T> extends Failure<T> {
 }
 
 class FailureBuilder<T> implements Builder<Failure<T>, FailureBuilder<T>> {
-  _$Failure<T> _$v;
+  _$Failure<T>? _$v;
 
-  String _message;
-  String get message => _$this._message;
-  set message(String message) => _$this._message = message;
+  String? _message;
+  String? get message => _$this._message;
+  set message(String? message) => _$this._message = message;
 
-  Object _error;
-  Object get error => _$this._error;
-  set error(Object error) => _$this._error = error;
+  Object? _error;
+  Object? get error => _$this._error;
+  set error(Object? error) => _$this._error = error;
 
   FailureBuilder();
 
@@ -154,7 +154,7 @@ class FailureBuilder<T> implements Builder<Failure<T>, FailureBuilder<T>> {
   }
 
   @override
-  void update(void Function(FailureBuilder<T>) updates) {
+  void update(void Function(FailureBuilder<T>)? updates) {
     if (updates != null) updates(this);
   }
 

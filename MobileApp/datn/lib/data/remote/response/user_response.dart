@@ -9,9 +9,8 @@ part 'user_response.g.dart';
 
 abstract class LocationResponse
     implements Built<LocationResponse, LocationResponseBuilder> {
-  @nullable
   @BuiltValueField(wireName: 'coordinates')
-  BuiltList<double> get coordinates;
+  BuiltList<double>? get coordinates;
 
   double get longitude => coordinates.isNullOrEmpty ? null : coordinates[0];
 
@@ -40,8 +39,7 @@ abstract class UserResponse
   String get email;
 
   @BuiltValueField(wireName: 'phone_number')
-  @nullable
-  String get phoneNumber;
+  String? get phoneNumber;
 
   @BuiltValueField(wireName: 'full_name')
   String get fullName;
@@ -50,27 +48,22 @@ abstract class UserResponse
   String get gender;
 
   @BuiltValueField(wireName: 'avatar')
-  @nullable
-  String get avatar;
+  String? get avatar;
 
   @BuiltValueField(wireName: 'address')
-  @nullable
-  String get address;
+  String? get address;
 
   @BuiltValueField(wireName: 'birthday')
-  @nullable
-  DateTime get birthday;
+  DateTime? get birthday;
 
   @BuiltValueField(wireName: 'location')
-  @nullable
-  LocationResponse get location;
+  LocationResponse? get location;
 
   @BuiltValueField(wireName: 'is_completed')
   bool get isCompleted;
 
   @BuiltValueField(wireName: 'is_active')
-  @nullable
-  bool get isActive;
+  bool? get isActive;
 
   String get role;
 

@@ -18,11 +18,11 @@ class _$Movie extends Movie {
   @override
   final String title;
   @override
-  final String trailerVideoUrl;
+  final String? trailerVideoUrl;
   @override
-  final String posterUrl;
+  final String? posterUrl;
   @override
-  final String overview;
+  final String? overview;
   @override
   final DateTime releasedDate;
   @override
@@ -36,11 +36,11 @@ class _$Movie extends Movie {
   @override
   final AgeType ageType;
   @override
-  final BuiltList<Person> actors;
+  final BuiltList<Person>? actors;
   @override
-  final BuiltList<Person> directors;
+  final BuiltList<Person>? directors;
   @override
-  final BuiltList<Category> categories;
+  final BuiltList<Category>? categories;
   @override
   final double rateStar;
   @override
@@ -48,30 +48,30 @@ class _$Movie extends Movie {
   @override
   final int totalRate;
 
-  factory _$Movie([void Function(MovieBuilder) updates]) =>
+  factory _$Movie([void Function(MovieBuilder)? updates]) =>
       (new MovieBuilder()..update(updates)).build();
 
   _$Movie._(
-      {this.id,
-      this.isActive,
-      this.actorIds,
-      this.directorIds,
-      this.title,
+      {required this.id,
+      required this.isActive,
+      required this.actorIds,
+      required this.directorIds,
+      required this.title,
       this.trailerVideoUrl,
       this.posterUrl,
       this.overview,
-      this.releasedDate,
-      this.duration,
-      this.originalLanguage,
-      this.createdAt,
-      this.updatedAt,
-      this.ageType,
+      required this.releasedDate,
+      required this.duration,
+      required this.originalLanguage,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.ageType,
       this.actors,
       this.directors,
       this.categories,
-      this.rateStar,
-      this.totalFavorite,
-      this.totalRate})
+      required this.rateStar,
+      required this.totalFavorite,
+      required this.totalRate})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'Movie', 'id');
     BuiltValueNullFieldError.checkNotNull(isActive, 'Movie', 'isActive');
@@ -195,97 +195,99 @@ class _$Movie extends Movie {
 }
 
 class MovieBuilder implements Builder<Movie, MovieBuilder> {
-  _$Movie _$v;
+  _$Movie? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  bool _isActive;
-  bool get isActive => _$this._isActive;
-  set isActive(bool isActive) => _$this._isActive = isActive;
+  bool? _isActive;
+  bool? get isActive => _$this._isActive;
+  set isActive(bool? isActive) => _$this._isActive = isActive;
 
-  ListBuilder<String> _actorIds;
+  ListBuilder<String>? _actorIds;
   ListBuilder<String> get actorIds =>
       _$this._actorIds ??= new ListBuilder<String>();
-  set actorIds(ListBuilder<String> actorIds) => _$this._actorIds = actorIds;
+  set actorIds(ListBuilder<String>? actorIds) => _$this._actorIds = actorIds;
 
-  ListBuilder<String> _directorIds;
+  ListBuilder<String>? _directorIds;
   ListBuilder<String> get directorIds =>
       _$this._directorIds ??= new ListBuilder<String>();
-  set directorIds(ListBuilder<String> directorIds) =>
+  set directorIds(ListBuilder<String>? directorIds) =>
       _$this._directorIds = directorIds;
 
-  String _title;
-  String get title => _$this._title;
-  set title(String title) => _$this._title = title;
+  String? _title;
+  String? get title => _$this._title;
+  set title(String? title) => _$this._title = title;
 
-  String _trailerVideoUrl;
-  String get trailerVideoUrl => _$this._trailerVideoUrl;
-  set trailerVideoUrl(String trailerVideoUrl) =>
+  String? _trailerVideoUrl;
+  String? get trailerVideoUrl => _$this._trailerVideoUrl;
+  set trailerVideoUrl(String? trailerVideoUrl) =>
       _$this._trailerVideoUrl = trailerVideoUrl;
 
-  String _posterUrl;
-  String get posterUrl => _$this._posterUrl;
-  set posterUrl(String posterUrl) => _$this._posterUrl = posterUrl;
+  String? _posterUrl;
+  String? get posterUrl => _$this._posterUrl;
+  set posterUrl(String? posterUrl) => _$this._posterUrl = posterUrl;
 
-  String _overview;
-  String get overview => _$this._overview;
-  set overview(String overview) => _$this._overview = overview;
+  String? _overview;
+  String? get overview => _$this._overview;
+  set overview(String? overview) => _$this._overview = overview;
 
-  DateTime _releasedDate;
-  DateTime get releasedDate => _$this._releasedDate;
-  set releasedDate(DateTime releasedDate) =>
+  DateTime? _releasedDate;
+  DateTime? get releasedDate => _$this._releasedDate;
+  set releasedDate(DateTime? releasedDate) =>
       _$this._releasedDate = releasedDate;
 
-  int _duration;
-  int get duration => _$this._duration;
-  set duration(int duration) => _$this._duration = duration;
+  int? _duration;
+  int? get duration => _$this._duration;
+  set duration(int? duration) => _$this._duration = duration;
 
-  String _originalLanguage;
-  String get originalLanguage => _$this._originalLanguage;
-  set originalLanguage(String originalLanguage) =>
+  String? _originalLanguage;
+  String? get originalLanguage => _$this._originalLanguage;
+  set originalLanguage(String? originalLanguage) =>
       _$this._originalLanguage = originalLanguage;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
-  AgeType _ageType;
-  AgeType get ageType => _$this._ageType;
-  set ageType(AgeType ageType) => _$this._ageType = ageType;
+  AgeType? _ageType;
+  AgeType? get ageType => _$this._ageType;
+  set ageType(AgeType? ageType) => _$this._ageType = ageType;
 
-  ListBuilder<Person> _actors;
+  ListBuilder<Person>? _actors;
   ListBuilder<Person> get actors =>
       _$this._actors ??= new ListBuilder<Person>();
-  set actors(ListBuilder<Person> actors) => _$this._actors = actors;
+  set actors(ListBuilder<Person>? actors) => _$this._actors = actors;
 
-  ListBuilder<Person> _directors;
+  ListBuilder<Person>? _directors;
   ListBuilder<Person> get directors =>
       _$this._directors ??= new ListBuilder<Person>();
-  set directors(ListBuilder<Person> directors) => _$this._directors = directors;
+  set directors(ListBuilder<Person>? directors) =>
+      _$this._directors = directors;
 
-  ListBuilder<Category> _categories;
+  ListBuilder<Category>? _categories;
   ListBuilder<Category> get categories =>
       _$this._categories ??= new ListBuilder<Category>();
-  set categories(ListBuilder<Category> categories) =>
+  set categories(ListBuilder<Category>? categories) =>
       _$this._categories = categories;
 
-  double _rateStar;
-  double get rateStar => _$this._rateStar;
-  set rateStar(double rateStar) => _$this._rateStar = rateStar;
+  double? _rateStar;
+  double? get rateStar => _$this._rateStar;
+  set rateStar(double? rateStar) => _$this._rateStar = rateStar;
 
-  int _totalFavorite;
-  int get totalFavorite => _$this._totalFavorite;
-  set totalFavorite(int totalFavorite) => _$this._totalFavorite = totalFavorite;
+  int? _totalFavorite;
+  int? get totalFavorite => _$this._totalFavorite;
+  set totalFavorite(int? totalFavorite) =>
+      _$this._totalFavorite = totalFavorite;
 
-  int _totalRate;
-  int get totalRate => _$this._totalRate;
-  set totalRate(int totalRate) => _$this._totalRate = totalRate;
+  int? _totalRate;
+  int? get totalRate => _$this._totalRate;
+  set totalRate(int? totalRate) => _$this._totalRate = totalRate;
 
   MovieBuilder();
 
@@ -324,7 +326,7 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
   }
 
   @override
-  void update(void Function(MovieBuilder) updates) {
+  void update(void Function(MovieBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -366,7 +368,7 @@ class MovieBuilder implements Builder<Movie, MovieBuilder> {
               totalRate:
                   BuiltValueNullFieldError.checkNotNull(totalRate, 'Movie', 'totalRate'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'actorIds';
         actorIds.build();

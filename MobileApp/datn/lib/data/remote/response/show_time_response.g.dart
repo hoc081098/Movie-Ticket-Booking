@@ -17,9 +17,9 @@ class _$ShowTimeResponseSerializer
   final String wireName = 'ShowTimeResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, ShowTimeResponse object,
+  Iterable<Object?> serialize(Serializers serializers, ShowTimeResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'movie',
@@ -43,7 +43,7 @@ class _$ShowTimeResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -56,7 +56,7 @@ class _$ShowTimeResponseSerializer
 
   @override
   ShowTimeResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ShowTimeResponseBuilder();
 
@@ -64,7 +64,7 @@ class _$ShowTimeResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -113,7 +113,7 @@ class _$ShowTimeResponse extends ShowTimeResponse {
   @override
   final String id;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final String movie;
   @override
@@ -130,19 +130,19 @@ class _$ShowTimeResponse extends ShowTimeResponse {
   final DateTime updatedAt;
 
   factory _$ShowTimeResponse(
-          [void Function(ShowTimeResponseBuilder) updates]) =>
+          [void Function(ShowTimeResponseBuilder)? updates]) =>
       (new ShowTimeResponseBuilder()..update(updates)).build();
 
   _$ShowTimeResponse._(
-      {this.id,
+      {required this.id,
       this.is_active,
-      this.movie,
-      this.theatre,
-      this.room,
-      this.end_time,
-      this.start_time,
-      this.createdAt,
-      this.updatedAt})
+      required this.movie,
+      required this.theatre,
+      required this.room,
+      required this.end_time,
+      required this.start_time,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'ShowTimeResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(movie, 'ShowTimeResponse', 'movie');
@@ -218,43 +218,43 @@ class _$ShowTimeResponse extends ShowTimeResponse {
 
 class ShowTimeResponseBuilder
     implements Builder<ShowTimeResponse, ShowTimeResponseBuilder> {
-  _$ShowTimeResponse _$v;
+  _$ShowTimeResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  String _movie;
-  String get movie => _$this._movie;
-  set movie(String movie) => _$this._movie = movie;
+  String? _movie;
+  String? get movie => _$this._movie;
+  set movie(String? movie) => _$this._movie = movie;
 
-  String _theatre;
-  String get theatre => _$this._theatre;
-  set theatre(String theatre) => _$this._theatre = theatre;
+  String? _theatre;
+  String? get theatre => _$this._theatre;
+  set theatre(String? theatre) => _$this._theatre = theatre;
 
-  String _room;
-  String get room => _$this._room;
-  set room(String room) => _$this._room = room;
+  String? _room;
+  String? get room => _$this._room;
+  set room(String? room) => _$this._room = room;
 
-  DateTime _end_time;
-  DateTime get end_time => _$this._end_time;
-  set end_time(DateTime end_time) => _$this._end_time = end_time;
+  DateTime? _end_time;
+  DateTime? get end_time => _$this._end_time;
+  set end_time(DateTime? end_time) => _$this._end_time = end_time;
 
-  DateTime _start_time;
-  DateTime get start_time => _$this._start_time;
-  set start_time(DateTime start_time) => _$this._start_time = start_time;
+  DateTime? _start_time;
+  DateTime? get start_time => _$this._start_time;
+  set start_time(DateTime? start_time) => _$this._start_time = start_time;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   ShowTimeResponseBuilder();
 
@@ -282,7 +282,7 @@ class ShowTimeResponseBuilder
   }
 
   @override
-  void update(void Function(ShowTimeResponseBuilder) updates) {
+  void update(void Function(ShowTimeResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

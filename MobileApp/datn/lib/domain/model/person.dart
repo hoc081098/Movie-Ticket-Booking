@@ -7,8 +7,7 @@ abstract class Person implements Built<Person, PersonBuilder> {
 
   String get id;
 
-  @nullable
-  String get avatar;
+  String? get avatar;
 
   String get full_name;
 

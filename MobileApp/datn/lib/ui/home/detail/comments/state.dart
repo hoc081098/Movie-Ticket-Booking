@@ -16,8 +16,7 @@ abstract class State implements Built<State, StateBuilder> {
 
   bool get isLoading;
 
-  @nullable
-  Object get error;
+  Object? get error;
 
   bool get loadedAll;
 

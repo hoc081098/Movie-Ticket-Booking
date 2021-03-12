@@ -10,8 +10,7 @@ part 'movie_detail_response.g.dart';
 
 abstract class MovieDetailResponse
     implements Built<MovieDetailResponse, MovieDetailResponseBuilder> {
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   String get age_type;
 
@@ -24,14 +23,11 @@ abstract class MovieDetailResponse
 
   String get title;
 
-  @nullable
-  String get trailer_video_url;
+  String? get trailer_video_url;
 
-  @nullable
-  String get poster_url;
+  String? get poster_url;
 
-  @nullable
-  String get overview;
+  String? get overview;
 
   DateTime get released_date;
 

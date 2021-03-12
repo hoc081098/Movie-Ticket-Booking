@@ -14,8 +14,7 @@ abstract class TheatreResponse
 
   LocationResponse get location;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   BuiltList<String> get rooms;
 
@@ -27,8 +26,7 @@ abstract class TheatreResponse
 
   String get description;
 
-  @nullable
-  String get email;
+  String? get email;
 
   String get opening_hours;
 
@@ -38,14 +36,11 @@ abstract class TheatreResponse
 
   DateTime get updatedAt;
 
-  @nullable
-  double get distance;
+  double? get distance;
 
-  @nullable
-  String get thumbnail;
+  String? get thumbnail;
 
-  @nullable
-  String get cover;
+  String? get cover;
 
   TheatreResponse._();
 

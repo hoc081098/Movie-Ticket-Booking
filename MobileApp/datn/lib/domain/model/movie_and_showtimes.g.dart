@@ -13,10 +13,11 @@ class _$MovieAndShowTimes extends MovieAndShowTimes {
   final BuiltList<ShowTime> showTimes;
 
   factory _$MovieAndShowTimes(
-          [void Function(MovieAndShowTimesBuilder) updates]) =>
+          [void Function(MovieAndShowTimesBuilder)? updates]) =>
       (new MovieAndShowTimesBuilder()..update(updates)).build();
 
-  _$MovieAndShowTimes._({this.movie, this.showTimes}) : super._() {
+  _$MovieAndShowTimes._({required this.movie, required this.showTimes})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(movie, 'MovieAndShowTimes', 'movie');
     BuiltValueNullFieldError.checkNotNull(
         showTimes, 'MovieAndShowTimes', 'showTimes');
@@ -54,16 +55,16 @@ class _$MovieAndShowTimes extends MovieAndShowTimes {
 
 class MovieAndShowTimesBuilder
     implements Builder<MovieAndShowTimes, MovieAndShowTimesBuilder> {
-  _$MovieAndShowTimes _$v;
+  _$MovieAndShowTimes? _$v;
 
-  MovieBuilder _movie;
+  MovieBuilder? _movie;
   MovieBuilder get movie => _$this._movie ??= new MovieBuilder();
-  set movie(MovieBuilder movie) => _$this._movie = movie;
+  set movie(MovieBuilder? movie) => _$this._movie = movie;
 
-  ListBuilder<ShowTime> _showTimes;
+  ListBuilder<ShowTime>? _showTimes;
   ListBuilder<ShowTime> get showTimes =>
       _$this._showTimes ??= new ListBuilder<ShowTime>();
-  set showTimes(ListBuilder<ShowTime> showTimes) =>
+  set showTimes(ListBuilder<ShowTime>? showTimes) =>
       _$this._showTimes = showTimes;
 
   MovieAndShowTimesBuilder();
@@ -85,7 +86,7 @@ class MovieAndShowTimesBuilder
   }
 
   @override
-  void update(void Function(MovieAndShowTimesBuilder) updates) {
+  void update(void Function(MovieAndShowTimesBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -97,7 +98,7 @@ class MovieAndShowTimesBuilder
           new _$MovieAndShowTimes._(
               movie: movie.build(), showTimes: showTimes.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'movie';
         movie.build();

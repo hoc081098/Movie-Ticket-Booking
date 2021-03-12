@@ -19,8 +19,7 @@ abstract class ComboItem implements Built<ComboItem, ComboItemBuilder> {
 }
 
 abstract class ComboState implements Built<ComboState, ComboStateBuilder> {
-  @nullable
-  Object get error;
+  Object? get error;
 
   bool get isLoading;
 

@@ -14,15 +14,19 @@ class _$ViewAllState extends ViewAllState {
   @override
   final bool isLoading;
   @override
-  final Object error;
+  final Object? error;
   @override
   final bool loadedAll;
 
-  factory _$ViewAllState([void Function(ViewAllStateBuilder) updates]) =>
+  factory _$ViewAllState([void Function(ViewAllStateBuilder)? updates]) =>
       (new ViewAllStateBuilder()..update(updates)).build();
 
   _$ViewAllState._(
-      {this.page, this.items, this.isLoading, this.error, this.loadedAll})
+      {required this.page,
+      required this.items,
+      required this.isLoading,
+      this.error,
+      required this.loadedAll})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(page, 'ViewAllState', 'page');
     BuiltValueNullFieldError.checkNotNull(items, 'ViewAllState', 'items');
@@ -72,27 +76,27 @@ class _$ViewAllState extends ViewAllState {
 
 class ViewAllStateBuilder
     implements Builder<ViewAllState, ViewAllStateBuilder> {
-  _$ViewAllState _$v;
+  _$ViewAllState? _$v;
 
-  int _page;
-  int get page => _$this._page;
-  set page(int page) => _$this._page = page;
+  int? _page;
+  int? get page => _$this._page;
+  set page(int? page) => _$this._page = page;
 
-  ListBuilder<Movie> _items;
+  ListBuilder<Movie>? _items;
   ListBuilder<Movie> get items => _$this._items ??= new ListBuilder<Movie>();
-  set items(ListBuilder<Movie> items) => _$this._items = items;
+  set items(ListBuilder<Movie>? items) => _$this._items = items;
 
-  bool _isLoading;
-  bool get isLoading => _$this._isLoading;
-  set isLoading(bool isLoading) => _$this._isLoading = isLoading;
+  bool? _isLoading;
+  bool? get isLoading => _$this._isLoading;
+  set isLoading(bool? isLoading) => _$this._isLoading = isLoading;
 
-  Object _error;
-  Object get error => _$this._error;
-  set error(Object error) => _$this._error = error;
+  Object? _error;
+  Object? get error => _$this._error;
+  set error(Object? error) => _$this._error = error;
 
-  bool _loadedAll;
-  bool get loadedAll => _$this._loadedAll;
-  set loadedAll(bool loadedAll) => _$this._loadedAll = loadedAll;
+  bool? _loadedAll;
+  bool? get loadedAll => _$this._loadedAll;
+  set loadedAll(bool? loadedAll) => _$this._loadedAll = loadedAll;
 
   ViewAllStateBuilder();
 
@@ -116,7 +120,7 @@ class ViewAllStateBuilder
   }
 
   @override
-  void update(void Function(ViewAllStateBuilder) updates) {
+  void update(void Function(ViewAllStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -135,7 +139,7 @@ class ViewAllStateBuilder
               loadedAll: BuiltValueNullFieldError.checkNotNull(
                   loadedAll, 'ViewAllState', 'loadedAll'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'items';
         items.build();

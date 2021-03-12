@@ -17,9 +17,9 @@ class _$ProductResponseSerializer
   final String wireName = 'ProductResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, ProductResponse object,
+  Iterable<Object?> serialize(Serializers serializers, ProductResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'description',
@@ -39,7 +39,7 @@ class _$ProductResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -52,7 +52,7 @@ class _$ProductResponseSerializer
 
   @override
   ProductResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ProductResponseBuilder();
 
@@ -60,7 +60,7 @@ class _$ProductResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -109,7 +109,7 @@ class _$ProductResponse extends ProductResponse {
   @override
   final String image;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final String name;
   @override
@@ -119,18 +119,18 @@ class _$ProductResponse extends ProductResponse {
   @override
   final DateTime updatedAt;
 
-  factory _$ProductResponse([void Function(ProductResponseBuilder) updates]) =>
+  factory _$ProductResponse([void Function(ProductResponseBuilder)? updates]) =>
       (new ProductResponseBuilder()..update(updates)).build();
 
   _$ProductResponse._(
-      {this.id,
-      this.description,
-      this.image,
+      {required this.id,
+      required this.description,
+      required this.image,
       this.is_active,
-      this.name,
-      this.price,
-      this.createdAt,
-      this.updatedAt})
+      required this.name,
+      required this.price,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'ProductResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(
@@ -199,39 +199,39 @@ class _$ProductResponse extends ProductResponse {
 
 class ProductResponseBuilder
     implements Builder<ProductResponse, ProductResponseBuilder> {
-  _$ProductResponse _$v;
+  _$ProductResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _description;
-  String get description => _$this._description;
-  set description(String description) => _$this._description = description;
+  String? _description;
+  String? get description => _$this._description;
+  set description(String? description) => _$this._description = description;
 
-  String _image;
-  String get image => _$this._image;
-  set image(String image) => _$this._image = image;
+  String? _image;
+  String? get image => _$this._image;
+  set image(String? image) => _$this._image = image;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  int _price;
-  int get price => _$this._price;
-  set price(int price) => _$this._price = price;
+  int? _price;
+  int? get price => _$this._price;
+  set price(int? price) => _$this._price = price;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   ProductResponseBuilder();
 
@@ -258,7 +258,7 @@ class ProductResponseBuilder
   }
 
   @override
-  void update(void Function(ProductResponseBuilder) updates) {
+  void update(void Function(ProductResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

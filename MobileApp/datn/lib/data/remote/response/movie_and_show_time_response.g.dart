@@ -20,10 +20,10 @@ class _$MovieAndShowTimeResponseSerializer
   final String wireName = 'MovieAndShowTimeResponse';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, MovieAndShowTimeResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'movie',
       serializers.serialize(object.movie,
           specifiedType: const FullType(MovieResponse)),
@@ -37,7 +37,7 @@ class _$MovieAndShowTimeResponseSerializer
 
   @override
   MovieAndShowTimeResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MovieAndShowTimeResponseBuilder();
 
@@ -45,15 +45,15 @@ class _$MovieAndShowTimeResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'movie':
           result.movie.replace(serializers.deserialize(value,
-              specifiedType: const FullType(MovieResponse)) as MovieResponse);
+              specifiedType: const FullType(MovieResponse))! as MovieResponse);
           break;
         case 'show_time':
           result.show_time.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(ShowTimeResponse))
+                  specifiedType: const FullType(ShowTimeResponse))!
               as ShowTimeResponse);
           break;
       }
@@ -70,10 +70,11 @@ class _$MovieAndShowTimeResponse extends MovieAndShowTimeResponse {
   final ShowTimeResponse show_time;
 
   factory _$MovieAndShowTimeResponse(
-          [void Function(MovieAndShowTimeResponseBuilder) updates]) =>
+          [void Function(MovieAndShowTimeResponseBuilder)? updates]) =>
       (new MovieAndShowTimeResponseBuilder()..update(updates)).build();
 
-  _$MovieAndShowTimeResponse._({this.movie, this.show_time}) : super._() {
+  _$MovieAndShowTimeResponse._({required this.movie, required this.show_time})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(
         movie, 'MovieAndShowTimeResponse', 'movie');
     BuiltValueNullFieldError.checkNotNull(
@@ -114,17 +115,17 @@ class _$MovieAndShowTimeResponse extends MovieAndShowTimeResponse {
 class MovieAndShowTimeResponseBuilder
     implements
         Builder<MovieAndShowTimeResponse, MovieAndShowTimeResponseBuilder> {
-  _$MovieAndShowTimeResponse _$v;
+  _$MovieAndShowTimeResponse? _$v;
 
-  MovieResponseBuilder _movie;
+  MovieResponseBuilder? _movie;
   MovieResponseBuilder get movie =>
       _$this._movie ??= new MovieResponseBuilder();
-  set movie(MovieResponseBuilder movie) => _$this._movie = movie;
+  set movie(MovieResponseBuilder? movie) => _$this._movie = movie;
 
-  ShowTimeResponseBuilder _show_time;
+  ShowTimeResponseBuilder? _show_time;
   ShowTimeResponseBuilder get show_time =>
       _$this._show_time ??= new ShowTimeResponseBuilder();
-  set show_time(ShowTimeResponseBuilder show_time) =>
+  set show_time(ShowTimeResponseBuilder? show_time) =>
       _$this._show_time = show_time;
 
   MovieAndShowTimeResponseBuilder();
@@ -146,7 +147,7 @@ class MovieAndShowTimeResponseBuilder
   }
 
   @override
-  void update(void Function(MovieAndShowTimeResponseBuilder) updates) {
+  void update(void Function(MovieAndShowTimeResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -158,7 +159,7 @@ class MovieAndShowTimeResponseBuilder
           new _$MovieAndShowTimeResponse._(
               movie: movie.build(), show_time: show_time.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'movie';
         movie.build();

@@ -11,8 +11,7 @@ abstract class CommentResponse
   @BuiltValueField(wireName: '_id')
   String get id;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   String get content;
 

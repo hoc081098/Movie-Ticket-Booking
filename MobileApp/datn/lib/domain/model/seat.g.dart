@@ -12,10 +12,10 @@ class _$SeatCoordinates extends SeatCoordinates {
   @override
   final int y;
 
-  factory _$SeatCoordinates([void Function(SeatCoordinatesBuilder) updates]) =>
+  factory _$SeatCoordinates([void Function(SeatCoordinatesBuilder)? updates]) =>
       (new SeatCoordinatesBuilder()..update(updates)).build();
 
-  _$SeatCoordinates._({this.x, this.y}) : super._() {
+  _$SeatCoordinates._({required this.x, required this.y}) : super._() {
     BuiltValueNullFieldError.checkNotNull(x, 'SeatCoordinates', 'x');
     BuiltValueNullFieldError.checkNotNull(y, 'SeatCoordinates', 'y');
   }
@@ -50,15 +50,15 @@ class _$SeatCoordinates extends SeatCoordinates {
 
 class SeatCoordinatesBuilder
     implements Builder<SeatCoordinates, SeatCoordinatesBuilder> {
-  _$SeatCoordinates _$v;
+  _$SeatCoordinates? _$v;
 
-  int _x;
-  int get x => _$this._x;
-  set x(int x) => _$this._x = x;
+  int? _x;
+  int? get x => _$this._x;
+  set x(int? x) => _$this._x = x;
 
-  int _y;
-  int get y => _$this._y;
-  set y(int y) => _$this._y = y;
+  int? _y;
+  int? get y => _$this._y;
+  set y(int? y) => _$this._y = y;
 
   SeatCoordinatesBuilder();
 
@@ -79,7 +79,7 @@ class SeatCoordinatesBuilder
   }
 
   @override
-  void update(void Function(SeatCoordinatesBuilder) updates) {
+  void update(void Function(SeatCoordinatesBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -117,20 +117,20 @@ class _$Seat extends Seat {
   @override
   final DateTime updatedAt;
 
-  factory _$Seat([void Function(SeatBuilder) updates]) =>
+  factory _$Seat([void Function(SeatBuilder)? updates]) =>
       (new SeatBuilder()..update(updates)).build();
 
   _$Seat._(
-      {this.is_active,
-      this.coordinates,
-      this.id,
-      this.room,
-      this.theatre,
-      this.column,
-      this.row,
-      this.count,
-      this.createdAt,
-      this.updatedAt})
+      {required this.is_active,
+      required this.coordinates,
+      required this.id,
+      required this.room,
+      required this.theatre,
+      required this.column,
+      required this.row,
+      required this.count,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(is_active, 'Seat', 'is_active');
     BuiltValueNullFieldError.checkNotNull(coordinates, 'Seat', 'coordinates');
@@ -207,49 +207,49 @@ class _$Seat extends Seat {
 }
 
 class SeatBuilder implements Builder<Seat, SeatBuilder> {
-  _$Seat _$v;
+  _$Seat? _$v;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  SeatCoordinatesBuilder _coordinates;
+  SeatCoordinatesBuilder? _coordinates;
   SeatCoordinatesBuilder get coordinates =>
       _$this._coordinates ??= new SeatCoordinatesBuilder();
-  set coordinates(SeatCoordinatesBuilder coordinates) =>
+  set coordinates(SeatCoordinatesBuilder? coordinates) =>
       _$this._coordinates = coordinates;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _room;
-  String get room => _$this._room;
-  set room(String room) => _$this._room = room;
+  String? _room;
+  String? get room => _$this._room;
+  set room(String? room) => _$this._room = room;
 
-  String _theatre;
-  String get theatre => _$this._theatre;
-  set theatre(String theatre) => _$this._theatre = theatre;
+  String? _theatre;
+  String? get theatre => _$this._theatre;
+  set theatre(String? theatre) => _$this._theatre = theatre;
 
-  int _column;
-  int get column => _$this._column;
-  set column(int column) => _$this._column = column;
+  int? _column;
+  int? get column => _$this._column;
+  set column(int? column) => _$this._column = column;
 
-  String _row;
-  String get row => _$this._row;
-  set row(String row) => _$this._row = row;
+  String? _row;
+  String? get row => _$this._row;
+  set row(String? row) => _$this._row = row;
 
-  int _count;
-  int get count => _$this._count;
-  set count(int count) => _$this._count = count;
+  int? _count;
+  int? get count => _$this._count;
+  set count(int? count) => _$this._count = count;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   SeatBuilder();
 
@@ -278,7 +278,7 @@ class SeatBuilder implements Builder<Seat, SeatBuilder> {
   }
 
   @override
-  void update(void Function(SeatBuilder) updates) {
+  void update(void Function(SeatBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -305,7 +305,7 @@ class SeatBuilder implements Builder<Seat, SeatBuilder> {
               updatedAt: BuiltValueNullFieldError.checkNotNull(
                   updatedAt, 'Seat', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'coordinates';
         coordinates.build();

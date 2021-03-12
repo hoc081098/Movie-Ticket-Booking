@@ -32,8 +32,7 @@ abstract class UserLocal implements Built<UserLocal, UserLocalBuilder> {
   String get email;
 
   @BuiltValueField(wireName: 'phone_number')
-  @nullable
-  String get phoneNumber;
+  String? get phoneNumber;
 
   @BuiltValueField(wireName: 'full_name')
   String get fullName;
@@ -42,20 +41,16 @@ abstract class UserLocal implements Built<UserLocal, UserLocalBuilder> {
   String get gender;
 
   @BuiltValueField(wireName: 'avatar')
-  @nullable
-  String get avatar;
+  String? get avatar;
 
   @BuiltValueField(wireName: 'address')
-  @nullable
-  String get address;
+  String? get address;
 
   @BuiltValueField(wireName: 'birthday')
-  @nullable
-  DateTime get birthday;
+  DateTime? get birthday;
 
   @BuiltValueField(wireName: 'location')
-  @nullable
-  LocationLocal get location;
+  LocationLocal? get location;
 
   @BuiltValueField(wireName: 'is_completed')
   bool get isCompleted;

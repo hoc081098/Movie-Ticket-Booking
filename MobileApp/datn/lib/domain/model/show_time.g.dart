@@ -14,11 +14,11 @@ class _$ShowTime extends ShowTime {
   @override
   final String movieId;
   @override
-  final Movie movie;
+  final Movie? movie;
   @override
   final String theatreId;
   @override
-  final Theatre theatre;
+  final Theatre? theatre;
   @override
   final String room;
   @override
@@ -30,21 +30,21 @@ class _$ShowTime extends ShowTime {
   @override
   final DateTime updatedAt;
 
-  factory _$ShowTime([void Function(ShowTimeBuilder) updates]) =>
+  factory _$ShowTime([void Function(ShowTimeBuilder)? updates]) =>
       (new ShowTimeBuilder()..update(updates)).build();
 
   _$ShowTime._(
-      {this.id,
-      this.is_active,
-      this.movieId,
+      {required this.id,
+      required this.is_active,
+      required this.movieId,
       this.movie,
-      this.theatreId,
+      required this.theatreId,
       this.theatre,
-      this.room,
-      this.end_time,
-      this.start_time,
-      this.createdAt,
-      this.updatedAt})
+      required this.room,
+      required this.end_time,
+      required this.start_time,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'ShowTime', 'id');
     BuiltValueNullFieldError.checkNotNull(is_active, 'ShowTime', 'is_active');
@@ -124,51 +124,51 @@ class _$ShowTime extends ShowTime {
 }
 
 class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
-  _$ShowTime _$v;
+  _$ShowTime? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  String _movieId;
-  String get movieId => _$this._movieId;
-  set movieId(String movieId) => _$this._movieId = movieId;
+  String? _movieId;
+  String? get movieId => _$this._movieId;
+  set movieId(String? movieId) => _$this._movieId = movieId;
 
-  MovieBuilder _movie;
+  MovieBuilder? _movie;
   MovieBuilder get movie => _$this._movie ??= new MovieBuilder();
-  set movie(MovieBuilder movie) => _$this._movie = movie;
+  set movie(MovieBuilder? movie) => _$this._movie = movie;
 
-  String _theatreId;
-  String get theatreId => _$this._theatreId;
-  set theatreId(String theatreId) => _$this._theatreId = theatreId;
+  String? _theatreId;
+  String? get theatreId => _$this._theatreId;
+  set theatreId(String? theatreId) => _$this._theatreId = theatreId;
 
-  TheatreBuilder _theatre;
+  TheatreBuilder? _theatre;
   TheatreBuilder get theatre => _$this._theatre ??= new TheatreBuilder();
-  set theatre(TheatreBuilder theatre) => _$this._theatre = theatre;
+  set theatre(TheatreBuilder? theatre) => _$this._theatre = theatre;
 
-  String _room;
-  String get room => _$this._room;
-  set room(String room) => _$this._room = room;
+  String? _room;
+  String? get room => _$this._room;
+  set room(String? room) => _$this._room = room;
 
-  DateTime _end_time;
-  DateTime get end_time => _$this._end_time;
-  set end_time(DateTime end_time) => _$this._end_time = end_time;
+  DateTime? _end_time;
+  DateTime? get end_time => _$this._end_time;
+  set end_time(DateTime? end_time) => _$this._end_time = end_time;
 
-  DateTime _start_time;
-  DateTime get start_time => _$this._start_time;
-  set start_time(DateTime start_time) => _$this._start_time = start_time;
+  DateTime? _start_time;
+  DateTime? get start_time => _$this._start_time;
+  set start_time(DateTime? start_time) => _$this._start_time = start_time;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   ShowTimeBuilder();
 
@@ -198,7 +198,7 @@ class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
   }
 
   @override
-  void update(void Function(ShowTimeBuilder) updates) {
+  void update(void Function(ShowTimeBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -228,7 +228,7 @@ class ShowTimeBuilder implements Builder<ShowTime, ShowTimeBuilder> {
               updatedAt: BuiltValueNullFieldError.checkNotNull(
                   updatedAt, 'ShowTime', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'movie';
         _movie?.build();

@@ -23,15 +23,15 @@ class _$SingleMessageErrorResponseSerializer
   final String wireName = 'SingleMessageErrorResponse';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, SingleMessageErrorResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'statusCode',
       serializers.serialize(object.statusCode,
           specifiedType: const FullType(int)),
     ];
-    Object value;
+    Object? value;
     value = object.error;
     if (value != null) {
       result
@@ -51,7 +51,7 @@ class _$SingleMessageErrorResponseSerializer
 
   @override
   SingleMessageErrorResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SingleMessageErrorResponseBuilder();
 
@@ -59,7 +59,7 @@ class _$SingleMessageErrorResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'statusCode':
           result.statusCode = serializers.deserialize(value,
@@ -91,15 +91,15 @@ class _$MultipleMessagesErrorResponseSerializer
   final String wireName = 'MultipleMessagesErrorResponse';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, MultipleMessagesErrorResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'statusCode',
       serializers.serialize(object.statusCode,
           specifiedType: const FullType(int)),
     ];
-    Object value;
+    Object? value;
     value = object.error;
     if (value != null) {
       result
@@ -120,7 +120,7 @@ class _$MultipleMessagesErrorResponseSerializer
 
   @override
   MultipleMessagesErrorResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MultipleMessagesErrorResponseBuilder();
 
@@ -128,7 +128,7 @@ class _$MultipleMessagesErrorResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'statusCode':
           result.statusCode = serializers.deserialize(value,
@@ -140,8 +140,8 @@ class _$MultipleMessagesErrorResponseSerializer
           break;
         case 'message':
           result.messages.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
               as BuiltList<Object>);
           break;
       }
@@ -155,15 +155,16 @@ class _$SingleMessageErrorResponse extends SingleMessageErrorResponse {
   @override
   final int statusCode;
   @override
-  final String error;
+  final String? error;
   @override
-  final String message;
+  final String? message;
 
   factory _$SingleMessageErrorResponse(
-          [void Function(SingleMessageErrorResponseBuilder) updates]) =>
+          [void Function(SingleMessageErrorResponseBuilder)? updates]) =>
       (new SingleMessageErrorResponseBuilder()..update(updates)).build();
 
-  _$SingleMessageErrorResponse._({this.statusCode, this.error, this.message})
+  _$SingleMessageErrorResponse._(
+      {required this.statusCode, this.error, this.message})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         statusCode, 'SingleMessageErrorResponse', 'statusCode');
@@ -206,19 +207,19 @@ class _$SingleMessageErrorResponse extends SingleMessageErrorResponse {
 class SingleMessageErrorResponseBuilder
     implements
         Builder<SingleMessageErrorResponse, SingleMessageErrorResponseBuilder> {
-  _$SingleMessageErrorResponse _$v;
+  _$SingleMessageErrorResponse? _$v;
 
-  int _statusCode;
-  int get statusCode => _$this._statusCode;
-  set statusCode(int statusCode) => _$this._statusCode = statusCode;
+  int? _statusCode;
+  int? get statusCode => _$this._statusCode;
+  set statusCode(int? statusCode) => _$this._statusCode = statusCode;
 
-  String _error;
-  String get error => _$this._error;
-  set error(String error) => _$this._error = error;
+  String? _error;
+  String? get error => _$this._error;
+  set error(String? error) => _$this._error = error;
 
-  String _message;
-  String get message => _$this._message;
-  set message(String message) => _$this._message = message;
+  String? _message;
+  String? get message => _$this._message;
+  set message(String? message) => _$this._message = message;
 
   SingleMessageErrorResponseBuilder();
 
@@ -240,7 +241,7 @@ class SingleMessageErrorResponseBuilder
   }
 
   @override
-  void update(void Function(SingleMessageErrorResponseBuilder) updates) {
+  void update(void Function(SingleMessageErrorResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -261,16 +262,16 @@ class _$MultipleMessagesErrorResponse extends MultipleMessagesErrorResponse {
   @override
   final int statusCode;
   @override
-  final String error;
+  final String? error;
   @override
-  final BuiltList<String> messages;
+  final BuiltList<String>? messages;
 
   factory _$MultipleMessagesErrorResponse(
-          [void Function(MultipleMessagesErrorResponseBuilder) updates]) =>
+          [void Function(MultipleMessagesErrorResponseBuilder)? updates]) =>
       (new MultipleMessagesErrorResponseBuilder()..update(updates)).build();
 
   _$MultipleMessagesErrorResponse._(
-      {this.statusCode, this.error, this.messages})
+      {required this.statusCode, this.error, this.messages})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         statusCode, 'MultipleMessagesErrorResponse', 'statusCode');
@@ -314,20 +315,20 @@ class MultipleMessagesErrorResponseBuilder
     implements
         Builder<MultipleMessagesErrorResponse,
             MultipleMessagesErrorResponseBuilder> {
-  _$MultipleMessagesErrorResponse _$v;
+  _$MultipleMessagesErrorResponse? _$v;
 
-  int _statusCode;
-  int get statusCode => _$this._statusCode;
-  set statusCode(int statusCode) => _$this._statusCode = statusCode;
+  int? _statusCode;
+  int? get statusCode => _$this._statusCode;
+  set statusCode(int? statusCode) => _$this._statusCode = statusCode;
 
-  String _error;
-  String get error => _$this._error;
-  set error(String error) => _$this._error = error;
+  String? _error;
+  String? get error => _$this._error;
+  set error(String? error) => _$this._error = error;
 
-  ListBuilder<String> _messages;
+  ListBuilder<String>? _messages;
   ListBuilder<String> get messages =>
       _$this._messages ??= new ListBuilder<String>();
-  set messages(ListBuilder<String> messages) => _$this._messages = messages;
+  set messages(ListBuilder<String>? messages) => _$this._messages = messages;
 
   MultipleMessagesErrorResponseBuilder();
 
@@ -349,7 +350,7 @@ class MultipleMessagesErrorResponseBuilder
   }
 
   @override
-  void update(void Function(MultipleMessagesErrorResponseBuilder) updates) {
+  void update(void Function(MultipleMessagesErrorResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -364,7 +365,7 @@ class MultipleMessagesErrorResponseBuilder
               error: error,
               messages: _messages?.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'messages';
         _messages?.build();

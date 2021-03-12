@@ -11,13 +11,11 @@ abstract class ShowTime implements Built<ShowTime, ShowTimeBuilder> {
 
   String get movieId;
 
-  @nullable
-  Movie get movie;
+  Movie? get movie;
 
   String get theatreId;
 
-  @nullable
-  Theatre get theatre;
+  Theatre? get theatre;
 
   String get room;
 

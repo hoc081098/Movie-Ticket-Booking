@@ -18,11 +18,15 @@ class _$Category extends Category {
   @override
   final bool is_active;
 
-  factory _$Category([void Function(CategoryBuilder) updates]) =>
+  factory _$Category([void Function(CategoryBuilder)? updates]) =>
       (new CategoryBuilder()..update(updates)).build();
 
   _$Category._(
-      {this.id, this.name, this.createdAt, this.updatedAt, this.is_active})
+      {required this.id,
+      required this.name,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.is_active})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'Category', 'id');
     BuiltValueNullFieldError.checkNotNull(name, 'Category', 'name');
@@ -70,27 +74,27 @@ class _$Category extends Category {
 }
 
 class CategoryBuilder implements Builder<Category, CategoryBuilder> {
-  _$Category _$v;
+  _$Category? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
   CategoryBuilder();
 
@@ -114,7 +118,7 @@ class CategoryBuilder implements Builder<Category, CategoryBuilder> {
   }
 
   @override
-  void update(void Function(CategoryBuilder) updates) {
+  void update(void Function(CategoryBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

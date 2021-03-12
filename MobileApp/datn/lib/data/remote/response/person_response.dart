@@ -7,14 +7,12 @@ part 'person_response.g.dart';
 
 abstract class PersonResponse
     implements Built<PersonResponse, PersonResponseBuilder> {
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   @BuiltValueField(wireName: '_id')
   String get id;
 
-  @nullable
-  String get avatar;
+  String? get avatar;
 
   String get full_name;
 

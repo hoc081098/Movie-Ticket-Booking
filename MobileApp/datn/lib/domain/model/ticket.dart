@@ -13,8 +13,7 @@ abstract class Ticket implements Built<Ticket, TicketBuilder> {
 
   int get price;
 
-  @nullable
-  String get reservationId;
+  String? get reservationId;
 
   Seat get seat;
 
@@ -24,8 +23,7 @@ abstract class Ticket implements Built<Ticket, TicketBuilder> {
 
   DateTime get updatedAt;
 
-  @nullable
-  Reservation get reservation;
+  Reservation? get reservation;
 
   Ticket._();
 

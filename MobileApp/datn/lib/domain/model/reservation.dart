@@ -14,8 +14,7 @@ abstract class ProductAndQuantity
     implements Built<ProductAndQuantity, ProductAndQuantityBuilder> {
   String get id;
 
-  @nullable
-  Product get product;
+  Product? get product;
 
   int get quantity;
 
@@ -51,24 +50,19 @@ abstract class Reservation implements Built<Reservation, ReservationBuilder> {
 
   String get showTimeId;
 
-  @nullable
-  ShowTime get showTime;
+  ShowTime? get showTime;
 
   int get totalPrice;
 
   DateTime get updatedAt;
 
-  @nullable
-  User get user;
+  User? get user;
 
-  @nullable
-  BuiltList<Ticket> get tickets;
+  BuiltList<Ticket>? get tickets;
 
-  @nullable
-  String get promotionId;
+  String? get promotionId;
 
-  @nullable
-  Promotion get promotion;
+  Promotion? get promotion;
 
   Reservation._();
 

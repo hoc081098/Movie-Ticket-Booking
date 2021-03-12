@@ -12,10 +12,10 @@ class _$Location extends Location {
   @override
   final double longitude;
 
-  factory _$Location([void Function(LocationBuilder) updates]) =>
+  factory _$Location([void Function(LocationBuilder)? updates]) =>
       (new LocationBuilder()..update(updates)).build();
 
-  _$Location._({this.latitude, this.longitude}) : super._() {
+  _$Location._({required this.latitude, required this.longitude}) : super._() {
     BuiltValueNullFieldError.checkNotNull(latitude, 'Location', 'latitude');
     BuiltValueNullFieldError.checkNotNull(longitude, 'Location', 'longitude');
   }
@@ -50,15 +50,15 @@ class _$Location extends Location {
 }
 
 class LocationBuilder implements Builder<Location, LocationBuilder> {
-  _$Location _$v;
+  _$Location? _$v;
 
-  double _latitude;
-  double get latitude => _$this._latitude;
-  set latitude(double latitude) => _$this._latitude = latitude;
+  double? _latitude;
+  double? get latitude => _$this._latitude;
+  set latitude(double? latitude) => _$this._latitude = latitude;
 
-  double _longitude;
-  double get longitude => _$this._longitude;
-  set longitude(double longitude) => _$this._longitude = longitude;
+  double? _longitude;
+  double? get longitude => _$this._longitude;
+  set longitude(double? longitude) => _$this._longitude = longitude;
 
   LocationBuilder();
 
@@ -79,7 +79,7 @@ class LocationBuilder implements Builder<Location, LocationBuilder> {
   }
 
   @override
-  void update(void Function(LocationBuilder) updates) {
+  void update(void Function(LocationBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
