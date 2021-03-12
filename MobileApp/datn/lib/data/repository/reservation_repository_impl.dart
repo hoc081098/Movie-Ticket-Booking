@@ -70,7 +70,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
     final response = ReservationResponse.fromJson(json);
     print('createReservation: ${response}');
 
-    yield _reservationResponseToReservation(response);
+    yield* getReservationById(response.id);
   }
 
   @override

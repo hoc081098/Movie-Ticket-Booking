@@ -586,7 +586,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
   }
 
   void tapContinue(BuiltList<ComboItem> comboItems) {
-    AppScaffold.of(context).pushNamedX(
+    AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
       CheckoutPage.routeName,
       arguments: <String, dynamic>{
         'showTime': widget.showTime,

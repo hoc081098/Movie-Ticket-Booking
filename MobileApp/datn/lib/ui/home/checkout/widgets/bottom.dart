@@ -10,7 +10,6 @@ import '../../../../domain/model/promotion.dart';
 import '../../../../domain/model/ticket.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../utils/iterable.dart';
-import '../../../../utils/type_defs.dart';
 import '../checkout_page.dart';
 
 class BottomRow extends StatelessWidget {
@@ -18,6 +17,7 @@ class BottomRow extends StatelessWidget {
 
   final BuiltList<Tuple2<Product, int>> comboItems;
   final BuiltList<Ticket> tickets;
+  final VoidAction onSubmit;
 
   final int totalCount;
   final int originalTotalPrice;
@@ -26,6 +26,7 @@ class BottomRow extends StatelessWidget {
     Key key,
     @required this.comboItems,
     @required this.tickets,
+    @required this.onSubmit,
   })  : totalCount =
             comboItems.fold<int>(0, (acc, e) => acc + e.item2) + tickets.length,
         originalTotalPrice = tickets.fold<int>(0, (acc, e) => acc + e.price) +
@@ -124,9 +125,7 @@ class BottomRow extends StatelessWidget {
                       primary: Theme.of(context).colorScheme.onPrimary,
                       shape: RoundedRectangleBorder(),
                     ),
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                    }.pipe(bloc.submit),
+                    onPressed: onSubmit,
                     child: Text(
                       S.of(context).FINISH,
                       style: textTheme.headline6

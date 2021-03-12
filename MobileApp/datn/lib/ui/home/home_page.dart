@@ -509,7 +509,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
   ) {
     return InkWell(
       onTap: () {
-        AppScaffold.of(context).pushNamedX(
+        AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
           MovieDetailPage.routeName,
           arguments: item,
         );
@@ -950,7 +950,7 @@ class ViewAllButton extends StatelessWidget {
       style: TextButton.styleFrom(
         padding: const EdgeInsets.all(12),
       ),
-      onPressed: () => AppScaffold.of(context).pushNamedX(
+      onPressed: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
         ViewAllPage.routeName,
         arguments: movieType,
       ),
@@ -1042,7 +1042,7 @@ class NearbyTheatresList extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () {
-                        AppScaffold.of(context).pushNamedX(
+                        AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
                           ShowTimesByTheatrePage.routeName,
                           arguments: item,
                         );

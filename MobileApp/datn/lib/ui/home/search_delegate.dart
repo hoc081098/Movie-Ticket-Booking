@@ -58,7 +58,7 @@ class MovieSearchDelegate extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     print('buildResults');
 
-    final nav = AppScaffold.of(context);
+    final nav = AppScaffold.navigatorOfCurrentIndex(context);
     final query = this.query;
 
     if (query.isNotEmpty) {
@@ -92,7 +92,7 @@ class MovieSearchDelegate extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     print('buildSuggestions');
 
-    final nav = AppScaffold.of(context);
+    final nav = AppScaffold.navigatorOfCurrentIndex(context);
     queryS.add(query);
 
     return RxStreamBuilder<BuiltList<String>>(

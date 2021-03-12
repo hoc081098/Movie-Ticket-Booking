@@ -320,7 +320,7 @@ class ShowTimeItem extends StatelessWidget {
       children: [
         for (final show in showTimes)
           InkWell(
-            onTap: () => AppScaffold.of(context).pushNamedX(
+            onTap: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               TicketsPage.routeName,
               arguments: <String, dynamic>{
                 'theatre': theatre,
@@ -354,7 +354,7 @@ class ShowTimeItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        AppScaffold.of(context).pushNamedX(
+        AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
           MovieDetailPage.routeName,
           arguments: movie,
         );
