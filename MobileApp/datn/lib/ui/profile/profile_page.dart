@@ -79,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
       foregroundColor: Colors.white,
       children: [
         SpeedDialChild(
-          child: Icon(
+          child: FaIcon(
             FontAwesomeIcons.ticketAlt,
             size: 20,
             color: Colors.white,
@@ -98,7 +98,6 @@ class _ProfilePageState extends State<ProfilePage> {
         SpeedDialChild(
           child: Icon(
             Icons.credit_card,
-            size: 20,
             color: Colors.white,
           ),
           backgroundColor: color,
