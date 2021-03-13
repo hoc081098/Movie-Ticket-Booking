@@ -244,7 +244,6 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
 
     listenToken ??= Provider.of<UserRepository>(context)
         .user$
-        .startWith(Provider.of<UserRepository>(context).user$.requireValue)
         .where((userOptional) => userOptional != null && userOptional is None)
         .take(1)
         .listen(onLoggedOut)

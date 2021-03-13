@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -40,7 +39,7 @@ class UserRepositoryImpl implements UserRepository {
 
   final SearchKeywordSource _searchKeywordSource;
 
-  final DistinctValueStream<Optional<User>?> _user$;
+  final ValueStream<Optional<User>> _user$;
 
   UserRepositoryImpl(
     this._auth,
@@ -63,21 +62,20 @@ class UserRepositoryImpl implements UserRepository {
       .getToken()
       .then((token) => token != null ? {'fcm_token': token} : null);
 
-  static DistinctValueStream<Optional<User>?> _buildUserStream(
+  static ValueStream<Optional<User>> _buildUserStream(
     FirebaseAuth _auth,
     UserLocalSource _userLocalSource,
     Function1<UserLocal, User> userLocalToUserDomain,
   ) =>
-      Rx.combineLatest3<Object?, UserLocal?, String?, Optional<User>?>(
-              _auth.userChanges(),
-              _userLocalSource.user$,
-              _userLocalSource.token$,
-              (Object? user, UserLocal? local, String? token) =>
-                  user == null || local == null || token == null
-                      ? Optional.none()
-                      : Optional.some(userLocalToUserDomain(local)))
-          .publishValueDistinct(null)
-            ..connect();
+      Rx.combineLatest3<Object?, UserLocal?, String?, Optional<User>>(
+          _auth.userChanges(),
+          _userLocalSource.user$,
+          _userLocalSource.token$,
+          (Object? user, UserLocal? local, String? token) =>
+              user == null || local == null || token == null
+                  ? Optional.none()
+                  : Optional.some(userLocalToUserDomain(local))).publishValue()
+        ..connect();
 
   Future<AuthState> _isUserLocalCompletedLogin([UserLocal? local]) async {
     local ??= await _userLocalSource.user;
@@ -300,7 +298,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  DistinctValueStream<Optional<User>?> get user$ => _user$;
+  ValueStream<Optional<User>> get user$ => _user$;
 
   @override
   Future<void> resetPassword(String email) =>

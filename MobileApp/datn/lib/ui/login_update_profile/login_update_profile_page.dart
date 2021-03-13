@@ -157,7 +157,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         await repository.checkAuth();
         await Future.delayed(const Duration(milliseconds: 500));
 
-        yield repository.user$.value?.fold(() => null, (r) => r);
+        yield (await repository.user$.first).fold(() => null, (r) => r);
       }()
           .where((user) => user != null)
           .doOnData((_) => isFetching$.add(false))

@@ -223,19 +223,18 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
 
   Object? token;
-  User? user;
 
   @override
   void initState() {
     super.initState();
 
-    user = context
+    final user = context
         .get<UserRepository>()
         .user$
-        .requireValue
+        .value
         ?.fold(() => null, (user) => user);
     if (user != null) {
-      context.get<CheckoutBloc>().initializeWith(user!);
+      context.get<CheckoutBloc>().initializeWith(user);
     }
   }
 
@@ -251,8 +250,15 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    final user = context
+        .get<UserRepository>()
+        .user$
+        .value
+        ?.fold(() => null, (user) => user);
+
     if (user == null) {
       return Container(
+        color: Colors.white,
         width: double.infinity,
         height: double.infinity,
       );
