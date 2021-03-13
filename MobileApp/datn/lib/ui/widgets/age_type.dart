@@ -7,7 +7,7 @@ final _cached = <AgeType, String>{};
 class AgeTypeWidget extends StatelessWidget {
   final AgeType ageType;
 
-  const AgeTypeWidget({Key key, @required this.ageType}) : super(key: key);
+  const AgeTypeWidget({Key? key, required this.ageType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class AgeTypeWidget extends StatelessWidget {
           ageType,
           () => ageType.toString().split('.')[1],
         ),
-        style: Theme.of(context).textTheme.button.copyWith(
+        style: Theme.of(context).textTheme.button!.copyWith(
               color: Colors.white,
               fontSize: 14,
             ),

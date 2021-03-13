@@ -7,9 +7,9 @@ class MyErrorWidget extends StatelessWidget {
   final void Function() onPressed;
 
   const MyErrorWidget({
-    Key key,
-    @required this.errorText,
-    @required this.onPressed,
+    Key? key,
+    required this.errorText,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class MyErrorWidget extends StatelessWidget {
                 errorText,
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle2
+                    .subtitle2!
                     .copyWith(fontSize: 15),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -42,7 +42,6 @@ class MyErrorWidget extends StatelessWidget {
         const SizedBox(height: 12),
         Center(
           child: ElevatedButton(
-            child: Text(S.of(context).retry),
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(
@@ -59,6 +58,7 @@ class MyErrorWidget extends StatelessWidget {
                 ),
               ),
             ),
+            child: Text(S.of(context).retry),
           ),
         ),
       ],
@@ -71,9 +71,9 @@ class DarkMyErrorWidget extends StatelessWidget {
   final void Function() onPressed;
 
   const DarkMyErrorWidget({
-    Key key,
-    @required this.errorText,
-    @required this.onPressed,
+    Key? key,
+    required this.errorText,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -84,7 +84,7 @@ class DarkMyErrorWidget extends StatelessWidget {
       children: <Widget>[
         Text(
           errorText,
-          style: Theme.of(context).textTheme.subtitle2.copyWith(
+          style: Theme.of(context).textTheme.subtitle2!.copyWith(
                 fontSize: 15,
                 color: Colors.white,
               ),
@@ -96,13 +96,6 @@ class DarkMyErrorWidget extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 4),
           child: ElevatedButton(
-            child: Text(
-              'Retry',
-              style: Theme.of(context)
-                  .textTheme
-                  .button
-                  .copyWith(color: Colors.white),
-            ),
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(
@@ -117,6 +110,13 @@ class DarkMyErrorWidget extends StatelessWidget {
                   width: 1,
                 ),
               ),
+            ),
+            child: Text(
+              'Retry',
+              style: Theme.of(context)
+                  .textTheme
+                  .button!
+                  .copyWith(color: Colors.white),
             ),
           ),
         ),

@@ -8,21 +8,21 @@ class PasswordTextField extends StatefulWidget {
   final VoidCallback onSubmitted;
   final FocusNode focusNode;
 
-  final TextStyle labelStyle;
-  final Color fillColor;
-  final InputBorder enabledBorder;
-  final Color textColor;
-  final Color prefixIconColor;
-  final Color suffixIconColor;
+  final TextStyle? labelStyle;
+  final Color? fillColor;
+  final InputBorder? enabledBorder;
+  final Color? textColor;
+  final Color? prefixIconColor;
+  final Color? suffixIconColor;
 
   const PasswordTextField({
-    Key key,
-    @required this.onChanged,
-    @required this.errorText,
-    @required this.labelText,
-    @required this.onSubmitted,
-    @required this.textInputAction,
-    @required this.focusNode,
+    Key? key,
+    required this.onChanged,
+    required this.errorText,
+    required this.labelText,
+    required this.onSubmitted,
+    required this.textInputAction,
+    required this.focusNode,
     this.labelStyle,
     this.fillColor,
     this.enabledBorder,

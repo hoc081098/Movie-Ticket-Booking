@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class EmptyWidget extends StatelessWidget {
   const EmptyWidget({
-    Key key,
-    @required this.message,
+    Key? key,
+    required this.message,
   }) : super(key: key);
 
   final String message;
@@ -30,7 +30,7 @@ class EmptyWidget extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           message,
-          style: Theme.of(context).textTheme.headline6.copyWith(
+          style: Theme.of(context).textTheme.headline6!.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -42,8 +42,8 @@ class EmptyWidget extends StatelessWidget {
 
 class DarkEmptyWidget extends StatelessWidget {
   const DarkEmptyWidget({
-    Key key,
-    @required this.message,
+    Key? key,
+    required this.message,
   }) : super(key: key);
 
   final String message;
@@ -71,7 +71,7 @@ class DarkEmptyWidget extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           message,
-          style: Theme.of(context).textTheme.headline6.copyWith(
+          style: Theme.of(context).textTheme.headline6!.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
