@@ -19,7 +19,7 @@ class ShowTimesByTheatrePage extends StatefulWidget {
 }
 
 class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
-  List<Widget> pages;
+  late List<Widget> pages;
 
   @override
   void initState() {
@@ -59,11 +59,11 @@ class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
         borderSide: BorderSide(width: 2, color: primaryColor),
       ),
       labelColor: primaryColor,
-      unselectedLabelStyle: Theme.of(context).textTheme.caption.copyWith(
+      unselectedLabelStyle: Theme.of(context).textTheme.caption!.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 12,
           ),
-      labelStyle: Theme.of(context).textTheme.caption.copyWith(
+      labelStyle: Theme.of(context).textTheme.caption!.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 13,
           ),

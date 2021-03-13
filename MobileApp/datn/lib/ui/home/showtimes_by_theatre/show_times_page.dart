@@ -40,9 +40,9 @@ class _ShowTimesPageState extends State<ShowTimesPage>
   final showTimeDateFormat = DateFormat('hh:mm a');
 
   final startDay = startOfDay(DateTime.now());
-  List<DateTime> days;
-  BehaviorSubject<DateTime> selectedDayS;
-  LoaderBloc<BuiltList<MovieAndShowTimes>> bloc;
+  late List<DateTime> days;
+  late BehaviorSubject<DateTime> selectedDayS;
+  LoaderBloc<BuiltList<MovieAndShowTimes>>? bloc;
 
   @override
   void initState() {
@@ -83,7 +83,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
 
   @override
   void dispose() {
-    bloc.dispose();
+    bloc!.dispose();
+    bloc = null;
     super.dispose();
   }
 
@@ -92,7 +93,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     super.build(context);
 
     final textTheme = Theme.of(context).textTheme;
-    final weekDayStyle = textTheme.button;
+    final weekDayStyle = textTheme.button!;
     final ddMMStyle = textTheme.subtitle1!.copyWith(fontSize: 15);
     final weekDaySelectedStyle = weekDayStyle.copyWith(color: Colors.white);
     final ddMMSelectedStyle = ddMMStyle.copyWith(color: Colors.white);
@@ -171,11 +172,11 @@ class _ShowTimesPageState extends State<ShowTimesPage>
           Expanded(
             child: Container(
               child: RxStreamBuilder<LoaderState<BuiltList<MovieAndShowTimes>>>(
-                stream: bloc.state$,
+                stream: bloc!.state$,
                 builder: (context, data) {
                   return AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    child: _buildBottom(data),
+                    child: _buildBottom(data!),
                   );
                 },
               ),
@@ -191,7 +192,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
       return MyErrorWidget(
         errorText:
             S.of(context).error_with_message(getErrorMessage(state.error!)),
-        onPressed: bloc.fetch,
+        onPressed: bloc!.fetch,
       );
     }
 
@@ -207,7 +208,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
       );
     }
 
-    final list = state.content;
+    final list = state.content!;
 
     if (list.isEmpty) {
       return Center(
@@ -255,9 +256,18 @@ class SelectCityWidget extends StatelessWidget {
             stream: cityRepo.selectedCity$,
             builder: (context, selected) {
               return PopupMenuButton<City>(
-                initialValue: selected,
+                initialValue: selected!,
                 onSelected: cityRepo.change,
                 offset: Offset(0, 56),
+                itemBuilder: (BuildContext context) {
+                  return [
+                    for (final city in cityRepo.allCities)
+                      PopupMenuItem<City>(
+                        value: city,
+                        child: Text(city.localizedName(context)),
+                      )
+                  ];
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
@@ -273,15 +283,6 @@ class SelectCityWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                itemBuilder: (BuildContext context) {
-                  return [
-                    for (final city in cityRepo.allCities)
-                      PopupMenuItem<City>(
-                        child: Text(city.localizedName(context)),
-                        value: city,
-                      )
-                  ];
-                },
               );
             },
           ),
@@ -320,7 +321,8 @@ class ShowTimeItem extends StatelessWidget {
       children: [
         for (final show in showTimes)
           InkWell(
-            onTap: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
+            onTap: () =>
+                AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               TicketsPage.routeName,
               arguments: <String, dynamic>{
                 'theatre': theatre,
@@ -402,7 +404,7 @@ class ShowTimeItem extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         S.of(context).duration_minutes(movie.duration),
-                        style: textTheme.caption.copyWith(fontSize: 14),
+                        style: textTheme.caption!.copyWith(fontSize: 14),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

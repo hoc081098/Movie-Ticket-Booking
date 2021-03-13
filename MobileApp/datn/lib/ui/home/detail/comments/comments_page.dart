@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Action;
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -35,7 +36,7 @@ class CommentsPage extends StatefulWidget {
 
 class _CommentsPageState extends State<CommentsPage>
     with DisposeBagMixin, AutomaticKeepAliveClientMixin {
-  RxReduxStore<Action, st.State> store;
+  RxReduxStore<Action, st.State>? store;
   final commentDateFormat = DateFormat('dd/MM/yy');
   final scrollController = ScrollController();
 
@@ -75,7 +76,8 @@ class _CommentsPageState extends State<CommentsPage>
   @override
   void dispose() {
     super.dispose();
-    store.dispose();
+    store!.dispose();
+    store = null;
     scrollController.dispose();
   }
 
@@ -112,13 +114,10 @@ class _CommentsPageState extends State<CommentsPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return StreamBuilder<st.State>(
-      stream: store.stateStream,
-      initialData: store.state,
-      builder: (context, snapshot) {
-        final state = snapshot.data;
-
-        if (state.isLoading && state.isFirstPage) {
+    return RxStreamBuilder<st.State>(
+      stream: store!.stateStream,
+      builder: (context, state) {
+        if (state!.isLoading && state.isFirstPage) {
           return Center(
             child: SizedBox(
               width: 56,
@@ -137,14 +136,14 @@ class _CommentsPageState extends State<CommentsPage>
               errorText: S
                   .of(context)
                   .error_with_message(getErrorMessage(state.error!)),
-              onPressed: () => store.dispatch(const RetryAction()),
+              onPressed: () => store!.dispatch(const RetryAction()),
             ),
           );
         }
 
         return CommentItemsListWidget(
           state: state,
-          dispatch: store.dispatch,
+          dispatch: (c) => store?.dispatch(c),
           commentDateFormat: commentDateFormat,
           movieId: widget.movieId,
           scrollController: scrollController,
@@ -300,7 +299,7 @@ class CommentItemWidget extends StatelessWidget {
                             ),
                           )
                         : CachedNetworkImage(
-                            imageUrl: item.user.avatar,
+                            imageUrl: item.user.avatar!,
                             fit: BoxFit.cover,
                             width: imageSize,
                             height: imageSize,
@@ -343,7 +342,7 @@ class CommentItemWidget extends StatelessWidget {
                         item.user.fullName,
                         style: Theme.of(context)
                             .textTheme
-                            .headline6
+                            .headline6!
                             .copyWith(fontSize: 17),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -366,7 +365,7 @@ class CommentItemWidget extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         commentDateFormat.format(item.createdAt),
-                        style: Theme.of(context).textTheme.caption.copyWith(
+                        style: Theme.of(context).textTheme.caption!.copyWith(
                               fontStyle: FontStyle.italic,
                               fontSize: 13,
                             ),
@@ -409,12 +408,12 @@ class CommentItemWidget extends StatelessWidget {
               Text(S.of(context).doYouWantToDeleteThisCommentThisActionCannot),
           actions: <Widget>[
             TextButton(
-              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(context).cancel),
             ),
             TextButton(
-              child: Text('OK'),
               onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text('OK'),
             ),
           ],
         );
@@ -529,7 +528,7 @@ class Header extends StatelessWidget {
               arguments: movieId,
             );
             if (comment != null) {
-              dispatch(AddedCommentAction(comment));
+              dispatch(AddedCommentAction(comment as Comment));
             }
           },
           child: Padding(

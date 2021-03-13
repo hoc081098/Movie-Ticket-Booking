@@ -25,7 +25,7 @@ class RelatedMovies extends StatelessWidget {
     return RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
       stream: bloc.state$,
       builder: (context, state) {
-        if (state.error != null) {
+        if (state!.error != null) {
           return SliverToBoxAdapter(
             child: Container(
               color: Color(0xFFFCFCFC),
@@ -58,7 +58,7 @@ class RelatedMovies extends StatelessWidget {
           );
         }
 
-        final movies = state.content;
+        final movies = state.content!;
 
         if (movies.isEmpty) {
           return SliverToBoxAdapter(
@@ -80,7 +80,7 @@ class RelatedMovies extends StatelessWidget {
               color: Color(0xff5B64CF),
             );
 
-        final minStyle = Theme.of(context).textTheme.overline.copyWith(
+        final minStyle = Theme.of(context).textTheme.overline!.copyWith(
               fontSize: 10,
             );
 
@@ -129,7 +129,7 @@ class RelatedMovies extends StatelessWidget {
                                         S.of(context).load_image_error,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .subtitle2
+                                            .subtitle2!
                                             .copyWith(fontSize: 12),
                                       ),
                                     ],

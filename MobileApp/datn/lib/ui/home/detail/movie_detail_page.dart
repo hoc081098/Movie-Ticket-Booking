@@ -21,7 +21,7 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
-  List<Widget> pages;
+  late List<Widget> pages;
 
   @override
   void initState() {
@@ -55,11 +55,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         borderSide: BorderSide(width: 2, color: primaryColor),
       ),
       labelColor: primaryColor,
-      unselectedLabelStyle: Theme.of(context).textTheme.caption.copyWith(
+      unselectedLabelStyle: Theme.of(context).textTheme.caption!.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 12,
           ),
-      labelStyle: Theme.of(context).textTheme.caption.copyWith(
+      labelStyle: Theme.of(context).textTheme.caption!.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 13,
           ),
@@ -89,7 +89,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
   final TabBar tabBar;
 
-  const CustomTabBar({Key? key, this.tabBar}) : super(key: key);
+  const CustomTabBar({Key? key, required this.tabBar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +105,8 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       child: Material(
-        child: tabBar,
         color: Colors.white,
+        child: tabBar,
       ),
     );
   }

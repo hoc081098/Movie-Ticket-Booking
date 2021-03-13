@@ -141,14 +141,12 @@ class _NotificationsPageState extends State<NotificationsPage>
 
   @override
   Widget build(BuildContext context) {
-    final store = this.store!;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).notifications),
       ),
       body: RxStreamBuilder<st.State>(
-        stream: store.stateStream,
+        stream: store!.stateStream,
         builder: (context, state) {
           if (state!.isLoading && state.isFirstPage) {
             return Center(
@@ -168,7 +166,7 @@ class _NotificationsPageState extends State<NotificationsPage>
               child: MyErrorWidget(
                 errorText:
                     context.s.error_with_message(getErrorMessage(state.error!)),
-                onPressed: () => store.dispatch(const RetryAction()),
+                onPressed: () => store!.dispatch(const RetryAction()),
               ),
             );
           }
@@ -186,7 +184,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           return RefreshIndicator(
             onRefresh: () {
               final action = RefreshAction();
-              store.dispatch(action);
+              store!.dispatch(action);
               return action.onDone;
             },
             child: ListView.builder(
@@ -208,7 +206,7 @@ class _NotificationsPageState extends State<NotificationsPage>
                     child: MyErrorWidget(
                       errorText: context.s
                           .error_with_message(getErrorMessage(state.error!)),
-                      onPressed: () => store.dispatch(const RetryAction()),
+                      onPressed: () => store!.dispatch(const RetryAction()),
                     ),
                   );
                 }

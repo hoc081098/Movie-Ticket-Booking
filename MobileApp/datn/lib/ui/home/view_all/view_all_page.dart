@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -87,8 +88,6 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
-    final store = this.store!;
-
     return Scaffold(
       appBar: AppBar(
         title: Hero(
@@ -101,13 +100,10 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
           ),
         ),
       ),
-      body: StreamBuilder<ViewAllState>(
-        stream: store.stateStream,
-        initialData: store.state,
-        builder: (context, snapshot) {
-          final state = snapshot.data!;
-
-          if (state.isLoading && state.isFirstPage) {
+      body: RxStreamBuilder<ViewAllState>(
+        stream: store!.stateStream,
+        builder: (context, state) {
+          if (state!.isLoading && state.isFirstPage) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -126,7 +122,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
                 errorText: S
                     .of(context)
                     .error_with_message(getErrorMessage(state.error!)),
-                onPressed: () => store.dispatch(const RetryAction()),
+                onPressed: () => store!.dispatch(const RetryAction()),
               ),
             );
           }
@@ -144,7 +140,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
           return RefreshIndicator(
             onRefresh: () {
               final action = RefreshAction();
-              store.dispatch(action);
+              store!.dispatch(action);
               return action.completed;
             },
             child: ListView.builder(
@@ -164,7 +160,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
                       errorText: S
                           .of(context)
                           .error_with_message(getErrorMessage(state.error!)),
-                      onPressed: () => store.dispatch(const RetryAction()),
+                      onPressed: () => store!.dispatch(const RetryAction()),
                     ),
                   );
                 }

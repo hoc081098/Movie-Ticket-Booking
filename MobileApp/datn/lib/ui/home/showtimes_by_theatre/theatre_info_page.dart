@@ -9,7 +9,7 @@ import '../../../generated/l10n.dart';
 class TheatreInfoPage extends StatelessWidget {
   final Theatre theatre;
 
-  TheatreInfoPage({Key? key, this.theatre}) : super(key: key);
+  TheatreInfoPage({Key? key, required this.theatre}) : super(key: key);
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final releaseDateFormat = DateFormat('dd/MM/yy');
@@ -38,7 +38,7 @@ class TheatreInfoPage extends StatelessWidget {
                 children: [
                   Text(
                     theatre.name,
-                    style: themeData.textTheme.headline4.copyWith(
+                    style: themeData.textTheme.headline4!.copyWith(
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
                       color: const Color(0xff687189),
@@ -133,7 +133,7 @@ class TheatreInfoPage extends StatelessWidget {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            theatre.email,
+                            theatre.email!,
                             style: textStyle,
                           ),
                         ),
@@ -210,7 +210,7 @@ class DetailAppBar extends StatelessWidget {
             children: <Widget>[
               Positioned.fill(
                 child: CachedNetworkImage(
-                  imageUrl: theatre.cover ?? '',
+                  imageUrl: theatre.cover,
                   fit: BoxFit.cover,
                   placeholder: (_, __) => Center(
                     child: CircularProgressIndicator(
@@ -230,7 +230,7 @@ class DetailAppBar extends StatelessWidget {
                           S.of(context).load_image_error,
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle2
+                              .subtitle2!
                               .copyWith(fontSize: 12),
                         ),
                       ],
