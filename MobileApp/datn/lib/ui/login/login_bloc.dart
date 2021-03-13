@@ -2,7 +2,6 @@
 
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
-import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
@@ -18,23 +17,23 @@ class LoginBloc extends DisposeCallbackBaseBloc {
   /// Input functions
   final Function1<String, void> emailChanged;
   final Function1<String, void> passwordChanged;
-  final Function0<void> submitLogin;
+  final VoidAction submitLogin;
 
   /// Streams
-  final Stream<String> emailError$;
-  final Stream<String> passwordError$;
+  final Stream<String?> emailError$;
+  final Stream<String?> passwordError$;
   final Stream<LoginMessage> message$;
   final Stream<bool> isLoading$;
 
   LoginBloc._({
-    @required Function0<void> dispose,
-    @required this.emailChanged,
-    @required this.passwordChanged,
-    @required this.submitLogin,
-    @required this.emailError$,
-    @required this.passwordError$,
-    @required this.message$,
-    @required this.isLoading$,
+    required VoidAction dispose,
+    required this.emailChanged,
+    required this.passwordChanged,
+    required this.submitLogin,
+    required this.emailError$,
+    required this.passwordError$,
+    required this.message$,
+    required this.isLoading$,
   }) : super(dispose);
 
   factory LoginBloc(final UserRepository userRepository) {
@@ -59,14 +58,15 @@ class LoginBloc extends DisposeCallbackBaseBloc {
       emailController.stream.map(Validator.isValidEmail),
       passwordController.stream.map(Validator.isValidPassword),
       isLoadingController.stream,
-      (isValidEmail, isValidPassword, isLoading) =>
+      (bool isValidEmail, bool isValidPassword, bool isLoading) =>
           isValidEmail && isValidPassword && !isLoading,
     ).shareValueSeeded(false);
 
     final credential$ = Rx.combineLatest2(
       emailController.stream,
       passwordController.stream,
-      (email, password) => Credential(email: email, password: password),
+      (String email, String password) =>
+          Credential(email: email, password: password),
     );
 
     final submit$ = submitLoginController.stream

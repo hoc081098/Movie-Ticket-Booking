@@ -8,8 +8,8 @@ import 'action.dart';
 import 'state.dart';
 
 typedef GetNotifications = Stream<BuiltList<Notification>> Function({
-  @required int page,
-  @required int perPage,
+  required int page,
+  required int perPage,
 });
 
 const perPage = 16;

@@ -196,7 +196,7 @@ class DiscountsPage extends StatelessWidget {
                           child: Text(
                             '${(promotion.discount * 100).toInt()}% ${S.of(context).OFF}',
                             style:
-                                Theme.of(context).textTheme.headline6.copyWith(
+                                Theme.of(context).textTheme.headline6!.copyWith(
                                       color: Colors.white,
                                       fontSize: 28,
                                     ),

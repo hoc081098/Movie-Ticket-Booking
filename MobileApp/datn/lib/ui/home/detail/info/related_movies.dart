@@ -73,7 +73,7 @@ class RelatedMovies extends StatelessWidget {
         }
 
         final titleTextStyle =
-            Theme.of(context).textTheme.headline6.copyWith(fontSize: 13);
+            Theme.of(context).textTheme.headline6!.copyWith(fontSize: 13);
 
         final reviewstextStyle = Theme.of(context).textTheme.subtitle2.copyWith(
               fontSize: 10,

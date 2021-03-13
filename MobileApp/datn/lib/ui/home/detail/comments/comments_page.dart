@@ -462,14 +462,14 @@ class Header extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: average.toStringAsFixed(2),
-                        style: Theme.of(context).textTheme.headline6.copyWith(
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
                               color: Colors.amber.shade800,
                               fontSize: 30,
                             ),
                       ),
                       TextSpan(
                         text: ' / 5',
-                        style: Theme.of(context).textTheme.headline6.copyWith(
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
@@ -506,7 +506,7 @@ class Header extends StatelessWidget {
                       ),
                       TextSpan(
                         text: total.toString(),
-                        style: Theme.of(context).textTheme.headline6.copyWith(
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
                               fontSize: 24,
                               color: Theme.of(context).accentColor,
                             ),

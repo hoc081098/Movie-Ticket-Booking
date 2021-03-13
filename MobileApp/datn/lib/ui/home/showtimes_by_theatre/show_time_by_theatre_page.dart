@@ -78,7 +78,7 @@ class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
           bottom: CustomTabBar(tabBar: tabBar),
           title: Text(
             widget.theatre.name,
-            style: Theme.of(context).textTheme.headline6.copyWith(
+            style: Theme.of(context).textTheme.headline6!.copyWith(
                   fontSize: 16,
                   color: Colors.white,
                 ),

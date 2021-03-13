@@ -190,7 +190,7 @@ class FavoriteItem extends StatelessWidget {
     const imageHeight = 154.0;
     const imageWidth = imageHeight * 0.7;
 
-    final titleStyle = Theme.of(context).textTheme.headline6.copyWith(
+    final titleStyle = Theme.of(context).textTheme.headline6!.copyWith(
           fontSize: 17,
           color: const Color(0xff687189),
         );

@@ -74,7 +74,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           bottom: CustomTabBar(tabBar: tabBar),
           title: Text(
             widget.movie.title,
-            style: Theme.of(context).textTheme.headline6.copyWith(
+            style: Theme.of(context).textTheme.headline6!.copyWith(
                   fontSize: 16,
                   color: Colors.white,
                 ),

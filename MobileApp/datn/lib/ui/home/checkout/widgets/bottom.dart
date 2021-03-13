@@ -84,7 +84,7 @@ class BottomRow extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   totalCount.toString(),
-                                  style: textTheme.headline6.copyWith(
+                                  style: textTheme.headline6!.copyWith(
                                     fontSize: 14,
                                     color: Colors.white,
                                   ),

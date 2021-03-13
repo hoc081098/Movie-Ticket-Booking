@@ -17,7 +17,7 @@ class ViewAllListItem extends StatelessWidget {
     const imageHeight = 164.0;
     const imageWidth = imageHeight * 0.7;
 
-    final titleStyle = Theme.of(context).textTheme.headline6.copyWith(
+    final titleStyle = Theme.of(context).textTheme.headline6!.copyWith(
           fontSize: 17,
           color: const Color(0xff687189),
           fontWeight: FontWeight.w600,

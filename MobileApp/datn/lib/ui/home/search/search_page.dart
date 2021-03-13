@@ -227,7 +227,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
                     const SizedBox(width: 16),
                     Text(
                       S.of(context).count_movie(items.length),
-                      style: Theme.of(context).textTheme.headline6.copyWith(
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
                             fontSize: 16,
                             color: const Color(0xff687189),
                             fontWeight: FontWeight.w500,
@@ -376,7 +376,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 S.of(context).searchFilter,
-                style: Theme.of(context).textTheme.headline6.copyWith(
+                style: Theme.of(context).textTheme.headline6!.copyWith(
                       fontSize: 18,
                       color: const Color(0xff687189),
                       fontWeight: FontWeight.w600,

@@ -260,7 +260,7 @@ class SelectCityWidget extends StatelessWidget {
         const SizedBox(width: 16),
         Text(
           S.of(context).selectTheArea,
-          style: textTheme.headline6.copyWith(fontSize: 16),
+          style: textTheme.headline6!.copyWith(fontSize: 16),
         ),
         const SizedBox(width: 16),
         Expanded(

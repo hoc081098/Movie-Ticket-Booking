@@ -311,7 +311,7 @@ class HomeLocationHeader extends StatelessWidget {
                       child: Text(
                         S.of(context).movies_on_theatre,
                         maxLines: 1,
-                        style: textTheme.headline6.copyWith(fontSize: 18),
+                        style: textTheme.headline6!.copyWith(fontSize: 18),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -342,7 +342,7 @@ class HomeLocationHeader extends StatelessWidget {
                             return Text(
                               data.localizedName(context),
                               maxLines: 1,
-                              style: textTheme.headline6.copyWith(fontSize: 13),
+                              style: textTheme.headline6!.copyWith(fontSize: 13),
                             );
                           },
                         ),
@@ -428,7 +428,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
     const imageWidth = imageHeight / 1.3;
 
     final titleTextStyle =
-        Theme.of(context).textTheme.headline6.copyWith(fontSize: 14);
+        Theme.of(context).textTheme.headline6!.copyWith(fontSize: 14);
 
     final reviewstextStyle = Theme.of(context).textTheme.subtitle2.copyWith(
           fontSize: 11,
@@ -719,7 +719,7 @@ class ComingSoonHeader extends StatelessWidget {
                 child: Text(
                   S.of(context).coming_soon,
                   maxLines: 1,
-                  style: textTheme.headline6.copyWith(
+                  style: textTheme.headline6!.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -770,7 +770,7 @@ class RecommendedHeader extends StatelessWidget {
               child: Text(
                 S.of(context).recommended_for_you,
                 maxLines: 1,
-                style: textTheme.headline6.copyWith(
+                style: textTheme.headline6!.copyWith(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -819,7 +819,7 @@ class MostFavoriteHeader extends StatelessWidget {
                 child: Text(
                   S.of(context).most_favorite,
                   maxLines: 1,
-                  style: textTheme.headline6.copyWith(
+                  style: textTheme.headline6!.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -872,7 +872,7 @@ class MostRateHeader extends StatelessWidget {
                 child: Text(
                   context.s.most_rate,
                   maxLines: 1,
-                  style: textTheme.headline6.copyWith(
+                  style: textTheme.headline6!.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -923,7 +923,7 @@ class NearbyTheatreHeader extends StatelessWidget {
               child: Text(
                 context.s.nearby_theatre,
                 maxLines: 1,
-                style: textTheme.headline6.copyWith(
+                style: textTheme.headline6!.copyWith(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,

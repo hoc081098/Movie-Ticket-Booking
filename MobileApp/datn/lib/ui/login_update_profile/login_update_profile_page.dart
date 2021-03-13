@@ -14,6 +14,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../domain/model/location.dart';
@@ -42,21 +43,25 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   final formKey = GlobalKey<FormState>();
   final birthDayDateFormat = intl.DateFormat.yMMMd();
 
-  AnimationController loginButtonController;
-  Animation<double> buttonSqueezeAnimation;
-  TextStyle textFieldStyle;
+  late AnimationController loginButtonController;
+  late Animation<double> buttonSqueezeAnimation;
+
+  TextStyle get textFieldStyle => Theme.of(context)
+      .textTheme
+      .subtitle1!
+      .copyWith(fontSize: 15.0, color: Colors.white);
 
   final phoneNumberFocusNode = FocusNode();
   final addressFocusNode = FocusNode();
 
-  String fullName;
-  String phoneNumber;
-  String address;
-  DateTime birthday;
-  final gender$ = BehaviorSubject.seeded(Gender.MALE);
-  Location location;
-  final avatarFile$ = BehaviorSubject<File>.seeded(null);
-  final avatar$ = BehaviorSubject<String>.seeded(null);
+  String? fullName;
+  String? phoneNumber;
+  String? address;
+  DateTime? birthday;
+  final gender$ = ValueSubject(Gender.MALE);
+  Location? location;
+  final avatarFile$ = BehaviorSubject<File?>.seeded(null);
+  final avatar$ = BehaviorSubject<String?>.seeded(null);
   var isLoading = false;
 
   final fullNameRegex = RegExp(r"^[\p{L} .'-]+$", unicode: true);
@@ -70,9 +75,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   final addressTextController = TextEditingController();
   final birthdayTextController = TextEditingController();
 
-  dynamic checkAuthToken;
-  ValueStream<Tuple2<File, String>> avatarTuple$;
-  final isFetching$ = BehaviorSubject.seeded(false);
+  Object? checkAuthToken;
+  late ValueStream<Tuple2<File?, String?>> avatarTuple$;
+  final isFetching$ = ValueSubject(false);
 
   @override
   void initState() {
@@ -104,8 +109,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     avatarTuple$ = Rx.combineLatest2(
       avatarFile$,
       avatar$,
-      (File a, String b) => Tuple2(a, b),
-    ).shareValueSeeded(Tuple2(avatarFile$.value, avatar$.value))
+      (File? a, String? b) => Tuple2(a, b),
+    ).shareValueSeeded(Tuple2<File?, String?>(avatarFile$.value, avatar$.value))
       ..listen(null).disposedBy(bag);
 
     bag.addAll(<StreamController>[
@@ -120,13 +125,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     print('>>> populateUser $user');
 
     fullName = user.fullName;
-    fullNameTextController.text = fullName;
+    fullNameTextController.text = fullName!;
 
     phoneNumber = user.phoneNumber;
-    phoneNumberTextController.text = phoneNumber;
+    phoneNumberTextController.text = phoneNumber ?? '';
 
     address = user.address;
-    addressTextController.text = address;
+    addressTextController.text = address ?? '';
 
     birthday = user.birthday;
     birthdayTextController.text = DateTimeField.tryFormat(
@@ -145,11 +150,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    textFieldStyle ??= Theme.of(context)
-        .textTheme
-        .subtitle1
-        .copyWith(fontSize: 15.0, color: Colors.white);
-
     if (widget.user != null) {
       checkAuthToken ??= () async* {
         final repository = Provider.of<UserRepository>(context);
@@ -159,7 +159,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
 
         yield (await repository.user$.first).fold(() => null, (r) => r);
       }()
-          .where((user) => user != null)
+          .whereNotNull()
           .doOnData((_) => isFetching$.add(false))
           .doOnError((_, __) => isFetching$.add(false))
           .listen(
@@ -197,12 +197,12 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                       content: Text(S.of(context).areYouSureYouWantToLogout),
                       actions: <Widget>[
                         TextButton(
-                          child: Text(S.of(context).cancel),
                           onPressed: () => Navigator.of(context).pop(false),
+                          child: Text(S.of(context).cancel),
                         ),
                         TextButton(
-                          child: Text('OK'),
                           onPressed: () => Navigator.of(context).pop(true),
+                          child: Text('OK'),
                         ),
                       ],
                     );
@@ -274,7 +274,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
               child: RxStreamBuilder<bool>(
                 stream: isFetching$,
                 builder: (context, data) {
-                  if (data) {
+                  if (data!) {
                     return SizedBox(
                       width: 64,
                       height: 64,
@@ -355,10 +355,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           ],
         ),
         child: ClipOval(
-          child: RxStreamBuilder<Tuple2<File, String>>(
+          child: RxStreamBuilder<Tuple2<File?, String?>>(
             stream: avatarTuple$,
             builder: (context, data) {
-              final avatarFile = data.item1;
+              final avatarFile = data!.item1;
               final avatar = data.item2;
 
               if (avatarFile != null) {
@@ -445,8 +445,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       autofocus: true,
       onFieldSubmitted: (_) =>
           FocusScope.of(context).requestFocus(phoneNumberFocusNode),
-      validator: (v) =>
-          fullNameRegex.hasMatch(v) ? null : S.of(context).invalidFullName,
+      validator: (v) => v != null && fullNameRegex.hasMatch(v)
+          ? null
+          : S.of(context).invalidFullName,
       controller: fullNameTextController,
     );
   }
@@ -477,7 +478,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       onFieldSubmitted: (_) =>
           FocusScope.of(context).requestFocus(addressFocusNode),
       focusNode: phoneNumberFocusNode,
-      validator: (v) => phoneNumberRegex.hasMatch(v)
+      validator: (v) => v != null && phoneNumberRegex.hasMatch(v)
           ? null
           : S.of(context).invalidPhoneNumber,
       controller: phoneNumberTextController,
@@ -513,7 +514,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
             focusNode: addressFocusNode,
-            validator: (v) => v.isEmpty ? S.of(context).emptyAddress : null,
+            validator: (v) =>
+                v == null || v.isEmpty ? S.of(context).emptyAddress : null,
           ),
         ),
         const SizedBox(width: 8),
@@ -543,22 +545,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   Widget buildSubmitButton() {
     return AnimatedBuilder(
       animation: buttonSqueezeAnimation,
-      child: MaterialButton(
-        onPressed: () {
-          FocusScope.of(context).unfocus();
-          onSubmit();
-        },
-        color: Theme.of(context).backgroundColor,
-        child: Text(
-          S.of(context).UPDATE,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
-          ),
-        ),
-        splashColor: Theme.of(context).accentColor,
-        elevation: 12,
-      ),
       builder: (context, child) {
         final value = buttonSqueezeAnimation.value;
 
@@ -578,6 +564,22 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           ),
         );
       },
+      child: MaterialButton(
+        onPressed: () {
+          FocusScope.of(context).unfocus();
+          onSubmit();
+        },
+        color: Theme.of(context).backgroundColor,
+        splashColor: Theme.of(context).accentColor,
+        elevation: 12,
+        child: Text(
+          S.of(context).UPDATE,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
     );
   }
 
@@ -653,10 +655,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         ..forward();
 
       await Provider.of<UserRepository>(context).loginUpdateProfile(
-        fullName: fullName,
-        phoneNumber: phoneNumber,
-        address: address,
-        gender: gender$.value,
+        fullName: fullName!,
+        phoneNumber: phoneNumber!,
+        address: address!,
+        gender: gender$.requireValue,
         location: location,
         birthday: birthday,
         avatarFile: avatarFile$.value,
@@ -668,7 +670,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           (route) => false,
         );
       } else {
-        await Navigator.pop(context);
+        Navigator.pop(context);
       }
     } catch (e, s) {
       print('loginUpdateProfile $e $s');
@@ -710,13 +712,15 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         ..latitude = details.geometry.location.lat
         ..longitude = details.geometry.location.lng);
 
-      addressTextController.text = address;
+      addressTextController.text = address ?? '';
     } catch (e, s) {
       print('searchLocation $e $s');
     }
   }
 
   Widget buildGender() {
+    final addToGender$ = (Gender? v) => v != null ? gender$.add(v) : null;
+
     return Theme(
       data: Theme.of(context).copyWith(
         unselectedWidgetColor: Colors.white.withOpacity(0.4),
@@ -738,7 +742,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                       Radio<Gender>(
                         value: Gender.MALE,
                         groupValue: gender,
-                        onChanged: gender$.add,
+                        onChanged: addToGender$,
                       ),
                       Text(S.of(context).male, style: textFieldStyle),
                     ],
@@ -755,7 +759,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                       Radio<Gender>(
                         value: Gender.FEMALE,
                         groupValue: gender,
-                        onChanged: gender$.add,
+                        onChanged: addToGender$,
                       ),
                       Text(S.of(context).female, style: textFieldStyle),
                     ],
@@ -776,7 +780,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       maxWidth: 720,
       maxHeight: 720,
     ))
-        .path;
-    avatarFile$.add(File(path));
+        ?.path;
+    if (path != null) {
+      avatarFile$.add(File(path));
+    }
   }
 }

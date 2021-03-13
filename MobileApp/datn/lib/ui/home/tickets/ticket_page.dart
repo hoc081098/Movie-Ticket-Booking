@@ -988,7 +988,7 @@ class BottomWidget extends StatelessWidget {
       fontWeight: FontWeight.w600,
     );
 
-    final selectTextStyle = textTheme.headline6.copyWith(
+    final selectTextStyle = textTheme.headline6!.copyWith(
       fontSize: 18,
       color: const Color(0xff687189),
       fontWeight: FontWeight.normal,

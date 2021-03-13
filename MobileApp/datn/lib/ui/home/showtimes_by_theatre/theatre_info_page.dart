@@ -67,7 +67,7 @@ class TheatreInfoPage extends StatelessWidget {
                           child: Text(
                             S.of(context).DESCRIPTION,
                             maxLines: 1,
-                            style: themeData.textTheme.headline6.copyWith(
+                            style: themeData.textTheme.headline6!.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
