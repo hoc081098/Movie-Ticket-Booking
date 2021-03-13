@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PasswordTextField extends StatefulWidget {
   final ValueChanged<String> onChanged;
-  final String errorText;
+  final String? errorText;
   final String labelText;
   final TextInputAction textInputAction;
   final VoidCallback onSubmitted;

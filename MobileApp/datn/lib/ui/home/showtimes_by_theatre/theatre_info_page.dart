@@ -18,7 +18,7 @@ class TheatreInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
-    final textStyle = themeData.textTheme.subtitle1.copyWith(
+    final textStyle = themeData.textTheme.subtitle1!.copyWith(
       fontSize: 14,
       color: const Color(0xff687189),
       fontWeight: FontWeight.w500,

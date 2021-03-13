@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
@@ -29,7 +30,7 @@ class _ReservationsPageState extends State<ReservationsPage>
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
   final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
 
-  RxReduxStore<ReservationsAction, ReservationsState> store;
+  RxReduxStore<ReservationsAction, ReservationsState>? store;
   final scrollController = ScrollController();
 
   @override
@@ -54,7 +55,8 @@ class _ReservationsPageState extends State<ReservationsPage>
   @override
   void dispose() {
     super.dispose();
-    store.dispose();
+    store!.dispose();
+    store = null;
     scrollController.dispose();
   }
 
@@ -79,17 +81,16 @@ class _ReservationsPageState extends State<ReservationsPage>
 
   @override
   Widget build(BuildContext context) {
+    final store = this.store!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).yourReservations),
       ),
-      body: StreamBuilder<ReservationsState>(
+      body: RxStreamBuilder<ReservationsState>(
         stream: store.stateStream,
-        initialData: store.state,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
-          if (state.isLoading && state.isFirstPage) {
+        builder: (context, state) {
+          if (state!.isLoading && state.isFirstPage) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -107,7 +108,7 @@ class _ReservationsPageState extends State<ReservationsPage>
               child: MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(getErrorMessage(state.error)),
+                    .error_with_message(getErrorMessage(state.error!)),
                 onPressed: () => store.dispatch(const RetryAction()),
               ),
             );
@@ -147,7 +148,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                     child: MyErrorWidget(
                       errorText: S
                           .of(context)
-                          .error_with_message(getErrorMessage(state.error)),
+                          .error_with_message(getErrorMessage(state.error!)),
                       onPressed: () => store.dispatch(const RetryAction()),
                     ),
                   );

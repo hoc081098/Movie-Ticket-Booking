@@ -34,18 +34,18 @@ class NotificationItemWidget extends StatelessWidget {
       color: Colors.white,
       fontWeight: FontWeight.w600,
     );
-    final timeStyle = textTheme.subtitle1.copyWith(
+    final timeStyle = textTheme.subtitle1!.copyWith(
       color: Colors.white,
       fontSize: 10,
       fontStyle: FontStyle.italic,
     );
-    final textStyle = textTheme.subtitle1.copyWith(
+    final textStyle = textTheme.subtitle1!.copyWith(
       fontSize: 12,
       fontWeight: FontWeight.w300,
       color: Colors.white.withOpacity(0.9),
     );
 
-    final textStyle2 = textTheme.subtitle1.copyWith(
+    final textStyle2 = textTheme.subtitle1!.copyWith(
       fontSize: 14,
       color: Colors.white.withOpacity(0.9),
       fontWeight: FontWeight.w600,

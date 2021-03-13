@@ -1,5 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:meta/meta.dart';
 import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
@@ -8,8 +7,8 @@ import '../../../domain/model/reservation.dart';
 import 'reservations_state.dart';
 
 typedef GetReservations = Stream<BuiltList<Reservation>> Function({
-  @required int page,
-  @required int perPage,
+  required int page,
+  required int perPage,
 });
 
 const perPage = 6;

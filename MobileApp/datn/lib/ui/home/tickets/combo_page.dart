@@ -129,7 +129,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           final textTheme = Theme.of(context).textTheme;
           final titleStyle = textTheme.subtitle2.copyWith(fontSize: 15);
           final countStyle = titleStyle.copyWith(fontSize: 18);
-          final priceStyle = textTheme.subtitle1.copyWith(
+          final priceStyle = textTheme.subtitle1!.copyWith(
             color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.w500,
           );
@@ -141,13 +141,13 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           );
           final buttonHeight = 54.0;
 
-          final textStyle = textTheme.subtitle1.copyWith(
+          final textStyle = textTheme.subtitle1!.copyWith(
             fontSize: 15,
             fontWeight: FontWeight.w400,
             color: const Color(0xff98A8BA),
           );
 
-          final textStyle2 = textTheme.subtitle1.copyWith(
+          final textStyle2 = textTheme.subtitle1!.copyWith(
             fontSize: 16,
             color: const Color(0xff687189),
             fontWeight: FontWeight.w600,
@@ -513,7 +513,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
     final style = Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15);
     final style2 = style.copyWith(fontSize: 17);
     final titleStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 13);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 13);
 
     final children = [
       ...[

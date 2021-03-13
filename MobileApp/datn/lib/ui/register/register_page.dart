@@ -18,13 +18,13 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage>
     with SingleTickerProviderStateMixin {
-  DisposeBag disposeBag;
+  DisposeBag? disposeBag;
 
-  AnimationController buttonController;
-  Animation<double> buttonSqueezeAnimation;
+  late AnimationController buttonController;
+  late Animation<double> buttonSqueezeAnimation;
 
-  FocusNode passwordFocusNode;
-  TextEditingController emailController;
+  late FocusNode passwordFocusNode;
+  late TextEditingController emailController;
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage>
   @override
   void dispose() {
     buttonController.dispose();
-    disposeBag.dispose();
+    disposeBag!.dispose();
     super.dispose();
   }
 
@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage>
                     const SizedBox(height: 24),
                     Text(
                       S.of(context).createYourAccount,
-                      style: Theme.of(context).textTheme.headline6.copyWith(
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
                             fontSize: 18,
                             color: Colors.white,
                           ),
@@ -163,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage>
           .of(context)
           .registerSuccessfullyPleaseCheckYourEmailInboxToVerifyThis);
       await delay(1000);
-      await Navigator.of(context).pop(message.email);
+      Navigator.of(context).pop<String>(message.email);
     }
     if (message is RegisterErrorMessage) {
       context.showSnackBar(message.message);
@@ -174,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   Widget emailTextField(RegisterBloc bloc) {
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: bloc.emailError$,
       builder: (context, snapshot) {
         return TextField(
@@ -211,7 +211,7 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   Widget passwordTextField(RegisterBloc bloc) {
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: bloc.passwordError$,
       builder: (context, snapshot) {
         return PasswordTextField(
@@ -231,21 +231,6 @@ class _RegisterPageState extends State<RegisterPage>
   Widget registerButton(RegisterBloc bloc) {
     return AnimatedBuilder(
       animation: buttonSqueezeAnimation,
-      child: MaterialButton(
-        onPressed: () {
-          FocusScope.of(context).unfocus();
-          bloc.submit();
-        },
-        color: Theme.of(context).backgroundColor,
-        child: Text(
-          S.of(context).REGISTER,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
-          ),
-        ),
-        splashColor: Theme.of(context).accentColor,
-      ),
       builder: (context, child) {
         final value = buttonSqueezeAnimation.value;
 
@@ -265,6 +250,21 @@ class _RegisterPageState extends State<RegisterPage>
           ),
         );
       },
+      child: MaterialButton(
+        onPressed: () {
+          FocusScope.of(context).unfocus();
+          bloc.submit();
+        },
+        color: Theme.of(context).backgroundColor,
+        splashColor: Theme.of(context).accentColor,
+        child: Text(
+          S.of(context).REGISTER,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
     );
   }
 }

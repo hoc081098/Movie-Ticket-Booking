@@ -93,7 +93,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
 
     final textTheme = Theme.of(context).textTheme;
     final weekDayStyle = textTheme.button;
-    final ddMMStyle = textTheme.subtitle1.copyWith(fontSize: 15);
+    final ddMMStyle = textTheme.subtitle1!.copyWith(fontSize: 15);
     final weekDaySelectedStyle = weekDayStyle.copyWith(color: Colors.white);
     final ddMMSelectedStyle = ddMMStyle.copyWith(color: Colors.white);
     final accentColor = Theme.of(context).accentColor;
@@ -341,7 +341,7 @@ class ShowTimeItem extends StatelessWidget {
                 child: Text(
                   showTimeDateFormat.format(show.start_time),
                   textAlign: TextAlign.center,
-                  style: textTheme.subtitle1.copyWith(
+                  style: textTheme.subtitle1!.copyWith(
                     fontSize: 18,
                     color: const Color(0xff687189),
                   ),

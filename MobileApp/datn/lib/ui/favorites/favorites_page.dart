@@ -195,7 +195,7 @@ class FavoriteItem extends StatelessWidget {
           color: const Color(0xff687189),
         );
     final durationStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 14);
 
     final rateStyle = titleStyle.copyWith(fontSize: 20);
 

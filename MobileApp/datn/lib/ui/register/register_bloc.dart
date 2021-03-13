@@ -2,7 +2,6 @@
 
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
-import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
@@ -20,20 +19,20 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
   final Function0<void> submit;
 
   /// Streams
-  final Stream<String> emailError$;
-  final Stream<String> passwordError$;
+  final Stream<String?> emailError$;
+  final Stream<String?> passwordError$;
   final Stream<RegisterMessage> message$;
   final Stream<bool> isLoading$;
 
   RegisterBloc._({
-    @required Function0<void> dispose,
-    @required this.emailChanged,
-    @required this.passwordChanged,
-    @required this.submit,
-    @required this.emailError$,
-    @required this.passwordError$,
-    @required this.message$,
-    @required this.isLoading$,
+    required VoidAction dispose,
+    required this.emailChanged,
+    required this.passwordChanged,
+    required this.submit,
+    required this.emailError$,
+    required this.passwordError$,
+    required this.message$,
+    required this.isLoading$,
   }) : super(dispose);
 
   factory RegisterBloc(final UserRepository userRepository) {
@@ -58,14 +57,15 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
       emailController.stream.map(Validator.isValidEmail),
       passwordController.stream.map(Validator.isValidPassword),
       isLoadingController.stream,
-      (isValidEmail, isValidPassword, isLoading) =>
+      (bool isValidEmail, bool isValidPassword, bool isLoading) =>
           isValidEmail && isValidPassword && !isLoading,
     ).shareValueSeeded(false);
 
     final credential$ = Rx.combineLatest2(
       emailController.stream,
       passwordController.stream,
-      (email, password) => Credential(email: email, password: password),
+      (String email, String password) =>
+          Credential(email: email, password: password),
     );
 
     final submit$ = submitController.stream

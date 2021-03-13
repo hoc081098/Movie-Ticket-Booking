@@ -23,7 +23,7 @@ class ViewAllListItem extends StatelessWidget {
           fontWeight: FontWeight.w600,
         );
     final durationStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 12);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 12);
 
     final rateStyle = titleStyle.copyWith(fontSize: 20);
 

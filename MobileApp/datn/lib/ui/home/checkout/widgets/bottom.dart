@@ -38,7 +38,7 @@ class BottomRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final bloc = BlocProvider.of<CheckoutBloc>(context);
 
-    final priceStyle = textTheme.subtitle1.copyWith(
+    final priceStyle = textTheme.subtitle1!.copyWith(
       color: Theme.of(context).primaryColor,
       fontWeight: FontWeight.w500,
     );
@@ -145,7 +145,7 @@ class BottomRow extends StatelessWidget {
     final style = Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15);
     final style2 = style.copyWith(fontSize: 17);
     final titleStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 13);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 13);
 
     final ticketsByCount =
         tickets.groupListsBy((i) => i.seat.count, (i) => i).entries;

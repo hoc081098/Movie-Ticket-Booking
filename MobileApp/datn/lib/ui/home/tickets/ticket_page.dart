@@ -976,13 +976,13 @@ class BottomWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    final textStyle = textTheme.subtitle1.copyWith(
+    final textStyle = textTheme.subtitle1!.copyWith(
       fontSize: 15,
       fontWeight: FontWeight.w400,
       color: const Color(0xff98A8BA),
     );
 
-    final textStyle2 = textTheme.subtitle1.copyWith(
+    final textStyle2 = textTheme.subtitle1!.copyWith(
       fontSize: 16,
       color: const Color(0xff687189),
       fontWeight: FontWeight.w600,

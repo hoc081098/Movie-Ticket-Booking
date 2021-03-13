@@ -388,7 +388,7 @@ class CommentItemWidget extends StatelessWidget {
             Text(
               item.content,
               style:
-                  Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 13),
+                  Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 13),
               textAlign: TextAlign.start,
               softWrap: true,
             ),

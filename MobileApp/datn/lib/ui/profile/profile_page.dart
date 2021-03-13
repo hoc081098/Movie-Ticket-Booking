@@ -115,7 +115,7 @@ class LoggedIn extends StatelessWidget {
       fontSize: 13,
     );
     final detailInfoStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 17);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 17);
     final accentColor = Theme.of(context).accentColor;
 
     return Stack(
@@ -195,7 +195,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
-                user.phoneNumber,
+                user.phoneNumber!,
                 style: detailInfoStyle,
               ),
               dense: true,
@@ -238,7 +238,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
-                user.address,
+                user.address!,
                 style: detailInfoStyle,
               ),
               dense: true,
@@ -257,7 +257,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
-                (DateFormat()..add_yMMMd()).format(user.birthday),
+                (DateFormat()..add_yMMMd()).format(user.birthday!),
                 style: detailInfoStyle,
               ),
               dense: true,
@@ -338,7 +338,7 @@ class LoggedIn extends StatelessWidget {
                     ),
                   )
                 : CachedNetworkImage(
-                    imageUrl: user.avatar,
+                    imageUrl: user.avatar!,
                     fit: BoxFit.cover,
                     width: imageSize,
                     height: imageSize,
@@ -425,12 +425,12 @@ class LoggedIn extends StatelessWidget {
                     content: Text(S.of(context).areYouSureYouWantToLogout),
                     actions: <Widget>[
                       TextButton(
-                        child: Text(S.of(context).cancel),
                         onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(S.of(context).cancel),
                       ),
                       TextButton(
-                        child: Text('OK'),
                         onPressed: () => Navigator.of(context).pop(true),
+                        child: Text('OK'),
                       ),
                     ],
                   );
