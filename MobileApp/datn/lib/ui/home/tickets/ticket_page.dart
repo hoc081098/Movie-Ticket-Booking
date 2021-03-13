@@ -33,10 +33,10 @@ import '../showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'combo_page.dart';
 
 class TicketsCountDownTimerBlocProvider {
-  static TicketsCountDownTimerBlocProvider _instance;
+  static TicketsCountDownTimerBlocProvider? _instance;
 
-  TicketsCountDownTimerBloc _bloc;
-  bool _fromDetailPage;
+  TicketsCountDownTimerBloc? _bloc;
+  bool? _fromDetailPage;
   var _destroyed = false;
   var _initialized = false;
 
@@ -54,13 +54,13 @@ class TicketsCountDownTimerBlocProvider {
   TicketsCountDownTimerBloc get bloc {
     if (!_initialized) throw StateError('Not init');
     if (_destroyed || _bloc == null) throw StateError('Destroyed');
-    return _bloc;
+    return _bloc!;
   }
 
   bool get fromDetailPage {
     if (!_initialized) throw StateError('Not init');
     if (_destroyed || _fromDetailPage == null) throw StateError('Destroyed');
-    return _fromDetailPage;
+    return _fromDetailPage!;
   }
 
   void _destroy() {
@@ -78,10 +78,10 @@ class TicketsCountDownTimerBloc extends BaseBloc {
   final bag = DisposeBag();
   final _startS = PublishSubject<void>(sync: true);
   final _timeoutS = PublishSubject<void>(sync: true);
-  DistinctValueConnectableStream<String> _countdown$;
+  late DistinctValueConnectableStream<String?> _countdown$;
 
   ///
-  ValueStream<String> get countDown$ => _countdown$;
+  ValueStream<String?> get countDown$ => _countdown$;
 
   Stream<void> get timeout$ => _timeoutS;
 
@@ -91,7 +91,7 @@ class TicketsCountDownTimerBloc extends BaseBloc {
     _countdown$ = _startS
         .map((_) => DateTime.now().add(maxDuration))
         .take(1)
-        .switchMap(
+        .switchMap<String?>(
           (endTime) => Stream<void>.periodic(const Duration(seconds: 1))
               .startWith(null)
               .map((_) => DateTime.now())
@@ -143,10 +143,10 @@ class TicketsPage extends StatefulWidget {
 }
 
 class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
-  LoaderBloc<BuiltList<Ticket>> bloc;
+  LoaderBloc<BuiltList<Ticket>>? bloc;
   final countDownTimerBloc = TicketsCountDownTimerBloc();
   final selectedTicketIdsS = BehaviorSubject.seeded(BuiltList.of(<String>[]));
-  Object listenToken;
+  Object? listenToken;
 
   @override
   void initState() {
@@ -180,7 +180,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
             (tickets) => reservationRepository
                 .watchReservedTicket(widget.showTime.id)
                 .scan<BuiltList<Ticket>>(
-                  (acc, value, _) => acc.rebuild(
+                  (acc, value, _) => acc!.rebuild(
                     (lb) => lb.map(
                       (ticket) {
                         final reservation = value[ticket.id];
@@ -210,7 +210,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           .distinct()
           .map((state) => conflict(
                 state,
-                selectedTicketIdsS.value,
+                selectedTicketIdsS.requireValue,
                 userRepo.user$.value,
               ))
           .where((tickets) => tickets.isNotEmpty)
@@ -241,7 +241,6 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               Text(S.of(context).timeOutToHoldTheSeatPleaseMakeYourReservation),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
               onPressed: () {
                 Navigator.of(dialogContext).pop();
 
@@ -249,10 +248,12 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home)
                       .popUntil(ModalRoute.withName(MovieDetailPage.routeName));
                 } else {
-                  AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home).popUntil(
-                      ModalRoute.withName(ShowTimesByTheatrePage.routeName));
+                  AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home)
+                      .popUntil(ModalRoute.withName(
+                          ShowTimesByTheatrePage.routeName));
                 }
               },
+              child: Text('OK'),
             ),
           ],
         );
@@ -264,14 +265,14 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   Widget build(BuildContext context) {
     final countDownStyle = Theme.of(context)
         .textTheme
-        .subtitle2
+        .subtitle2!
         .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
       body: RxStreamBuilder<LoaderState<BuiltList<Ticket>>>(
-        stream: bloc.state$,
+        stream: bloc!.state$,
         builder: (context, state) {
-          if (state.isLoading) {
+          if (state!.isLoading) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -290,14 +291,15 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                 errorText: S
                     .of(context)
                     .error_with_message(getErrorMessage(state.error!)),
-                onPressed: bloc.fetch,
+                onPressed: bloc!.fetch,
               ),
             );
           }
 
+          final stateContent = state.content!;
           final builtMap = BuiltMap.of(
             Map.fromEntries(
-              state.content.map((t) => MapEntry(t.id, t)),
+              stateContent.map((t) => MapEntry(t.id, t)),
             ),
           );
 
@@ -324,14 +326,14 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                       ),
                     ),
                     SeatsGridWidget(
-                      tickets: state.content,
+                      tickets: stateContent,
                       selectedTicketIds$: selectedTicketIdsS,
                       tapTicket: (ticket) {
-                        if (ticket == null || ticket.reservationId != null) {
+                        if (ticket.reservationId != null) {
                           throw Exception('Something was wrong');
                         }
 
-                        final ids = selectedTicketIdsS.value;
+                        final ids = selectedTicketIdsS.requireValue;
                         final newIds = ids.rebuild((b) {
                           if (ids.contains(ticket.id)) {
                             b.remove(ticket.id);
@@ -385,7 +387,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                       S.of(context).CONTINUE,
                       style: Theme.of(context)
                           .textTheme
-                          .headline6
+                          .headline6!
                           .copyWith(fontSize: 16, color: Colors.white),
                     ),
                   ),
@@ -402,7 +404,8 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () => AppScaffold.navigatorOfCurrentIndex(context).maybePop(),
+                      onTap: () => AppScaffold.navigatorOfCurrentIndex(context)
+                          .maybePop(),
                       customBorder: CircleBorder(),
                       splashColor: Colors.white30,
                       child: Padding(
@@ -427,7 +430,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                     color: Colors.black.withOpacity(0.32),
                   ),
                   child: Center(
-                    child: RxStreamBuilder<String>(
+                    child: RxStreamBuilder<String?>(
                       stream: countDownTimerBloc.countDown$,
                       builder: (context, data) {
                         return data != null
@@ -449,12 +452,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   void dispose() {
     TicketsCountDownTimerBlocProvider.shared()._destroy();
     countDownTimerBloc.dispose();
-    bloc.dispose();
+    bloc!.dispose();
+    bloc = null;
     super.dispose();
   }
 
   void tapContinue(BuiltMap<String, Ticket> ticketsMap) {
-    final ids = selectedTicketIdsS.value;
+    final ids = selectedTicketIdsS.requireValue;
     if (ids.isEmpty) {
       return context.showSnackBar(S.of(context).mustSelectAtLeastOneSeat);
     }
@@ -472,7 +476,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   }
 
   void handleConflictSelection(BuiltSet<Ticket> conflictTickets) {
-    final value = selectedTicketIdsS.value;
+    final value = selectedTicketIdsS.requireValue;
     final conflictIds = conflictTickets.map((e) => e.id).toSet();
     final newSelected = Set.of(value).difference(conflictIds).toBuiltList();
 
@@ -482,23 +486,25 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   }
 
   static BuiltSet<Ticket> conflict(
-    BuiltList<Ticket> state,
+    BuiltList<Ticket>? state,
     BuiltList<String> selectedIds,
-    Optional<User> userOptional,
+    Optional<User>? userOptional,
   ) {
     if (state == null) {
       return const <Ticket>{}.build();
     }
 
     final uid = userOptional?.fold(() => null, (u) => u.uid);
-    assert(uid != null);
+    if (uid == null) {
+      return const <Ticket>{}.build();
+    }
     final ticketById = Map.fromEntries(state.map((t) => MapEntry(t.id, t)));
 
     return selectedIds
-        .map((id) => ticketById[id])
+        .map((id) => ticketById[id]!)
         .where((ticket) => ticket.reservation == null
             ? ticket.reservationId != null
-            : ticket.reservation.user.uid != uid)
+            : ticket.reservation!.user!.uid != uid)
         .toBuiltSet();
   }
 
@@ -514,13 +520,13 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                   .someSeatsYouChooseHaveBeenReservedPleaseSelectOther),
               actions: <Widget>[
                 TextButton(
-                  child: Text('OK'),
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
 
                     AppScaffold.navigatorByIndex(context, AppScaffoldIndex.home)
                         .popUntil(ModalRoute.withName(TicketsPage.routeName));
                   },
+                  child: Text('OK'),
                 ),
               ],
             );
@@ -617,9 +623,9 @@ class SeatsGridWidget extends StatefulWidget {
 }
 
 class _SeatsGridWidgetState extends State<SeatsGridWidget> {
-  int maxX;
-  int maxY;
-  Map<SeatCoordinates, Ticket> ticketByCoordinates;
+  late int maxX;
+  late int maxY;
+  late Map<SeatCoordinates, Ticket> ticketByCoordinates;
 
   @override
   void initState() {
@@ -683,7 +689,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
                                 context,
                                 row,
                                 col,
-                                snapshotData,
+                                snapshotData!,
                                 widthPerSeat,
                               );
                             },
@@ -722,7 +728,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
         child: Center(
           child: Text(
             row,
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.caption!.copyWith(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff687189),
@@ -736,12 +742,12 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
     final coordinates = SeatCoordinates.from(x: x, y: y);
     final ticket = ticketByCoordinates[coordinates];
     if (ticket == null) {
-      int prevCount;
-      SeatCoordinates prevCoords;
+      int? prevCount;
+      SeatCoordinates? prevCoords;
       var prevX = x - 1;
       while (prevX >= 0) {
         prevCoords = SeatCoordinates.from(x: prevX, y: y);
-        prevCount = ticketByCoordinates[prevCoords]?.seat?.count;
+        prevCount = ticketByCoordinates[prevCoords]?.seat.count;
         if (prevCount != null) {
           break;
         }
@@ -750,7 +756,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
 
       return prevCount != null &&
               prevCount > 1 &&
-              (coordinates.x - prevCoords.x + 1) <= prevCount
+              (coordinates.x - prevCoords!.x + 1) <= prevCount
           ? const SizedBox(width: 0, height: 0)
           : Container(
               margin: const EdgeInsets.all(0.5),
@@ -761,7 +767,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
       return SeatWidget(
         ticket: ticket,
         tapTicket: widget.tapTicket,
-        isSelected: ids.contains(ticket?.id),
+        isSelected: ids.contains(ticket.id),
         widthPerSeat: widthPerSeat,
       );
     }
@@ -776,10 +782,10 @@ class SeatWidget extends StatelessWidget {
 
   const SeatWidget({
     Key? key,
-    this.ticket,
-    this.tapTicket,
-    this.isSelected,
-    this.widthPerSeat,
+    required this.ticket,
+    required this.tapTicket,
+    required this.isSelected,
+    required this.widthPerSeat,
   }) : super(key: key);
 
   @override
@@ -803,9 +809,9 @@ class SeatWidget extends StatelessWidget {
         child: Center(
           child: Text(
             '${seat.row}${seat.column}',
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.caption!.copyWith(
                   fontSize: 10,
-                  color: const Color(0x98A8BA),
+                  color: const Color(0xff98A8BA),
                 ),
           ),
         ),
@@ -830,7 +836,7 @@ class SeatWidget extends StatelessWidget {
         child: Center(
           child: Text(
             '${seat.row}${seat.column}',
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.caption!.copyWith(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                   color: isSelected ? Colors.white : const Color(0xff687189),
@@ -1004,7 +1010,7 @@ class BottomWidget extends StatelessWidget {
           children: [
             Text(
               movie.title,
-              style: textTheme.headline4.copyWith(
+              style: textTheme.headline4!.copyWith(
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
                 color: const Color(0xff687189),
@@ -1081,7 +1087,7 @@ class BottomWidget extends StatelessWidget {
                         style: selectTextStyle,
                         children: [
                           TextSpan(
-                            text: ' ${data.length} ',
+                            text: ' ${data!.length} ',
                             style: seatsCountStyle,
                           ),
                           TextSpan(
@@ -1095,7 +1101,7 @@ class BottomWidget extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: currencyFormat.format(data.fold<int>(
-                            0, (acc, e) => acc + tickets[e].price)),
+                            0, (acc, e) => acc + tickets[e]!.price)),
                         style: seatsCountStyle,
                         children: [
                           TextSpan(
@@ -1120,7 +1126,8 @@ class SelectedSeatsGridWidget extends StatelessWidget {
   final ValueStream<BuiltList<String>> ids$;
   final BuiltMap<String, Ticket> tickets;
 
-  const SelectedSeatsGridWidget({Key? key, this.ids$, this.tickets})
+  const SelectedSeatsGridWidget(
+      {Key? key, required this.ids$, required this.tickets})
       : super(key: key);
 
   @override
@@ -1132,10 +1139,12 @@ class SelectedSeatsGridWidget extends StatelessWidget {
       sliver: RxStreamBuilder<BuiltList<String>>(
         stream: ids$,
         builder: (context, ids) {
+          ids!;
+
           return SliverGrid(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final seat = tickets[ids[index]].seat;
+                final seat = tickets[ids[index]]!.seat;
 
                 return Container(
                   margin: const EdgeInsets.all(0.5),
@@ -1146,7 +1155,7 @@ class SelectedSeatsGridWidget extends StatelessWidget {
                   child: Center(
                     child: Text(
                       '${seat.row}${seat.column}',
-                      style: Theme.of(context).textTheme.caption.copyWith(
+                      style: Theme.of(context).textTheme.caption!.copyWith(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

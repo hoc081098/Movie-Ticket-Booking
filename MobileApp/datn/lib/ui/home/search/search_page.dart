@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
+import 'package:flutter/foundation.dart' hide Category;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -43,17 +44,17 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
   final maxDurationS = StreamController<int>();
   final ageTypeS = StreamController<AgeType>();
 
-  DistinctValueStream<DateTime> showtimeStartTime$;
-  DistinctValueStream<DateTime> showtimeEndTime$;
-  DistinctValueStream<DateTime> minReleasedDate$;
-  DistinctValueStream<DateTime> maxReleasedDate$;
-  DistinctValueStream<int> minDuration$;
-  DistinctValueStream<int> maxDuration$;
-  DistinctValueStream<AgeType> ageType$;
+  late DistinctValueStream<DateTime> showtimeStartTime$;
+  late DistinctValueStream<DateTime> showtimeEndTime$;
+  late DistinctValueStream<DateTime> minReleasedDate$;
+  late DistinctValueStream<DateTime> maxReleasedDate$;
+  late DistinctValueStream<int> minDuration$;
+  late DistinctValueStream<int> maxDuration$;
+  late DistinctValueStream<AgeType> ageType$;
 
-  LoaderBloc<BuiltList<Movie>> bloc;
-  BuiltList<Category> cats;
-  BuiltSet<String> selectedCatIds;
+  LoaderBloc<BuiltList<Movie>>? bloc;
+  BuiltList<Category>? cats;
+  BuiltSet<String>? selectedCatIds;
 
   @override
   void initState() {
@@ -106,6 +107,8 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
 
       final loaderFunction = () => Rx.defer(
             () {
+              final selectedCatIds = this.selectedCatIds!;
+
               print('>>>> FETCH ${ageType$.value}');
               print('>>>> FETCH ${minDuration$.value}');
               print('>>>> FETCH ${maxDuration$.value}');
@@ -124,7 +127,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
                 minDuration: minDuration$.value,
                 maxDuration: maxDuration$.value,
                 ageType: ageType$.value,
-                location: cityRepo.selectedCity$.value.location,
+                location: cityRepo.selectedCity$.requireValue.location,
                 selectedCategoryIds: selectedCatIds,
               );
             },
@@ -140,7 +143,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
       movieRepo.getCategories().listen((event) {
         cats = event;
         selectedCatIds = event.map((c) => c.id).toBuiltSet();
-        bloc.fetch();
+        _bloc.fetch();
       }).disposedBy(bag);
 
       return _bloc;
@@ -150,6 +153,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
   @override
   Widget build(BuildContext context) {
     final movieRepo = Provider.of<MovieRepository>(context);
+    final bloc = this.bloc!;
 
     return Scaffold(
       appBar: AppBar(
@@ -158,7 +162,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
           RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
             stream: bloc.state$,
             builder: (context, state) {
-              if (state.isLoading) {
+              if (state!.isLoading) {
                 return const SizedBox();
               }
 
@@ -173,7 +177,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
       body: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
         stream: bloc.state$,
         builder: (context, state) {
-          if (state.isLoading) {
+          if (state!.isLoading) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -197,7 +201,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
             );
           }
 
-          final items = state.content;
+          final items = state.content!;
 
           if (items.isEmpty) {
             return Center(
@@ -239,7 +243,9 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
               const SizedBox(height: 4),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: state.isLoading ? null : bloc.refresh,
+                  onRefresh: state.isLoading
+                      ? () => SynchronousFuture(null)
+                      : bloc.refresh,
                   child: ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: items.length,
@@ -259,7 +265,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
   void showFilterSheet(MovieRepository movieRepo) async {
     if (cats == null) {
       await movieRepo.getCategories().forEach((event) => cats = event);
-      selectedCatIds = cats.map((c) => c.id).toBuiltSet();
+      selectedCatIds = cats!.map((c) => c.id).toBuiltSet();
     }
     if (!mounted) {
       return;
@@ -286,9 +292,9 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
       print('>>>> ${showtimeEndTime$.value}');
       print('>>>> ${minReleasedDate$.value}');
       print('>>>> ${maxReleasedDate$.value}');
-      print('>>>> ${selectedCatIds.length}');
+      print('>>>> ${selectedCatIds!.length}');
 
-      bloc.fetch();
+      bloc!.fetch();
     }
   }
 }
@@ -304,21 +310,33 @@ class _FilterBottomSheet extends StatefulWidget {
 }
 
 class __FilterBottomSheetState extends State<_FilterBottomSheet> {
-  AgeType ageType;
-  int minDuration;
-  int maxDuration;
-  DateTime showtimeStartTime;
-  DateTime showtimeEndTime;
-  DateTime minReleasedDate;
-  DateTime maxReleasedDate;
+  late AgeType ageType;
+  late int minDuration;
+  late int maxDuration;
+  late DateTime showtimeStartTime;
+  late DateTime showtimeEndTime;
+  late DateTime minReleasedDate;
+  late DateTime maxReleasedDate;
 
-  List<DropdownMenuItem<int>> durations;
-  List<DropdownMenuItem<AgeType>> ageTypes;
+  late final List<DropdownMenuItem<int>> durations = [
+    for (var d = 30; d <= 12 * 60; d += 10)
+      DropdownMenuItem(
+        value: d,
+        child: Text(d.toString()),
+      ),
+  ];
+  late List<DropdownMenuItem<AgeType>> ageTypes = [
+    for (final t in AgeType.values)
+      DropdownMenuItem(
+        value: t,
+        child: Text(t.toString().split('.')[1]),
+      ),
+  ];
 
   final dateFormat = DateFormat('dd/MM/yy, hh:mm a');
 
-  Set<String> selectedCatIds;
-  BuiltList<Category> cats;
+  late Set<String> selectedCatIds;
+  late BuiltList<Category> cats;
 
   @override
   void initState() {
@@ -336,8 +354,8 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
     showtimeEndTime = state.showtimeEndTime$.value;
     minReleasedDate = state.minReleasedDate$.value;
     maxReleasedDate = state.maxReleasedDate$.value;
-    selectedCatIds = state.selectedCatIds.toSet();
-    cats = widget.searchPageState.cats;
+    selectedCatIds = state.selectedCatIds!.toSet();
+    cats = state.cats!;
   }
 
   @override
@@ -348,20 +366,6 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    durations ??= [
-      for (var d = 30; d <= 12 * 60; d += 10)
-        DropdownMenuItem(
-          child: Text(d.toString()),
-          value: d,
-        ),
-    ];
-    ageTypes ??= [
-      for (final t in AgeType.values)
-        DropdownMenuItem(
-          child: Text(t.toString().split('.')[1]),
-          value: t,
-        ),
-    ];
     const visualDensity = VisualDensity(horizontal: -3, vertical: -3);
     const divider = Divider(height: 0);
     const divider2 = Divider(height: 8);
@@ -393,7 +397,12 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                 DropdownButton<AgeType>(
                   value: ageType,
                   items: ageTypes,
-                  onChanged: (val) => setState(() => ageType = val),
+                  onChanged: (val) {
+                    if (val == null) {
+                      return;
+                    }
+                    setState(() => ageType = val);
+                  },
                   underline: divider,
                 ),
                 const Spacer(),
@@ -408,6 +417,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                 value: minDuration,
                 items: durations,
                 onChanged: (val) {
+                  if (val == null) {
+                    return;
+                  }
                   if (val > maxDuration) {
                     return context.showSnackBar(
                         S.of(context).mustBeLessThanOrEqualToMaxDuration);
@@ -421,6 +433,9 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                 value: maxDuration,
                 items: durations,
                 onChanged: (val) {
+                  if (val == null) {
+                    return;
+                  }
                   if (val < minDuration) {
                     return context.showSnackBar(
                         S.of(context).mustBeGreaterThanOrEqualToMinDuration);
@@ -448,10 +463,10 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   }
                   setState(() => showtimeStartTime = newStart);
                 },
-                child: Text(dateFormat.format(showtimeStartTime)),
                 style: TextButton.styleFrom(
                   visualDensity: visualDensity,
                 ),
+                child: Text(dateFormat.format(showtimeStartTime)),
               ),
             ],
           ),
@@ -471,10 +486,10 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   }
                   setState(() => showtimeEndTime = newEnd);
                 },
-                child: Text(dateFormat.format(showtimeEndTime)),
                 style: TextButton.styleFrom(
                   visualDensity: visualDensity,
                 ),
+                child: Text(dateFormat.format(showtimeEndTime)),
               ),
             ],
           ),
@@ -496,10 +511,10 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   }
                   setState(() => minReleasedDate = newStart);
                 },
-                child: Text(dateFormat.format(minReleasedDate)),
                 style: TextButton.styleFrom(
                   visualDensity: visualDensity,
                 ),
+                child: Text(dateFormat.format(minReleasedDate)),
               ),
             ],
           ),
@@ -519,10 +534,10 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   }
                   setState(() => maxReleasedDate = newEnd);
                 },
-                child: Text(dateFormat.format(maxReleasedDate)),
                 style: TextButton.styleFrom(
                   visualDensity: visualDensity,
                 ),
+                child: Text(dateFormat.format(maxReleasedDate)),
               ),
             ],
           ),
@@ -560,7 +575,6 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Expanded(
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
-                      child: Text(S.of(context).cancel),
                       style: TextButton.styleFrom(
                         backgroundColor: Theme.of(context).disabledColor,
                         primary: Theme.of(context).colorScheme.onError,
@@ -568,6 +582,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           borderRadius: BorderRadius.circular(38 / 2),
                         ),
                       ),
+                      child: Text(S.of(context).cancel),
                     ),
                   ),
                   const SizedBox(width: 32),
@@ -577,7 +592,6 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                         apply();
                         Navigator.of(context).pop(true);
                       },
-                      child: Text(S.of(context).apply),
                       style: TextButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor,
                         primary: Theme.of(context).colorScheme.onPrimary,
@@ -585,6 +599,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
                           borderRadius: BorderRadius.circular(38 / 2),
                         ),
                       ),
+                      child: Text(S.of(context).apply),
                     ),
                   ),
                   const SizedBox(width: 32),
@@ -614,7 +629,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
     state.selectedCatIds = selectedCatIds.build();
   }
 
-  Future<DateTime> pickDateTime(DateTime initialDate) async {
+  Future<DateTime?> pickDateTime(DateTime initialDate) async {
     const sixMonths = Duration(days: 30 * 6);
     final now = DateTime.now();
 

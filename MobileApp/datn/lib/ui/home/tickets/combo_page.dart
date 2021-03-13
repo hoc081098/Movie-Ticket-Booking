@@ -84,7 +84,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
         title: Text(S.of(context).combo),
         actions: [
           Center(
-            child: RxStreamBuilder<String>(
+            child: RxStreamBuilder<String?>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
               builder: (context, data) {
