@@ -1,5 +1,4 @@
 import 'package:built_value/built_value.dart';
-import 'package:meta/meta.dart';
 
 part 'product.g.dart';
 
@@ -25,13 +24,13 @@ abstract class Product implements Built<Product, ProductBuilder> {
   factory Product([void Function(ProductBuilder) updates]) = _$Product;
 
   factory Product.from({
-    @required String id,
-    @required String description,
-    @required String image,
-    @required bool is_active,
-    @required String name,
-    @required int price,
-    @required DateTime createdAt,
-    @required DateTime updatedAt,
+    required String id,
+    required String description,
+    required String image,
+    required bool is_active,
+    required String name,
+    required int price,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _$Product._;
 }

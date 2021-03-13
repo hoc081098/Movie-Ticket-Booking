@@ -1,5 +1,4 @@
 import 'package:built_value/built_value.dart';
-import 'package:meta/meta.dart';
 
 import 'reservation.dart';
 import 'seat.dart';
@@ -30,14 +29,14 @@ abstract class Ticket implements Built<Ticket, TicketBuilder> {
   factory Ticket([void Function(TicketBuilder) updates]) = _$Ticket;
 
   factory Ticket.from({
-    @required String id,
-    @required bool is_active,
-    @required int price,
-    @required String reservationId,
-    @required Seat seat,
-    @required String show_time,
-    @required DateTime createdAt,
-    @required DateTime updatedAt,
-    @required Reservation reservation,
+    required String id,
+    required bool is_active,
+    required int price,
+    required String? reservationId,
+    required Seat seat,
+    required String show_time,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required Reservation? reservation,
   }) = _$Ticket._;
 }

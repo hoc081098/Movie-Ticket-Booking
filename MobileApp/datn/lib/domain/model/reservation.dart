@@ -25,9 +25,9 @@ abstract class ProductAndQuantity
       _$ProductAndQuantity;
 
   factory ProductAndQuantity.from({
-    @required String id,
-    @required int quantity,
-    Product product,
+    required String id,
+    required int quantity,
+    Product? product,
   }) = _$ProductAndQuantity._;
 }
 
