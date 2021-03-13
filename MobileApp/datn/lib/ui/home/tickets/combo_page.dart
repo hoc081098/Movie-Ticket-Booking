@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -15,7 +16,6 @@ import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
-import '../../../utils/iterable.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/age_type.dart';
@@ -58,13 +58,8 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
     super.initState();
     ticketsPrice = widget.tickets.fold(0, (acc, e) => acc + e.price);
 
-    ticketsByCount = widget.tickets
-        .groupBy(
-          (t) => t.seat.count,
-          (v) => v,
-        )
-        .entries
-        .toBuiltList();
+    ticketsByCount =
+        widget.tickets.groupListsBy((t) => t.seat.count).entries.toBuiltList();
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
@@ -69,12 +70,12 @@ class CardsBloc extends DisposeCallbackBaseBloc {
     CardRepository cardRepository,
     domain.Card initialSelected,
   ) {
-    DistinctValueConnectableStream<
-        Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card>> state$;
+    late DistinctValueConnectableStream<
+        Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card?>> state$;
 
     final cardMessageS = PublishSubject<Message>();
     final removeCardS = PublishSubject<domain.Card>();
-    final selectedCardS = BehaviorSubject<domain.Card>.seeded(initialSelected);
+    final selectedCardS = BehaviorSubject<domain.Card?>.seeded(initialSelected);
 
     final cardAddedS = PublishSubject<domain.Card>();
     final removedCard$ = removeCardS.flatMap(
@@ -82,7 +83,7 @@ class CardsBloc extends DisposeCallbackBaseBloc {
         final state = state$.value;
         if (state.item2?.id == removed.id) {
           selectedCardS.add(
-              state.item1.content.where((i) => i.id != removed.id).firstOrNull);
+              state.item1.content!.firstWhereOrNull((i) => i.id != removed.id));
         }
         cardMessageS.add(RemovedSuccess(removed));
       }).doOnError((e, s) {
@@ -255,7 +256,9 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
               duration: const Duration(milliseconds: 200),
               child: FloatingActionButton.extended(
                 onPressed: () async {
-                  final added = await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
+                  final added =
+                      await AppScaffold.navigatorOfCurrentIndex(context)
+                          .pushNamedX(
                     AddCardPage.routeName,
                     arguments: widget.mode,
                   );

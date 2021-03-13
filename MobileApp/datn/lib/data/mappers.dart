@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
 import 'package:tuple/tuple.dart';
 
 import '../domain/model/card.dart';
@@ -216,10 +217,7 @@ BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>
 
   final showTimesByDate = responses
       .map(_showTimeAndTheatreResponseToTuple2)
-      .groupBy(
-        (tuple) => startOfDay(tuple.item2.start_time),
-        (tuple) => tuple,
-      )
+      .groupListsBy((tuple) => startOfDay(tuple.item2.start_time))
       .map(_tuplesToMapEntry);
 
   return showTimesByDate.build();
@@ -559,7 +557,7 @@ BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>
     List<MovieAndShowTimeResponse> response,
   ) {
     final movieAndShowTimeResponses = response
-        .groupBy((v) => v.movie, (v) => v)
+        .groupListsBy((v) => v.movie)
         .entries
         .map(
           (entry) => MovieAndShowTimes(
@@ -586,7 +584,7 @@ BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>
   }
 
   return res
-      .groupBy((v) => startOfDay(v.show_time.start_time), (v) => v)
+      .groupListsBy((v) => startOfDay(v.show_time.start_time))
       .map(toMovieAndShowTimes)
       .build();
 }

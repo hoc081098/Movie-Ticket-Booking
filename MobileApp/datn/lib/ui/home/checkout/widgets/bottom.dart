@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,7 +10,6 @@ import '../../../../domain/model/product.dart';
 import '../../../../domain/model/promotion.dart';
 import '../../../../domain/model/ticket.dart';
 import '../../../../generated/l10n.dart';
-import '../../../../utils/iterable.dart';
 import '../checkout_page.dart';
 
 class BottomRow extends StatelessWidget {
@@ -148,7 +148,7 @@ class BottomRow extends StatelessWidget {
         Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 13);
 
     final ticketsByCount =
-        tickets.groupBy((i) => i.seat.count, (i) => i).entries;
+        tickets.groupListsBy((i) => i.seat.count, (i) => i).entries;
 
     final children = [
       ...[

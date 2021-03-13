@@ -1,4 +1,4 @@
-import 'package:built_collection/src/list.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 
@@ -40,11 +40,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
         return change.movie.id == movieId ? change.favorite : null;
       }
       if (change is _Refreshed) {
-        return change._movies.firstWhere(
-              (m) => m.id == movieId,
-              orElse: () => null,
-            ) !=
-            null;
+        return change._movies.any((m) => m.id == movieId);
       }
       throw StateError('Unknown change $change');
     });

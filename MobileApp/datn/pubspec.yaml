@@ -57,6 +57,7 @@ dependencies:
   built_value: ^8.0.2
   shared_preferences: ^2.0.4
   path_provider: ^2.0.1
+  collection: ^1.15.0
 
   rx_redux: ^2.2.0-nullsafety.2
   distinct_value_connectable_stream: ^1.2.0-nullsafety.5
