@@ -43,7 +43,6 @@ extension on AppScaffoldIndex {
       case AppScaffoldIndex.profile:
         return 3;
     }
-    throw StateError('Missing case $this');
   }
 }
 
@@ -52,9 +51,9 @@ class AppScaffold extends StatefulWidget {
   final List<AppScaffoldWidgetBuilder> builders;
 
   const AppScaffold({
-    Key key,
-    @required this.items,
-    @required this.builders,
+    Key? key,
+    required this.items,
+    required this.builders,
   }) : super(key: key);
 
   @override
@@ -62,12 +61,12 @@ class AppScaffold extends StatefulWidget {
 
   static NavigatorState navigatorOfCurrentIndex(
     BuildContext context, {
-    AppScaffoldIndex switchToNewIndex,
+    AppScaffoldIndex? switchToNewIndex,
   }) {
     final appScaffoldState =
         context is StatefulElement && context.state is _AppScaffoldState
             ? context.state as _AppScaffoldState
-            : context.findAncestorStateOfType<_AppScaffoldState>();
+            : context.findAncestorStateOfType<_AppScaffoldState>()!;
 
     final currentIndex = appScaffoldState.currentIndex;
     final navigatorKeys = appScaffoldState.navigatorKeys;
@@ -77,23 +76,23 @@ class AppScaffold extends StatefulWidget {
         newIndex != currentIndex &&
         appScaffoldState.mounted) {
       appScaffoldState.onTap(newIndex);
-      return navigatorKeys[newIndex].currentState;
+      return navigatorKeys[newIndex].currentState!;
     }
 
-    return navigatorKeys[currentIndex].currentState;
+    return navigatorKeys[currentIndex].currentState!;
   }
 
   static NotReplayValueStream<AppScaffoldIndex> currentIndexStream(
           BuildContext context) =>
-      context.findAncestorStateOfType<_AppScaffoldState>().indexS;
+      context.findAncestorStateOfType<_AppScaffoldState>()!.indexS;
 
   static NavigatorState navigatorByIndex(
     BuildContext context,
     AppScaffoldIndex index,
   ) {
     final appScaffoldState =
-        context.findAncestorStateOfType<_AppScaffoldState>();
-    return appScaffoldState.navigatorKeys[index.rawValue].currentState;
+        context.findAncestorStateOfType<_AppScaffoldState>()!;
+    return appScaffoldState.navigatorKeys[index.rawValue].currentState!;
   }
 }
 
@@ -120,7 +119,7 @@ class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        final navigatorState = navigatorKeys[currentIndex].currentState;
+        final navigatorState = navigatorKeys[currentIndex].currentState!;
         final canPop = navigatorState.canPop();
 
         if (canPop) {
@@ -137,8 +136,7 @@ class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
       child: RxStreamBuilder<AppScaffoldIndex>(
         stream: indexS,
         builder: (context, snapshot) {
-          assert(snapshot != null);
-          final index = snapshot.rawValue;
+          final index = snapshot!.rawValue;
 
           return Scaffold(
             body: buildBody(index),
@@ -186,19 +184,19 @@ class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
 
 extension NavigatorStateX on NavigatorState {
   @optionalTypeArgs
-  Future<T> pushNamedX<T extends Object>(
+  Future<T?> pushNamedX<T extends Object?>(
     String routeName, {
-    Object arguments,
+    Object? arguments,
   }) {
     _removeCurrentSnackBar();
     return pushNamed(routeName, arguments: arguments);
   }
 
   @optionalTypeArgs
-  Future<T> pushNamedAndRemoveUntilX<T>(
+  Future<T?> pushNamedAndRemoveUntilX<T extends Object?>(
     String newRouteName,
     RoutePredicate predicate, {
-    Object arguments,
+    Object? arguments,
   }) {
     _removeCurrentSnackBar();
     return pushNamedAndRemoveUntil(

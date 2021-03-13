@@ -28,7 +28,7 @@ class SearchPage extends StatefulWidget {
 
   final String query;
 
-  const SearchPage({Key key, @required this.query}) : super(key: key);
+  const SearchPage({Key? key, required this.query}) : super(key: key);
 
   @override
   _SearchPageState createState() => _SearchPageState();

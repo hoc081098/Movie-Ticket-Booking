@@ -11,7 +11,7 @@ class ShowTimesByTheatrePage extends StatefulWidget {
 
   final Theatre theatre;
 
-  const ShowTimesByTheatrePage({Key key, @required this.theatre})
+  const ShowTimesByTheatrePage({Key? key, required this.theatre})
       : super(key: key);
 
   @override

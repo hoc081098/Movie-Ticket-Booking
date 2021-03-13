@@ -14,6 +14,8 @@ import '../data/repository/theatre_repository_impl.dart';
 import '../data/repository/ticket_repository_impl.dart';
 import '../domain/model/card.dart';
 import '../domain/model/movie.dart';
+import '../domain/model/reservation.dart';
+import '../domain/model/theatre.dart';
 import '../domain/model/user.dart';
 import '../domain/repository/comment_repository.dart';
 import '../domain/repository/notification_repository.dart';
@@ -37,6 +39,7 @@ import 'home/detail/comments/add_comment/add_commen_page.dart';
 import 'home/detail/comments/add_comment/add_comment_bloc.dart';
 import 'home/detail/movie_detail_page.dart';
 import 'home/home_page.dart';
+import 'home/movie_type.dart';
 import 'home/search/search_page.dart';
 import 'home/showtimes_by_theatre/show_time_by_theatre_page.dart';
 import 'home/tickets/combo_bloc.dart';
@@ -63,39 +66,36 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       final args = settings.arguments as Map<String, dynamic>;
 
       final mode = args['mode'] as CardPageMode;
-      assert(mode != null);
       final key = ValueKey(mode);
 
       final card = args['card'] as Card;
 
       return BlocProvider<CardsBloc>(
         key: key,
-        child: CardsPage(
-          mode: mode,
-          key: key,
-        ),
         initBloc: (context) {
           return CardsBloc(
             CardRepositoryImpl(context.get(), context.get()),
             card,
           );
         },
+        child: CardsPage(
+          mode: mode,
+          key: key,
+        ),
       );
     },
     AddCardPage.routeName: (context, settings) {
       final mode = settings.arguments as CardPageMode;
-      assert(mode != null);
-
       final key = ValueKey(mode);
 
       return BlocProvider<AddCardBloc>(
         key: key,
+        initBloc: (context) => AddCardBloc(
+          CardRepositoryImpl(context.get(), context.get()),
+        ),
         child: AddCardPage(
           key: key,
           mode: mode,
-        ),
-        initBloc: (context) => AddCardBloc(
-          CardRepositoryImpl(context.get(), context.get()),
         ),
       );
     },
@@ -124,7 +124,6 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       final movieId = settings.arguments as String;
 
       return BlocProvider<AddCommentBloc>(
-        child: AddCommentPage(),
         initBloc: (context) => AddCommentBloc(
           CommentRepositoryImpl(
             context.get(),
@@ -133,6 +132,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           ),
           movieId,
         ),
+        child: AddCommentPage(),
       );
     },
     TicketsPage.routeName: (context, settings) {
@@ -170,17 +170,17 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       final arguments = settings.arguments as Map<String, dynamic>;
 
       return BlocProvider<CheckoutBloc>(
+        initBloc: (context) => CheckoutBloc(
+          reservationRepository: context.get(),
+          tickets: arguments['tickets'],
+          showTime: arguments['showTime'],
+          products: arguments['products'],
+        ),
         child: CheckoutPage(
           tickets: arguments['tickets'],
           showTime: arguments['showTime'],
           theatre: arguments['theatre'],
           movie: arguments['movie'],
-          products: arguments['products'],
-        ),
-        initBloc: (context) => CheckoutBloc(
-          reservationRepository: context.get(),
-          tickets: arguments['tickets'],
-          showTime: arguments['showTime'],
           products: arguments['products'],
         ),
       );
@@ -196,28 +196,22 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
       );
     },
     ViewAllPage.routeName: (context, settings) {
-      return ViewAllPage(movieType: settings.arguments);
+      return ViewAllPage(movieType: settings.arguments as MovieType);
     },
     ShowTimesByTheatrePage.routeName: (context, settings) {
-      return ShowTimesByTheatrePage(theatre: settings.arguments);
+      return ShowTimesByTheatrePage(theatre: settings.arguments as Theatre);
     },
     SearchPage.routeName: (context, settings) =>
-        SearchPage(query: settings.arguments),
+        SearchPage(query: settings.arguments as String),
   };
 
   static final profileRoutes = <String, AppScaffoldWidgetBuilder>{
     Navigator.defaultRouteName: (context, settings) => ProfilePage(),
-    UpdateProfilePage.routeName: (context, settings) {
-      final args = settings.arguments;
-      assert(args != null && args is User);
-      return UpdateProfilePage(user: args);
-    },
+    UpdateProfilePage.routeName: (context, settings) =>
+        UpdateProfilePage(user: settings.arguments as User),
     ReservationsPage.routeName: (context, settings) => ReservationsPage(),
-    ReservationDetailPage.routeName: (context, settings) {
-      return ReservationDetailPage(
-        reservation: settings.arguments,
-      );
-    },
+    ReservationDetailPage.routeName: (context, settings) =>
+        ReservationDetailPage(reservation: settings.arguments as Reservation),
     ...cardPages,
   };
 
@@ -244,7 +238,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
 
     listenToken ??= Provider.of<UserRepository>(context)
         .user$
-        .where((userOptional) => userOptional != null && userOptional is None)
+        .where((optional) => optional is None)
         .take(1)
         .listen(onLoggedOut)
         .disposedBy(bag);
@@ -264,7 +258,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
                     S.of(context).error_with_message(getErrorMessage(e)))),
           )
           .doOnData((r) => AppScaffold.navigatorOfCurrentIndex(
-                  appScaffoldKey.currentContext,
+                  appScaffoldKey.currentContext!,
                   switchToNewIndex: AppScaffoldIndex.profile)
               .pushNamedX(ReservationDetailPage.routeName, arguments: r))
           .collect()
@@ -279,12 +273,12 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
     return AppScaffold(
       key: appScaffoldKey,
       builders: [
-        (context, settings) => homeRoutes[settings.name](context, settings),
+        (context, settings) => homeRoutes[settings.name]!(context, settings),
         (context, settings) =>
-            favoritesRoutes[settings.name](context, settings),
+            favoritesRoutes[settings.name]!(context, settings),
         (context, settings) =>
-            notificationsRoutes[settings.name](context, settings),
-        (context, settings) => profileRoutes[settings.name](context, settings),
+            notificationsRoutes[settings.name]!(context, settings),
+        (context, settings) => profileRoutes[settings.name]!(context, settings),
       ],
       items: [
         BottomNavigationBarItem(

@@ -20,7 +20,7 @@ class ReservationDetailPage extends StatelessWidget {
 
   final Reservation reservation;
 
-  ReservationDetailPage({Key key, @required this.reservation})
+  ReservationDetailPage({Key? key, required this.reservation})
       : super(key: key);
 
   final dateFormat = DateFormat('dd MMM, yyyy');

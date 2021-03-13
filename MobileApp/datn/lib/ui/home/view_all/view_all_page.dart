@@ -21,7 +21,7 @@ class ViewAllPage extends StatefulWidget {
 
   final MovieType movieType;
 
-  const ViewAllPage({Key key, @required this.movieType}) : super(key: key);
+  const ViewAllPage({Key? key, required this.movieType}) : super(key: key);
 
   @override
   _ViewAllPageState createState() => _ViewAllPageState();
