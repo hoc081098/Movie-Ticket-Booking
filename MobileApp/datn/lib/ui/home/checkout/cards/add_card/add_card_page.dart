@@ -206,6 +206,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                               bloc.submit();
                             },
                             color: Theme.of(context).accentColor,
+                            elevation: 12,
                             child: Text(
                               S.of(context).ADDCARD,
                               style: TextStyle(
@@ -213,7 +214,6 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                                 fontSize: 16.0,
                               ),
                             ),
-                            elevation: 12,
                           ),
                         ),
                       );

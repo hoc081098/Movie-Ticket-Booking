@@ -224,7 +224,7 @@ class MovieRepositoryImpl implements MovieRepository {
     };
 
     return Rx.fromCallable(() => _authClient
-        .getBody(buildUrl('/show-times/theatres/${theatreId}'))
+        .getBody(buildUrl('/show-times/theatres/$theatreId'))
         .then(mapResult));
   }
 

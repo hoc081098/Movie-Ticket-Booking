@@ -37,8 +37,6 @@ class LoginBloc extends DisposeCallbackBaseBloc {
   }) : super(dispose);
 
   factory LoginBloc(final UserRepository userRepository) {
-    assert(userRepository != null);
-
     /// Controllers
     final emailController = PublishSubject<String>();
     final passwordController = PublishSubject<String>();

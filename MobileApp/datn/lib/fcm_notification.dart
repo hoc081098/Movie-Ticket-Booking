@@ -59,7 +59,7 @@ class FcmNotificationManager {
   }
 
   Future<Notification> _getNotificationById(String id) {
-    return _authClient.getBody(buildUrl('/notifications/${id}')).then(
+    return _authClient.getBody(buildUrl('/notifications/$id')).then(
           (json) => notificationResponseToNotification(
               NotificationResponse.fromJson(json)),
         );
@@ -154,8 +154,8 @@ class FcmNotificationManager {
 
     try {
       final map = jsonDecode(payload) as Map<String, dynamic>;
-      final reservationId = map['reservation'] as String;
-      if (reservationId != null) {
+      final reservationId = map['reservation'];
+      if (reservationId != null && reservationId is String) {
         print('>>>>>>>>>>> onSelectNotification: reservationId=$reservationId');
         _reservationIdS.add(reservationId);
       }

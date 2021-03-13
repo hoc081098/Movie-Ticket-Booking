@@ -26,9 +26,6 @@ class GoogleSignInBloc extends DisposeCallbackBaseBloc {
   }) : super(dispose);
 
   factory GoogleSignInBloc(UserRepository userRepository) {
-    ///Assert
-    assert(userRepository != null, 'userRepository cannot be null');
-
     /// Controllers
     //ignore: close_sinks
     final submitLoginController = PublishSubject<void>();

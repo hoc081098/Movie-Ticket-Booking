@@ -36,8 +36,6 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
   }) : super(dispose);
 
   factory RegisterBloc(final UserRepository userRepository) {
-    assert(userRepository != null);
-
     /// Controllers
     final emailController = PublishSubject<String>();
     final passwordController = PublishSubject<String>();

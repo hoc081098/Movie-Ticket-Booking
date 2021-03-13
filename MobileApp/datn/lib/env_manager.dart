@@ -20,7 +20,6 @@ extension on EnvPath {
       case EnvPath.PROD:
         return '.prod.env';
     }
-    throw StateError('Wtf is this?');
   }
 }
 

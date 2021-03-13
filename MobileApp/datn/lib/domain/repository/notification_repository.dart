@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import '../model/notification.dart';
-import 'package:meta/meta.dart';
 
 abstract class NotificationRepository {
   Stream<BuiltList<Notification>> getNotification({

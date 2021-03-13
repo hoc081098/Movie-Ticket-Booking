@@ -460,7 +460,7 @@ class DetailAppBar extends StatelessWidget {
                 child: InkWell(
                   onTap: () async {
                     final trailerVideoUrl = movie.trailerVideoUrl;
-                    print('movie.trailerVideoUrl: ${trailerVideoUrl}');
+                    print('movie.trailerVideoUrl: $trailerVideoUrl');
 
                     if (trailerVideoUrl != null &&
                         await canLaunch(trailerVideoUrl)) {
@@ -534,7 +534,19 @@ class PeopleList extends StatelessWidget {
               children: [
                 Container(
                   width: width,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0xffD8D8D8),
+                        blurRadius: 12,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
                   child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
                     child: FadeInImage.assetNetwork(
                       image: actor.avatar ?? '',
                       placeholder: '',
@@ -551,18 +563,6 @@ class PeopleList extends StatelessWidget {
                         );
                       },
                     ),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xffD8D8D8),
-                        blurRadius: 12,
-                        spreadRadius: 2,
-                      ),
-                    ],
                   ),
                 ),
                 const SizedBox(height: 6),

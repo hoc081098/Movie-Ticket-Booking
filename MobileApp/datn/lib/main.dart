@@ -204,7 +204,7 @@ void main() async {
 Future<void> _envConfig() async {
   final fromRemote = <EnvKey, String>{};
 
-  final remoteConfig = await RemoteConfig.instance;
+  final remoteConfig = RemoteConfig.instance;
 
   // Using zero duration to force fetching from remote server.
   await remoteConfig.setConfigSettings(
@@ -222,7 +222,7 @@ Future<void> _envConfig() async {
       fromRemote[EnvKey.BASE_URL] = baseUrl;
     }
 
-    print('###### baseUrl=${baseUrl}');
+    print('###### baseUrl=$baseUrl');
   } catch (e) {
     print('###### error $e');
   }
