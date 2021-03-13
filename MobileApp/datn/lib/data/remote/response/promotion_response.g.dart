@@ -30,9 +30,6 @@ class _$PromotionResponseSerializer
       'end_time',
       serializers.serialize(object.end_time,
           specifiedType: const FullType(DateTime)),
-      'is_active',
-      serializers.serialize(object.is_active,
-          specifiedType: const FullType(bool)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'start_time',
@@ -51,7 +48,14 @@ class _$PromotionResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-
+    Object? value;
+    value = object.is_active;
+    if (value != null) {
+      result
+        ..add('is_active')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     return result;
   }
 
@@ -128,7 +132,7 @@ class _$PromotionResponse extends PromotionResponse {
   @override
   final DateTime end_time;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final String name;
   @override
@@ -151,7 +155,7 @@ class _$PromotionResponse extends PromotionResponse {
       required this.code,
       required this.discount,
       required this.end_time,
-      required this.is_active,
+      this.is_active,
       required this.name,
       required this.start_time,
       required this.creator,
@@ -165,8 +169,6 @@ class _$PromotionResponse extends PromotionResponse {
         discount, 'PromotionResponse', 'discount');
     BuiltValueNullFieldError.checkNotNull(
         end_time, 'PromotionResponse', 'end_time');
-    BuiltValueNullFieldError.checkNotNull(
-        is_active, 'PromotionResponse', 'is_active');
     BuiltValueNullFieldError.checkNotNull(name, 'PromotionResponse', 'name');
     BuiltValueNullFieldError.checkNotNull(
         start_time, 'PromotionResponse', 'start_time');
@@ -337,8 +339,7 @@ class PromotionResponseBuilder
                 discount, 'PromotionResponse', 'discount'),
             end_time: BuiltValueNullFieldError.checkNotNull(
                 end_time, 'PromotionResponse', 'end_time'),
-            is_active: BuiltValueNullFieldError.checkNotNull(
-                is_active, 'PromotionResponse', 'is_active'),
+            is_active: is_active,
             name: BuiltValueNullFieldError.checkNotNull(
                 name, 'PromotionResponse', 'name'),
             start_time: BuiltValueNullFieldError.checkNotNull(
@@ -347,9 +348,10 @@ class PromotionResponseBuilder
                 creator, 'PromotionResponse', 'creator'),
             show_time: BuiltValueNullFieldError.checkNotNull(
                 show_time, 'PromotionResponse', 'show_time'),
-            createdAt:
-                BuiltValueNullFieldError.checkNotNull(createdAt, 'PromotionResponse', 'createdAt'),
-            updatedAt: BuiltValueNullFieldError.checkNotNull(updatedAt, 'PromotionResponse', 'updatedAt'));
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, 'PromotionResponse', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, 'PromotionResponse', 'updatedAt'));
     replace(_$result);
     return _$result;
   }

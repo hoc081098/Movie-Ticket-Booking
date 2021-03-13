@@ -9,7 +9,7 @@ abstract class Result<T> {}
 
 abstract class Success<T>
     implements Built<Success<T>, SuccessBuilder<T>>, Result<T> {
-  T? get result;
+  T get result;
 
   Success._();
 

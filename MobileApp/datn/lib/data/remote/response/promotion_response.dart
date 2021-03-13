@@ -16,7 +16,7 @@ abstract class PromotionResponse
 
   DateTime get end_time;
 
-  bool get is_active;
+  bool? get is_active;
 
   String get name;
 

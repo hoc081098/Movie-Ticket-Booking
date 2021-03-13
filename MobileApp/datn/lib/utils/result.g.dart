@@ -8,12 +8,13 @@ part of 'result.dart';
 
 class _$Success<T> extends Success<T> {
   @override
-  final T? result;
+  final T result;
 
   factory _$Success([void Function(SuccessBuilder<T>)? updates]) =>
       (new SuccessBuilder<T>()..update(updates)).build();
 
-  _$Success._({this.result}) : super._() {
+  _$Success._({required this.result}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(result, 'Success', 'result');
     if (T == dynamic) {
       throw new BuiltValueMissingGenericsError('Success', 'T');
     }
@@ -75,7 +76,10 @@ class SuccessBuilder<T> implements Builder<Success<T>, SuccessBuilder<T>> {
 
   @override
   _$Success<T> build() {
-    final _$result = _$v ?? new _$Success<T>._(result: result);
+    final _$result = _$v ??
+        new _$Success<T>._(
+            result: BuiltValueNullFieldError.checkNotNull(
+                result, 'Success', 'result'));
     replace(_$result);
     return _$result;
   }
