@@ -125,7 +125,7 @@ class DiscountsPage extends StatelessWidget {
               child: MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(context.getErrorMessage(state.error)),
+                    .error_with_message(context.getErrorMessage(state.error!)),
                 onPressed: bloc.fetch,
               ),
             );

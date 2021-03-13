@@ -191,7 +191,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
               child: MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(getErrorMessage(state.error)),
+                    .error_with_message(getErrorMessage(state.error!)),
                 onPressed: bloc.fetch,
               ),
             );

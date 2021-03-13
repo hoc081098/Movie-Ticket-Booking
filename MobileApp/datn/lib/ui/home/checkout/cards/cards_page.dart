@@ -296,7 +296,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                 child: MyErrorWidget(
                   errorText: S
                       .of(context)
-                      .error_with_message(getErrorMessage(state.error)),
+                      .error_with_message(getErrorMessage(state.error!)),
                   onPressed: bloc.fetch,
                 ),
               );

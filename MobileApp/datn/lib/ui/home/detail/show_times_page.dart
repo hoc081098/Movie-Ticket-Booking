@@ -203,7 +203,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     if (state.error != null) {
       return MyErrorWidget(
         errorText:
-            S.of(context).error_with_message(getErrorMessage(state.error)),
+            S.of(context).error_with_message(getErrorMessage(state.error!)),
         onPressed: bloc.fetch,
       );
     }

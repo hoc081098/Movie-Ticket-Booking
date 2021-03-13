@@ -28,7 +28,7 @@ class ViewAllPage extends StatefulWidget {
 }
 
 class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
-  RxReduxStore<ViewAllAction, ViewAllState> store;
+  RxReduxStore<ViewAllAction, ViewAllState>? store;
   final scrollController = ScrollController();
 
   @override
@@ -61,7 +61,8 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   @override
   void dispose() {
     super.dispose();
-    store.dispose();
+    store!.dispose();
+    store = null;
     scrollController.dispose();
   }
 
@@ -86,6 +87,8 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    final store = this.store!;
+
     return Scaffold(
       appBar: AppBar(
         title: Hero(
@@ -102,7 +105,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
         stream: store.stateStream,
         initialData: store.state,
         builder: (context, snapshot) {
-          final state = snapshot.data;
+          final state = snapshot.data!;
 
           if (state.isLoading && state.isFirstPage) {
             return Center(
@@ -122,7 +125,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
               child: MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(getErrorMessage(state.error)),
+                    .error_with_message(getErrorMessage(state.error!)),
                 onPressed: () => store.dispatch(const RetryAction()),
               ),
             );
@@ -160,7 +163,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
                     child: MyErrorWidget(
                       errorText: S
                           .of(context)
-                          .error_with_message(getErrorMessage(state.error)),
+                          .error_with_message(getErrorMessage(state.error!)),
                       onPressed: () => store.dispatch(const RetryAction()),
                     ),
                   );
@@ -198,7 +201,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   ) {
     switch (movieType) {
       case MovieType.nowPlaying:
-        final location = cityRepo.selectedCity$.value.location;
+        final location = cityRepo.selectedCity$.requireValue.location;
         return ({required int page, required int perPage}) {
           return movieRepo.getNowPlayingMovies(
             page: page,
@@ -215,7 +218,6 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
       case MovieType.mostRate:
         return movieRepo.getMostRate;
     }
-    throw StateError('Missing $movieType');
   }
 }
 
@@ -232,7 +234,6 @@ String _getTitle(MovieType movieType, BuildContext context) {
     case MovieType.mostRate:
       return S.of(context).most_rate.capitalize();
   }
-  throw StateError('Missing $movieType');
 }
 
 extension StringExt on String {

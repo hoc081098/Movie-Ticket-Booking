@@ -22,7 +22,7 @@ class ComboBloc extends BaseBloc {
   final _decrementS = StreamController<ComboItem>(sync: true);
   final _bag = DisposeBag();
 
-  DistinctValueConnectableStream<ComboState> _state$;
+  late DistinctValueConnectableStream<ComboState> _state$;
 
   ValueStream<ComboState> get state$ => _state$;
 
@@ -86,7 +86,7 @@ class ComboBloc extends BaseBloc {
       return state;
     }
 
-    final newTotalCount = state.items.fold(
+    final newTotalCount = state.items.fold<int>(
       0,
       (acc, i) => i.product.id == tuple.item1.product.id
           ? acc + i.count + tuple.item2
@@ -115,7 +115,7 @@ class ComboBloc extends BaseBloc {
       final newItems = state.items.map(itemMapper).toList(growable: false);
 
       b.items.safeReplace(newItems);
-      b.totalPrice = newItems.fold(
+      b.totalPrice = newItems.fold<int>(
         0,
         (acc, e) => acc + e.count * e.product.price,
       );

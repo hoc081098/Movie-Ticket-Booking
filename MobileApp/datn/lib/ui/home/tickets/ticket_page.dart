@@ -289,7 +289,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
               child: MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(getErrorMessage(state.error)),
+                    .error_with_message(getErrorMessage(state.error!)),
                 onPressed: bloc.fetch,
               ),
             );

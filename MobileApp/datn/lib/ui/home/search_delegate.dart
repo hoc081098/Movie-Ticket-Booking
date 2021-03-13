@@ -17,10 +17,10 @@ class MovieSearchDelegate extends SearchDelegate<String> {
 
   final bag = DisposeBag();
   final queryS = PublishSubject<String>();
-  DistinctValueStream<BuiltList<String>> suggestions$;
+  late DistinctValueStream<BuiltList<String>?> suggestions$;
 
   MovieSearchDelegate(this.movieRepo) {
-    suggestions$ = Rx.fromCallable(movieRepo.getQueries).exhaustMap((queries) {
+    suggestions$ = Rx.fromCallable(movieRepo.getQueries).exhaustMap<BuiltList<String>?>((queries) {
       final filter = (String queryLowered) => queries
           .where((value) => value.toLowerCase().contains(queryLowered))
           .toBuiltList();
@@ -95,7 +95,7 @@ class MovieSearchDelegate extends SearchDelegate<String> {
     final nav = AppScaffold.navigatorOfCurrentIndex(context);
     queryS.add(query);
 
-    return RxStreamBuilder<BuiltList<String>>(
+    return RxStreamBuilder<BuiltList<String>?>(
       stream: suggestions$,
       builder: (context, data) {
         if (data == null) {

@@ -136,7 +136,7 @@ class _CommentsPageState extends State<CommentsPage>
             child: MyErrorWidget(
               errorText: S
                   .of(context)
-                  .error_with_message(getErrorMessage(state.error)),
+                  .error_with_message(getErrorMessage(state.error!)),
               onPressed: () => store.dispatch(const RetryAction()),
             ),
           );
@@ -216,7 +216,7 @@ class CommentItemsListWidget extends StatelessWidget {
             child: MyErrorWidget(
               errorText: S
                   .of(context)
-                  .error_with_message(context.getErrorMessage(state.error)),
+                  .error_with_message(context.getErrorMessage(state.error!)),
               onPressed: () => dispatch(const RetryAction()),
             ),
           );

@@ -32,7 +32,7 @@ abstract class ComboState implements Built<ComboState, ComboStateBuilder> {
   factory ComboState([void Function(ComboStateBuilder) updates]) = _$ComboState;
 
   factory ComboState.from({
-    required Object error,
+    required Object? error,
     required bool isLoading,
     required BuiltList<ComboItem> items,
     required int totalPrice,
