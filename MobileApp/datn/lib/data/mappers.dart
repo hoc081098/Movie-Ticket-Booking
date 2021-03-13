@@ -396,7 +396,7 @@ Card cardResponseToCard(CardResponse response) {
 Reservation reservationResponseToReservation(ReservationResponse response) {
   return Reservation((b) {
     final productIds = response.products
-        .map((p) => ProductAndQuantity.from(id: p.id, quantity: p.quantity));
+        .map((p) => ProductAndQuantity.from(id: p.id, quantity: p.quantity, product: null));
     final productIdWithCountsBuilder = b.productIdWithCounts
       ..safeReplace(productIds);
     final user = userResponseToUser(response.user);
@@ -481,7 +481,7 @@ Reservation notificationResponse_ReservationResponseToReservation(
     NotificationResponse_ReservationResponse response) {
   return Reservation((b) {
     final productIds = response.products
-        .map((p) => ProductAndQuantity.from(id: p.id, quantity: p.quantity));
+        .map((p) => ProductAndQuantity.from(id: p.id, quantity: p.quantity, product: null));
     final productIdWithCountsBuilder = b.productIdWithCounts
       ..safeReplace(productIds);
     final showTimeBuilder = b.showTime
