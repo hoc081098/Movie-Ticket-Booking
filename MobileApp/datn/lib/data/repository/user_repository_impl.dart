@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart'; // TODO: Replace flutter_facebook_login by flutter_facebook_auth
 import 'package:google_sign_in/google_sign_in.dart';
@@ -262,7 +263,7 @@ class UserRepositoryImpl implements UserRepository {
         location.latitude,
       ];
     }
-    updateBody['gender'] = gender.toString().split('.')[1];
+    updateBody['gender'] = describeEnum(gender);
 
     final userResponse = UserResponse.fromJson(
       await _authClient.putBody(

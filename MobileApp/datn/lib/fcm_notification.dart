@@ -45,7 +45,7 @@ class FcmNotificationManager {
   final _cacheManager = DefaultCacheManager();
   final _reservationIdS = PublishSubject<String>();
 
-  late Stream<Notification> _notification$;
+  late final Stream<Notification> _notification$;
 
   FcmNotificationManager(
       this._authClient, this._firebaseMessaging, this._prefs) {
@@ -155,7 +155,7 @@ class FcmNotificationManager {
     try {
       final map = jsonDecode(payload) as Map<String, dynamic>;
       final reservationId = map['reservation'];
-      if (reservationId != null && reservationId is String) {
+      if (reservationId is String) {
         print('>>>>>>>>>>> onSelectNotification: reservationId=$reservationId');
         _reservationIdS.add(reservationId);
       }

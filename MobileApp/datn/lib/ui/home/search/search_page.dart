@@ -329,7 +329,7 @@ class __FilterBottomSheetState extends State<_FilterBottomSheet> {
     for (final t in AgeType.values)
       DropdownMenuItem(
         value: t,
-        child: Text(t.toString().split('.')[1]),
+        child: Text(describeEnum(t)),
       ),
   ];
 

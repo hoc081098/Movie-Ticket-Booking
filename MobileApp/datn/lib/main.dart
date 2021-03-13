@@ -1,9 +1,12 @@
+// @dart=2.9
+
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Notification, Card;
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -101,7 +104,7 @@ void main() async {
   final normalClient = NormalClient(client, httpTimeout);
   print(normalClient);
 
-  late Function0<Future<void>> _onSignOut;
+  Function0<Future<void>> _onSignOut;
   final authClient = AuthClient(
     client,
     httpTimeout,
@@ -217,7 +220,7 @@ Future<void> _envConfig() async {
     await remoteConfig.fetchAndActivate();
 
     final baseUrl =
-        remoteConfig.getString(EnvKey.BASE_URL.toString().split('.')[1]);
+        remoteConfig.getString(describeEnum(EnvKey.BASE_URL));
     if (baseUrl != null && baseUrl.isNotEmpty) {
       fromRemote[EnvKey.BASE_URL] = baseUrl;
     }
@@ -227,5 +230,6 @@ Future<void> _envConfig() async {
     print('###### error $e');
   }
 
-  await EnvManager.shared.config(EnvPath.PROD, fromRemote);
+  EnvManager.mode = EnvMode.PROD;
+  await EnvManager.shared.init(fromRemote);
 }

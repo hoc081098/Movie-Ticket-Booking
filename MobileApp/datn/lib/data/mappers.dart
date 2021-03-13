@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart' hide Category;
 import 'package:tuple/tuple.dart';
 
 import '../domain/model/card.dart';
@@ -126,7 +127,7 @@ Movie movieResponseToMovie(MovieResponse res) {
 
 AgeType stringToAgeType(String s) {
   return AgeType.values.firstWhere(
-    (v) => v.toString().split('.')[1] == s,
+    (v) => describeEnum(v) == s,
     orElse: () => throw Exception("Cannot convert string '$s' to AgeType"),
   );
 }

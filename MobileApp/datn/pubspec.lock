@@ -30,7 +30,7 @@ packages:
     source: hosted
     version: "2.0.0"
   async:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: async
       url: "https://pub.dartlang.org"
@@ -383,7 +383,7 @@ packages:
       name: flutter_dotenv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "4.0.0-nullsafety.0"
   flutter_facebook_login:
     dependency: "direct main"
     description:
@@ -450,10 +450,12 @@ packages:
   flutter_speed_dial:
     dependency: "direct main"
     description:
-      name: flutter_speed_dial
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
+      path: "."
+      ref: master
+      resolved-ref: "888381305f9431b859169f4fcd09168748c09408"
+      url: "https://github.com/darioielardi/flutter_speed_dial.git"
+    source: git
+    version: "3.0.5"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -602,10 +604,12 @@ packages:
   loading_indicator:
     dependency: "direct main"
     description:
-      name: loading_indicator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
+      path: "."
+      ref: master
+      resolved-ref: "14545b8bde925295f4319e8816a972242a8d396c"
+      url: "https://github.com/Mayb3Nots/loading_indicator.git"
+    source: git
+    version: "2.0.0"
   logging:
     dependency: transitive
     description:

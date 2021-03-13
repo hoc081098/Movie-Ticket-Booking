@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/foundation.dart' hide Category;
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/category.dart';
@@ -281,7 +282,7 @@ class MovieRepositoryImpl implements MovieRepository {
               'max_released_date': maxReleasedDate.toUtc().toIso8601String(),
               'min_duration': minDuration.toString(),
               'max_duration': maxDuration.toString(),
-              'age_type': ageType.toString().split('.')[1],
+              'age_type': describeEnum(ageType),
               if (selectedCategoryIds.isNotEmpty)
                 'category_ids': selectedCategoryIds.join(','),
               if (location != null) ...{

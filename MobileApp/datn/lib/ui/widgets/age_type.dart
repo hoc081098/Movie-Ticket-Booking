@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/model/movie.dart';
@@ -28,7 +29,7 @@ class AgeTypeWidget extends StatelessWidget {
       child: Text(
         _cached.putIfAbsent(
           ageType,
-          () => ageType.toString().split('.')[1],
+          () => describeEnum(ageType),
         ),
         style: Theme.of(context).textTheme.button!.copyWith(
               color: Colors.white,

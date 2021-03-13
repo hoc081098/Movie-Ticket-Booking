@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -213,7 +214,7 @@ class LoggedIn extends StatelessWidget {
               style: detailHeaderStyle,
             ),
             subtitle: Text(
-              user.gender.toString().split('.')[1],
+              describeEnum(user.gender),
               style: detailInfoStyle,
             ),
             dense: true,

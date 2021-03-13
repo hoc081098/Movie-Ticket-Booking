@@ -1,4 +1,6 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:async/async.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 
 enum EnvKey {
   BASE_URL,
@@ -7,46 +9,75 @@ enum EnvKey {
   WS_PATH,
 }
 
-enum EnvPath {
+enum EnvMode {
   DEV,
   PROD,
 }
 
-extension on EnvPath {
+extension on EnvMode {
   String get fileName {
     switch (this) {
-      case EnvPath.DEV:
+      case EnvMode.DEV:
         return '.env';
-      case EnvPath.PROD:
+      case EnvMode.PROD:
         return '.prod.env';
     }
   }
 }
 
-EnvKey _fromString(s) =>
-    EnvKey.values.firstWhere((v) => v.toString().split('.')[1] == s);
+EnvKey _fromString(s) => EnvKey.values.firstWhere((v) => describeEnum(v) == s);
 
 class EnvManager {
-  final _dotEnv = DotEnv();
-  final _map = <EnvKey, String>{};
+  static final _shared = EnvManager._private();
 
-  Future<void> config(EnvPath path, Map<EnvKey, String> remote) async {
-    await _dotEnv.load(path.fileName);
+  final _init = AsyncMemoizer();
+  Map<EnvKey, String>? _env;
+
+  // Ensures end-users cannot initialize the class.
+  EnvManager._private();
+
+  static EnvManager get shared => _shared;
+
+  static EnvMode mode = kReleaseMode ? EnvMode.PROD : EnvMode.DEV;
+
+  Future<void> init(Map<EnvKey, String> remote) => _init.runOnce(() => dot_env
+      .load(fileName: mode.fileName)
+      .then((void _) => _mergeAndDebugCheckEnv(remote)));
+
+  void _mergeAndDebugCheckEnv(Map<EnvKey, String> remote) {
     final local =
-        _dotEnv.env.map((key, value) => MapEntry(_fromString(key), value));
-    _map.addAll({...local, ...remote});
+        dot_env.env.map((key, value) => MapEntry(_fromString(key), value));
+    _env = {...local, ...remote};
 
-    print('[ENV_LOCAL] $local');
-    print('[FROM_REMOTE] $remote');
-    print('[ENV] $_map');
+    if (mode == EnvMode.PROD) {
+      return;
+    }
+
+    final missingKeysInFile = [
+      for (final key in EnvKey.values)
+        if (_env![key] == null) key
+    ];
+    if (missingKeysInFile.isNotEmpty) {
+      throw Exception('Missing file keys: $missingKeysInFile');
+    }
+
+    final missingKeyInEnum =
+        _env!.keys.toSet().difference(EnvKey.values.toSet());
+    if (missingKeyInEnum.isNotEmpty) {
+      throw Exception('Missing enum keys: $missingKeyInEnum');
+    }
+
+    debugPrint('[ENV] Env: $_env');
+    debugPrint('[ENV] Init successfully $mode');
   }
 
-  String get(EnvKey? key) => _map[key]!;
+  String get(EnvKey key) {
+    assert(_init.hasRun, 'Missing call init()');
+    assert(_env != null, '_init() failed');
 
-  //
-  //
+    final value = _env![key];
+    assert(value != null, 'Missing key $key');
 
-  static EnvManager shared = EnvManager._();
-
-  EnvManager._();
+    return value!;
+  }
 }
