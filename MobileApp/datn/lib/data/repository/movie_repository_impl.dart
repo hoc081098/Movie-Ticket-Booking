@@ -1,5 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/category.dart';
@@ -19,6 +18,9 @@ import '../remote/response/movie_detail_response.dart';
 import '../remote/response/movie_response.dart';
 import '../remote/response/show_time_and_theatre_response.dart';
 import '../serializers.dart';
+
+// TODO: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison
 
 class MovieRepositoryImpl implements MovieRepository {
   final AuthClient _authClient;
@@ -49,9 +51,9 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Stream<BuiltList<Movie>> getNowPlayingMovies({
-    Location location,
-    @required int page,
-    @required int perPage,
+    required Location? location,
+    required int page,
+    required int perPage,
   }) async* {
     ArgumentError.checkNotNull(page, 'page');
     ArgumentError.checkNotNull(perPage, 'perPage');
@@ -80,8 +82,8 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Stream<BuiltList<Movie>> getComingSoonMovies({
-    @required int page,
-    @required int perPage,
+    required int page,
+    required int perPage,
   }) async* {
     ArgumentError.checkNotNull(page, 'page');
     ArgumentError.checkNotNull(perPage, 'perPage');
@@ -106,8 +108,8 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Stream<BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>> getShowTimes({
-    String movieId,
-    Location location,
+    required String movieId,
+    required Location? location,
   }) async* {
     ArgumentError.checkNotNull(movieId, 'movieId');
 
@@ -140,7 +142,7 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Stream<BuiltList<Movie>> getRecommendedMovies(Location location) =>
+  Stream<BuiltList<Movie>> getRecommendedMovies(Location? location) =>
       Rx.fromCallable(() => _authClient
           .getBody(
             buildUrl(
@@ -156,7 +158,10 @@ class MovieRepositoryImpl implements MovieRepository {
           .then(mapResult));
 
   @override
-  Stream<BuiltList<Movie>> getMostFavorite({int page, int perPage}) {
+  Stream<BuiltList<Movie>> getMostFavorite({
+    required int page,
+    required int perPage,
+  }) {
     if (page == null) return Stream.error(ArgumentError.notNull('page'));
     if (perPage == null) return Stream.error(ArgumentError.notNull('perPage'));
 
@@ -174,7 +179,10 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Stream<BuiltList<Movie>> getMostRate({int page, int perPage}) {
+  Stream<BuiltList<Movie>> getMostRate({
+    required int page,
+    required int perPage,
+  }) {
     if (page == null) return Stream.error(ArgumentError.notNull('page'));
     if (perPage == null) return Stream.error(ArgumentError.notNull('perPage'));
 
@@ -207,7 +215,7 @@ class MovieRepositoryImpl implements MovieRepository {
       return Stream.error(ArgumentError.notNull('theatreId'));
     }
 
-    final mapResult = (Object json) {
+    final mapResult = (Object? json) {
       final response = serializers.deserialize(
         json,
         specifiedType: builtListMovieAndShowTimeResponse,
@@ -222,16 +230,16 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Stream<BuiltList<Movie>> search({
-    @required String query,
-    @required DateTime showtimeStartTime,
-    @required DateTime showtimeEndTime,
-    @required DateTime minReleasedDate,
-    @required DateTime maxReleasedDate,
-    @required int minDuration,
-    @required int maxDuration,
-    @required AgeType ageType,
-    Location location,
-    @required BuiltSet<String> selectedCategoryIds,
+    required String query,
+    required DateTime showtimeStartTime,
+    required DateTime showtimeEndTime,
+    required DateTime minReleasedDate,
+    required DateTime maxReleasedDate,
+    required int minDuration,
+    required int maxDuration,
+    required AgeType ageType,
+    required Location? location,
+    required BuiltSet<String> selectedCategoryIds,
   }) {
     if (query == null) {
       return Stream.error(ArgumentError.notNull('query'));
@@ -296,13 +304,12 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Stream<BuiltList<Category>> getCategories() {
     final mapResult = (dynamic json) {
-      return [
-        for (final r in serializers.deserialize(
-          json,
-          specifiedType: builtListCategoryResponse,
-        ))
-          _categoryResponseToCategory(r),
-      ].build();
+      final response = serializers.deserialize(
+        json,
+        specifiedType: builtListCategoryResponse,
+      )! as BuiltList<CategoryResponse>;
+
+      return [for (final r in response) _categoryResponseToCategory(r)].build();
     };
     return Rx.fromCallable(
         () => _authClient.getBody(buildUrl('/categories')).then(mapResult));

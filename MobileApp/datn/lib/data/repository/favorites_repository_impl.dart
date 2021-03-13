@@ -46,7 +46,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
     });
 
     return Rx.fromCallable(
-            () => _authClient.getBody(buildUrl('/favorites/${movieId}')))
+            () => _authClient.getBody(buildUrl('/favorites/$movieId')))
         .map((json) => FavoriteResponse.fromJson(json))
         .map((res) => res.is_favorite)
         .concatWith([change$]);
@@ -75,7 +75,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
           (initial) => _changes.scan<BuiltList<Movie>>(
             (acc, change, _) {
               if (change is _Toggled) {
-                return acc.rebuild((b) {
+                return acc!.rebuild((b) {
                   change.favorite
                       ? b.insert(0, change.movie)
                       : b.removeWhere((item) => item.id == change.movie.id);

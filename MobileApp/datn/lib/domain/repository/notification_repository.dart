@@ -4,8 +4,8 @@ import 'package:meta/meta.dart';
 
 abstract class NotificationRepository {
   Stream<BuiltList<Notification>> getNotification({
-    @required int page,
-    @required int perPage,
+    required int page,
+    required int perPage,
   });
 
   Future<void> deleteNotificationById(String id);

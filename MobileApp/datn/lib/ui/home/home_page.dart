@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
       recommendedBloc = () {
         final loaderFunction = () {
-          final location = cityRepo.selectedCity$.value.location;
+          final location = cityRepo.selectedCity$.value?.location;
           print('[DEBUG] fetch 2 location=$location');
           return repo.getRecommendedMovies(location);
         };
