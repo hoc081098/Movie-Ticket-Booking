@@ -19,7 +19,7 @@ class DiscountsPage extends StatelessWidget {
   static const routeName = 'home/detail/tickets/combo/checkout/discounts';
   final String showTimeId;
 
-  DiscountsPage({Key key, @required this.showTimeId}) : super(key: key);
+  DiscountsPage({Key? key, required this.showTimeId}) : super(key: key);
 
   final gradients = <LinearGradient>[
     const LinearGradient(

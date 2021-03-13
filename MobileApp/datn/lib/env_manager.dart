@@ -42,7 +42,7 @@ class EnvManager {
     print('[ENV] $_map');
   }
 
-  String get(EnvKey key) => _map[key]!;
+  String get(EnvKey? key) => _map[key]!;
 
   //
   //

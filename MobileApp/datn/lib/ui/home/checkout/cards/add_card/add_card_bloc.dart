@@ -59,18 +59,18 @@ class AddCardBloc extends DisposeCallbackBaseBloc {
   final Stream<Message> message$;
 
   AddCardBloc._({
-    @required this.cardHolderNameChanged,
-    @required this.numberChanged,
-    @required this.expChanged,
-    @required this.cvcChanged,
-    @required this.submit,
-    @required this.cardHolderNameError$,
-    @required this.numberError$,
-    @required this.expError$,
-    @required this.cvcError$,
-    @required this.isLoading$,
-    @required this.message$,
-    @required void Function() dispose,
+    required this.cardHolderNameChanged,
+    required this.numberChanged,
+    required this.expChanged,
+    required this.cvcChanged,
+    required this.submit,
+    required this.cardHolderNameError$,
+    required this.numberError$,
+    required this.expError$,
+    required this.cvcError$,
+    required this.isLoading$,
+    required this.message$,
+    required void Function() dispose,
   }) : super(dispose);
 
   factory AddCardBloc(CardRepository cardRepository) {

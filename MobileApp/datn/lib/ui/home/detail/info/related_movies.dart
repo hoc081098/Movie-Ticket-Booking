@@ -18,7 +18,7 @@ import '../movie_detail_page.dart';
 class RelatedMovies extends StatelessWidget {
   final LoaderBloc<BuiltList<Movie>> bloc;
 
-  RelatedMovies({Key key, @required this.bloc}) : super(key: key);
+  RelatedMovies({Key? key, required this.bloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class RelatedMovies extends StatelessWidget {
         final titleTextStyle =
             Theme.of(context).textTheme.headline6!.copyWith(fontSize: 13);
 
-        final reviewstextStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+        final reviewstextStyle = Theme.of(context).textTheme.subtitle2!.copyWith(
               fontSize: 10,
               color: Color(0xff5B64CF),
             );

@@ -15,7 +15,7 @@ class AddCardPage extends StatefulWidget {
 
   final CardPageMode mode;
 
-  const AddCardPage({Key key, @required this.mode}) : super(key: key);
+  const AddCardPage({Key? key, required this.mode}) : super(key: key);
 
   @override
   _AddCardPageState createState() => _AddCardPageState();

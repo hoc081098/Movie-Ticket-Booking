@@ -12,7 +12,7 @@ import '../discount/discounts_page.dart';
 class SelectDiscount extends StatelessWidget {
   final ShowTime showTime;
 
-  const SelectDiscount({Key key, @required this.showTime}) : super(key: key);
+  const SelectDiscount({Key? key, required this.showTime}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

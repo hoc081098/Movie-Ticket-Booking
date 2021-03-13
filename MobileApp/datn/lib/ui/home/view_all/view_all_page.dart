@@ -199,7 +199,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
     switch (movieType) {
       case MovieType.nowPlaying:
         final location = cityRepo.selectedCity$.value.location;
-        return ({@required int page, @required int perPage}) {
+        return ({required int page, required int perPage}) {
           return movieRepo.getNowPlayingMovies(
             page: page,
             perPage: perPage,

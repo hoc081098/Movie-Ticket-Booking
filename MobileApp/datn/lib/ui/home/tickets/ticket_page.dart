@@ -131,11 +131,11 @@ class TicketsPage extends StatefulWidget {
   final bool fromMovieDetail;
 
   const TicketsPage({
-    Key key,
-    @required this.showTime,
-    @required this.movie,
-    @required this.theatre,
-    @required this.fromMovieDetail,
+    Key? key,
+    required this.showTime,
+    required this.movie,
+    required this.theatre,
+    required this.fromMovieDetail,
   }) : super(key: key);
 
   @override
@@ -530,7 +530,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
 }
 
 class ScreenWidget extends StatelessWidget {
-  const ScreenWidget({Key key}) : super(key: key);
+  const ScreenWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -606,10 +606,10 @@ class SeatsGridWidget extends StatefulWidget {
   final ValueStream<BuiltList<String>> selectedTicketIds$;
 
   const SeatsGridWidget({
-    Key key,
-    @required this.tickets,
-    @required this.tapTicket,
-    @required this.selectedTicketIds$,
+    Key? key,
+    required this.tickets,
+    required this.tapTicket,
+    required this.selectedTicketIds$,
   }) : super(key: key);
 
   @override
@@ -775,7 +775,7 @@ class SeatWidget extends StatelessWidget {
   final double widthPerSeat;
 
   const SeatWidget({
-    Key key,
+    Key? key,
     this.ticket,
     this.tapTicket,
     this.isSelected,
@@ -843,13 +843,13 @@ class SeatWidget extends StatelessWidget {
 }
 
 class LegendsWidget extends StatelessWidget {
-  const LegendsWidget({Key key}) : super(key: key);
+  const LegendsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final widthPerSeat = MediaQuery.of(context).size.width / 12;
     final accentColor = Theme.of(context).accentColor;
-    final textStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final textStyle = Theme.of(context).textTheme.subtitle2!.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w500,
         );
@@ -964,12 +964,12 @@ class BottomWidget extends StatelessWidget {
   final BuiltMap<String, Ticket> tickets;
 
   BottomWidget({
-    Key key,
-    @required this.showTime,
-    @required this.theatre,
-    @required this.movie,
-    @required this.ids$,
-    @required this.tickets,
+    Key? key,
+    required this.showTime,
+    required this.theatre,
+    required this.movie,
+    required this.ids$,
+    required this.tickets,
   }) : super(key: key);
 
   @override
@@ -1120,7 +1120,7 @@ class SelectedSeatsGridWidget extends StatelessWidget {
   final ValueStream<BuiltList<String>> ids$;
   final BuiltMap<String, Ticket> tickets;
 
-  const SelectedSeatsGridWidget({Key key, this.ids$, this.tickets})
+  const SelectedSeatsGridWidget({Key? key, this.ids$, this.tickets})
       : super(key: key);
 
   @override

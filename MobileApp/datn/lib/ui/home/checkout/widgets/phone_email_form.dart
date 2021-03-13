@@ -8,7 +8,7 @@ import '../checkout_page.dart';
 class PhoneEmailForm extends StatelessWidget {
   final User user;
 
-  const PhoneEmailForm({Key key, @required this.user}) : super(key: key);
+  const PhoneEmailForm({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

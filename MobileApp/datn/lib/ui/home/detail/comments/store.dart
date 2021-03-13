@@ -7,8 +7,8 @@ import 'action.dart';
 import 'state.dart';
 
 typedef GetComments = Stream<Comments> Function({
-  @required int page,
-  @required int perPage,
+  required int page,
+  required int perPage,
 });
 
 typedef RemoveCommentById = Stream<void> Function(String);

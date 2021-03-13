@@ -14,7 +14,7 @@ abstract class ComboItem implements Built<ComboItem, ComboItemBuilder> {
 
   factory ComboItem([void Function(ComboItemBuilder) updates]) = _$ComboItem;
 
-  factory ComboItem.from({@required Product product, @required int count}) =
+  factory ComboItem.from({required Product product, required int count}) =
       _$ComboItem._;
 }
 
@@ -32,9 +32,9 @@ abstract class ComboState implements Built<ComboState, ComboStateBuilder> {
   factory ComboState([void Function(ComboStateBuilder) updates]) = _$ComboState;
 
   factory ComboState.from({
-    @required Object error,
-    @required bool isLoading,
-    @required BuiltList<ComboItem> items,
-    @required int totalPrice,
+    required Object error,
+    required bool isLoading,
+    required BuiltList<ComboItem> items,
+    required int totalPrice,
   }) = _$ComboState._;
 }

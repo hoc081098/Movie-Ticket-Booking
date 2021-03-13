@@ -14,7 +14,7 @@ final supportedLocaleTitles = <Locale, String>{
 };
 
 class ChangeLanguageButton extends StatefulWidget {
-  final Color iconColor;
+  final Color? iconColor;
 
   const ChangeLanguageButton({Key? key, required this.iconColor})
       : super(key: key);

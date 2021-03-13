@@ -9,7 +9,7 @@ import '../cards/cards_page.dart';
 import '../checkout_page.dart';
 
 class SelectedCard extends StatelessWidget {
-  const SelectedCard({Key key}) : super(key: key);
+  const SelectedCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

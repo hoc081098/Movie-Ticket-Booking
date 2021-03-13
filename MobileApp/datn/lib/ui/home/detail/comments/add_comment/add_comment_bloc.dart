@@ -35,12 +35,12 @@ class AddCommentBloc extends DisposeCallbackBaseBloc {
   final ValueStream<Tuple2<bool, String>> isLoadingContentError$;
 
   AddCommentBloc._({
-    @required void Function() dispose,
-    @required this.rateChanged,
-    @required this.contentChanged,
-    @required this.isLoadingContentError$,
-    @required this.submit,
-    @required this.message$,
+    required void Function() dispose,
+    required this.rateChanged,
+    required this.contentChanged,
+    required this.isLoadingContentError$,
+    required this.submit,
+    required this.message$,
   }) : super(dispose);
 
   factory AddCommentBloc(

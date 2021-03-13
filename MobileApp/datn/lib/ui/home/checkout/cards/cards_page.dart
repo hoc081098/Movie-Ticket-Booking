@@ -55,15 +55,15 @@ class CardsBloc extends DisposeCallbackBaseBloc {
   final void Function(domain.Card) selectedCard;
 
   CardsBloc._({
-    @required this.state$,
-    @required this.loaderMessage$,
-    @required this.fetch,
-    @required this.refresh,
-    @required Future<void> Function() dispose,
-    @required this.cardAdded,
-    @required this.removeCard,
-    @required this.selectedCard,
-    @required this.cardMessage$,
+    required this.state$,
+    required this.loaderMessage$,
+    required this.fetch,
+    required this.refresh,
+    required Future<void> Function() dispose,
+    required this.cardAdded,
+    required this.removeCard,
+    required this.selectedCard,
+    required this.cardMessage$,
   }) : super(dispose);
 
   factory CardsBloc(
@@ -150,7 +150,7 @@ class CardsPage extends StatefulWidget {
 
   final CardPageMode mode;
 
-  const CardsPage({Key key, @required this.mode}) : super(key: key);
+  const CardsPage({Key? key, required this.mode}) : super(key: key);
 
   @override
   _CardsPageState createState() => _CardsPageState();

@@ -38,13 +38,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with DisposeBagMixin {
-  LoaderBloc<BuiltList<Movie>> nowPlayingBloc;
-  LoaderBloc<BuiltList<Movie>> comingSoonBloc;
-  LoaderBloc<BuiltList<Movie>> recommendedBloc;
-  LoaderBloc<BuiltList<Movie>> mostFavoriteBloc;
-  LoaderBloc<BuiltList<Movie>> mostRateBloc;
-  LoaderBloc<BuiltList<Theatre>> theatresBloc;
-  Object token;
+  late LoaderBloc<BuiltList<Movie>> nowPlayingBloc;
+  late LoaderBloc<BuiltList<Movie>> comingSoonBloc;
+  late LoaderBloc<BuiltList<Movie>> recommendedBloc;
+  late LoaderBloc<BuiltList<Movie>> mostFavoriteBloc;
+  late LoaderBloc<BuiltList<Movie>> mostRateBloc;
+  late LoaderBloc<BuiltList<Theatre>> theatresBloc;
+  Object? token;
 
   @override
   void initState() {
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
       nowPlayingBloc = () {
         final loaderFunction = () {
-          final location = cityRepo.selectedCity$.value.location;
+          final location = cityRepo.selectedCity$.requireValue.location;
           print('[DEBUG] fetch 1 location=$location');
           return repo.getNowPlayingMovies(
             location: location,
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
       theatresBloc = () {
         final loaderFunction = () => theatreRepo
-            .getNearbyTheatres(cityRepo.selectedCity$.value.location);
+            .getNearbyTheatres(cityRepo.selectedCity$.requireValue.location);
 
         return LoaderBloc<BuiltList<Theatre>>(
           loaderFunction: loaderFunction,
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
       appBar: AppBar(
         title: Text('Enjoy movies'),
         actions: [
-          const ChangeLanguageButton(),
+          const ChangeLanguageButton(iconColor: null),
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
                 delegate: searchDelegate,
               );
 
-              print('>>>>>>>>>>>>>>> [${result}]');
+              print('>>>>>>>>>>>>>>> [$result]');
               if (result == null) {
                 await bag.dispose();
               }
@@ -283,7 +283,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
 class HomeLocationHeader extends StatelessWidget {
   const HomeLocationHeader({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -340,7 +340,7 @@ class HomeLocationHeader extends StatelessWidget {
                           stream: cityRepo.selectedCity$,
                           builder: (context, data) {
                             return Text(
-                              data.localizedName(context),
+                              data!.localizedName(context),
                               maxLines: 1,
                               style: textTheme.headline6!.copyWith(fontSize: 13),
                             );
@@ -383,8 +383,8 @@ class HomeLocationHeader extends StatelessWidget {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(S.of(context).cancel),
             ),
           ],
         );
@@ -407,7 +407,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
   final LoaderBloc<BuiltList<Movie>> bloc;
   final MovieType type;
 
-  HomeHorizontalMoviesList({Key key, @required this.bloc, @required this.type})
+  HomeHorizontalMoviesList({Key? key, required this.bloc, required this.type})
       : super(key: key);
 
   @override
@@ -430,12 +430,12 @@ class HomeHorizontalMoviesList extends StatelessWidget {
     final titleTextStyle =
         Theme.of(context).textTheme.headline6!.copyWith(fontSize: 14);
 
-    final reviewstextStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+    final reviewstextStyle = Theme.of(context).textTheme.subtitle2!.copyWith(
           fontSize: 11,
           color: Color(0xff5B64CF),
         );
 
-    final minStyle = Theme.of(context).textTheme.overline.copyWith(
+    final minStyle = Theme.of(context).textTheme.overline!.copyWith(
           fontSize: 12,
         );
 
@@ -446,11 +446,11 @@ class HomeHorizontalMoviesList extends StatelessWidget {
         child: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
           stream: bloc.state$,
           builder: (context, state) {
-            if (state.error != null) {
+            if (state!.error != null) {
               return MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(context.getErrorMessage(state.error)),
+                    .error_with_message(context.getErrorMessage(state.error!)),
                 onPressed: bloc.fetch,
               );
             }
@@ -467,7 +467,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
               );
             }
 
-            final movies = state.content;
+            final movies = state.content!;
 
             if (movies.isEmpty) {
               return Center(
@@ -552,7 +552,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
                                 S.of(context).load_image_error,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2
+                                    .subtitle2!
                                     .copyWith(fontSize: 12),
                               ),
                             ],
@@ -672,7 +672,6 @@ class HomeHorizontalMoviesList extends StatelessWidget {
           ),
         );
     }
-    throw StateError('Unknown $type');
   }
 
   String getDescription(Movie item, BuildContext context) {
@@ -687,12 +686,11 @@ class HomeHorizontalMoviesList extends StatelessWidget {
       case MovieType.mostRate:
         return '${item.rateStar.toStringAsFixed(2)} / 5';
     }
-    throw StateError('Missing type $type');
   }
 }
 
 class ComingSoonHeader extends StatelessWidget {
-  const ComingSoonHeader({Key key}) : super(key: key);
+  const ComingSoonHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -738,7 +736,7 @@ class ComingSoonHeader extends StatelessWidget {
 }
 
 class RecommendedHeader extends StatelessWidget {
-  const RecommendedHeader({Key key}) : super(key: key);
+  const RecommendedHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -785,7 +783,7 @@ class RecommendedHeader extends StatelessWidget {
 }
 
 class MostFavoriteHeader extends StatelessWidget {
-  const MostFavoriteHeader({Key key}) : super(key: key);
+  const MostFavoriteHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -838,7 +836,7 @@ class MostFavoriteHeader extends StatelessWidget {
 }
 
 class MostRateHeader extends StatelessWidget {
-  const MostRateHeader({Key key}) : super(key: key);
+  const MostRateHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -891,7 +889,7 @@ class MostRateHeader extends StatelessWidget {
 }
 
 class NearbyTheatreHeader extends StatelessWidget {
-  const NearbyTheatreHeader({Key key}) : super(key: key);
+  const NearbyTheatreHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -940,7 +938,7 @@ class NearbyTheatreHeader extends StatelessWidget {
 class ViewAllButton extends StatelessWidget {
   final MovieType movieType;
 
-  const ViewAllButton({Key key, @required this.movieType}) : super(key: key);
+  const ViewAllButton({Key? key, required this.movieType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -956,7 +954,7 @@ class ViewAllButton extends StatelessWidget {
       ),
       child: Text(
         context.s.view_all,
-        style: textTheme.button.copyWith(
+        style: textTheme.button!.copyWith(
           color: Theme.of(context).accentColor,
           fontWeight: FontWeight.w600,
         ),
@@ -968,7 +966,7 @@ class ViewAllButton extends StatelessWidget {
 class NearbyTheatresList extends StatelessWidget {
   final LoaderBloc<BuiltList<Theatre>> bloc;
 
-  const NearbyTheatresList({Key key, this.bloc}) : super(key: key);
+  const NearbyTheatresList({Key? key, required this.bloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -978,14 +976,14 @@ class NearbyTheatresList extends StatelessWidget {
         final height = 200.0;
         const padding = EdgeInsets.symmetric(vertical: 10);
 
-        if (state.error != null) {
+        if (state!.error != null) {
           return SliverToBoxAdapter(
             child: Container(
               height: height,
               padding: padding,
               child: MyErrorWidget(
                 errorText: context.s
-                    .error_with_message(context.getErrorMessage(state.error)),
+                    .error_with_message(context.getErrorMessage(state.error!)),
                 onPressed: bloc.fetch,
               ),
             ),
@@ -1010,7 +1008,7 @@ class NearbyTheatresList extends StatelessWidget {
           );
         }
 
-        final theatres = state.content;
+        final theatres = state.content!;
 
         if (theatres.isEmpty) {
           return SliverToBoxAdapter(
@@ -1081,7 +1079,7 @@ class NearbyTheatresList extends StatelessWidget {
                                     item.name,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle2
+                                        .subtitle2!
                                         .copyWith(
                                             fontSize: 14,
                                             color: const Color(0xff5B64CF)),
@@ -1092,7 +1090,7 @@ class NearbyTheatresList extends StatelessWidget {
                                     item.address,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle1
+                                        .subtitle1!
                                         .copyWith(fontSize: 11),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -1103,7 +1101,7 @@ class NearbyTheatresList extends StatelessWidget {
                             if (item.distance != null) ...[
                               const SizedBox(width: 8),
                               Text(
-                                '${(item.distance / 1000.0).toStringAsFixed(1)} km',
+                                '${(item.distance! / 1000.0).toStringAsFixed(1)} km',
                                 style: const TextStyle(
                                   color: Color(0xffA4508B),
                                   fontWeight: FontWeight.w500,

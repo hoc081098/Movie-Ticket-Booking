@@ -105,10 +105,10 @@ class CheckoutBloc implements BaseBloc {
   Stream<Message> get message$ => _message$;
 
   CheckoutBloc({
-    @required final ShowTime showTime,
-    @required final BuiltList<Ticket> tickets,
-    @required final BuiltList<Tuple2<Product, int>> products,
-    @required ReservationRepository reservationRepository,
+    required final ShowTime showTime,
+    required final BuiltList<Ticket> tickets,
+    required final BuiltList<Tuple2<Product, int>> products,
+    required ReservationRepository reservationRepository,
   }) {
     final email$ = _emailS
         .distinct()

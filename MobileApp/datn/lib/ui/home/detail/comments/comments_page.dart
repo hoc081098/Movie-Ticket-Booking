@@ -27,7 +27,7 @@ const imageSize = 54.0;
 class CommentsPage extends StatefulWidget {
   final String movieId;
 
-  const CommentsPage({Key key, @required this.movieId}) : super(key: key);
+  const CommentsPage({Key? key, required this.movieId}) : super(key: key);
 
   @override
   _CommentsPageState createState() => _CommentsPageState();
@@ -47,8 +47,8 @@ class _CommentsPageState extends State<CommentsPage>
       final commentRepository = Provider.of<CommentRepository>(context);
 
       final getComments = ({
-        @required int page,
-        @required int perPage,
+        required int page,
+        required int perPage,
       }) =>
           commentRepository.getComments(
             movieId: widget.movieId,
@@ -163,12 +163,12 @@ class CommentItemsListWidget extends StatelessWidget {
   final ScrollController scrollController;
 
   const CommentItemsListWidget({
-    Key key,
-    @required this.state,
-    @required this.dispatch,
-    @required this.commentDateFormat,
-    @required this.movieId,
-    @required this.scrollController,
+    Key? key,
+    required this.state,
+    required this.dispatch,
+    required this.commentDateFormat,
+    required this.movieId,
+    required this.scrollController,
   }) : super(key: key);
 
   final st.State state;
@@ -250,10 +250,10 @@ class CommentItemWidget extends StatelessWidget {
   final void Function(Action) dispatch;
 
   const CommentItemWidget({
-    Key key,
-    @required this.item,
-    @required this.commentDateFormat,
-    @required this.dispatch,
+    Key? key,
+    required this.item,
+    required this.commentDateFormat,
+    required this.dispatch,
   }) : super(key: key);
 
   final Comment item;
@@ -434,11 +434,11 @@ class Header extends StatelessWidget {
   final Function1<Action, void> dispatch;
 
   const Header({
-    Key key,
-    @required this.average,
-    @required this.total,
-    @required this.movieId,
-    @required this.dispatch,
+    Key? key,
+    required this.average,
+    required this.total,
+    required this.movieId,
+    required this.dispatch,
   }) : super(key: key);
 
   @override

@@ -34,11 +34,11 @@ class ComboPage extends StatefulWidget {
   final Movie movie;
 
   const ComboPage({
-    Key key,
-    @required this.tickets,
-    @required this.showTime,
-    @required this.theatre,
-    @required this.movie,
+    Key? key,
+    required this.tickets,
+    required this.showTime,
+    required this.theatre,
+    required this.movie,
   }) : super(key: key);
 
   @override
@@ -127,7 +127,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           final items = state.items;
 
           final textTheme = Theme.of(context).textTheme;
-          final titleStyle = textTheme.subtitle2.copyWith(fontSize: 15);
+          final titleStyle = textTheme.subtitle2!.copyWith(fontSize: 15);
           final countStyle = titleStyle.copyWith(fontSize: 18);
           final priceStyle = textTheme.subtitle1!.copyWith(
             color: Theme.of(context).primaryColor,
@@ -367,7 +367,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                           SizedBox(height: 4),
                           Text(
                             context.s.load_image_error,
-                            style: textTheme.subtitle2.copyWith(fontSize: 12),
+                            style: textTheme.subtitle2!.copyWith(fontSize: 12),
                           ),
                         ],
                       ),
@@ -510,7 +510,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
   }
 
   void showOrder(BuiltList<ComboItem> comboItems) {
-    final style = Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15);
+    final style = Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 15);
     final style2 = style.copyWith(fontSize: 17);
     final titleStyle =
         Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 13);

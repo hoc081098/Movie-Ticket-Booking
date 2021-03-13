@@ -23,10 +23,10 @@ class BottomRow extends StatelessWidget {
   final int originalTotalPrice;
 
   BottomRow({
-    Key key,
-    @required this.comboItems,
-    @required this.tickets,
-    @required this.onSubmit,
+    Key? key,
+    required this.comboItems,
+    required this.tickets,
+    required this.onSubmit,
   })  : totalCount =
             comboItems.fold<int>(0, (acc, e) => acc + e.item2) + tickets.length,
         originalTotalPrice = tickets.fold<int>(0, (acc, e) => acc + e.price) +
@@ -142,7 +142,7 @@ class BottomRow extends StatelessWidget {
   }
 
   void showOrder(BuildContext context, Promotion promotion) {
-    final style = Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15);
+    final style = Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 15);
     final style2 = style.copyWith(fontSize: 17);
     final titleStyle =
         Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 13);

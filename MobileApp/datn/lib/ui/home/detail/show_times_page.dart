@@ -26,7 +26,7 @@ import '../tickets/ticket_page.dart';
 class ShowTimesPage extends StatefulWidget {
   final Movie movie;
 
-  const ShowTimesPage({Key key, @required this.movie}) : super(key: key);
+  const ShowTimesPage({Key? key, required this.movie}) : super(key: key);
 
   @override
   _ShowTimesPageState createState() => _ShowTimesPageState();
@@ -248,7 +248,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
 }
 
 class SelectCityWidget extends StatelessWidget {
-  const SelectCityWidget({Key key}) : super(key: key);
+  const SelectCityWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -310,10 +310,10 @@ class ShowTimeItem extends StatelessWidget {
   final Movie movie;
 
   ShowTimeItem(
-      {Key key,
-      @required this.theatreAndShowTimes,
-      @required this.showTimeDateFormat,
-      @required this.movie})
+      {Key? key,
+      required this.theatreAndShowTimes,
+      required this.showTimeDateFormat,
+      required this.movie})
       : super(key: key);
 
   @override

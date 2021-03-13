@@ -12,8 +12,8 @@ class MovieDetailPage extends StatefulWidget {
   final Movie movie;
 
   const MovieDetailPage({
-    Key key,
-    @required this.movie,
+    Key? key,
+    required this.movie,
   }) : super(key: key);
 
   @override
@@ -89,7 +89,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
   final TabBar tabBar;
 
-  const CustomTabBar({Key key, this.tabBar}) : super(key: key);
+  const CustomTabBar({Key? key, this.tabBar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

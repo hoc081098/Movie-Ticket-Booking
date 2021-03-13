@@ -43,7 +43,7 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
 
   LocaleBloc._({
     required this.changeLocale,
-    // @required this.resetLocale,
+    // required this.resetLocale,
     required this.locale$,
     required this.message$,
     required VoidAction dispose,

@@ -7,8 +7,8 @@ import '../../../domain/model/movie.dart';
 import 'view_all_state.dart';
 
 typedef GetMovies = Stream<BuiltList<Movie>> Function({
-  @required int page,
-  @required int perPage,
+  required int page,
+  required int perPage,
 });
 
 const perPage = 32;

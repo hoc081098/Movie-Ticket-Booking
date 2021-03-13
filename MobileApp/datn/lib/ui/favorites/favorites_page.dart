@@ -29,7 +29,7 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
-  LoaderBloc<BuiltList<Movie>> bloc;
+  LoaderBloc<BuiltList<Movie>>? bloc;
 
   @override
   void didChangeDependencies() {
@@ -47,7 +47,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
           .where((i) => i == AppScaffoldIndex.favorites)
           .take(1)
           .debug(identifier: '>>> FAVORITES')
-          .listen((event) => bloc.fetch())
+          .listen((event) => bloc!.fetch())
           .disposedBy(bag);
 
       return loaderBloc;
@@ -56,7 +56,8 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
 
   @override
   void dispose() {
-    bloc.dispose();
+    bloc!.dispose();
+    bloc = null;
 
     super.dispose();
   }
@@ -72,9 +73,9 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
       body: Container(
         constraints: BoxConstraints.expand(),
         child: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
-          stream: bloc.state$,
+          stream: bloc!.state$,
           builder: (context, state) {
-            if (state.isLoading) {
+            if (state!.isLoading) {
               return Center(
                 child: SizedBox(
                   width: 56,
@@ -92,13 +93,13 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
                 child: MyErrorWidget(
                   errorText: S
                       .of(context)
-                      .error_with_message(getErrorMessage(state.error)),
-                  onPressed: bloc.fetch,
+                      .error_with_message(getErrorMessage(state.error!)),
+                  onPressed: bloc!.fetch,
                 ),
               );
             }
 
-            final items = state.content;
+            final items = state.content!;
 
             if (items.isEmpty) {
               return Center(
@@ -128,7 +129,7 @@ class FavoritesList extends StatefulWidget {
 
 class _FavoritesListState extends State<FavoritesList> with DisposeBagMixin {
   final toggleS = PublishSubject<Movie>(sync: true);
-  Object token;
+  Object? token;
 
   @override
   void initState() {
@@ -271,7 +272,7 @@ class FavoriteItem extends StatelessWidget {
                                     S.of(context).load_image_error,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle2
+                                        .subtitle2!
                                         .copyWith(fontSize: 12),
                                   ),
                                 ],

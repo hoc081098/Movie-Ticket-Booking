@@ -10,7 +10,7 @@ import '../detail/movie_detail_page.dart';
 class ViewAllListItem extends StatelessWidget {
   final Movie item;
 
-  const ViewAllListItem({Key key, this.item}) : super(key: key);
+  const ViewAllListItem({Key? key, this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

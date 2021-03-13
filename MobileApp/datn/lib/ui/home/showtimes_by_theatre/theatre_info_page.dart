@@ -9,7 +9,7 @@ import '../../../generated/l10n.dart';
 class TheatreInfoPage extends StatelessWidget {
   final Theatre theatre;
 
-  TheatreInfoPage({Key key, this.theatre}) : super(key: key);
+  TheatreInfoPage({Key? key, this.theatre}) : super(key: key);
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final releaseDateFormat = DateFormat('dd/MM/yy');
@@ -186,7 +186,7 @@ class TheatreInfoPage extends StatelessWidget {
 }
 
 class DetailAppBar extends StatelessWidget {
-  const DetailAppBar({Key key, @required this.theatre}) : super(key: key);
+  const DetailAppBar({Key? key, required this.theatre}) : super(key: key);
 
   final Theatre theatre;
 
