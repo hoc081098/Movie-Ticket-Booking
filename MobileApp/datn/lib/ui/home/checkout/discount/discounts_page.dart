@@ -78,7 +78,7 @@ class DiscountsPage extends StatelessWidget {
         Provider.of<PromotionRepository>(context).getPromotions(showTimeId);
     final countDownStyle = Theme.of(context)
         .textTheme
-        .subtitle2
+        .subtitle2!
         .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
@@ -86,7 +86,7 @@ class DiscountsPage extends StatelessWidget {
         title: Text(S.of(context).couponCode.replaceAll(': ', '')),
         actions: [
           Center(
-            child: RxStreamBuilder<String>(
+            child: RxStreamBuilder<String?>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
               builder: (context, data) {
@@ -131,7 +131,7 @@ class DiscountsPage extends StatelessWidget {
             );
           }
 
-          final promotions = state.content;
+          final promotions = state.content!;
           if (promotions.isEmpty) {
             return Center(
               child: EmptyWidget(
@@ -144,7 +144,7 @@ class DiscountsPage extends StatelessWidget {
           final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
           final nameStyle = Theme.of(context)
               .textTheme
-              .caption
+              .caption!
               .copyWith(color: Colors.white, fontSize: 13);
           final timeStyle = nameStyle.copyWith(
             fontSize: 11,
@@ -244,8 +244,8 @@ class DiscountsPage extends StatelessWidget {
           content: Text(promotion.code),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
               onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text('OK'),
             ),
           ],
         );

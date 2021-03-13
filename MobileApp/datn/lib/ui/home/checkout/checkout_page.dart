@@ -61,9 +61,9 @@ class MissingRequiredInfo implements Message {
 
 class CheckoutBloc implements BaseBloc {
   final _emailS = PublishSubject<String>(sync: true);
-  final _phoneS = PublishSubject<String>(sync: true);
-  final _cardS = BehaviorSubject<domain.Card>.seeded(null, sync: true);
-  final _promotionS = BehaviorSubject<Promotion>.seeded(null, sync: true);
+  final _phoneS = PublishSubject<String?>(sync: true);
+  final _cardS = BehaviorSubject<domain.Card?>.seeded(null, sync: true);
+  final _promotionS = BehaviorSubject<Promotion?>.seeded(null, sync: true);
 
   final _submitS = PublishSubject<void>();
   final _isLoadingS = BehaviorSubject.seeded(false);
@@ -71,16 +71,16 @@ class CheckoutBloc implements BaseBloc {
   final _bag = DisposeBag();
 
   ///
-  DistinctValueConnectableStream<String> _emailError$;
-  DistinctValueConnectableStream<String> _phoneError$;
-  ConnectableStream<Message> _message$;
+  late DistinctValueConnectableStream<String?> _emailError$;
+  late DistinctValueConnectableStream<String?> _phoneError$;
+  late ConnectableStream<Message> _message$;
 
   /// Inputs
   Function1<String, void> get emailChanged => _emailS.add;
 
   Function1<String, void> get phoneChanged => _phoneS.add;
 
-  Function1<domain.Card, void> get selectedCard => _cardS.add;
+  void selectedCard(domain.Card? card) => _cardS.add(card);
 
   void selectPromotion(Promotion promotion) => _promotionS.add(promotion);
 
@@ -92,13 +92,13 @@ class CheckoutBloc implements BaseBloc {
   }
 
   /// Outputs
-  ValueStream<String> get emailError$ => _emailError$;
+  ValueStream<String?> get emailError$ => _emailError$;
 
-  ValueStream<String> get phoneError$ => _phoneError$;
+  ValueStream<String?> get phoneError$ => _phoneError$;
 
-  ValueStream<domain.Card> get selectedCard$ => _cardS;
+  ValueStream<domain.Card?> get selectedCard$ => _cardS;
 
-  ValueStream<Promotion> get selectedPromotion$ => _promotionS;
+  ValueStream<Promotion?> get selectedPromotion$ => _promotionS;
 
   ValueStream<bool> get isLoading$ => _isLoadingS;
 
@@ -121,7 +121,9 @@ class CheckoutBloc implements BaseBloc {
     final phone$ = _phoneS
         .distinct()
         .map((p) => Tuple2(
-            phoneNumberRegex.hasMatch(p) ? null : S.current.invalidPhoneNumber,
+            p != null && phoneNumberRegex.hasMatch(p)
+                ? null
+                : S.current.invalidPhoneNumber,
             p))
         .debug(identifier: 'PHONE')
         .share();
@@ -134,16 +136,16 @@ class CheckoutBloc implements BaseBloc {
     final form$ = _submitS
         .debug(identifier: 'SUBMIT')
         .withLatestFrom4(
-          email$.startWith(null),
-          phone$.startWith(null),
+          email$.cast<Tuple2<String?, String>?>().startWith(null),
+          phone$.cast<Tuple2<String?, String>?>().startWith(null),
           _cardS,
           _promotionS,
           (
             _,
-            Tuple2<String, String> email,
-            Tuple2<String, String> phone,
-            domain.Card card,
-            Promotion promotion,
+            Tuple2<String?, String>? email,
+            Tuple2<String?, String>? phone,
+            domain.Card? card,
+            Promotion? promotion,
           ) =>
               email != null &&
                       email.item1 == null &&
@@ -156,7 +158,7 @@ class CheckoutBloc implements BaseBloc {
         .debug(identifier: 'FORM')
         .share();
     _message$ = Rx.merge([
-      form$.where((v) => v != null).exhaustMap(
+      form$.whereNotNull().exhaustMap(
             (emailPhoneCardPromotion) => reservationRepository
                 .createReservation(
                   showTimeId: showTime.id,
@@ -275,7 +277,7 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
         title: Text(S.of(context).checkout),
         actions: [
           Center(
-            child: RxStreamBuilder<String>(
+            child: RxStreamBuilder<String?>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
               builder: (context, data) {
@@ -303,11 +305,12 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
                     showTime: widget.showTime,
                     theatre: widget.theatre,
                     tickets: widget.tickets,
+                    child: null,
                   ),
                 ),
                 SliverToBoxAdapter(
                   child: PhoneEmailForm(
-                    user: user!,
+                    user: user,
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -395,12 +398,12 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
           content: Text('Pay for your tickets?'),
           actions: <Widget>[
             TextButton(
-              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(context).cancel),
             ),
             TextButton(
-              child: Text('OK'),
               onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text('OK'),
             ),
           ],
         );

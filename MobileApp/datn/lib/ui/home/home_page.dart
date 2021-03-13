@@ -1052,7 +1052,7 @@ class NearbyTheatresList extends StatelessWidget {
                           children: [
                             ClipOval(
                               child: OctoImage(
-                                image: NetworkImage(item.thumbnail ?? ''),
+                                image: NetworkImage(item.thumbnail),
                                 width: 54,
                                 height: 54,
                                 fit: BoxFit.cover,
