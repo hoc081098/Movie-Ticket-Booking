@@ -9,12 +9,15 @@ import 'package:http/http.dart';
 import '../data/remote/response/error_response.dart';
 import '../domain/model/exception.dart';
 import '../generated/l10n.dart';
+import 'iterable.dart';
 
 @deprecated
 String getErrorMessageDeprecated(Object error) =>
     S.current.getErrorMessage(error);
 
 extension ErrorMessageS on S {
+  String get _unknownError => 'Unknown error'; // TODO: l10n
+
   String getErrorMessage(Object error) {
     ArgumentError.checkNotNull(error);
 
@@ -38,10 +41,12 @@ extension ErrorMessageS on S {
 
     // server error
     if (error is SingleMessageErrorResponse) {
-      return error.message;
+      return error.message ?? _unknownError;
     }
     if (error is MultipleMessagesErrorResponse) {
-      return error.messages.join('\n');
+      return error.messages.isNullOrEmpty
+          ? _unknownError
+          : error.messages!.join('\n');
     }
 
     // network error
@@ -60,10 +65,10 @@ extension ErrorMessageS on S {
 
     // firebase & platform errors
     if (error is FirebaseAuthException) {
-      return error.message;
+      return error.message ?? _unknownError;
     }
     if (error is PlatformException) {
-      return error.message;
+      return error.message ?? _unknownError;
     }
 
     return error.toString();

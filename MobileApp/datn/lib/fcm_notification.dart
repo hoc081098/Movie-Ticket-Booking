@@ -45,7 +45,7 @@ class FcmNotificationManager {
   final _cacheManager = DefaultCacheManager();
   final _reservationIdS = PublishSubject<String>();
 
-  Stream<Notification> _notification$;
+  late Stream<Notification> _notification$;
 
   FcmNotificationManager(
       this._authClient, this._firebaseMessaging, this._prefs) {
@@ -79,12 +79,12 @@ class FcmNotificationManager {
 
     await FlutterLocalNotificationsPlugin().initialize(
       initializationSettings,
-      onSelectNotification: onSelectNotification,
+      onSelectNotification: _onSelectNotification,
     );
 
     final details = await FlutterLocalNotificationsPlugin()
         .getNotificationAppLaunchDetails();
-    unawaited(onSelectNotification(details.payload));
+    unawaited(_onSelectNotification(details?.payload));
 
     _setupNotification = true;
   }
@@ -95,11 +95,14 @@ class FcmNotificationManager {
 
       final notification = message.notification;
       final data = message.data;
-      if (notification == null && data == null) {
+      if (notification == null) {
+        return;
+      }
+      if (data == null) {
         return;
       }
 
-      File imageFile;
+      File? imageFile;
       try {
         imageFile = await _cacheManager.getSingleFile(data['image'] ?? '');
       } catch (_) {}
@@ -144,7 +147,7 @@ class FcmNotificationManager {
     }
   }
 
-  Future<void> onSelectNotification(String payload) {
+  Future<void> _onSelectNotification(String? payload) {
     if (payload == null) {
       return SynchronousFuture(null);
     }

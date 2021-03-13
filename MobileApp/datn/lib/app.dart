@@ -28,21 +28,21 @@ class _MyAppState extends State<MyApp> {
     MainPage.routeName: (context) => MainPage(),
     LoginPage.routeName: (context) {
       return BlocProvider<LoginBloc>(
-        child: LoginPage(),
         initBloc: (context) => LoginBloc(context.get()),
+        child: LoginPage(),
       );
     },
     RegisterPage.routeName: (context) {
       return BlocProvider<RegisterBloc>(
-        child: RegisterPage(),
         initBloc: (context) => RegisterBloc(context.get()),
+        child: RegisterPage(),
       );
     },
-    UpdateProfilePage.routeName: (context) => UpdateProfilePage(),
+    UpdateProfilePage.routeName: (context) => UpdateProfilePage(user: null),
     ResetPasswordPage.routeName: (context) {
       return BlocProvider<ResetPasswordBloc>(
-        child: ResetPasswordPage(),
         initBloc: (context) => ResetPasswordBloc(context.get()),
+        child: ResetPasswordPage(),
       );
     },
   };
@@ -79,10 +79,10 @@ class _MyAppState extends State<MyApp> {
 
     return Provider<Map<String, WidgetBuilder>>.value(
       routes,
-      child: RxStreamBuilder<Locale>(
+      child: RxStreamBuilder<Locale?>(
         stream: localeBloc.locale$,
         builder: (context, data) {
-          print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${data}');
+          print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $data');
 
           if (data == null) {
             return Container(

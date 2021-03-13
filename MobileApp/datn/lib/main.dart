@@ -101,7 +101,7 @@ void main() async {
   final normalClient = NormalClient(client, httpTimeout);
   print(normalClient);
 
-  Function0<Future<void>> _onSignOut;
+  late Function0<Future<void>> _onSignOut;
   final authClient = AuthClient(
     client,
     httpTimeout,
