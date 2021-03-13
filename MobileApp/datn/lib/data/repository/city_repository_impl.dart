@@ -89,8 +89,8 @@ class CityRepositoryImpl implements CityRepository {
             _distanceBetween(
               location.latitude,
               location.longitude,
-              city.location.latitude,
-              city.location.longitude,
+              city.location!.latitude,
+              city.location!.longitude,
             ),
           ),
         )

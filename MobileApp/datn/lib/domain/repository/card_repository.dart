@@ -9,10 +9,10 @@ abstract class CardRepository {
   Stream<Card> removeCard(Card card);
 
   Stream<Card> addCard({
-    @required String cardHolderName,
-    @required String number,
-    @required int cvc,
-    @required int expYear,
-    @required int expMonth,
+    required String cardHolderName,
+    required String number,
+    required int cvc,
+    required int expYear,
+    required int expMonth,
   });
 }
