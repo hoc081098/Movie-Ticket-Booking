@@ -612,7 +612,7 @@ packages:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.4"
+    version: "1.0.0"
   matcher:
     dependency: transitive
     description:
@@ -862,14 +862,14 @@ packages:
       name: socket_io_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.12"
+    version: "2.0.0-beta.3-nullsafety.0"
   socket_io_common:
     dependency: transitive
     description:
       name: socket_io_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.2"
+    version: "2.0.0-beta.1-nullsafety.0"
   source_gen:
     dependency: transitive
     description:
