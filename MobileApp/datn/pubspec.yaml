@@ -85,7 +85,7 @@ dependency_overrides:
   flutter_google_places:
     git:
       url: https://github.com/hoc081098/flutter_google_places.git
-      ref: 26ad86d26904113b143ca770e2e14b235d3230ba
+      ref: 0566867ee2abe5c8c2ba180678f18309845b23a6
   loading_indicator:
     git:
       url: https://github.com/Mayb3Nots/loading_indicator.git

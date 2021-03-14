@@ -395,11 +395,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "26ad86d26904113b143ca770e2e14b235d3230ba"
-      resolved-ref: "26ad86d26904113b143ca770e2e14b235d3230ba"
+      ref: "0566867ee2abe5c8c2ba180678f18309845b23a6"
+      resolved-ref: "0566867ee2abe5c8c2ba180678f18309845b23a6"
       url: "https://github.com/hoc081098/flutter_google_places.git"
     source: git
-    version: "0.2.5"
+    version: "0.2.8"
   flutter_local_notifications:
     dependency: "direct main"
     description:
@@ -486,16 +486,14 @@ packages:
       name: google_api_headers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0-nullsafety.1"
+    version: "1.0.0"
   google_maps_webservice:
     dependency: transitive
     description:
-      path: "."
-      ref: "98dc0bd451abb041a17f3efd254d5b983cbdb923"
-      resolved-ref: "98dc0bd451abb041a17f3efd254d5b983cbdb923"
-      url: "https://github.com/Flutter-Dart-Open-Source/google_maps_webservice.git"
-    source: git
-    version: "0.0.20"
+      name: google_maps_webservice
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.20-nullsafety.2"
   google_sign_in:
     dependency: "direct main"
     description:
@@ -658,7 +656,7 @@ packages:
       name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0-nullsafety"
+    version: "2.0.0"
   path:
     dependency: transitive
     description:
