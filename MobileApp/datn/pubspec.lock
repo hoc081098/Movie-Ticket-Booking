@@ -395,8 +395,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0566867ee2abe5c8c2ba180678f18309845b23a6"
-      resolved-ref: "0566867ee2abe5c8c2ba180678f18309845b23a6"
+      ref: "7b6c2aa2053131142c0e48639823d24f312d00c1"
+      resolved-ref: "7b6c2aa2053131142c0e48639823d24f312d00c1"
       url: "https://github.com/hoc081098/flutter_google_places.git"
     source: git
     version: "0.2.8"

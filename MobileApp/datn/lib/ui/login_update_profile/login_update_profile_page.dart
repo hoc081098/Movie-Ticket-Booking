@@ -700,17 +700,25 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       );
 
       if (prediction == null) {
+        print('prediction == null');
         return;
       }
 
       final details = (await GoogleMapsPlaces(apiKey: apiKey)
-              .getDetailsByPlaceId(prediction.placeId))
+              .getDetailsByPlaceId(prediction.placeId!))
           .result;
 
-      address = details.formattedAddress;
+      final formattedAddress = details.formattedAddress;
+      final geometry = details.geometry;
+      if (formattedAddress == null || geometry == null) {
+        print('details.formattedAddress == null || details.geometry == null');
+        return;
+      }
+
+      address = formattedAddress;
       location = Location((b) => b
-        ..latitude = details.geometry.location.lat
-        ..longitude = details.geometry.location.lng);
+        ..latitude = geometry.location.lat
+        ..longitude = geometry.location.lng);
 
       addressTextController.text = address ?? '';
     } catch (e, s) {
