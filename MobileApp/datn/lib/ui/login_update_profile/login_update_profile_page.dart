@@ -8,6 +8,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_provider/flutter_provider.dart';
+import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart' hide Location;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
@@ -704,8 +705,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         return;
       }
 
-      final details = (await GoogleMapsPlaces(apiKey: apiKey)
-              .getDetailsByPlaceId(prediction.placeId!))
+      final details = (await GoogleMapsPlaces(
+        apiKey: apiKey,
+        apiHeaders: await GoogleApiHeaders().getHeaders(),
+      ).getDetailsByPlaceId(prediction.placeId!))
           .result;
 
       final formattedAddress = details.formattedAddress;
