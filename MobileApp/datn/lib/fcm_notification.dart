@@ -17,8 +17,6 @@ import 'data/remote/base_url.dart';
 import 'data/remote/response/notification_response.dart';
 import 'domain/model/notification.dart';
 
-FcmNotificationManager? _fcmNotificationManager;
-
 class FcmNotificationManager {
   static const channelId = 'com.hoc.datn';
   static const channelName = 'com.hoc.datn.channel';
@@ -61,8 +59,6 @@ class FcmNotificationManager {
         .asyncExpand(_handleRemoteMessage)
         .publish()
           ..connect();
-
-    _fcmNotificationManager = this;
   }
 
   Future<Notification> _getNotificationById(String id) {
@@ -112,9 +108,12 @@ class FcmNotificationManager {
       final data = message.data;
 
       File? imageFile;
-      try {
-        imageFile = await _cacheManager.getSingleFile(data['image'] ?? '');
-      } catch (_) {}
+      final imageUrl = data['image'];
+      if (imageUrl is String && imageUrl.isNotEmpty) {
+        try {
+          imageFile = await _cacheManager.getSingleFile(imageUrl);
+        } catch (_) {}
+      }
 
       final androidPlatformChannelSpecifics = AndroidNotificationDetails(
         channelId,
@@ -185,13 +184,5 @@ class FcmNotificationManager {
 ///
 /// To verify things are working, check out the native platform logs.
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
-  final fcmNotificationManager = _fcmNotificationManager;
-  if (fcmNotificationManager == null) {
-    return;
-  }
-
-  print(
-      'Handling a background message ${message.messageId} <-> $fcmNotificationManager');
-
-  fcmNotificationManager._handleRemoteMessage(message);
+  print('Handling a background message ${message.messageId}');
 }
