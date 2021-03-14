@@ -243,29 +243,25 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
         .listen(onLoggedOut)
         .disposedBy(bag);
 
-    setupLocalNotification ??= () {
-      final notificationManager = context.get<FcmNotificationManager>();
-
-      notificationManager.reservationId$
-          .exhaustMap(
-            (id) => context
-                .get<ReservationRepository>()
-                .getReservationById(id)
-                .doOnListen(context.showLoading)
-                .doOnCancel(
-                    () => Navigator.of(context, rootNavigator: true).pop())
-                .doOnError((e, s) => context.showSnackBar(
-                    S.of(context).error_with_message(getErrorMessage(e)))),
-          )
-          .doOnData((r) => AppScaffold.navigatorOfCurrentIndex(
-                  appScaffoldKey.currentContext!,
-                  switchToNewIndex: AppScaffoldIndex.profile)
-              .pushNamedX(ReservationDetailPage.routeName, arguments: r))
-          .collect()
-          .disposedBy(bag);
-
-      return notificationManager.setupNotification();
-    }();
+    setupLocalNotification ??= context
+        .get<FcmNotificationManager>()
+        .reservationId$
+        .exhaustMap(
+          (id) => context
+              .get<ReservationRepository>()
+              .getReservationById(id)
+              .doOnListen(context.showLoading)
+              .doOnCancel(
+                  () => Navigator.of(context, rootNavigator: true).pop())
+              .doOnError((e, s) => context.showSnackBar(
+                  S.of(context).error_with_message(getErrorMessage(e)))),
+        )
+        .doOnData((r) => AppScaffold.navigatorOfCurrentIndex(
+                appScaffoldKey.currentContext!,
+                switchToNewIndex: AppScaffoldIndex.profile)
+            .pushNamedX(ReservationDetailPage.routeName, arguments: r))
+        .collect()
+        .disposedBy(bag);
   }
 
   @override

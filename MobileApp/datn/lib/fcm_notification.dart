@@ -18,6 +18,8 @@ import 'data/remote/base_url.dart';
 import 'data/remote/response/notification_response.dart';
 import 'domain/model/notification.dart';
 
+FcmNotificationManager? _fcmNotificationManager;
+
 class FcmNotificationManager {
   static const channelId = 'com.hoc.datn';
   static const channelName = 'com.hoc.datn.channel';
@@ -41,7 +43,9 @@ class FcmNotificationManager {
         return _prefs.setInt(_notificationIdKey, newId).then((_) => newId);
       });
 
-  var _setupNotification = false;
+  var _setupLocalNotification = false;
+  late final Future<void> _setupLocalNotificationFuture;
+
   final _cacheManager = DefaultCacheManager();
   final _reservationIdS = PublishSubject<String>();
 
@@ -49,6 +53,8 @@ class FcmNotificationManager {
 
   FcmNotificationManager(
       this._authClient, this._firebaseMessaging, this._prefs) {
+    _setupLocalNotificationFuture = _setupNotification();
+
     final initial$ =
         _firebaseMessaging.getInitialMessage().asStream().whereNotNull();
 
@@ -56,6 +62,8 @@ class FcmNotificationManager {
         .asyncExpand(_handleRemoteMessage)
         .publish()
           ..connect();
+
+    _fcmNotificationManager = this;
   }
 
   Future<Notification> _getNotificationById(String id) {
@@ -65,8 +73,8 @@ class FcmNotificationManager {
         );
   }
 
-  Future<void> setupNotification() async {
-    if (_setupNotification) {
+  Future<void> _setupNotification() async {
+    if (_setupLocalNotification) {
       return;
     }
 
@@ -86,21 +94,23 @@ class FcmNotificationManager {
         .getNotificationAppLaunchDetails();
     unawaited(_onSelectNotification(details?.payload));
 
-    _setupNotification = true;
+    _setupLocalNotification = true;
   }
 
   Stream<Notification> _handleRemoteMessage(RemoteMessage message) async* {
+    if (!_setupLocalNotification) {
+      await _setupLocalNotificationFuture;
+
+      if (!_setupLocalNotification) {
+        return;
+      }
+    }
+
     try {
       print('>>>>>>>>>>> onMessage: $message');
 
       final notification = message.notification;
       final data = message.data;
-      if (notification == null) {
-        return;
-      }
-      if (data == null) {
-        return;
-      }
 
       File? imageFile;
       try {
@@ -131,8 +141,8 @@ class FcmNotificationManager {
 
       await FlutterLocalNotificationsPlugin().show(
         await _getAndIncrementId(),
-        notification.title ?? data['title'] ?? '',
-        notification.body ?? data['body'] ?? '',
+        notification?.title ?? data['title'] ?? '',
+        notification?.body ?? data['body'] ?? '',
         platformChannelSpecifics,
         payload: jsonEncode(data),
       );
@@ -176,8 +186,16 @@ class FcmNotificationManager {
 ///
 /// To verify things are working, check out the native platform logs.
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
+  final fcmNotificationManager = _fcmNotificationManager;
+  if (fcmNotificationManager == null) {
+    return;
+  }
+
+  print(
+      'Handling a background message ${message.messageId} <-> $fcmNotificationManager');
+
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
+  fcmNotificationManager._handleRemoteMessage(message);
 }
