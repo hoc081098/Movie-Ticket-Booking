@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:file/src/interface/file.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -194,8 +193,5 @@ Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
   print(
       'Handling a background message ${message.messageId} <-> $fcmNotificationManager');
 
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
   fcmNotificationManager._handleRemoteMessage(message);
 }
