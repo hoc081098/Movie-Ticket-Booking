@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -64,12 +65,12 @@ class ReservationRepositoryImpl implements ReservationRepository {
       'promotion_id': promotion?.id,
     };
 
-    print('createReservation: $body');
+    debugPrint('createReservation: $body');
 
     final json =
         await _authClient.postBody(buildUrl('/reservations'), body: body);
     final response = ReservationResponse.fromJson(json);
-    print('createReservation: $response');
+    debugPrint('createReservation: $response');
 
     yield* getReservationById(response.id);
   }
@@ -95,19 +96,15 @@ class ReservationRepositoryImpl implements ReservationRepository {
       onListen: () {
         final socket = socketRef = io.io(
           EnvManager.shared.get(EnvKey.WS_URL),
-          {
-            'transports': ['websocket'],
-            'path': EnvManager.shared.get(EnvKey.WS_PATH),
-            'query': {
-              'token': 'Bearer $token',
-            }
-          },
+          io.OptionBuilder()
+              .setTransports(['websocket'])
+              .setPath(EnvManager.shared.get(EnvKey.WS_PATH))
+              .setQuery({'token': 'Bearer $token'})
+              .build(),
         );
 
-        print('$tag start connect $socket');
-
-        socket.on('connect', (_) {
-          print('$tag connected');
+        socket.onConnect((data) {
+          debugPrint('$tag connected $data');
 
           socket.emit('join', roomId);
 
@@ -119,45 +116,44 @@ class ReservationRepositoryImpl implements ReservationRepository {
             final map = response.map(
                 (k, v) => MapEntry(k, _reservationResponseToReservation(v)));
 
-            print('$tag reserved $map');
+            debugPrint(
+                '$tag reserved map=$map controller=$controller socketRef=$socketRef');
             controller?.add(map);
           });
         });
 
-        socket.on('connecting', (data) => print('$tag connecting $data'));
-        socket.on('reconnect', (data) => print('$tag reconnect $data'));
-        socket.on('reconnect_attempt',
-            (data) => print('$tag reconnect_attempt $data'));
-        socket.on(
-            'reconnect_failed', (data) => print('$tag reconnect_failed $data'));
-        socket.on(
-            'reconnect_error', (data) => print('$tag reconnect_error $data'));
-        socket.on('reconnecting', (data) => print('$tag reconnecting $data'));
+        // listens to events.
 
-        socket.on('disconnect', (data) {
-          controller?.close();
-          print('$tag disconnected $data $controller');
-        });
+        socket.onConnecting((data) => debugPrint('$tag connecting... $data'));
+        socket.onConnectError((data) => debugPrint('$tag connect_error $data'));
+        socket.onConnectTimeout(
+            (data) => debugPrint('$tag connect_timeout $data'));
+        socket.onError((data) => debugPrint('$tag error $data'));
+
+        socket.onReconnect((data) => debugPrint('$tag reconnect $data'));
+        socket.onReconnectAttempt(
+            (data) => debugPrint('$tag reconnect_attempt $data'));
+        socket.onReconnectFailed(
+            (data) => debugPrint('$tag reconnect_failed $data'));
+        socket.onReconnectError(
+            (data) => debugPrint('$tag reconnect_error $data'));
+        socket
+            .onReconnecting((data) => debugPrint('$tag reconnecting... $data'));
+
+        socket.onPing((data) => debugPrint('$tag ping $data'));
+        socket.onPong((data) => debugPrint('$tag pong $data'));
+
+        socket.onDisconnect((data) => debugPrint('$tag disconnect data=$data'));
       },
       onPause: () {},
       onResume: () {},
-      onCancel: () async {
+      onCancel: () {
         controller = null;
 
-        final completer = Completer<void>.sync();
-        socketRef?.emitWithAck(
-          'leave',
-          roomId,
-          ack: (data) {
-            print('$tag emit leave received $data');
-            socketRef?.dispose();
-            socketRef = null;
-            completer.complete(null);
-          },
-        );
+        socketRef?.dispose();
+        socketRef = null;
 
-        await completer.future;
-        print('$tag disposed');
+        debugPrint('$tag disposed');
       },
     );
 
