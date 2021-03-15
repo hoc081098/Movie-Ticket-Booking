@@ -9,6 +9,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../../domain/repository/product_repository.dart';
 import '../../../utils/iterable.dart';
+import '../../../utils/streams.dart';
 import 'combo_state.dart';
 
 class MaxComboCount {
@@ -37,7 +38,7 @@ class ComboBloc extends BaseBloc {
     );
 
     final fetchState$ = _fetchS.stream
-        .debug(identifier: 'FETCH')
+        .debug(identifier: 'FETCH', log: streamDebugPrint)
         .exhaustMap(
           (_) => productRepository
               .getProducts()
@@ -64,7 +65,7 @@ class ComboBloc extends BaseBloc {
                 ),
               ),
         )
-        .debug(identifier: 'FETCH STATE');
+        .debug(identifier: 'FETCH STATE', log: streamDebugPrint);
 
     final stateS = BehaviorSubject.seeded(loadingState);
     final incDecState$ = Rx.merge([

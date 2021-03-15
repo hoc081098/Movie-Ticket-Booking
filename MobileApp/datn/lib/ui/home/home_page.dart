@@ -21,6 +21,7 @@ import '../../domain/repository/theatre_repository.dart';
 import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/intl.dart';
+import '../../utils/streams.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';
@@ -178,7 +179,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
       cityRepo.selectedCity$
           .distinct()
-          .debug(identifier: '[HOME] SELECT CITY')
+          .debug(identifier: '[HOME] SELECT CITY', log: streamDebugPrint)
           .doOnData((_) {
             nowPlayingBloc.fetch();
             recommendedBloc.fetch();
@@ -342,7 +343,8 @@ class HomeLocationHeader extends StatelessWidget {
                             return Text(
                               data!.localizedName(context),
                               maxLines: 1,
-                              style: textTheme.headline6!.copyWith(fontSize: 13),
+                              style:
+                                  textTheme.headline6!.copyWith(fontSize: 13),
                             );
                           },
                         ),

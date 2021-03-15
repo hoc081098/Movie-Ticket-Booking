@@ -9,6 +9,7 @@ import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../utils/iterable.dart';
+import '../../utils/streams.dart';
 import '../serializers.dart';
 import 'search_keyword_source.dart';
 
@@ -20,7 +21,10 @@ class SearchKeywordSourceImpl implements SearchKeywordSource {
   final queryS = PublishSubject<Tuple2<String?, Completer<void>>>(sync: true);
 
   SearchKeywordSourceImpl(this._prefs) {
-    queryS.asyncExpand(_saveQuery).debug(identifier: toString()).collect();
+    queryS
+        .asyncExpand(_saveQuery)
+        .debug(identifier: toString(), log: streamDebugPrint)
+        .collect();
   }
 
   Stream<Object> _saveQuery(Tuple2<String?, Completer<void>> tuple2) async* {

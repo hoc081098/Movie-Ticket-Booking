@@ -51,6 +51,7 @@ import 'env_manager.dart';
 import 'fcm_notification.dart';
 import 'locale_bloc.dart';
 import 'utils/custom_indenting_built_value_to_string_helper.dart';
+import 'utils/streams.dart' show streamDebugPrint;
 import 'utils/type_defs.dart';
 
 void main() async {
@@ -256,6 +257,8 @@ void _setupLogging() {
   //Logging Http request and response.
   AppClientLoggerDefaults.logger =
       isDev ? const DevAppClientLogger() : const ProdAppClientLogger();
+
+  streamDebugPrint = isDev ? print : null;
 
   // Function used by generated code to get a `BuiltValueToStringHelper`.
   newBuiltValueToStringHelper = (className) => isDev

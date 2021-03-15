@@ -115,7 +115,7 @@ class CheckoutBloc implements BaseBloc {
         .map((e) => Tuple2(
             Validator.isValidEmail(e) ? null : S.current.invalidEmailAddress,
             e))
-        .debug(identifier: 'EMAIL')
+        .debug(identifier: 'EMAIL', log: streamDebugPrint)
         .share();
 
     final phone$ = _phoneS
@@ -125,7 +125,7 @@ class CheckoutBloc implements BaseBloc {
                 ? null
                 : S.current.invalidPhoneNumber,
             p))
-        .debug(identifier: 'PHONE')
+        .debug(identifier: 'PHONE', log: streamDebugPrint)
         .share();
 
     _emailError$ =
@@ -134,7 +134,7 @@ class CheckoutBloc implements BaseBloc {
         phone$.map((tuple) => tuple.item1).publishValueDistinct(null);
 
     final form$ = _submitS
-        .debug(identifier: 'SUBMIT')
+        .debug(identifier: 'SUBMIT', log: streamDebugPrint)
         .withLatestFrom4(
           email$.cast<Tuple2<String?, String>?>().startWith(null),
           phone$.cast<Tuple2<String?, String>?>().startWith(null),
@@ -155,7 +155,7 @@ class CheckoutBloc implements BaseBloc {
                   ? Tuple4(email.item2, phone.item2, card, promotion)
                   : null,
         )
-        .debug(identifier: 'FORM')
+        .debug(identifier: 'FORM', log: streamDebugPrint)
         .share();
     _message$ = Rx.merge([
       form$.whereNotNull().exhaustMap(
@@ -169,7 +169,7 @@ class CheckoutBloc implements BaseBloc {
                   ticketIds: [for (final t in tickets) t.id].build(),
                   promotion: emailPhoneCardPromotion.item4,
                 )
-                .debug(identifier: 'POST REQUEST')
+                .debug(identifier: 'POST REQUEST', log: streamDebugPrint)
                 .doOnListen(() => _isLoadingS.add(true))
                 .doOnCancel(() => _isLoadingS.add(false))
                 .map<Message>((r) => CheckoutSuccess(r))

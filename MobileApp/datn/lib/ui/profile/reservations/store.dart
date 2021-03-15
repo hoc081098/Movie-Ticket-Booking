@@ -4,6 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../../domain/model/reservation.dart';
+import '../../../utils/streams.dart';
 import 'reservations_state.dart';
 
 typedef GetReservations = Stream<BuiltList<Reservation>> Function({
@@ -78,7 +79,7 @@ class SideEffects {
     return getReservations(page: nextPage, perPage: perPage)
         .map<ReservationsAction>((items) => SuccessAction(items))
         .startWith(loadingAction)
-        .debug(identifier: toString())
+        .debug(identifier: toString(), log: streamDebugPrint)
         .onErrorReturnWith((error) => FailureAction(error));
   }
 
@@ -86,6 +87,6 @@ class SideEffects {
       getReservations(page: 1, perPage: perPage)
           .map<ReservationsAction>((items) => RefreshSuccessAction(items))
           .onErrorReturnWith((error) => RefreshFailureAction(error))
-          .debug(identifier: toString())
+          .debug(identifier: toString(), log: streamDebugPrint)
           .doOnCancel(() => action.completer.complete());
 }

@@ -96,7 +96,7 @@ class _NotificationsPageState extends State<NotificationsPage>
       AppScaffold.currentIndexStream(context)
           .where((event) => event == AppScaffoldIndex.notifications)
           .take(1)
-          .debug(identifier: '>>> NOTIFICATIONS')
+          .debug(identifier: '>>> NOTIFICATIONS', log: streamDebugPrint)
           .doOnData((event) => s.dispatch(const LoadFirstPageAction()))
           .exhaustMap((_) => notificationManager.notification$)
           .map((event) => AddedNotificationAction(event))

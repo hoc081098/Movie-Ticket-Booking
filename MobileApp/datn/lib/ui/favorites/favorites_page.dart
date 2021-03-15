@@ -16,6 +16,7 @@ import '../../domain/repository/favorites_repository.dart';
 import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/snackbar.dart';
+import '../../utils/streams.dart';
 import '../../utils/type_defs.dart';
 import '../app_scaffold.dart';
 import '../home/detail/movie_detail_page.dart';
@@ -46,7 +47,7 @@ class _FavoritesPageState extends State<FavoritesPage> with DisposeBagMixin {
       AppScaffold.currentIndexStream(context)
           .where((i) => i == AppScaffoldIndex.favorites)
           .take(1)
-          .debug(identifier: '>>> FAVORITES')
+          .debug(identifier: '>>> FAVORITES', log: streamDebugPrint)
           .listen((event) => bloc!.fetch())
           .disposedBy(bag);
 
