@@ -6,7 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart'; // TODO: Replace flutter_facebook_login by flutter_facebook_auth
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
@@ -36,7 +36,7 @@ class UserRepositoryImpl implements UserRepository {
 
   final Function1<UserResponse, UserLocal> _userResponseToUserLocal;
   final GoogleSignIn _googleSignIn;
-  final FacebookLogin _facebookLogin;
+  final FacebookAuth _facebookAuth;
 
   final SearchKeywordSource _searchKeywordSource;
 
@@ -50,7 +50,7 @@ class UserRepositoryImpl implements UserRepository {
     this._storage,
     Function1<UserLocal, User> userLocalToUserDomain,
     this._googleSignIn,
-    this._facebookLogin,
+    this._facebookAuth,
     this._firebaseMessaging,
     this._searchKeywordSource,
   ) : _user$ = _buildUserStream(
@@ -192,7 +192,7 @@ class UserRepositoryImpl implements UserRepository {
     await _googleSignIn.signOut();
 
     // facebook
-    await _facebookLogin.logOut();
+    await _facebookAuth.logOut();
 
     // firebase
     await _auth.signOut();
@@ -329,38 +329,46 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> facebookSignIn() async {
-    final result = await _facebookLogin.logIn(['email']);
-
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        final token = result?.accessToken?.token;
-
-        if (token == null) {
-          throw PlatformException(
-            code: 'error',
-            message: result.errorMessage,
-            details: null,
-          );
-        }
-
-        await _auth.signInWithCredential(
-          FacebookAuthProvider.credential(token),
-        );
-        await _checkCompletedLoginAfterFirebaseLogin();
-
-        return;
-      case FacebookLoginStatus.cancelledByUser:
-        throw PlatformException(
-          code: 'cancelledByUser',
-          message: 'Facebook sign in canceled',
-          details: null,
-        );
-      case FacebookLoginStatus.error:
+    try {
+      final token = (await _facebookAuth.login())?.token;
+      if (token == null) {
         throw PlatformException(
           code: 'error',
-          message: result.errorMessage,
+          message: 'Login failed',
           details: null,
         );
+      }
+
+      await _auth.signInWithCredential(
+        FacebookAuthProvider.credential(token),
+      );
+      await _checkCompletedLoginAfterFirebaseLogin();
+    } on FacebookAuthException catch (e) {
+      final errorCode = e.errorCode;
+
+      debugPrint(e.errorCode);
+      debugPrint(e.message);
+
+      switch (errorCode) {
+        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+          throw PlatformException(
+            code: errorCode,
+            message: 'You have a previous login operation in progress',
+            details: null,
+          );
+        case FacebookAuthErrorCode.CANCELLED:
+          throw PlatformException(
+            code: errorCode,
+            message: 'Facebook sign in canceled',
+            details: null,
+          );
+        case FacebookAuthErrorCode.FAILED:
+          throw PlatformException(
+            code: errorCode,
+            message: 'Login failed',
+            details: null,
+          );
+      }
     }
   }
 }

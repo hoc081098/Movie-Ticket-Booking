@@ -40,7 +40,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   built_collection: ^5.0.0
   loading_indicator: ^1.2.0
-  flutter_facebook_login: ^3.0.0
+  flutter_facebook_auth: ^3.0.0+1
   google_sign_in: ^5.0.0
   font_awesome_flutter: ^9.0.0-nullsafety
   image_picker: ^0.7.2+1
