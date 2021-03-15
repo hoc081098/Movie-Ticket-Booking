@@ -18,11 +18,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
     with SingleTickerProviderStateMixin {
   DisposeBag? disposeBag;
 
-  late AnimationController buttonController;
-  late Animation<double> buttonSqueezeAnimation;
+  late final AnimationController buttonController;
+  late final Animation<double> buttonSqueezeAnimation;
 
-  late FocusNode passwordFocusNode;
-  late TextEditingController emailController;
+  late final FocusNode passwordFocusNode;
+  late final TextEditingController emailController;
 
   @override
   void initState() {
