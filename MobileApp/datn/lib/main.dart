@@ -254,9 +254,8 @@ void _setupLogging() {
       isDev ? const RxSharedPreferencesDefaultLogger() : null;
 
   //Logging Http request and response.
-  // requestLogger = debugPrintSynchronously;
-  // requestBodyLogger = debugPrint;
-  // responseLogger = debugPrintSynchronously;
+  AppClientLoggerDefaults.logger =
+      isDev ? const DevAppClientLogger() : const ProdAppClientLogger();
 
   // Function used by generated code to get a `BuiltValueToStringHelper`.
   newBuiltValueToStringHelper = (className) => isDev
