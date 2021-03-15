@@ -30,7 +30,7 @@ EnvKey _fromString(s) => EnvKey.values.firstWhere((v) => describeEnum(v) == s);
 class EnvManager {
   static final _shared = EnvManager._private();
 
-  final _init = AsyncMemoizer();
+  final _init = AsyncMemoizer<void>();
   Map<EnvKey, String>? _env;
 
   // Ensures end-users cannot initialize the class.

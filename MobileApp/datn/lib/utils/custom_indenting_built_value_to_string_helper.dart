@@ -37,3 +37,13 @@ class CustomIndentingBuiltValueToStringHelper
     return stringResult;
   }
 }
+
+class EmptyBuiltValueToStringHelper implements BuiltValueToStringHelper {
+  const EmptyBuiltValueToStringHelper();
+
+  @override
+  void add(String field, Object? value) {}
+
+  @override
+  String toString() => '<empty>';
+}

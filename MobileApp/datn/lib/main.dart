@@ -1,6 +1,7 @@
 // @dart=2.9
 
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
+import 'package:disposebag/disposebag.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -53,10 +54,17 @@ import 'utils/custom_indenting_built_value_to_string_helper.dart';
 import 'utils/type_defs.dart';
 
 void main() async {
-  newBuiltValueToStringHelper =
-      (className) => CustomIndentingBuiltValueToStringHelper(className, true);
-
   WidgetsFlutterBinding.ensureInitialized();
+
+  //
+  // Setup env mode.
+  //
+  EnvManager.mode = EnvMode.PROD;
+
+  //
+  // Setup logging.
+  //
+  _setupLogging();
 
   //
   // Init Firebase
@@ -86,14 +94,12 @@ void main() async {
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
   final firebaseMessaging = FirebaseMessaging.instance;
-
   final googleSignIn = GoogleSignIn();
   final facebookAuth = FacebookAuth.instance;
 
   //
   // Local and remote
   //
-  RxSharedPreferencesConfigs.logger = const RxSharedPreferencesDefaultLogger();
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
   final keywordSource = SearchKeywordSourceImpl(preferences);
@@ -229,6 +235,33 @@ Future<void> _envConfig() async {
     print('###### error $e');
   }
 
-  EnvManager.mode = EnvMode.PROD;
   await EnvManager.shared.init(fromRemote);
+}
+
+void _setupLogging() {
+  final isDev = EnvManager.mode == EnvMode.DEV;
+  print('💡💡💡 isDev=$isDev');
+
+  // Prints a message to the console, which you can access using the "flutter"
+  // tool's "logs" command ("flutter logs").
+  debugPrint = isDev ? debugPrintSynchronously : (message, {wrapWidth}) {};
+
+  // Logger that logs disposed resources.
+  DisposeBagConfigs.logger = isDev ? disposeBagDefaultLogger : null;
+
+  // Log messages about operations (such as read, write, value change) and stream events.
+  RxSharedPreferencesConfigs.logger =
+      isDev ? const RxSharedPreferencesDefaultLogger() : null;
+
+  //Logging Http request and response.
+  // requestLogger = debugPrintSynchronously;
+  // requestBodyLogger = debugPrint;
+  // responseLogger = debugPrintSynchronously;
+
+  // Function used by generated code to get a `BuiltValueToStringHelper`.
+  newBuiltValueToStringHelper = (className) => isDev
+      ? CustomIndentingBuiltValueToStringHelper(className, true)
+      : const EmptyBuiltValueToStringHelper();
+
+  debugPrint('💡💡💡 debugPrint prints this line');
 }
