@@ -52,7 +52,7 @@ export class User extends Document {
 
   @Prop({
     type: String,
-    enum: ['ADMIN', 'ADMIN', 'STAFF'],
+    enum: ['ADMIN', 'USER', 'STAFF'],
     required: true,
     default: 'USER',
   })
