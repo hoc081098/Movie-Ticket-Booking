@@ -58,10 +58,12 @@ class ProfilePage extends StatelessWidget {
       foregroundColor: Colors.white,
       children: [
         SpeedDialChild(
-          child: FaIcon(
-            FontAwesomeIcons.ticketAlt,
-            size: 20,
-            color: Colors.white,
+          child: Center(
+            child: FaIcon(
+              FontAwesomeIcons.ticketAlt,
+              size: 20,
+              color: Colors.white,
+            ),
           ),
           backgroundColor: color,
           onTap: () => AppScaffold.navigatorOfCurrentIndex(context)
