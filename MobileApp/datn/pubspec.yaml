@@ -47,7 +47,6 @@ dependencies:
   cached_network_image: ^3.0.0-nullsafety
   firebase_storage: ^8.0.0
   flutter_dotenv: ^4.0.0-nullsafety.0
-  flutter_google_places: 0.2.6
   datetime_picker_formfield: ^2.0.0
   intl: ^0.17.0
   tuple: ^2.0.0
@@ -71,6 +70,7 @@ dependencies:
   rxdart_ext: ^0.0.1
   listenable_stream: ^1.0.0-nullsafety.1
   stream_loader: ^1.1.0-nullsafety.2
+  flutter_google_places_hoc081098: ^1.0.0-nullsafety.0
 
   flutter:
     sdk: flutter
@@ -83,10 +83,6 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dependency_overrides:
-  flutter_google_places:
-    git:
-      url: https://github.com/hoc081098/flutter_google_places.git
-      ref: 7b6c2aa2053131142c0e48639823d24f312d00c1
   loading_indicator:
     git:
       url: https://github.com/Mayb3Nots/loading_indicator.git
