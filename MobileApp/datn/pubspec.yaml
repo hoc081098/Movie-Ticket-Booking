@@ -64,8 +64,8 @@ dependencies:
   distinct_value_connectable_stream: ^1.2.0-nullsafety.5
   flutter_provider: ^2.0.0
   rx_shared_preferences: ^2.0.0-nullsafety.0
-  disposebag: ^1.5.0-nullsafety.1
-  flutter_disposebag: ^1.1.0-nullsafety.1
+  disposebag: ^1.5.0
+  flutter_disposebag: ^1.1.0
   flutter_bloc_pattern: ^2.0.0
   rxdart_ext: ^0.0.1
   listenable_stream: ^1.0.0-nullsafety.1
