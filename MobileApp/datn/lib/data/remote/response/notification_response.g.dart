@@ -23,10 +23,10 @@ class _$NotificationResponseSerializer
   final String wireName = 'NotificationResponse';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, NotificationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'title',
@@ -54,7 +54,7 @@ class _$NotificationResponseSerializer
 
   @override
   NotificationResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new NotificationResponseBuilder();
 
@@ -62,7 +62,7 @@ class _$NotificationResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -83,7 +83,7 @@ class _$NotificationResponseSerializer
         case 'reservation':
           result.reservation.replace(serializers.deserialize(value,
                   specifiedType:
-                      const FullType(NotificationResponse_ReservationResponse))
+                      const FullType(NotificationResponse_ReservationResponse))!
               as NotificationResponse_ReservationResponse);
           break;
         case 'createdAt':
@@ -112,10 +112,10 @@ class _$NotificationResponse_ReservationResponseSerializer
   final String wireName = 'NotificationResponse_ReservationResponse';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, NotificationResponse_ReservationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'email',
@@ -149,7 +149,7 @@ class _$NotificationResponse_ReservationResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -162,7 +162,7 @@ class _$NotificationResponse_ReservationResponseSerializer
 
   @override
   NotificationResponse_ReservationResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new NotificationResponse_ReservationResponseBuilder();
 
@@ -170,7 +170,7 @@ class _$NotificationResponse_ReservationResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -195,7 +195,7 @@ class _$NotificationResponse_ReservationResponseSerializer
         case 'products':
           result.products.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(ProductIdAndQuantity)]))
+                      BuiltList, const [const FullType(ProductIdAndQuantity)]))!
               as BuiltList<Object>);
           break;
         case 'total_price':
@@ -204,7 +204,7 @@ class _$NotificationResponse_ReservationResponseSerializer
           break;
         case 'show_time':
           result.show_time.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(ShowTimeFullResponse))
+                  specifiedType: const FullType(ShowTimeFullResponse))!
               as ShowTimeFullResponse);
           break;
         case 'user':
@@ -247,17 +247,17 @@ class _$NotificationResponse extends NotificationResponse {
   final DateTime updatedAt;
 
   factory _$NotificationResponse(
-          [void Function(NotificationResponseBuilder) updates]) =>
+          [void Function(NotificationResponseBuilder)? updates]) =>
       (new NotificationResponseBuilder()..update(updates)).build();
 
   _$NotificationResponse._(
-      {this.id,
-      this.title,
-      this.body,
-      this.to_user,
-      this.reservation,
-      this.createdAt,
-      this.updatedAt})
+      {required this.id,
+      required this.title,
+      required this.body,
+      required this.to_user,
+      required this.reservation,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'NotificationResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(
@@ -325,39 +325,39 @@ class _$NotificationResponse extends NotificationResponse {
 
 class NotificationResponseBuilder
     implements Builder<NotificationResponse, NotificationResponseBuilder> {
-  _$NotificationResponse _$v;
+  _$NotificationResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _title;
-  String get title => _$this._title;
-  set title(String title) => _$this._title = title;
+  String? _title;
+  String? get title => _$this._title;
+  set title(String? title) => _$this._title = title;
 
-  String _body;
-  String get body => _$this._body;
-  set body(String body) => _$this._body = body;
+  String? _body;
+  String? get body => _$this._body;
+  set body(String? body) => _$this._body = body;
 
-  String _to_user;
-  String get to_user => _$this._to_user;
-  set to_user(String to_user) => _$this._to_user = to_user;
+  String? _to_user;
+  String? get to_user => _$this._to_user;
+  set to_user(String? to_user) => _$this._to_user = to_user;
 
-  NotificationResponse_ReservationResponseBuilder _reservation;
+  NotificationResponse_ReservationResponseBuilder? _reservation;
   NotificationResponse_ReservationResponseBuilder get reservation =>
       _$this._reservation ??=
           new NotificationResponse_ReservationResponseBuilder();
   set reservation(
-          NotificationResponse_ReservationResponseBuilder reservation) =>
+          NotificationResponse_ReservationResponseBuilder? reservation) =>
       _$this._reservation = reservation;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   NotificationResponseBuilder();
 
@@ -383,7 +383,7 @@ class NotificationResponseBuilder
   }
 
   @override
-  void update(void Function(NotificationResponseBuilder) updates) {
+  void update(void Function(NotificationResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -407,7 +407,7 @@ class NotificationResponseBuilder
               updatedAt: BuiltValueNullFieldError.checkNotNull(
                   updatedAt, 'NotificationResponse', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'reservation';
         reservation.build();
@@ -429,7 +429,7 @@ class _$NotificationResponse_ReservationResponse
   @override
   final String email;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final int original_price;
   @override
@@ -450,24 +450,24 @@ class _$NotificationResponse_ReservationResponse
   final DateTime updatedAt;
 
   factory _$NotificationResponse_ReservationResponse(
-          [void Function(NotificationResponse_ReservationResponseBuilder)
+          [void Function(NotificationResponse_ReservationResponseBuilder)?
               updates]) =>
       (new NotificationResponse_ReservationResponseBuilder()..update(updates))
           .build();
 
   _$NotificationResponse_ReservationResponse._(
-      {this.id,
-      this.email,
+      {required this.id,
+      required this.email,
       this.is_active,
-      this.original_price,
-      this.phone_number,
-      this.products,
-      this.total_price,
-      this.show_time,
-      this.user,
-      this.payment_intent_id,
-      this.createdAt,
-      this.updatedAt})
+      required this.original_price,
+      required this.phone_number,
+      required this.products,
+      required this.total_price,
+      required this.show_time,
+      required this.user,
+      required this.payment_intent_id,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         id, 'NotificationResponse_ReservationResponse', 'id');
@@ -571,61 +571,61 @@ class NotificationResponse_ReservationResponseBuilder
     implements
         Builder<NotificationResponse_ReservationResponse,
             NotificationResponse_ReservationResponseBuilder> {
-  _$NotificationResponse_ReservationResponse _$v;
+  _$NotificationResponse_ReservationResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _email;
-  String get email => _$this._email;
-  set email(String email) => _$this._email = email;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  int _original_price;
-  int get original_price => _$this._original_price;
-  set original_price(int original_price) =>
+  int? _original_price;
+  int? get original_price => _$this._original_price;
+  set original_price(int? original_price) =>
       _$this._original_price = original_price;
 
-  String _phone_number;
-  String get phone_number => _$this._phone_number;
-  set phone_number(String phone_number) => _$this._phone_number = phone_number;
+  String? _phone_number;
+  String? get phone_number => _$this._phone_number;
+  set phone_number(String? phone_number) => _$this._phone_number = phone_number;
 
-  ListBuilder<ProductIdAndQuantity> _products;
+  ListBuilder<ProductIdAndQuantity>? _products;
   ListBuilder<ProductIdAndQuantity> get products =>
       _$this._products ??= new ListBuilder<ProductIdAndQuantity>();
-  set products(ListBuilder<ProductIdAndQuantity> products) =>
+  set products(ListBuilder<ProductIdAndQuantity>? products) =>
       _$this._products = products;
 
-  int _total_price;
-  int get total_price => _$this._total_price;
-  set total_price(int total_price) => _$this._total_price = total_price;
+  int? _total_price;
+  int? get total_price => _$this._total_price;
+  set total_price(int? total_price) => _$this._total_price = total_price;
 
-  ShowTimeFullResponseBuilder _show_time;
+  ShowTimeFullResponseBuilder? _show_time;
   ShowTimeFullResponseBuilder get show_time =>
       _$this._show_time ??= new ShowTimeFullResponseBuilder();
-  set show_time(ShowTimeFullResponseBuilder show_time) =>
+  set show_time(ShowTimeFullResponseBuilder? show_time) =>
       _$this._show_time = show_time;
 
-  String _user;
-  String get user => _$this._user;
-  set user(String user) => _$this._user = user;
+  String? _user;
+  String? get user => _$this._user;
+  set user(String? user) => _$this._user = user;
 
-  String _payment_intent_id;
-  String get payment_intent_id => _$this._payment_intent_id;
-  set payment_intent_id(String payment_intent_id) =>
+  String? _payment_intent_id;
+  String? get payment_intent_id => _$this._payment_intent_id;
+  set payment_intent_id(String? payment_intent_id) =>
       _$this._payment_intent_id = payment_intent_id;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   NotificationResponse_ReservationResponseBuilder();
 
@@ -657,7 +657,7 @@ class NotificationResponse_ReservationResponseBuilder
 
   @override
   void update(
-      void Function(NotificationResponse_ReservationResponseBuilder) updates) {
+      void Function(NotificationResponse_ReservationResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -687,7 +687,7 @@ class NotificationResponse_ReservationResponseBuilder
               createdAt: BuiltValueNullFieldError.checkNotNull(createdAt, 'NotificationResponse_ReservationResponse', 'createdAt'),
               updatedAt: BuiltValueNullFieldError.checkNotNull(updatedAt, 'NotificationResponse_ReservationResponse', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'products';
         products.build();

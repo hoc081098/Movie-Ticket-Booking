@@ -17,9 +17,9 @@ class _$TicketResponseSerializer
   final String wireName = 'TicketResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, TicketResponse object,
+  Iterable<Object?> serialize(Serializers serializers, TicketResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'price',
@@ -37,7 +37,7 @@ class _$TicketResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -57,7 +57,7 @@ class _$TicketResponseSerializer
 
   @override
   TicketResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new TicketResponseBuilder();
 
@@ -65,7 +65,7 @@ class _$TicketResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -85,7 +85,7 @@ class _$TicketResponseSerializer
           break;
         case 'seat':
           result.seat.replace(serializers.deserialize(value,
-              specifiedType: const FullType(SeatResponse)) as SeatResponse);
+              specifiedType: const FullType(SeatResponse))! as SeatResponse);
           break;
         case 'show_time':
           result.show_time = serializers.deserialize(value,
@@ -110,11 +110,11 @@ class _$TicketResponse extends TicketResponse {
   @override
   final String id;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final int price;
   @override
-  final String reservation;
+  final String? reservation;
   @override
   final SeatResponse seat;
   @override
@@ -124,18 +124,18 @@ class _$TicketResponse extends TicketResponse {
   @override
   final DateTime updatedAt;
 
-  factory _$TicketResponse([void Function(TicketResponseBuilder) updates]) =>
+  factory _$TicketResponse([void Function(TicketResponseBuilder)? updates]) =>
       (new TicketResponseBuilder()..update(updates)).build();
 
   _$TicketResponse._(
-      {this.id,
+      {required this.id,
       this.is_active,
-      this.price,
+      required this.price,
       this.reservation,
-      this.seat,
-      this.show_time,
-      this.createdAt,
-      this.updatedAt})
+      required this.seat,
+      required this.show_time,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'TicketResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(price, 'TicketResponse', 'price');
@@ -203,39 +203,39 @@ class _$TicketResponse extends TicketResponse {
 
 class TicketResponseBuilder
     implements Builder<TicketResponse, TicketResponseBuilder> {
-  _$TicketResponse _$v;
+  _$TicketResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  int _price;
-  int get price => _$this._price;
-  set price(int price) => _$this._price = price;
+  int? _price;
+  int? get price => _$this._price;
+  set price(int? price) => _$this._price = price;
 
-  String _reservation;
-  String get reservation => _$this._reservation;
-  set reservation(String reservation) => _$this._reservation = reservation;
+  String? _reservation;
+  String? get reservation => _$this._reservation;
+  set reservation(String? reservation) => _$this._reservation = reservation;
 
-  SeatResponseBuilder _seat;
+  SeatResponseBuilder? _seat;
   SeatResponseBuilder get seat => _$this._seat ??= new SeatResponseBuilder();
-  set seat(SeatResponseBuilder seat) => _$this._seat = seat;
+  set seat(SeatResponseBuilder? seat) => _$this._seat = seat;
 
-  String _show_time;
-  String get show_time => _$this._show_time;
-  set show_time(String show_time) => _$this._show_time = show_time;
+  String? _show_time;
+  String? get show_time => _$this._show_time;
+  set show_time(String? show_time) => _$this._show_time = show_time;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   TicketResponseBuilder();
 
@@ -262,7 +262,7 @@ class TicketResponseBuilder
   }
 
   @override
-  void update(void Function(TicketResponseBuilder) updates) {
+  void update(void Function(TicketResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -286,7 +286,7 @@ class TicketResponseBuilder
               updatedAt: BuiltValueNullFieldError.checkNotNull(
                   updatedAt, 'TicketResponse', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'seat';
         seat.build();

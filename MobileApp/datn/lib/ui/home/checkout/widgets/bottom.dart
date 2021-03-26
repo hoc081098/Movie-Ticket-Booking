@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,7 +10,6 @@ import '../../../../domain/model/product.dart';
 import '../../../../domain/model/promotion.dart';
 import '../../../../domain/model/ticket.dart';
 import '../../../../generated/l10n.dart';
-import '../../../../utils/iterable.dart';
 import '../checkout_page.dart';
 
 class BottomRow extends StatelessWidget {
@@ -23,11 +23,11 @@ class BottomRow extends StatelessWidget {
   final int originalTotalPrice;
 
   BottomRow({
-    Key key,
-    @required this.comboItems,
-    @required this.tickets,
-    @required this.onSubmit,
-  })  : totalCount =
+    Key? key,
+    required this.comboItems,
+    required this.tickets,
+    required this.onSubmit,
+  })   : totalCount =
             comboItems.fold<int>(0, (acc, e) => acc + e.item2) + tickets.length,
         originalTotalPrice = tickets.fold<int>(0, (acc, e) => acc + e.price) +
             comboItems.fold<int>(0, (acc, e) => acc + e.item1.price * e.item2),
@@ -38,12 +38,12 @@ class BottomRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final bloc = BlocProvider.of<CheckoutBloc>(context);
 
-    final priceStyle = textTheme.subtitle1.copyWith(
+    final priceStyle = textTheme.subtitle1!.copyWith(
       color: Theme.of(context).primaryColor,
       fontWeight: FontWeight.w500,
     );
 
-    return RxStreamBuilder<Promotion>(
+    return RxStreamBuilder<Promotion?>(
       stream: bloc.selectedPromotion$,
       builder: (context, promotion) {
         final totalPrice = promotion != null
@@ -84,7 +84,7 @@ class BottomRow extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   totalCount.toString(),
-                                  style: textTheme.headline6.copyWith(
+                                  style: textTheme.headline6!.copyWith(
                                     fontSize: 14,
                                     color: Colors.white,
                                   ),
@@ -111,7 +111,7 @@ class BottomRow extends StatelessWidget {
               child: RxStreamBuilder<bool>(
                 stream: bloc.isLoading$,
                 builder: (context, data) {
-                  if (data) {
+                  if (data!) {
                     return Center(
                       child: CircularProgressIndicator(
                         strokeWidth: 3,
@@ -128,7 +128,7 @@ class BottomRow extends StatelessWidget {
                     onPressed: onSubmit,
                     child: Text(
                       S.of(context).FINISH,
-                      style: textTheme.headline6
+                      style: textTheme.headline6!
                           .copyWith(fontSize: 16, color: Colors.white),
                     ),
                   );
@@ -141,14 +141,13 @@ class BottomRow extends StatelessWidget {
     );
   }
 
-  void showOrder(BuildContext context, Promotion promotion) {
-    final style = Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15);
+  void showOrder(BuildContext context, Promotion? promotion) {
+    final style = Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 15);
     final style2 = style.copyWith(fontSize: 17);
     final titleStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 13);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 13);
 
-    final ticketsByCount =
-        tickets.groupBy((i) => i.seat.count, (i) => i).entries;
+    final ticketsByCount = tickets.groupListsBy((i) => i.seat.count).entries;
 
     final children = [
       ...[

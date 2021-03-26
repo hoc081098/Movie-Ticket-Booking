@@ -17,9 +17,9 @@ class _$TheatreResponseSerializer
   final String wireName = 'TheatreResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, TheatreResponse object,
+  Iterable<Object?> serialize(Serializers serializers, TheatreResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'location',
@@ -53,7 +53,7 @@ class _$TheatreResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -94,7 +94,7 @@ class _$TheatreResponseSerializer
 
   @override
   TheatreResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new TheatreResponseBuilder();
 
@@ -102,7 +102,7 @@ class _$TheatreResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -110,7 +110,7 @@ class _$TheatreResponseSerializer
           break;
         case 'location':
           result.location.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(LocationResponse))
+                  specifiedType: const FullType(LocationResponse))!
               as LocationResponse);
           break;
         case 'is_active':
@@ -119,8 +119,8 @@ class _$TheatreResponseSerializer
           break;
         case 'rooms':
           result.rooms.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
               as BuiltList<Object>);
           break;
         case 'name':
@@ -184,7 +184,7 @@ class _$TheatreResponse extends TheatreResponse {
   @override
   final LocationResponse location;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final BuiltList<String> rooms;
   @override
@@ -196,7 +196,7 @@ class _$TheatreResponse extends TheatreResponse {
   @override
   final String description;
   @override
-  final String email;
+  final String? email;
   @override
   final String opening_hours;
   @override
@@ -206,29 +206,29 @@ class _$TheatreResponse extends TheatreResponse {
   @override
   final DateTime updatedAt;
   @override
-  final double distance;
+  final double? distance;
   @override
-  final String thumbnail;
+  final String? thumbnail;
   @override
-  final String cover;
+  final String? cover;
 
-  factory _$TheatreResponse([void Function(TheatreResponseBuilder) updates]) =>
+  factory _$TheatreResponse([void Function(TheatreResponseBuilder)? updates]) =>
       (new TheatreResponseBuilder()..update(updates)).build();
 
   _$TheatreResponse._(
-      {this.id,
-      this.location,
+      {required this.id,
+      required this.location,
       this.is_active,
-      this.rooms,
-      this.name,
-      this.address,
-      this.phone_number,
-      this.description,
+      required this.rooms,
+      required this.name,
+      required this.address,
+      required this.phone_number,
+      required this.description,
       this.email,
-      this.opening_hours,
-      this.room_summary,
-      this.createdAt,
-      this.updatedAt,
+      required this.opening_hours,
+      required this.room_summary,
+      required this.createdAt,
+      required this.updatedAt,
       this.distance,
       this.thumbnail,
       this.cover})
@@ -348,73 +348,74 @@ class _$TheatreResponse extends TheatreResponse {
 
 class TheatreResponseBuilder
     implements Builder<TheatreResponse, TheatreResponseBuilder> {
-  _$TheatreResponse _$v;
+  _$TheatreResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  LocationResponseBuilder _location;
+  LocationResponseBuilder? _location;
   LocationResponseBuilder get location =>
       _$this._location ??= new LocationResponseBuilder();
-  set location(LocationResponseBuilder location) => _$this._location = location;
+  set location(LocationResponseBuilder? location) =>
+      _$this._location = location;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  ListBuilder<String> _rooms;
+  ListBuilder<String>? _rooms;
   ListBuilder<String> get rooms => _$this._rooms ??= new ListBuilder<String>();
-  set rooms(ListBuilder<String> rooms) => _$this._rooms = rooms;
+  set rooms(ListBuilder<String>? rooms) => _$this._rooms = rooms;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  String _address;
-  String get address => _$this._address;
-  set address(String address) => _$this._address = address;
+  String? _address;
+  String? get address => _$this._address;
+  set address(String? address) => _$this._address = address;
 
-  String _phone_number;
-  String get phone_number => _$this._phone_number;
-  set phone_number(String phone_number) => _$this._phone_number = phone_number;
+  String? _phone_number;
+  String? get phone_number => _$this._phone_number;
+  set phone_number(String? phone_number) => _$this._phone_number = phone_number;
 
-  String _description;
-  String get description => _$this._description;
-  set description(String description) => _$this._description = description;
+  String? _description;
+  String? get description => _$this._description;
+  set description(String? description) => _$this._description = description;
 
-  String _email;
-  String get email => _$this._email;
-  set email(String email) => _$this._email = email;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
-  String _opening_hours;
-  String get opening_hours => _$this._opening_hours;
-  set opening_hours(String opening_hours) =>
+  String? _opening_hours;
+  String? get opening_hours => _$this._opening_hours;
+  set opening_hours(String? opening_hours) =>
       _$this._opening_hours = opening_hours;
 
-  String _room_summary;
-  String get room_summary => _$this._room_summary;
-  set room_summary(String room_summary) => _$this._room_summary = room_summary;
+  String? _room_summary;
+  String? get room_summary => _$this._room_summary;
+  set room_summary(String? room_summary) => _$this._room_summary = room_summary;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
-  double _distance;
-  double get distance => _$this._distance;
-  set distance(double distance) => _$this._distance = distance;
+  double? _distance;
+  double? get distance => _$this._distance;
+  set distance(double? distance) => _$this._distance = distance;
 
-  String _thumbnail;
-  String get thumbnail => _$this._thumbnail;
-  set thumbnail(String thumbnail) => _$this._thumbnail = thumbnail;
+  String? _thumbnail;
+  String? get thumbnail => _$this._thumbnail;
+  set thumbnail(String? thumbnail) => _$this._thumbnail = thumbnail;
 
-  String _cover;
-  String get cover => _$this._cover;
-  set cover(String cover) => _$this._cover = cover;
+  String? _cover;
+  String? get cover => _$this._cover;
+  set cover(String? cover) => _$this._cover = cover;
 
   TheatreResponseBuilder();
 
@@ -449,7 +450,7 @@ class TheatreResponseBuilder
   }
 
   @override
-  void update(void Function(TheatreResponseBuilder) updates) {
+  void update(void Function(TheatreResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -485,7 +486,7 @@ class TheatreResponseBuilder
               thumbnail: thumbnail,
               cover: cover);
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'location';
         location.build();

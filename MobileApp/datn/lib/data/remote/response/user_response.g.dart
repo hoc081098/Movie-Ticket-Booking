@@ -19,10 +19,10 @@ class _$LocationResponseSerializer
   final String wireName = 'LocationResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, LocationResponse object,
+  Iterable<Object?> serialize(Serializers serializers, LocationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.coordinates;
     if (value != null) {
       result
@@ -36,7 +36,7 @@ class _$LocationResponseSerializer
 
   @override
   LocationResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new LocationResponseBuilder();
 
@@ -44,12 +44,12 @@ class _$LocationResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'coordinates':
           result.coordinates.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(double)]))
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(double)]))!
               as BuiltList<Object>);
           break;
       }
@@ -66,9 +66,9 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
   final String wireName = 'UserResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, UserResponse object,
+  Iterable<Object?> serialize(Serializers serializers, UserResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'uid',
       serializers.serialize(object.uid, specifiedType: const FullType(String)),
       'email',
@@ -86,7 +86,7 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
       'role',
       serializers.serialize(object.role, specifiedType: const FullType(String)),
     ];
-    Object value;
+    Object? value;
     value = object.phoneNumber;
     if (value != null) {
       result
@@ -133,7 +133,8 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
   }
 
   @override
-  UserResponse deserialize(Serializers serializers, Iterable<Object> serialized,
+  UserResponse deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new UserResponseBuilder();
 
@@ -141,7 +142,7 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'uid':
           result.uid = serializers.deserialize(value,
@@ -177,7 +178,7 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
           break;
         case 'location':
           result.location.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(LocationResponse))
+                  specifiedType: const FullType(LocationResponse))!
               as LocationResponse);
           break;
         case 'is_completed':
@@ -201,10 +202,10 @@ class _$UserResponseSerializer implements StructuredSerializer<UserResponse> {
 
 class _$LocationResponse extends LocationResponse {
   @override
-  final BuiltList<double> coordinates;
+  final BuiltList<double>? coordinates;
 
   factory _$LocationResponse(
-          [void Function(LocationResponseBuilder) updates]) =>
+          [void Function(LocationResponseBuilder)? updates]) =>
       (new LocationResponseBuilder()..update(updates)).build();
 
   _$LocationResponse._({this.coordinates}) : super._();
@@ -238,12 +239,12 @@ class _$LocationResponse extends LocationResponse {
 
 class LocationResponseBuilder
     implements Builder<LocationResponse, LocationResponseBuilder> {
-  _$LocationResponse _$v;
+  _$LocationResponse? _$v;
 
-  ListBuilder<double> _coordinates;
+  ListBuilder<double>? _coordinates;
   ListBuilder<double> get coordinates =>
       _$this._coordinates ??= new ListBuilder<double>();
-  set coordinates(ListBuilder<double> coordinates) =>
+  set coordinates(ListBuilder<double>? coordinates) =>
       _$this._coordinates = coordinates;
 
   LocationResponseBuilder();
@@ -264,7 +265,7 @@ class LocationResponseBuilder
   }
 
   @override
-  void update(void Function(LocationResponseBuilder) updates) {
+  void update(void Function(LocationResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -275,7 +276,7 @@ class LocationResponseBuilder
       _$result =
           _$v ?? new _$LocationResponse._(coordinates: _coordinates?.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'coordinates';
         _coordinates?.build();
@@ -296,42 +297,42 @@ class _$UserResponse extends UserResponse {
   @override
   final String email;
   @override
-  final String phoneNumber;
+  final String? phoneNumber;
   @override
   final String fullName;
   @override
   final String gender;
   @override
-  final String avatar;
+  final String? avatar;
   @override
-  final String address;
+  final String? address;
   @override
-  final DateTime birthday;
+  final DateTime? birthday;
   @override
-  final LocationResponse location;
+  final LocationResponse? location;
   @override
   final bool isCompleted;
   @override
-  final bool isActive;
+  final bool? isActive;
   @override
   final String role;
 
-  factory _$UserResponse([void Function(UserResponseBuilder) updates]) =>
+  factory _$UserResponse([void Function(UserResponseBuilder)? updates]) =>
       (new UserResponseBuilder()..update(updates)).build();
 
   _$UserResponse._(
-      {this.uid,
-      this.email,
+      {required this.uid,
+      required this.email,
       this.phoneNumber,
-      this.fullName,
-      this.gender,
+      required this.fullName,
+      required this.gender,
       this.avatar,
       this.address,
       this.birthday,
       this.location,
-      this.isCompleted,
+      required this.isCompleted,
       this.isActive,
-      this.role})
+      required this.role})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(uid, 'UserResponse', 'uid');
     BuiltValueNullFieldError.checkNotNull(email, 'UserResponse', 'email');
@@ -414,56 +415,57 @@ class _$UserResponse extends UserResponse {
 
 class UserResponseBuilder
     implements Builder<UserResponse, UserResponseBuilder> {
-  _$UserResponse _$v;
+  _$UserResponse? _$v;
 
-  String _uid;
-  String get uid => _$this._uid;
-  set uid(String uid) => _$this._uid = uid;
+  String? _uid;
+  String? get uid => _$this._uid;
+  set uid(String? uid) => _$this._uid = uid;
 
-  String _email;
-  String get email => _$this._email;
-  set email(String email) => _$this._email = email;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
-  String _phoneNumber;
-  String get phoneNumber => _$this._phoneNumber;
-  set phoneNumber(String phoneNumber) => _$this._phoneNumber = phoneNumber;
+  String? _phoneNumber;
+  String? get phoneNumber => _$this._phoneNumber;
+  set phoneNumber(String? phoneNumber) => _$this._phoneNumber = phoneNumber;
 
-  String _fullName;
-  String get fullName => _$this._fullName;
-  set fullName(String fullName) => _$this._fullName = fullName;
+  String? _fullName;
+  String? get fullName => _$this._fullName;
+  set fullName(String? fullName) => _$this._fullName = fullName;
 
-  String _gender;
-  String get gender => _$this._gender;
-  set gender(String gender) => _$this._gender = gender;
+  String? _gender;
+  String? get gender => _$this._gender;
+  set gender(String? gender) => _$this._gender = gender;
 
-  String _avatar;
-  String get avatar => _$this._avatar;
-  set avatar(String avatar) => _$this._avatar = avatar;
+  String? _avatar;
+  String? get avatar => _$this._avatar;
+  set avatar(String? avatar) => _$this._avatar = avatar;
 
-  String _address;
-  String get address => _$this._address;
-  set address(String address) => _$this._address = address;
+  String? _address;
+  String? get address => _$this._address;
+  set address(String? address) => _$this._address = address;
 
-  DateTime _birthday;
-  DateTime get birthday => _$this._birthday;
-  set birthday(DateTime birthday) => _$this._birthday = birthday;
+  DateTime? _birthday;
+  DateTime? get birthday => _$this._birthday;
+  set birthday(DateTime? birthday) => _$this._birthday = birthday;
 
-  LocationResponseBuilder _location;
+  LocationResponseBuilder? _location;
   LocationResponseBuilder get location =>
       _$this._location ??= new LocationResponseBuilder();
-  set location(LocationResponseBuilder location) => _$this._location = location;
+  set location(LocationResponseBuilder? location) =>
+      _$this._location = location;
 
-  bool _isCompleted;
-  bool get isCompleted => _$this._isCompleted;
-  set isCompleted(bool isCompleted) => _$this._isCompleted = isCompleted;
+  bool? _isCompleted;
+  bool? get isCompleted => _$this._isCompleted;
+  set isCompleted(bool? isCompleted) => _$this._isCompleted = isCompleted;
 
-  bool _isActive;
-  bool get isActive => _$this._isActive;
-  set isActive(bool isActive) => _$this._isActive = isActive;
+  bool? _isActive;
+  bool? get isActive => _$this._isActive;
+  set isActive(bool? isActive) => _$this._isActive = isActive;
 
-  String _role;
-  String get role => _$this._role;
-  set role(String role) => _$this._role = role;
+  String? _role;
+  String? get role => _$this._role;
+  set role(String? role) => _$this._role = role;
 
   UserResponseBuilder();
 
@@ -494,7 +496,7 @@ class UserResponseBuilder
   }
 
   @override
-  void update(void Function(UserResponseBuilder) updates) {
+  void update(void Function(UserResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -523,7 +525,7 @@ class UserResponseBuilder
               role: BuiltValueNullFieldError.checkNotNull(
                   role, 'UserResponse', 'role'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'location';
         _location?.build();

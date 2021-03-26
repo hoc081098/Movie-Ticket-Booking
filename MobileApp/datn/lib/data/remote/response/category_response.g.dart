@@ -17,9 +17,9 @@ class _$CategoryResponseSerializer
   final String wireName = 'CategoryResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, CategoryResponse object,
+  Iterable<Object?> serialize(Serializers serializers, CategoryResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'name',
@@ -31,7 +31,7 @@ class _$CategoryResponseSerializer
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -44,7 +44,7 @@ class _$CategoryResponseSerializer
 
   @override
   CategoryResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new CategoryResponseBuilder();
 
@@ -52,7 +52,7 @@ class _$CategoryResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -91,14 +91,18 @@ class _$CategoryResponse extends CategoryResponse {
   @override
   final DateTime updatedAt;
   @override
-  final bool is_active;
+  final bool? is_active;
 
   factory _$CategoryResponse(
-          [void Function(CategoryResponseBuilder) updates]) =>
+          [void Function(CategoryResponseBuilder)? updates]) =>
       (new CategoryResponseBuilder()..update(updates)).build();
 
   _$CategoryResponse._(
-      {this.id, this.name, this.createdAt, this.updatedAt, this.is_active})
+      {required this.id,
+      required this.name,
+      required this.createdAt,
+      required this.updatedAt,
+      this.is_active})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'CategoryResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(name, 'CategoryResponse', 'name');
@@ -149,27 +153,27 @@ class _$CategoryResponse extends CategoryResponse {
 
 class CategoryResponseBuilder
     implements Builder<CategoryResponse, CategoryResponseBuilder> {
-  _$CategoryResponse _$v;
+  _$CategoryResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
   CategoryResponseBuilder();
 
@@ -193,7 +197,7 @@ class CategoryResponseBuilder
   }
 
   @override
-  void update(void Function(CategoryResponseBuilder) updates) {
+  void update(void Function(CategoryResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

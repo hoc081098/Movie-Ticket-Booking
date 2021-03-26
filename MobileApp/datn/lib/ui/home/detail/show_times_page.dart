@@ -26,7 +26,7 @@ import '../tickets/ticket_page.dart';
 class ShowTimesPage extends StatefulWidget {
   final Movie movie;
 
-  const ShowTimesPage({Key key, @required this.movie}) : super(key: key);
+  const ShowTimesPage({Key? key, required this.movie}) : super(key: key);
 
   @override
   _ShowTimesPageState createState() => _ShowTimesPageState();
@@ -39,9 +39,9 @@ class _ShowTimesPageState extends State<ShowTimesPage>
   final showTimeDateFormat = DateFormat('hh:mm a');
 
   final startDay = startOfDay(DateTime.now());
-  List<DateTime> days;
-  BehaviorSubject<DateTime> selectedDayS;
-  LoaderBloc<BuiltList<TheatreAndShowTimes>> bloc;
+  late List<DateTime> days;
+  late BehaviorSubject<DateTime> selectedDayS;
+  LoaderBloc<BuiltList<TheatreAndShowTimes>>? bloc;
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
         loaderFunction: () {
           final showTimesByDay$ = movieRepo.getShowTimes(
             movieId: widget.movie.id,
-            location: cityRepo.selectedCity$.value.location,
+            location: cityRepo.selectedCity$.requireValue.location,
           );
 
           return Rx.combineLatest2(
@@ -94,7 +94,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
 
   @override
   void dispose() {
-    bloc.dispose();
+    bloc!.dispose();
+    bloc = null;
     super.dispose();
   }
 
@@ -103,8 +104,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     super.build(context);
 
     final textTheme = Theme.of(context).textTheme;
-    final weekDayStyle = textTheme.button;
-    final ddMMStyle = textTheme.subtitle1.copyWith(fontSize: 15);
+    final weekDayStyle = textTheme.button!;
+    final ddMMStyle = textTheme.subtitle1!.copyWith(fontSize: 15);
     final weekDaySelectedStyle = weekDayStyle.copyWith(color: Colors.white);
     final ddMMSelectedStyle = ddMMStyle.copyWith(color: Colors.white);
     final accentColor = Theme.of(context).accentColor;
@@ -184,11 +185,11 @@ class _ShowTimesPageState extends State<ShowTimesPage>
             child: Container(
               child:
                   RxStreamBuilder<LoaderState<BuiltList<TheatreAndShowTimes>>>(
-                stream: bloc.state$,
+                stream: bloc!.state$,
                 builder: (context, data) {
                   return AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    child: _buildBottom(data),
+                    child: _buildBottom(data!),
                   );
                 },
               ),
@@ -203,8 +204,8 @@ class _ShowTimesPageState extends State<ShowTimesPage>
     if (state.error != null) {
       return MyErrorWidget(
         errorText:
-            S.of(context).error_with_message(getErrorMessage(state.error)),
-        onPressed: bloc.fetch,
+            S.of(context).error_with_message(getErrorMessage(state.error!)),
+        onPressed: bloc!.fetch,
       );
     }
 
@@ -220,7 +221,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
       );
     }
 
-    final list = state.content;
+    final list = state.content!;
 
     if (list.isEmpty) {
       return Center(
@@ -248,7 +249,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
 }
 
 class SelectCityWidget extends StatelessWidget {
-  const SelectCityWidget({Key key}) : super(key: key);
+  const SelectCityWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -260,7 +261,7 @@ class SelectCityWidget extends StatelessWidget {
         const SizedBox(width: 16),
         Text(
           S.of(context).selectTheArea,
-          style: textTheme.headline6.copyWith(fontSize: 16),
+          style: textTheme.headline6!.copyWith(fontSize: 16),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -268,9 +269,18 @@ class SelectCityWidget extends StatelessWidget {
             stream: cityRepo.selectedCity$,
             builder: (context, selected) {
               return PopupMenuButton<City>(
-                initialValue: selected,
+                initialValue: selected!,
                 onSelected: cityRepo.change,
                 offset: Offset(0, 56),
+                itemBuilder: (BuildContext context) {
+                  return [
+                    for (final city in cityRepo.allCities)
+                      PopupMenuItem<City>(
+                        value: city,
+                        child: Text(city.localizedName(context)),
+                      )
+                  ];
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
@@ -286,15 +296,6 @@ class SelectCityWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                itemBuilder: (BuildContext context) {
-                  return [
-                    for (final city in cityRepo.allCities)
-                      PopupMenuItem<City>(
-                        child: Text(city.localizedName(context)),
-                        value: city,
-                      )
-                  ];
-                },
               );
             },
           ),
@@ -310,10 +311,10 @@ class ShowTimeItem extends StatelessWidget {
   final Movie movie;
 
   ShowTimeItem(
-      {Key key,
-      @required this.theatreAndShowTimes,
-      @required this.showTimeDateFormat,
-      @required this.movie})
+      {Key? key,
+      required this.theatreAndShowTimes,
+      required this.showTimeDateFormat,
+      required this.movie})
       : super(key: key);
 
   @override
@@ -327,7 +328,7 @@ class ShowTimeItem extends StatelessWidget {
         children: [
           ClipOval(
             child: OctoImage(
-              image: NetworkImage(theatre.thumbnail ?? ''),
+              image: NetworkImage(theatre.thumbnail),
               width: 54,
               height: 54,
               fit: BoxFit.cover,
@@ -363,7 +364,7 @@ class ShowTimeItem extends StatelessWidget {
                     Expanded(
                       child: Text(
                         theatre.address,
-                        style: textTheme.caption.copyWith(fontSize: 12),
+                        style: textTheme.caption!.copyWith(fontSize: 12),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -387,7 +388,8 @@ class ShowTimeItem extends StatelessWidget {
           children: [
             for (final show in showTimes)
               InkWell(
-                onTap: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
+                onTap: () =>
+                    AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
                   TicketsPage.routeName,
                   arguments: <String, dynamic>{
                     'theatre': theatre,
@@ -407,7 +409,7 @@ class ShowTimeItem extends StatelessWidget {
                     child: Text(
                       showTimeDateFormat.format(show.start_time),
                       textAlign: TextAlign.center,
-                      style: textTheme.subtitle1.copyWith(
+                      style: textTheme.subtitle1!.copyWith(
                         fontSize: 18,
                         color: const Color(0xff687189),
                       ),

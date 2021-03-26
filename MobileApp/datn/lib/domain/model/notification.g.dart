@@ -22,17 +22,17 @@ class _$Notification extends Notification {
   @override
   final DateTime updatedAt;
 
-  factory _$Notification([void Function(NotificationBuilder) updates]) =>
+  factory _$Notification([void Function(NotificationBuilder)? updates]) =>
       (new NotificationBuilder()..update(updates)).build();
 
   _$Notification._(
-      {this.id,
-      this.title,
-      this.body,
-      this.to_user,
-      this.reservation,
-      this.createdAt,
-      this.updatedAt})
+      {required this.id,
+      required this.title,
+      required this.body,
+      required this.to_user,
+      required this.reservation,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'Notification', 'id');
     BuiltValueNullFieldError.checkNotNull(title, 'Notification', 'title');
@@ -96,37 +96,37 @@ class _$Notification extends Notification {
 
 class NotificationBuilder
     implements Builder<Notification, NotificationBuilder> {
-  _$Notification _$v;
+  _$Notification? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _title;
-  String get title => _$this._title;
-  set title(String title) => _$this._title = title;
+  String? _title;
+  String? get title => _$this._title;
+  set title(String? title) => _$this._title = title;
 
-  String _body;
-  String get body => _$this._body;
-  set body(String body) => _$this._body = body;
+  String? _body;
+  String? get body => _$this._body;
+  set body(String? body) => _$this._body = body;
 
-  String _to_user;
-  String get to_user => _$this._to_user;
-  set to_user(String to_user) => _$this._to_user = to_user;
+  String? _to_user;
+  String? get to_user => _$this._to_user;
+  set to_user(String? to_user) => _$this._to_user = to_user;
 
-  ReservationBuilder _reservation;
+  ReservationBuilder? _reservation;
   ReservationBuilder get reservation =>
       _$this._reservation ??= new ReservationBuilder();
-  set reservation(ReservationBuilder reservation) =>
+  set reservation(ReservationBuilder? reservation) =>
       _$this._reservation = reservation;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   NotificationBuilder();
 
@@ -152,7 +152,7 @@ class NotificationBuilder
   }
 
   @override
-  void update(void Function(NotificationBuilder) updates) {
+  void update(void Function(NotificationBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -176,7 +176,7 @@ class NotificationBuilder
               updatedAt: BuiltValueNullFieldError.checkNotNull(
                   updatedAt, 'Notification', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'reservation';
         reservation.build();

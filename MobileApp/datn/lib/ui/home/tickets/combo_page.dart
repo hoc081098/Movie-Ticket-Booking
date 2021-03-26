@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -15,7 +16,6 @@ import '../../../domain/model/theatre.dart';
 import '../../../domain/model/ticket.dart';
 import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
-import '../../../utils/iterable.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/age_type.dart';
@@ -34,11 +34,11 @@ class ComboPage extends StatefulWidget {
   final Movie movie;
 
   const ComboPage({
-    Key key,
-    @required this.tickets,
-    @required this.showTime,
-    @required this.theatre,
-    @required this.movie,
+    Key? key,
+    required this.tickets,
+    required this.showTime,
+    required this.theatre,
+    required this.movie,
   }) : super(key: key);
 
   @override
@@ -46,25 +46,20 @@ class ComboPage extends StatefulWidget {
 }
 
 class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
-  dynamic token;
+  Object? token;
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
   final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
-  int ticketsPrice;
 
-  BuiltList<MapEntry<int, List<Ticket>>> ticketsByCount;
+  late int ticketsPrice;
+  late BuiltList<MapEntry<int, List<Ticket>>> ticketsByCount;
 
   @override
   void initState() {
     super.initState();
     ticketsPrice = widget.tickets.fold(0, (acc, e) => acc + e.price);
 
-    ticketsByCount = widget.tickets
-        .groupBy(
-          (t) => t.seat.count,
-          (v) => v,
-        )
-        .entries
-        .toBuiltList();
+    ticketsByCount =
+        widget.tickets.groupListsBy((t) => t.seat.count).entries.toBuiltList();
   }
 
   @override
@@ -81,7 +76,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
     final bloc = BlocProvider.of<ComboBloc>(context);
     final countDownStyle = Theme.of(context)
         .textTheme
-        .subtitle2
+        .subtitle2!
         .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
@@ -89,7 +84,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
         title: Text(S.of(context).combo),
         actions: [
           Center(
-            child: RxStreamBuilder<String>(
+            child: RxStreamBuilder<String?>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
               builder: (context, data) {
@@ -105,7 +100,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
       body: RxStreamBuilder<ComboState>(
         stream: bloc.state$,
         builder: (context, state) {
-          if (state.isLoading) {
+          if (state!.isLoading) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -123,7 +118,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
               child: MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(getErrorMessage(state.error)),
+                    .error_with_message(getErrorMessage(state.error!)),
                 onPressed: bloc.fetch,
               ),
             );
@@ -132,27 +127,27 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
           final items = state.items;
 
           final textTheme = Theme.of(context).textTheme;
-          final titleStyle = textTheme.subtitle2.copyWith(fontSize: 15);
+          final titleStyle = textTheme.subtitle2!.copyWith(fontSize: 15);
           final countStyle = titleStyle.copyWith(fontSize: 18);
-          final priceStyle = textTheme.subtitle1.copyWith(
+          final priceStyle = textTheme.subtitle1!.copyWith(
             color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.w500,
           );
 
-          final movieTitleStyle = textTheme.headline4.copyWith(
+          final movieTitleStyle = textTheme.headline4!.copyWith(
             fontSize: 24,
             fontWeight: FontWeight.w500,
             color: const Color(0xff687189),
           );
           final buttonHeight = 54.0;
 
-          final textStyle = textTheme.subtitle1.copyWith(
+          final textStyle = textTheme.subtitle1!.copyWith(
             fontSize: 15,
             fontWeight: FontWeight.w400,
             color: const Color(0xff98A8BA),
           );
 
-          final textStyle2 = textTheme.subtitle1.copyWith(
+          final textStyle2 = textTheme.subtitle1!.copyWith(
             fontSize: 16,
             color: const Color(0xff687189),
             fontWeight: FontWeight.w600,
@@ -223,12 +218,6 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                           errorBuilder: (_, __, ___) => const SizedBox(),
                         ),
                         childrenPadding: const EdgeInsets.all(8.0),
-                        children: [
-                          Text(
-                            product.description,
-                            style: textTheme.caption,
-                          ),
-                        ],
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -236,11 +225,11 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                               InkWell(
                                 onTap: () => bloc.decrement(item),
                                 child: Container(
-                                  child: Icon(Icons.remove),
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(color: Colors.grey)),
                                   padding: const EdgeInsets.all(6),
+                                  child: Icon(Icons.remove),
                                 ),
                               )
                             else
@@ -254,15 +243,21 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                             InkWell(
                               onTap: () => bloc.increment(item),
                               child: Container(
-                                child: Icon(Icons.add),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(color: Colors.grey)),
                                 padding: const EdgeInsets.all(6),
+                                child: Icon(Icons.add),
                               ),
                             ),
                           ],
                         ),
+                        children: [
+                          Text(
+                            product.description,
+                            style: textTheme.caption,
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -372,7 +367,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                           SizedBox(height: 4),
                           Text(
                             context.s.load_image_error,
-                            style: textTheme.subtitle2.copyWith(fontSize: 12),
+                            style: textTheme.subtitle2!.copyWith(fontSize: 12),
                           ),
                         ],
                       ),
@@ -435,8 +430,8 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
     TextTheme textTheme,
   ) {
     final comboItems = state.items.where((i) => i.count > 0).toBuiltList();
-    final totalCount =
-        comboItems.fold(0, (acc, e) => acc + e.count) + widget.tickets.length;
+    final totalCount = comboItems.fold<int>(0, (acc, e) => acc + e.count) +
+        widget.tickets.length;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -472,7 +467,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
                           child: Center(
                             child: Text(
                               totalCount.toString(),
-                              style: textTheme.headline6.copyWith(
+                              style: textTheme.headline6!.copyWith(
                                 fontSize: 14,
                                 color: Colors.white,
                               ),
@@ -505,7 +500,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
             onPressed: () => tapContinue(comboItems),
             child: Text(
               context.s.CONTINUE,
-              style: textTheme.headline6
+              style: textTheme.headline6!
                   .copyWith(fontSize: 16, color: Colors.white),
             ),
           ),
@@ -515,10 +510,10 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
   }
 
   void showOrder(BuiltList<ComboItem> comboItems) {
-    final style = Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 15);
+    final style = Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 15);
     final style2 = style.copyWith(fontSize: 17);
     final titleStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 13);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 13);
 
     final children = [
       ...[

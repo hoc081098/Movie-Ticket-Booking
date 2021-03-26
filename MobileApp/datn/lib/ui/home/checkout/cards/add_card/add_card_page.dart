@@ -15,7 +15,7 @@ class AddCardPage extends StatefulWidget {
 
   final CardPageMode mode;
 
-  const AddCardPage({Key key, @required this.mode}) : super(key: key);
+  const AddCardPage({Key? key, required this.mode}) : super(key: key);
 
   @override
   _AddCardPageState createState() => _AddCardPageState();
@@ -42,7 +42,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
     final bloc = BlocProvider.of<AddCardBloc>(context);
     final countDownStyle = Theme.of(context)
         .textTheme
-        .subtitle2
+        .subtitle2!
         .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
@@ -51,7 +51,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
         actions: widget.mode == CardPageMode.select
             ? [
                 Center(
-                  child: RxStreamBuilder<String>(
+                  child: RxStreamBuilder<String?>(
                     stream: TicketsCountDownTimerBlocProvider.shared()
                         .bloc
                         .countDown$,
@@ -72,7 +72,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                RxStreamBuilder<String>(
+                RxStreamBuilder<String?>(
                   stream: bloc.cardHolderNameError$,
                   builder: (context, data) {
                     return TextField(
@@ -96,7 +96,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                   },
                 ),
                 const SizedBox(height: 16),
-                RxStreamBuilder<String>(
+                RxStreamBuilder<String?>(
                   stream: bloc.numberError$,
                   builder: (context, data) {
                     return TextField(
@@ -123,7 +123,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                   },
                 ),
                 const SizedBox(height: 8),
-                RxStreamBuilder<String>(
+                RxStreamBuilder<String?>(
                   stream: bloc.expError$,
                   builder: (context, data) {
                     return TextField(
@@ -150,7 +150,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                   },
                 ),
                 const SizedBox(height: 8),
-                RxStreamBuilder<String>(
+                RxStreamBuilder<String?>(
                   stream: bloc.cvcError$,
                   builder: (context, data) {
                     return TextField(
@@ -179,7 +179,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                 RxStreamBuilder<bool>(
                   stream: bloc.isLoading$,
                   builder: (context, data) {
-                    if (data) {
+                    if (data!) {
                       return Center(
                         child: SizedBox(
                           width: 56,
@@ -206,6 +206,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                               bloc.submit();
                             },
                             color: Theme.of(context).accentColor,
+                            elevation: 12,
                             child: Text(
                               S.of(context).ADDCARD,
                               style: TextStyle(
@@ -213,7 +214,6 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                                 fontSize: 16.0,
                               ),
                             ),
-                            elevation: 12,
                           ),
                         ),
                       );

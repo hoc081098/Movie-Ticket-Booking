@@ -1,4 +1,6 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart' hide Category;
 import 'package:tuple/tuple.dart';
 
 import '../domain/model/card.dart';
@@ -43,14 +45,16 @@ import 'remote/response/user_response.dart';
 
 UserLocal userResponseToUserLocal(UserResponse response) {
   return UserLocal((b) {
-    final locationLocalBuilder = response.location?.latitude != null &&
-            response.location?.longitude != null
+    final latitude = response.location?.latitude;
+    final longitude = response.location?.longitude;
+
+    final locationLocalBuilder = latitude != null && longitude != null
         ? (LocationLocalBuilder()
-          ..latitude = response.location.latitude
-          ..longitude = response.location.longitude)
+          ..latitude = latitude
+          ..longitude = longitude)
         : null;
 
-    return b
+    b
       ..uid = response.uid
       ..email = response.email
       ..phoneNumber = response.phoneNumber
@@ -76,22 +80,26 @@ Gender stringToGender(String s) {
 }
 
 User userLocalToUserDomain(UserLocal local) {
-  return User((b) => b
-    ..uid = local.uid
-    ..email = local.email
-    ..phoneNumber = local.phoneNumber
-    ..fullName = local.fullName
-    ..gender = stringToGender(local.gender)
-    ..avatar = local.avatar
-    ..address = local.address
-    ..birthday = local.birthday
-    ..location = local.location != null
-        ? (LocationBuilder()
-          ..latitude = local.location.latitude
-          ..longitude = local.location.longitude)
-        : null
-    ..isCompleted = local.isCompleted
-    ..isActive = local.isActive ?? true);
+  return User((b) {
+    final location = local.location;
+
+    b
+      ..uid = local.uid
+      ..email = local.email
+      ..phoneNumber = local.phoneNumber
+      ..fullName = local.fullName
+      ..gender = stringToGender(local.gender)
+      ..avatar = local.avatar
+      ..address = local.address
+      ..birthday = local.birthday
+      ..location = location != null
+          ? (LocationBuilder()
+            ..latitude = location.latitude
+            ..longitude = location.longitude)
+          : null
+      ..isCompleted = local.isCompleted
+      ..isActive = local.isActive;
+  });
 }
 
 Movie movieResponseToMovie(MovieResponse res) {
@@ -119,7 +127,7 @@ Movie movieResponseToMovie(MovieResponse res) {
 
 AgeType stringToAgeType(String s) {
   return AgeType.values.firstWhere(
-    (v) => v.toString().split('.')[1] == s,
+    (v) => describeEnum(v) == s,
     orElse: () => throw Exception("Cannot convert string '$s' to AgeType"),
   );
 }
@@ -136,7 +144,7 @@ Theatre theatreResponseToTheatre(TheatreResponse response) {
       ..replace(locationResponseToLocation(response.location));
     final roomsBuilder = b.rooms..safeReplace(response.rooms);
 
-    return b
+    b
       ..id = response.id
       ..location = locationBuilder
       ..is_active = response.is_active ?? true
@@ -198,7 +206,7 @@ BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>
 
               final theatreBuilder = b.theatre..replace(entry.key);
 
-              return b
+              b
                 ..theatre = theatreBuilder
                 ..showTimes = showTimesBuilder;
             },
@@ -210,10 +218,7 @@ BuiltMap<DateTime, BuiltList<TheatreAndShowTimes>>
 
   final showTimesByDate = responses
       .map(_showTimeAndTheatreResponseToTuple2)
-      .groupBy(
-        (tuple) => startOfDay(tuple.item2.start_time),
-        (tuple) => tuple,
-      )
+      .groupListsBy((tuple) => startOfDay(tuple.item2.start_time))
       .map(_tuplesToMapEntry);
 
   return showTimesByDate.build();
@@ -228,7 +233,7 @@ Comments commentsResponseToComments(CommentsResponse response) {
         ),
       );
 
-    return b
+    b
       ..total = response.total
       ..average = response.average
       ..comments = listBuilder;
@@ -239,7 +244,7 @@ Comment commentResponseToComment(CommentResponse response) {
   return Comment((b) {
     final userBuilder = b.user..replace(userResponseToUser(response.user));
 
-    return b
+    b
       ..id = response.id
       ..is_active = response.is_active ?? true
       ..content = response.content
@@ -253,13 +258,14 @@ Comment commentResponseToComment(CommentResponse response) {
 
 User userResponseToUser(UserResponse response) {
   return User((b) {
-    final locationBuilder = response.location != null &&
-            response.location.latitude != null &&
-            response.location.longitude != null
-        ? (b.location..replace(locationResponseToLocation(response.location)))
+    final location = response.location;
+    final locationBuilder = location != null &&
+            location.latitude != null &&
+            location.longitude != null
+        ? (b.location..replace(locationResponseToLocation(location)))
         : null;
 
-    return b
+    b
       ..uid = response.uid
       ..email = response.email
       ..phoneNumber = response.phoneNumber
@@ -289,7 +295,7 @@ Movie movieDetailResponseToMovie(MovieDetailResponse res) {
       final categoriesBuilder = b.categories
         ..safeReplace(res.categories.map(categoryResponseToCategory));
 
-      return b
+      b
         ..id = res.id
         ..isActive = res.is_active ?? true
         ..actorIds = actorIdsBuilder
@@ -395,14 +401,14 @@ Card cardResponseToCard(CardResponse response) {
 
 Reservation reservationResponseToReservation(ReservationResponse response) {
   return Reservation((b) {
-    final productIds = response.products
-        .map((p) => ProductAndQuantity.from(id: p.id, quantity: p.quantity));
+    final productIds = response.products.map((p) =>
+        ProductAndQuantity.from(id: p.id, quantity: p.quantity, product: null));
     final productIdWithCountsBuilder = b.productIdWithCounts
       ..safeReplace(productIds);
     final user = userResponseToUser(response.user);
     final userBuilder = b.user..replace(user);
 
-    return b
+    b
       ..id = response.id
       ..createdAt = response.createdAt
       ..email = response.email
@@ -442,7 +448,7 @@ Notification notificationResponseToNotification(NotificationResponse res) {
         ..replace(notificationResponse_ReservationResponseToReservation(
             res.reservation));
 
-      return b
+      b
         ..id = res.id
         ..title = res.title
         ..body = res.body
@@ -462,7 +468,7 @@ ShowTime showTimeFullResponseToShowTime(ShowTimeFullResponse response) {
     final movieBuilder = b.movie..replace(movie);
     final theatreBuilder = b.theatre..replace(theatre);
 
-    return b
+    b
       ..id = response.id
       ..is_active = response.is_active ?? true
       ..movieId = movie.id
@@ -480,14 +486,14 @@ ShowTime showTimeFullResponseToShowTime(ShowTimeFullResponse response) {
 Reservation notificationResponse_ReservationResponseToReservation(
     NotificationResponse_ReservationResponse response) {
   return Reservation((b) {
-    final productIds = response.products
-        .map((p) => ProductAndQuantity.from(id: p.id, quantity: p.quantity));
+    final productIds = response.products.map((p) =>
+        ProductAndQuantity.from(id: p.id, quantity: p.quantity, product: null));
     final productIdWithCountsBuilder = b.productIdWithCounts
       ..safeReplace(productIds);
     final showTimeBuilder = b.showTime
       ..replace(showTimeFullResponseToShowTime(response.show_time));
 
-    return b
+    b
       ..id = response.id
       ..createdAt = response.createdAt
       ..email = response.email
@@ -525,7 +531,7 @@ Reservation fullReservationResponseToReservation(
         ? null
         : (b.promotion..replace(promotionResponseToPromotion(promotion)));
 
-    return b
+    b
       ..id = response.id
       ..createdAt = response.createdAt
       ..email = response.email
@@ -552,7 +558,7 @@ BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>
     List<MovieAndShowTimeResponse> response,
   ) {
     final movieAndShowTimeResponses = response
-        .groupBy((v) => v.movie, (v) => v)
+        .groupListsBy((v) => v.movie)
         .entries
         .map(
           (entry) => MovieAndShowTimes(
@@ -568,7 +574,7 @@ BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>
                 ..replace(movieResponseToMovie(
                     movieAndShowTimeResponses.first.movie));
 
-              return b
+              b
                 ..movie = movieBuilder
                 ..showTimes = showTimesBuilder;
             },
@@ -579,7 +585,7 @@ BuiltMap<DateTime, BuiltList<MovieAndShowTimes>>
   }
 
   return res
-      .groupBy((v) => startOfDay(v.show_time.start_time), (v) => v)
+      .groupListsBy((v) => startOfDay(v.show_time.start_time))
       .map(toMovieAndShowTimes)
       .build();
 }

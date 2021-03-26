@@ -18,10 +18,11 @@ abstract class LocationLocal
 
   static Serializer<LocationLocal> get serializer => _$locationLocalSerializer;
 
-  factory LocationLocal.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<LocationLocal>(serializer, json);
+  factory LocationLocal.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<LocationLocal>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class UserLocal implements Built<UserLocal, UserLocalBuilder> {
@@ -32,8 +33,7 @@ abstract class UserLocal implements Built<UserLocal, UserLocalBuilder> {
   String get email;
 
   @BuiltValueField(wireName: 'phone_number')
-  @nullable
-  String get phoneNumber;
+  String? get phoneNumber;
 
   @BuiltValueField(wireName: 'full_name')
   String get fullName;
@@ -42,20 +42,16 @@ abstract class UserLocal implements Built<UserLocal, UserLocalBuilder> {
   String get gender;
 
   @BuiltValueField(wireName: 'avatar')
-  @nullable
-  String get avatar;
+  String? get avatar;
 
   @BuiltValueField(wireName: 'address')
-  @nullable
-  String get address;
+  String? get address;
 
   @BuiltValueField(wireName: 'birthday')
-  @nullable
-  DateTime get birthday;
+  DateTime? get birthday;
 
   @BuiltValueField(wireName: 'location')
-  @nullable
-  LocationLocal get location;
+  LocationLocal? get location;
 
   @BuiltValueField(wireName: 'is_completed')
   bool get isCompleted;
@@ -69,8 +65,9 @@ abstract class UserLocal implements Built<UserLocal, UserLocalBuilder> {
 
   static Serializer<UserLocal> get serializer => _$userLocalSerializer;
 
-  factory UserLocal.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<UserLocal>(serializer, json);
+  factory UserLocal.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<UserLocal>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

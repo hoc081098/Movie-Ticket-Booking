@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:meta/meta.dart';
 import 'package:rxdart/streams.dart';
 
 import '../../utils/optional.dart';
@@ -27,13 +26,13 @@ abstract class UserRepository {
   Future<void> login(String email, String password);
 
   Future<void> loginUpdateProfile({
-    @required String fullName,
-    @required String phoneNumber,
-    @required String address,
-    @required Gender gender,
-    Location location,
-    DateTime birthday,
-    File avatarFile,
+    required String fullName,
+    required String phoneNumber,
+    required String address,
+    required Gender gender,
+    Location? location,
+    DateTime? birthday,
+    File? avatarFile,
   });
 
   Future<void> register(

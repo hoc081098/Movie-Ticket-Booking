@@ -1,14 +1,14 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:meta/meta.dart';
 import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../../domain/model/movie.dart';
+import '../../../utils/streams.dart';
 import 'view_all_state.dart';
 
 typedef GetMovies = Stream<BuiltList<Movie>> Function({
-  @required int page,
-  @required int perPage,
+  required int page,
+  required int perPage,
 });
 
 const perPage = 32;
@@ -78,7 +78,7 @@ class SideEffects {
     return getMovies(page: nextPage, perPage: perPage)
         .map<ViewAllAction>((items) => SuccessAction(items))
         .startWith(loadingAction)
-        .debug(identifier: toString())
+        .debug(identifier: toString(), log: streamDebugPrint)
         .onErrorReturnWith((error) => FailureAction(error));
   }
 
@@ -86,6 +86,6 @@ class SideEffects {
       getMovies(page: 1, perPage: perPage)
           .map<ViewAllAction>((items) => RefreshSuccessAction(items))
           .onErrorReturnWith((error) => RefreshFailureAction(error))
-          .debug(identifier: toString())
+          .debug(identifier: toString(), log: streamDebugPrint)
           .doOnCancel(action.complete);
 }

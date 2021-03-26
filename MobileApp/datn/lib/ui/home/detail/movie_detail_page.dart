@@ -12,8 +12,8 @@ class MovieDetailPage extends StatefulWidget {
   final Movie movie;
 
   const MovieDetailPage({
-    Key key,
-    @required this.movie,
+    Key? key,
+    required this.movie,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
-  List<Widget> pages;
+  late List<Widget> pages;
 
   @override
   void initState() {
@@ -55,11 +55,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         borderSide: BorderSide(width: 2, color: primaryColor),
       ),
       labelColor: primaryColor,
-      unselectedLabelStyle: Theme.of(context).textTheme.caption.copyWith(
+      unselectedLabelStyle: Theme.of(context).textTheme.caption!.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 12,
           ),
-      labelStyle: Theme.of(context).textTheme.caption.copyWith(
+      labelStyle: Theme.of(context).textTheme.caption!.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 13,
           ),
@@ -74,7 +74,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           bottom: CustomTabBar(tabBar: tabBar),
           title: Text(
             widget.movie.title,
-            style: Theme.of(context).textTheme.headline6.copyWith(
+            style: Theme.of(context).textTheme.headline6!.copyWith(
                   fontSize: 16,
                   color: Colors.white,
                 ),
@@ -89,7 +89,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
   final TabBar tabBar;
 
-  const CustomTabBar({Key key, this.tabBar}) : super(key: key);
+  const CustomTabBar({Key? key, required this.tabBar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +105,8 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       child: Material(
-        child: tabBar,
         color: Colors.white,
+        child: tabBar,
       ),
     );
   }

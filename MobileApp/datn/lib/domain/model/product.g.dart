@@ -24,18 +24,18 @@ class _$Product extends Product {
   @override
   final DateTime updatedAt;
 
-  factory _$Product([void Function(ProductBuilder) updates]) =>
+  factory _$Product([void Function(ProductBuilder)? updates]) =>
       (new ProductBuilder()..update(updates)).build();
 
   _$Product._(
-      {this.id,
-      this.description,
-      this.image,
-      this.is_active,
-      this.name,
-      this.price,
-      this.createdAt,
-      this.updatedAt})
+      {required this.id,
+      required this.description,
+      required this.image,
+      required this.is_active,
+      required this.name,
+      required this.price,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'Product', 'id');
     BuiltValueNullFieldError.checkNotNull(
@@ -101,39 +101,39 @@ class _$Product extends Product {
 }
 
 class ProductBuilder implements Builder<Product, ProductBuilder> {
-  _$Product _$v;
+  _$Product? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _description;
-  String get description => _$this._description;
-  set description(String description) => _$this._description = description;
+  String? _description;
+  String? get description => _$this._description;
+  set description(String? description) => _$this._description = description;
 
-  String _image;
-  String get image => _$this._image;
-  set image(String image) => _$this._image = image;
+  String? _image;
+  String? get image => _$this._image;
+  set image(String? image) => _$this._image = image;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  int _price;
-  int get price => _$this._price;
-  set price(int price) => _$this._price = price;
+  int? _price;
+  int? get price => _$this._price;
+  set price(int? price) => _$this._price = price;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   ProductBuilder();
 
@@ -160,7 +160,7 @@ class ProductBuilder implements Builder<Product, ProductBuilder> {
   }
 
   @override
-  void update(void Function(ProductBuilder) updates) {
+  void update(void Function(ProductBuilder)? updates) {
     if (updates != null) updates(this);
   }
 

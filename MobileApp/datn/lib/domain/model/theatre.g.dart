@@ -24,7 +24,7 @@ class _$Theatre extends Theatre {
   @override
   final String description;
   @override
-  final String email;
+  final String? email;
   @override
   final String opening_hours;
   @override
@@ -34,32 +34,32 @@ class _$Theatre extends Theatre {
   @override
   final DateTime updatedAt;
   @override
-  final double distance;
+  final double? distance;
   @override
   final String thumbnail;
   @override
   final String cover;
 
-  factory _$Theatre([void Function(TheatreBuilder) updates]) =>
+  factory _$Theatre([void Function(TheatreBuilder)? updates]) =>
       (new TheatreBuilder()..update(updates)).build();
 
   _$Theatre._(
-      {this.id,
-      this.location,
-      this.is_active,
-      this.rooms,
-      this.name,
-      this.address,
-      this.phone_number,
-      this.description,
+      {required this.id,
+      required this.location,
+      required this.is_active,
+      required this.rooms,
+      required this.name,
+      required this.address,
+      required this.phone_number,
+      required this.description,
       this.email,
-      this.opening_hours,
-      this.room_summary,
-      this.createdAt,
-      this.updatedAt,
+      required this.opening_hours,
+      required this.room_summary,
+      required this.createdAt,
+      required this.updatedAt,
       this.distance,
-      this.thumbnail,
-      this.cover})
+      required this.thumbnail,
+      required this.cover})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'Theatre', 'id');
     BuiltValueNullFieldError.checkNotNull(location, 'Theatre', 'location');
@@ -173,72 +173,72 @@ class _$Theatre extends Theatre {
 }
 
 class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
-  _$Theatre _$v;
+  _$Theatre? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  LocationBuilder _location;
+  LocationBuilder? _location;
   LocationBuilder get location => _$this._location ??= new LocationBuilder();
-  set location(LocationBuilder location) => _$this._location = location;
+  set location(LocationBuilder? location) => _$this._location = location;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  ListBuilder<String> _rooms;
+  ListBuilder<String>? _rooms;
   ListBuilder<String> get rooms => _$this._rooms ??= new ListBuilder<String>();
-  set rooms(ListBuilder<String> rooms) => _$this._rooms = rooms;
+  set rooms(ListBuilder<String>? rooms) => _$this._rooms = rooms;
 
-  String _name;
-  String get name => _$this._name;
-  set name(String name) => _$this._name = name;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
-  String _address;
-  String get address => _$this._address;
-  set address(String address) => _$this._address = address;
+  String? _address;
+  String? get address => _$this._address;
+  set address(String? address) => _$this._address = address;
 
-  String _phone_number;
-  String get phone_number => _$this._phone_number;
-  set phone_number(String phone_number) => _$this._phone_number = phone_number;
+  String? _phone_number;
+  String? get phone_number => _$this._phone_number;
+  set phone_number(String? phone_number) => _$this._phone_number = phone_number;
 
-  String _description;
-  String get description => _$this._description;
-  set description(String description) => _$this._description = description;
+  String? _description;
+  String? get description => _$this._description;
+  set description(String? description) => _$this._description = description;
 
-  String _email;
-  String get email => _$this._email;
-  set email(String email) => _$this._email = email;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
-  String _opening_hours;
-  String get opening_hours => _$this._opening_hours;
-  set opening_hours(String opening_hours) =>
+  String? _opening_hours;
+  String? get opening_hours => _$this._opening_hours;
+  set opening_hours(String? opening_hours) =>
       _$this._opening_hours = opening_hours;
 
-  String _room_summary;
-  String get room_summary => _$this._room_summary;
-  set room_summary(String room_summary) => _$this._room_summary = room_summary;
+  String? _room_summary;
+  String? get room_summary => _$this._room_summary;
+  set room_summary(String? room_summary) => _$this._room_summary = room_summary;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
-  double _distance;
-  double get distance => _$this._distance;
-  set distance(double distance) => _$this._distance = distance;
+  double? _distance;
+  double? get distance => _$this._distance;
+  set distance(double? distance) => _$this._distance = distance;
 
-  String _thumbnail;
-  String get thumbnail => _$this._thumbnail;
-  set thumbnail(String thumbnail) => _$this._thumbnail = thumbnail;
+  String? _thumbnail;
+  String? get thumbnail => _$this._thumbnail;
+  set thumbnail(String? thumbnail) => _$this._thumbnail = thumbnail;
 
-  String _cover;
-  String get cover => _$this._cover;
-  set cover(String cover) => _$this._cover = cover;
+  String? _cover;
+  String? get cover => _$this._cover;
+  set cover(String? cover) => _$this._cover = cover;
 
   TheatreBuilder();
 
@@ -273,7 +273,7 @@ class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
   }
 
   @override
-  void update(void Function(TheatreBuilder) updates) {
+  void update(void Function(TheatreBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -311,7 +311,7 @@ class TheatreBuilder implements Builder<Theatre, TheatreBuilder> {
               cover:
                   BuiltValueNullFieldError.checkNotNull(cover, 'Theatre', 'cover'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'location';
         location.build();

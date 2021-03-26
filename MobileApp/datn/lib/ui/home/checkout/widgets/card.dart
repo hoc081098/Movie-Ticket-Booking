@@ -9,7 +9,7 @@ import '../cards/cards_page.dart';
 import '../checkout_page.dart';
 
 class SelectedCard extends StatelessWidget {
-  const SelectedCard({Key key}) : super(key: key);
+  const SelectedCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +38,10 @@ class SelectedCard extends StatelessWidget {
             final card = (await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               CardsPage.routeName,
               arguments: {
-                'card': bloc.selectedCard$.value,
+                'card': bloc.selectedCard$.requireValue,
                 'mode': CardPageMode.select,
               },
-            )) as domain.Card;
+            )) as domain.Card?;
             print('[DEBUG] receiver ${card?.id}');
             bloc.selectedCard(card);
           },
@@ -52,7 +52,7 @@ class SelectedCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                RxStreamBuilder<domain.Card>(
+                RxStreamBuilder<domain.Card?>(
                     stream: bloc.selectedCard$,
                     builder: (context, card) {
                       return Expanded(

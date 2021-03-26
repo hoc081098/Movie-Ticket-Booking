@@ -14,8 +14,7 @@ abstract class ProductResponse
 
   String get image;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   String get name;
 
@@ -33,8 +32,9 @@ abstract class ProductResponse
   static Serializer<ProductResponse> get serializer =>
       _$productResponseSerializer;
 
-  factory ProductResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<ProductResponse>(serializer, json);
+  factory ProductResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<ProductResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

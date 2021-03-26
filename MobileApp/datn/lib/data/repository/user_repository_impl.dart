@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../domain/model/exception.dart';
 import '../../domain/model/location.dart';
@@ -34,11 +36,11 @@ class UserRepositoryImpl implements UserRepository {
 
   final Function1<UserResponse, UserLocal> _userResponseToUserLocal;
   final GoogleSignIn _googleSignIn;
-  final FacebookLogin _facebookLogin;
+  final FacebookAuth _facebookAuth;
 
   final SearchKeywordSource _searchKeywordSource;
 
-  final ValueConnectableStream<Optional<User>> _user$;
+  final ValueStream<Optional<User>> _user$;
 
   UserRepositoryImpl(
     this._auth,
@@ -48,35 +50,35 @@ class UserRepositoryImpl implements UserRepository {
     this._storage,
     Function1<UserLocal, User> userLocalToUserDomain,
     this._googleSignIn,
-    this._facebookLogin,
+    this._facebookAuth,
     this._firebaseMessaging,
     this._searchKeywordSource,
-  ) : _user$ = valueConnectableStream(
+  ) : _user$ = _buildUserStream(
           _auth,
           _userLocalSource,
           userLocalToUserDomain,
         );
 
-  Future<Map<String, String>> get _fcmTokenHeaders =>
-      _firebaseMessaging.getToken().then((token) => {'fcm_token': token});
+  Future<Map<String, String>?> get _fcmTokenHeaders => _firebaseMessaging
+      .getToken()
+      .then((token) => token != null ? {'fcm_token': token} : null);
 
-  static ValueConnectableStream<Optional<User>> valueConnectableStream(
+  static ValueStream<Optional<User>> _buildUserStream(
     FirebaseAuth _auth,
     UserLocalSource _userLocalSource,
     Function1<UserLocal, User> userLocalToUserDomain,
   ) =>
-      Rx.combineLatest3<dynamic, UserLocal, String, Optional<User>>(
-              _auth.userChanges(),
-              _userLocalSource.user$,
-              _userLocalSource.token$,
-              (user, UserLocal local, String token) =>
-                  user == null || local == null || token == null
-                      ? Optional.none()
-                      : Optional.some(userLocalToUserDomain(local)))
-          .publishValueSeeded(null)
-            ..connect();
+      Rx.combineLatest3<Object?, UserLocal?, String?, Optional<User>>(
+          _auth.userChanges(),
+          _userLocalSource.user$,
+          _userLocalSource.token$,
+          (Object? user, UserLocal? local, String? token) =>
+              user == null || local == null || token == null
+                  ? Optional.none()
+                  : Optional.some(userLocalToUserDomain(local))).publishValue()
+        ..connect();
 
-  Future<AuthState> _isUserLocalCompletedLogin([UserLocal local]) async {
+  Future<AuthState> _isUserLocalCompletedLogin([UserLocal? local]) async {
     local ??= await _userLocalSource.user;
 
     return local == null
@@ -87,13 +89,14 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   Future<AuthState> _checkAuthInternal() async {
-    if (_auth.currentUser == null) {
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) {
       await logout();
       print('[Check auth][1] not logged in');
       return AuthState.notLoggedIn;
     }
 
-    await _userLocalSource.saveToken(await _auth.currentUser.getIdToken(true));
+    await _userLocalSource.saveToken(await currentUser.getIdToken(true));
 
     try {
       final json = await _authClient.getBody(
@@ -137,7 +140,7 @@ class UserRepositoryImpl implements UserRepository {
   Future _checkCompletedLoginAfterFirebaseLogin([
     bool checkVerifyEmail = false,
   ]) async {
-    final currentUser = _auth.currentUser;
+    final currentUser = _auth.currentUser!;
 
     if (checkVerifyEmail) {
       await currentUser.reload();
@@ -189,7 +192,7 @@ class UserRepositoryImpl implements UserRepository {
     await _googleSignIn.signOut();
 
     // facebook
-    await _facebookLogin.logOut();
+    await _facebookAuth.logOut();
 
     // firebase
     await _auth.signOut();
@@ -221,14 +224,15 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<void> loginUpdateProfile(
-      {String fullName,
-      String phoneNumber,
-      String address,
-      Gender gender,
-      Location location,
-      DateTime birthday,
-      File avatarFile}) async {
+  Future<void> loginUpdateProfile({
+    required String fullName,
+    required String phoneNumber,
+    required String address,
+    required Gender gender,
+    Location? location,
+    DateTime? birthday,
+    File? avatarFile,
+  }) async {
     final currentUser = _auth.currentUser;
     if (currentUser == null) {
       throw const NotLoggedInException();
@@ -259,7 +263,7 @@ class UserRepositoryImpl implements UserRepository {
         location.latitude,
       ];
     }
-    updateBody['gender'] = gender.toString().split('.')[1];
+    updateBody['gender'] = describeEnum(gender);
 
     final userResponse = UserResponse.fromJson(
       await _authClient.putBody(
@@ -290,7 +294,7 @@ class UserRepositoryImpl implements UserRepository {
       email: email,
       password: password,
     );
-    await _auth.currentUser.sendEmailVerification();
+    await _auth.currentUser!.sendEmailVerification();
     await logout();
   }
 
@@ -325,38 +329,46 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> facebookSignIn() async {
-    final result = await _facebookLogin.logIn(['email']);
-
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        final token = result?.accessToken?.token;
-
-        if (token == null) {
-          throw PlatformException(
-            code: 'error',
-            message: result.errorMessage,
-            details: null,
-          );
-        }
-
-        await _auth.signInWithCredential(
-          FacebookAuthProvider.credential(token),
-        );
-        await _checkCompletedLoginAfterFirebaseLogin();
-
-        return;
-      case FacebookLoginStatus.cancelledByUser:
-        throw PlatformException(
-          code: 'cancelledByUser',
-          message: 'Facebook sign in canceled',
-          details: null,
-        );
-      case FacebookLoginStatus.error:
+    try {
+      final token = (await _facebookAuth.login())?.token;
+      if (token == null) {
         throw PlatformException(
           code: 'error',
-          message: result.errorMessage,
+          message: 'Login failed',
           details: null,
         );
+      }
+
+      await _auth.signInWithCredential(
+        FacebookAuthProvider.credential(token),
+      );
+      await _checkCompletedLoginAfterFirebaseLogin();
+    } on FacebookAuthException catch (e) {
+      final errorCode = e.errorCode;
+
+      debugPrint(e.errorCode);
+      debugPrint(e.message);
+
+      switch (errorCode) {
+        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+          throw PlatformException(
+            code: errorCode,
+            message: 'You have a previous login operation in progress',
+            details: null,
+          );
+        case FacebookAuthErrorCode.CANCELLED:
+          throw PlatformException(
+            code: errorCode,
+            message: 'Facebook sign in canceled',
+            details: null,
+          );
+        case FacebookAuthErrorCode.FAILED:
+          throw PlatformException(
+            code: errorCode,
+            message: 'Login failed',
+            details: null,
+          );
+      }
     }
   }
 }

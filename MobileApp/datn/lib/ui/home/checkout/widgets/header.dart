@@ -17,15 +17,15 @@ class HeaderWidget extends StatelessWidget {
   final ShowTime showTime;
   final Theatre theatre;
   final BuiltList<Ticket> tickets;
-  final Widget child;
+  final Widget? child;
 
   HeaderWidget({
-    Key key,
-    this.movie,
-    this.showTime,
-    this.theatre,
-    this.tickets,
-    this.child,
+    Key? key,
+    required this.movie,
+    required this.showTime,
+    required this.theatre,
+    required this.tickets,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -34,19 +34,19 @@ class HeaderWidget extends StatelessWidget {
     const w = h / 1.3;
 
     final textTheme = Theme.of(context).textTheme;
-    final textStyle = textTheme.subtitle1.copyWith(
+    final textStyle = textTheme.subtitle1!.copyWith(
       fontSize: 15,
       fontWeight: FontWeight.w400,
       color: const Color(0xff98A8BA),
     );
 
-    final textStyle2 = textTheme.subtitle1.copyWith(
+    final textStyle2 = textTheme.subtitle1!.copyWith(
       fontSize: 16,
       color: const Color(0xff687189),
       fontWeight: FontWeight.w600,
     );
 
-    final movieTitleStyle = textTheme.headline4.copyWith(
+    final movieTitleStyle = textTheme.headline4!.copyWith(
       fontSize: 24,
       fontWeight: FontWeight.w500,
       color: const Color(0xff687189),
@@ -54,7 +54,7 @@ class HeaderWidget extends StatelessWidget {
 
     final accentColor = Theme.of(context).accentColor;
 
-    final seatStyle = Theme.of(context).textTheme.caption.copyWith(
+    final seatStyle = Theme.of(context).textTheme.caption!.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: Colors.white,
@@ -125,7 +125,7 @@ class HeaderWidget extends StatelessWidget {
                           SizedBox(height: 4),
                           Text(
                             S.of(context).load_image_error,
-                            style: textTheme.subtitle2.copyWith(fontSize: 12),
+                            style: textTheme.subtitle2!.copyWith(fontSize: 12),
                           ),
                         ],
                       ),
@@ -206,7 +206,7 @@ class HeaderWidget extends StatelessWidget {
           ),
           if (child != null) ...[
             const SizedBox(height: 6),
-            child,
+            child!,
           ],
         ],
       ),

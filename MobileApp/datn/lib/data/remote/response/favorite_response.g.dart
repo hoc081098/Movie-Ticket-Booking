@@ -17,9 +17,9 @@ class _$FavoriteResponseSerializer
   final String wireName = 'FavoriteResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, FavoriteResponse object,
+  Iterable<Object?> serialize(Serializers serializers, FavoriteResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'movie',
       serializers.serialize(object.movie,
           specifiedType: const FullType(MovieResponse)),
@@ -33,7 +33,7 @@ class _$FavoriteResponseSerializer
 
   @override
   FavoriteResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new FavoriteResponseBuilder();
 
@@ -41,11 +41,11 @@ class _$FavoriteResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'movie':
           result.movie.replace(serializers.deserialize(value,
-              specifiedType: const FullType(MovieResponse)) as MovieResponse);
+              specifiedType: const FullType(MovieResponse))! as MovieResponse);
           break;
         case 'is_favorite':
           result.is_favorite = serializers.deserialize(value,
@@ -65,10 +65,11 @@ class _$FavoriteResponse extends FavoriteResponse {
   final bool is_favorite;
 
   factory _$FavoriteResponse(
-          [void Function(FavoriteResponseBuilder) updates]) =>
+          [void Function(FavoriteResponseBuilder)? updates]) =>
       (new FavoriteResponseBuilder()..update(updates)).build();
 
-  _$FavoriteResponse._({this.movie, this.is_favorite}) : super._() {
+  _$FavoriteResponse._({required this.movie, required this.is_favorite})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(movie, 'FavoriteResponse', 'movie');
     BuiltValueNullFieldError.checkNotNull(
         is_favorite, 'FavoriteResponse', 'is_favorite');
@@ -106,16 +107,16 @@ class _$FavoriteResponse extends FavoriteResponse {
 
 class FavoriteResponseBuilder
     implements Builder<FavoriteResponse, FavoriteResponseBuilder> {
-  _$FavoriteResponse _$v;
+  _$FavoriteResponse? _$v;
 
-  MovieResponseBuilder _movie;
+  MovieResponseBuilder? _movie;
   MovieResponseBuilder get movie =>
       _$this._movie ??= new MovieResponseBuilder();
-  set movie(MovieResponseBuilder movie) => _$this._movie = movie;
+  set movie(MovieResponseBuilder? movie) => _$this._movie = movie;
 
-  bool _is_favorite;
-  bool get is_favorite => _$this._is_favorite;
-  set is_favorite(bool is_favorite) => _$this._is_favorite = is_favorite;
+  bool? _is_favorite;
+  bool? get is_favorite => _$this._is_favorite;
+  set is_favorite(bool? is_favorite) => _$this._is_favorite = is_favorite;
 
   FavoriteResponseBuilder();
 
@@ -136,7 +137,7 @@ class FavoriteResponseBuilder
   }
 
   @override
-  void update(void Function(FavoriteResponseBuilder) updates) {
+  void update(void Function(FavoriteResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -150,7 +151,7 @@ class FavoriteResponseBuilder
               is_favorite: BuiltValueNullFieldError.checkNotNull(
                   is_favorite, 'FavoriteResponse', 'is_favorite'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'movie';
         movie.build();

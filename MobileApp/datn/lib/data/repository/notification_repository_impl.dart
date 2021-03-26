@@ -20,7 +20,10 @@ class NotificationRepositoryImpl implements NotificationRepository {
   );
 
   @override
-  Stream<BuiltList<Notification>> getNotification({int page, int perPage}) {
+  Stream<BuiltList<Notification>> getNotification({
+    required int page,
+    required int perPage,
+  }) {
     final toResult = (dynamic json) {
       final responses = serializers.deserialize(
         json,

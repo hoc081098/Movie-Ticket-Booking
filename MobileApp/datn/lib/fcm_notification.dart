@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:async/async.dart';
 import 'package:file/src/interface/file.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -19,6 +19,8 @@ import 'data/remote/response/notification_response.dart';
 import 'domain/model/notification.dart';
 
 class FcmNotificationManager {
+  static const _debugTag = '✉️ FcmNotificationManager';
+
   static const channelId = 'com.hoc.datn';
   static const channelName = 'com.hoc.datn.channel';
   static const channelDescription = 'Enjoy movie notification channel';
@@ -37,15 +39,15 @@ class FcmNotificationManager {
           newId = _minId;
         }
 
-        print('$_minId $_maxId : $id $newId');
+        debugPrint('$_debugTag: $_minId $_maxId : $id $newId');
         return _prefs.setInt(_notificationIdKey, newId).then((_) => newId);
       });
 
-  var _setupNotification = false;
+  final _setupLocalNotificationMemoizer = AsyncMemoizer<void>();
   final _cacheManager = DefaultCacheManager();
   final _reservationIdS = PublishSubject<String>();
 
-  Stream<Notification> _notification$;
+  late final Stream<Notification> _notification$;
 
   FcmNotificationManager(
       this._authClient, this._firebaseMessaging, this._prefs) {
@@ -56,20 +58,18 @@ class FcmNotificationManager {
         .asyncExpand(_handleRemoteMessage)
         .publish()
           ..connect();
+
+    _setupLocalNotificationMemoizer.runOnce(_setupNotification);
   }
 
   Future<Notification> _getNotificationById(String id) {
-    return _authClient.getBody(buildUrl('/notifications/${id}')).then(
+    return _authClient.getBody(buildUrl('/notifications/$id')).then(
           (json) => notificationResponseToNotification(
               NotificationResponse.fromJson(json)),
         );
   }
 
-  Future<void> setupNotification() async {
-    if (_setupNotification) {
-      return;
-    }
-
+  Future<void> _setupNotification() async {
     const initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
 
@@ -79,30 +79,32 @@ class FcmNotificationManager {
 
     await FlutterLocalNotificationsPlugin().initialize(
       initializationSettings,
-      onSelectNotification: onSelectNotification,
+      onSelectNotification: _onSelectNotification,
     );
 
     final details = await FlutterLocalNotificationsPlugin()
         .getNotificationAppLaunchDetails();
-    unawaited(onSelectNotification(details.payload));
+    unawaited(_onSelectNotification(details?.payload));
 
-    _setupNotification = true;
+    debugPrint('$_debugTag: Done setup local notification');
   }
 
   Stream<Notification> _handleRemoteMessage(RemoteMessage message) async* {
+    await _setupLocalNotificationMemoizer.runOnce(_setupNotification);
+
     try {
-      print('>>>>>>>>>>> onMessage: $message');
+      debugPrint('$_debugTag: onMessage message=$message');
 
       final notification = message.notification;
       final data = message.data;
-      if (notification == null && data == null) {
-        return;
-      }
 
-      File imageFile;
-      try {
-        imageFile = await _cacheManager.getSingleFile(data['image'] ?? '');
-      } catch (_) {}
+      File? imageFile;
+      final imageUrl = data['image'];
+      if (imageUrl is String && imageUrl.isNotEmpty) {
+        try {
+          imageFile = await _cacheManager.getSingleFile(imageUrl);
+        } catch (_) {}
+      }
 
       final androidPlatformChannelSpecifics = AndroidNotificationDetails(
         channelId,
@@ -128,8 +130,8 @@ class FcmNotificationManager {
 
       await FlutterLocalNotificationsPlugin().show(
         await _getAndIncrementId(),
-        notification.title ?? data['title'] ?? '',
-        notification.body ?? data['body'] ?? '',
+        notification?.title ?? data['title'] ?? '',
+        notification?.body ?? data['body'] ?? '',
         platformChannelSpecifics,
         payload: jsonEncode(data),
       );
@@ -139,25 +141,27 @@ class FcmNotificationManager {
         yield await _getNotificationById(id);
       }
     } catch (e, s) {
-      print('>>>>>>>>>>> onMessage: $message error: $e $s');
+      debugPrint('$_debugTag: onMessage message$message error=$e $s');
       rethrow;
     }
   }
 
-  Future<void> onSelectNotification(String payload) {
+  Future<void> _onSelectNotification(String? payload) {
     if (payload == null) {
       return SynchronousFuture(null);
     }
 
     try {
       final map = jsonDecode(payload) as Map<String, dynamic>;
-      final reservationId = map['reservation'] as String;
-      if (reservationId != null) {
-        print('>>>>>>>>>>> onSelectNotification: reservationId=$reservationId');
+      final reservationId = map['reservation'];
+      if (reservationId is String) {
+        debugPrint(
+            '$_debugTag: onSelectNotification reservationId=$reservationId');
         _reservationIdS.add(reservationId);
       }
     } catch (e, s) {
-      print('>>>>>>>>>>> onSelectNotification: $payload error: $e $s');
+      debugPrint(
+          '$_debugTag: onSelectNotification payload=$payload error=$e $s');
     }
 
     return SynchronousFuture(null);
@@ -173,8 +177,5 @@ class FcmNotificationManager {
 ///
 /// To verify things are working, check out the native platform logs.
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
 }

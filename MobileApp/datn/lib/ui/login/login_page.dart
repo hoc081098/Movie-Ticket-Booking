@@ -32,16 +32,16 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin<LoginPage> {
-  DisposeBag disposeBag;
+  DisposeBag? disposeBag;
 
-  AnimationController loginButtonController;
-  Animation<double> buttonSqueezeAnimation;
+  late AnimationController loginButtonController;
+  late Animation<double> buttonSqueezeAnimation;
 
-  FocusNode passwordFocusNode;
-  TextEditingController emailController;
+  late FocusNode passwordFocusNode;
+  late TextEditingController emailController;
 
-  GoogleSignInBloc googleSignInBloc;
-  FacebookLoginBloc facebookLoginBloc;
+  late GoogleSignInBloc googleSignInBloc;
+  late FacebookLoginBloc facebookLoginBloc;
 
   @override
   void initState() {
@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage>
   void dispose() {
     loginButtonController.dispose();
 
-    disposeBag.dispose();
+    disposeBag!.dispose();
     googleSignInBloc.dispose();
     facebookLoginBloc.dispose();
 
@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage>
                     const SizedBox(height: 24),
                     Text(
                       S.of(context).loginToYourAccount,
-                      style: Theme.of(context).textTheme.headline6.copyWith(
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
                             fontSize: 18,
                             color: Colors.white,
                           ),
@@ -196,7 +196,7 @@ class _LoginPageState extends State<LoginPage>
                               child: RxStreamBuilder<bool>(
                                 stream: googleSignInBloc.isLoading$,
                                 builder: (context, isLoading) {
-                                  if (isLoading) {
+                                  if (isLoading!) {
                                     return CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation(
@@ -217,7 +217,7 @@ class _LoginPageState extends State<LoginPage>
                                         'Google',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .button
+                                            .button!
                                             .copyWith(color: Colors.white),
                                       ),
                                     ],
@@ -242,7 +242,7 @@ class _LoginPageState extends State<LoginPage>
                               child: RxStreamBuilder<bool>(
                                 stream: facebookLoginBloc.isLoading$,
                                 builder: (context, isLoading) {
-                                  if (isLoading) {
+                                  if (isLoading!) {
                                     return CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation(
@@ -263,7 +263,7 @@ class _LoginPageState extends State<LoginPage>
                                         'Facebook',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .button
+                                            .button!
                                             .copyWith(color: Colors.white),
                                       ),
                                     ],
@@ -322,7 +322,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Widget emailTextField(LoginBloc loginBloc) {
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: loginBloc.emailError$,
       builder: (context, snapshot) {
         return TextField(
@@ -359,7 +359,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Widget passwordTextField(LoginBloc loginBloc) {
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: loginBloc.passwordError$,
       builder: (context, snapshot) {
         return PasswordTextField(
@@ -379,21 +379,6 @@ class _LoginPageState extends State<LoginPage>
   Widget loginButton(LoginBloc loginBloc) {
     return AnimatedBuilder(
       animation: buttonSqueezeAnimation,
-      child: MaterialButton(
-        onPressed: () {
-          FocusScope.of(context).unfocus();
-          loginBloc.submitLogin();
-        },
-        color: Theme.of(context).backgroundColor,
-        child: Text(
-          S.of(context).LOGIN,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
-          ),
-        ),
-        splashColor: Theme.of(context).accentColor,
-      ),
       builder: (context, child) {
         final value = buttonSqueezeAnimation.value;
 
@@ -413,6 +398,21 @@ class _LoginPageState extends State<LoginPage>
           ),
         );
       },
+      child: MaterialButton(
+        onPressed: () {
+          FocusScope.of(context).unfocus();
+          loginBloc.submitLogin();
+        },
+        color: Theme.of(context).backgroundColor,
+        splashColor: Theme.of(context).accentColor,
+        child: Text(
+          S.of(context).LOGIN,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
     );
   }
 

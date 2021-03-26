@@ -23,8 +23,9 @@ abstract class MovieAndShowTimeResponse
   static Serializer<MovieAndShowTimeResponse> get serializer =>
       _$movieAndShowTimeResponseSerializer;
 
-  factory MovieAndShowTimeResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<MovieAndShowTimeResponse>(serializer, json);
+  factory MovieAndShowTimeResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<MovieAndShowTimeResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

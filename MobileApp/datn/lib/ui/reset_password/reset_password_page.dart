@@ -16,13 +16,13 @@ class ResetPasswordPage extends StatefulWidget {
 
 class _ResetPasswordPageState extends State<ResetPasswordPage>
     with SingleTickerProviderStateMixin {
-  DisposeBag disposeBag;
+  DisposeBag? disposeBag;
 
-  AnimationController buttonController;
-  Animation<double> buttonSqueezeAnimation;
+  late final AnimationController buttonController;
+  late final Animation<double> buttonSqueezeAnimation;
 
-  FocusNode passwordFocusNode;
-  TextEditingController emailController;
+  late final FocusNode passwordFocusNode;
+  late final TextEditingController emailController;
 
   @override
   void initState() {
@@ -73,7 +73,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
   @override
   void dispose() {
     buttonController.dispose();
-    disposeBag.dispose();
+    disposeBag!.dispose();
     super.dispose();
   }
 
@@ -127,7 +127,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
                     const SizedBox(height: 24),
                     Text(
                       S.of(context).enterYourEmailToResetPassword,
-                      style: Theme.of(context).textTheme.headline6.copyWith(
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
                             fontSize: 18,
                             color: Colors.white,
                           ),
@@ -158,7 +158,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
       context.showSnackBar(
           S.of(context).resetSuccessfullyPleaseCheckYourEmailToResetPassword);
       await delay(1000);
-      await Navigator.of(context).pop(message.email);
+      Navigator.of(context).pop<String>(message.email);
     }
     if (message is ErrorMessage) {
       context.showSnackBar(message.message);
@@ -169,7 +169,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
   }
 
   Widget emailTextField(ResetPasswordBloc bloc) {
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
       stream: bloc.emailError$,
       builder: (context, snapshot) {
         return TextField(
@@ -208,21 +208,6 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
   Widget buildButton(ResetPasswordBloc bloc) {
     return AnimatedBuilder(
       animation: buttonSqueezeAnimation,
-      child: MaterialButton(
-        onPressed: () {
-          FocusScope.of(context).unfocus();
-          bloc.submit();
-        },
-        color: Theme.of(context).backgroundColor,
-        child: Text(
-          S.of(context).RESET_PASSWORD,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
-          ),
-        ),
-        splashColor: Theme.of(context).accentColor,
-      ),
       builder: (context, child) {
         final value = buttonSqueezeAnimation.value;
 
@@ -242,6 +227,21 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>
           ),
         );
       },
+      child: MaterialButton(
+        onPressed: () {
+          FocusScope.of(context).unfocus();
+          bloc.submit();
+        },
+        color: Theme.of(context).backgroundColor,
+        splashColor: Theme.of(context).accentColor,
+        child: Text(
+          S.of(context).RESET_PASSWORD,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
     );
   }
 }

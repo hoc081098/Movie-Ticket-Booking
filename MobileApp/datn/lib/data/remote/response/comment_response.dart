@@ -11,8 +11,7 @@ abstract class CommentResponse
   @BuiltValueField(wireName: '_id')
   String get id;
 
-  @nullable
-  bool get is_active;
+  bool? get is_active;
 
   String get content;
 
@@ -34,8 +33,9 @@ abstract class CommentResponse
   static Serializer<CommentResponse> get serializer =>
       _$commentResponseSerializer;
 
-  factory CommentResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<CommentResponse>(serializer, json);
+  factory CommentResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<CommentResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

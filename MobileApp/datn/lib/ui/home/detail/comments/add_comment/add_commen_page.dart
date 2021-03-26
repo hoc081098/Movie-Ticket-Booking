@@ -19,7 +19,7 @@ class AddCommentPage extends StatefulWidget {
 }
 
 class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
-  dynamic token;
+  Object? token;
 
   @override
   void didChangeDependencies() {
@@ -88,10 +88,10 @@ class _AddCommentPageState extends State<AddCommentPage> with DisposeBagMixin {
             const SizedBox(height: 32),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: RxStreamBuilder<Tuple2<bool, String>>(
+              child: RxStreamBuilder<Tuple2<bool, String?>>(
                 stream: bloc.isLoadingContentError$,
                 builder: (context, tuple) {
-                  if (tuple.item1) {
+                  if (tuple!.item1) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );

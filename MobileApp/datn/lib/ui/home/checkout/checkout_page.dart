@@ -61,9 +61,9 @@ class MissingRequiredInfo implements Message {
 
 class CheckoutBloc implements BaseBloc {
   final _emailS = PublishSubject<String>(sync: true);
-  final _phoneS = PublishSubject<String>(sync: true);
-  final _cardS = BehaviorSubject<domain.Card>.seeded(null, sync: true);
-  final _promotionS = BehaviorSubject<Promotion>.seeded(null, sync: true);
+  final _phoneS = PublishSubject<String?>(sync: true);
+  final _cardS = BehaviorSubject<domain.Card?>.seeded(null, sync: true);
+  final _promotionS = BehaviorSubject<Promotion?>.seeded(null, sync: true);
 
   final _submitS = PublishSubject<void>();
   final _isLoadingS = BehaviorSubject.seeded(false);
@@ -71,16 +71,16 @@ class CheckoutBloc implements BaseBloc {
   final _bag = DisposeBag();
 
   ///
-  DistinctValueConnectableStream<String> _emailError$;
-  DistinctValueConnectableStream<String> _phoneError$;
-  ConnectableStream<Message> _message$;
+  late DistinctValueConnectableStream<String?> _emailError$;
+  late DistinctValueConnectableStream<String?> _phoneError$;
+  late ConnectableStream<Message> _message$;
 
   /// Inputs
   Function1<String, void> get emailChanged => _emailS.add;
 
   Function1<String, void> get phoneChanged => _phoneS.add;
 
-  Function1<domain.Card, void> get selectedCard => _cardS.add;
+  void selectedCard(domain.Card? card) => _cardS.add(card);
 
   void selectPromotion(Promotion promotion) => _promotionS.add(promotion);
 
@@ -92,38 +92,40 @@ class CheckoutBloc implements BaseBloc {
   }
 
   /// Outputs
-  ValueStream<String> get emailError$ => _emailError$;
+  ValueStream<String?> get emailError$ => _emailError$;
 
-  ValueStream<String> get phoneError$ => _phoneError$;
+  ValueStream<String?> get phoneError$ => _phoneError$;
 
-  ValueStream<domain.Card> get selectedCard$ => _cardS;
+  ValueStream<domain.Card?> get selectedCard$ => _cardS;
 
-  ValueStream<Promotion> get selectedPromotion$ => _promotionS;
+  ValueStream<Promotion?> get selectedPromotion$ => _promotionS;
 
   ValueStream<bool> get isLoading$ => _isLoadingS;
 
   Stream<Message> get message$ => _message$;
 
   CheckoutBloc({
-    @required final ShowTime showTime,
-    @required final BuiltList<Ticket> tickets,
-    @required final BuiltList<Tuple2<Product, int>> products,
-    @required ReservationRepository reservationRepository,
+    required final ShowTime showTime,
+    required final BuiltList<Ticket> tickets,
+    required final BuiltList<Tuple2<Product, int>> products,
+    required ReservationRepository reservationRepository,
   }) {
     final email$ = _emailS
         .distinct()
         .map((e) => Tuple2(
             Validator.isValidEmail(e) ? null : S.current.invalidEmailAddress,
             e))
-        .debug(identifier: 'EMAIL')
+        .debug(identifier: 'EMAIL', log: streamDebugPrint)
         .share();
 
     final phone$ = _phoneS
         .distinct()
         .map((p) => Tuple2(
-            phoneNumberRegex.hasMatch(p) ? null : S.current.invalidPhoneNumber,
+            p != null && phoneNumberRegex.hasMatch(p)
+                ? null
+                : S.current.invalidPhoneNumber,
             p))
-        .debug(identifier: 'PHONE')
+        .debug(identifier: 'PHONE', log: streamDebugPrint)
         .share();
 
     _emailError$ =
@@ -132,18 +134,18 @@ class CheckoutBloc implements BaseBloc {
         phone$.map((tuple) => tuple.item1).publishValueDistinct(null);
 
     final form$ = _submitS
-        .debug(identifier: 'SUBMIT')
+        .debug(identifier: 'SUBMIT', log: streamDebugPrint)
         .withLatestFrom4(
-          email$.startWith(null),
-          phone$.startWith(null),
+          email$.cast<Tuple2<String?, String>?>().startWith(null),
+          phone$.cast<Tuple2<String?, String>?>().startWith(null),
           _cardS,
           _promotionS,
           (
             _,
-            Tuple2<String, String> email,
-            Tuple2<String, String> phone,
-            domain.Card card,
-            Promotion promotion,
+            Tuple2<String?, String>? email,
+            Tuple2<String?, String>? phone,
+            domain.Card? card,
+            Promotion? promotion,
           ) =>
               email != null &&
                       email.item1 == null &&
@@ -153,10 +155,10 @@ class CheckoutBloc implements BaseBloc {
                   ? Tuple4(email.item2, phone.item2, card, promotion)
                   : null,
         )
-        .debug(identifier: 'FORM')
+        .debug(identifier: 'FORM', log: streamDebugPrint)
         .share();
     _message$ = Rx.merge([
-      form$.where((v) => v != null).exhaustMap(
+      form$.whereNotNull().exhaustMap(
             (emailPhoneCardPromotion) => reservationRepository
                 .createReservation(
                   showTimeId: showTime.id,
@@ -167,7 +169,7 @@ class CheckoutBloc implements BaseBloc {
                   ticketIds: [for (final t in tickets) t.id].build(),
                   promotion: emailPhoneCardPromotion.item4,
                 )
-                .debug(identifier: 'POST REQUEST')
+                .debug(identifier: 'POST REQUEST', log: streamDebugPrint)
                 .doOnListen(() => _isLoadingS.add(true))
                 .doOnCancel(() => _isLoadingS.add(false))
                 .map<Message>((r) => CheckoutSuccess(r))
@@ -206,12 +208,12 @@ class CheckoutPage extends StatefulWidget {
   final BuiltList<Tuple2<Product, int>> products;
 
   const CheckoutPage({
-    Key key,
-    @required this.tickets,
-    @required this.showTime,
-    @required this.theatre,
-    @required this.movie,
-    @required this.products,
+    Key? key,
+    required this.tickets,
+    required this.showTime,
+    required this.theatre,
+    required this.movie,
+    required this.products,
   }) : super(key: key);
 
   @override
@@ -222,21 +224,20 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
   final startTimeFormat = DateFormat('dd/MM/yy, EEE, hh:mm a');
 
-  Object token;
-  User user;
+  Object? token;
 
   @override
   void initState() {
     super.initState();
 
-    user = context
+    final user = context
         .get<UserRepository>()
         .user$
         .value
         ?.fold(() => null, (user) => user);
-    assert(user != null);
-
-    context.get<CheckoutBloc>().initializeWith(user);
+    if (user != null) {
+      context.get<CheckoutBloc>().initializeWith(user);
+    }
   }
 
   @override
@@ -251,10 +252,24 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
 
   @override
   Widget build(BuildContext context) {
+    final user = context
+        .get<UserRepository>()
+        .user$
+        .value
+        ?.fold(() => null, (user) => user);
+
+    if (user == null) {
+      return Container(
+        color: Colors.white,
+        width: double.infinity,
+        height: double.infinity,
+      );
+    }
+
     final buttonHeight = 54.0;
     final countDownStyle = Theme.of(context)
         .textTheme
-        .subtitle2
+        .subtitle2!
         .copyWith(color: Colors.white, fontSize: 16);
 
     return Scaffold(
@@ -262,7 +277,7 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
         title: Text(S.of(context).checkout),
         actions: [
           Center(
-            child: RxStreamBuilder<String>(
+            child: RxStreamBuilder<String?>(
               stream:
                   TicketsCountDownTimerBlocProvider.shared().bloc.countDown$,
               builder: (context, data) {
@@ -290,6 +305,7 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
                     showTime: widget.showTime,
                     theatre: widget.theatre,
                     tickets: widget.tickets,
+                    child: null,
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -382,12 +398,12 @@ class _CheckoutPageState extends State<CheckoutPage> with DisposeBagMixin {
           content: Text('Pay for your tickets?'),
           actions: <Widget>[
             TextButton(
-              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(context).cancel),
             ),
             TextButton(
-              child: Text('OK'),
               onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text('OK'),
             ),
           ],
         );

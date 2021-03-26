@@ -30,7 +30,7 @@ packages:
     source: hosted
     version: "2.0.0"
   async:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: async
       url: "https://pub.dartlang.org"
@@ -156,7 +156,7 @@ packages:
     source: hosted
     version: "3.6.0"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       url: "https://pub.dartlang.org"
@@ -203,7 +203,7 @@ packages:
       name: disposebag
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.0-nullsafety.1"
+    version: "1.5.0"
   distinct_value_connectable_stream:
     dependency: "direct main"
     description:
@@ -217,7 +217,7 @@ packages:
       name: expandable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.4"
+    version: "5.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -376,30 +376,42 @@ packages:
       name: flutter_disposebag
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0-nullsafety.1"
+    version: "1.1.0"
   flutter_dotenv:
     dependency: "direct main"
     description:
       name: flutter_dotenv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
-  flutter_facebook_login:
+    version: "4.0.0-nullsafety.0"
+  flutter_facebook_auth:
     dependency: "direct main"
     description:
-      name: flutter_facebook_login
+      name: flutter_facebook_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
-  flutter_google_places:
+    version: "3.0.0+1"
+  flutter_facebook_auth_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_facebook_auth_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  flutter_facebook_auth_web:
+    dependency: transitive
+    description:
+      name: flutter_facebook_auth_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  flutter_google_places_hoc081098:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "26ad86d26904113b143ca770e2e14b235d3230ba"
-      resolved-ref: "26ad86d26904113b143ca770e2e14b235d3230ba"
-      url: "https://github.com/hoc081098/flutter_google_places.git"
-    source: git
-    version: "0.2.5"
+      name: flutter_google_places_hoc081098
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0-nullsafety.0"
   flutter_local_notifications:
     dependency: "direct main"
     description:
@@ -450,10 +462,12 @@ packages:
   flutter_speed_dial:
     dependency: "direct main"
     description:
-      name: flutter_speed_dial
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
+      path: "."
+      ref: master
+      resolved-ref: "888381305f9431b859169f4fcd09168748c09408"
+      url: "https://github.com/darioielardi/flutter_speed_dial.git"
+    source: git
+    version: "3.0.5"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -479,21 +493,19 @@ packages:
     source: hosted
     version: "2.0.0"
   google_api_headers:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: google_api_headers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0-nullsafety.1"
+    version: "1.0.0"
   google_maps_webservice:
     dependency: transitive
     description:
-      path: "."
-      ref: "98dc0bd451abb041a17f3efd254d5b983cbdb923"
-      resolved-ref: "98dc0bd451abb041a17f3efd254d5b983cbdb923"
-      url: "https://github.com/Flutter-Dart-Open-Source/google_maps_webservice.git"
-    source: git
-    version: "0.0.20"
+      name: google_maps_webservice
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.20-nullsafety.2"
   google_sign_in:
     dependency: "direct main"
     description:
@@ -602,17 +614,19 @@ packages:
   loading_indicator:
     dependency: "direct main"
     description:
-      name: loading_indicator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
+      path: "."
+      ref: master
+      resolved-ref: "14545b8bde925295f4319e8816a972242a8d396c"
+      url: "https://github.com/Mayb3Nots/loading_indicator.git"
+    source: git
+    version: "2.0.0"
   logging:
     dependency: transitive
     description:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.4"
+    version: "1.0.0"
   matcher:
     dependency: transitive
     description:
@@ -654,7 +668,7 @@ packages:
       name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0-nullsafety"
+    version: "2.0.0"
   path:
     dependency: transitive
     description:
@@ -862,14 +876,14 @@ packages:
       name: socket_io_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.12"
+    version: "2.0.0-beta.3-nullsafety.0"
   socket_io_common:
     dependency: transitive
     description:
       name: socket_io_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.2"
+    version: "2.0.0-beta.1-nullsafety.0"
   source_gen:
     dependency: transitive
     description:

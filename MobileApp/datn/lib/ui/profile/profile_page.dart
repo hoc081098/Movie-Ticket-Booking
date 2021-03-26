@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_provider/flutter_provider.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/user.dart';
 import '../../domain/repository/user_repository.dart';
@@ -18,25 +18,11 @@ import '../home/checkout/cards/cards_page.dart';
 import '../login_update_profile/login_update_profile_page.dart';
 import 'reservations/reservations_page.dart';
 
-class ProfilePage extends StatefulWidget {
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  ValueStream<Optional<User>> user$;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    user$ ??= Provider.of<UserRepository>(context).user$;
-  }
-
+class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RxStreamBuilder<Optional<User>>(
-      stream: user$,
+    return RxStreamBuilder<Optional<User>?>(
+      stream: Provider.of<UserRepository>(context).user$,
       builder: (context, data) {
         return Scaffold(
           body: data == null
@@ -53,21 +39,14 @@ class _ProfilePageState extends State<ProfilePage> {
               ? null
               : data.fold(
                   () => null,
-                  (_) =>
-                      /*FloatingActionButton.extended(
-                    onPressed: () => AppScaffold.of(context)
-                        .pushNamedX(ReservationsPage.routeName),
-                    label: Text(S.of(context).tickets),
-                    icon: FaIcon(FontAwesomeIcons.ticketAlt),
-                  )*/
-                      buildFab(),
+                  (_) => buildFab(context),
                 ),
         );
       },
     );
   }
 
-  Widget buildFab() {
+  Widget buildFab(BuildContext context) {
     const color = Color(0xffA4508B);
 
     return SpeedDial(
@@ -79,14 +58,16 @@ class _ProfilePageState extends State<ProfilePage> {
       foregroundColor: Colors.white,
       children: [
         SpeedDialChild(
-          child: FaIcon(
-            FontAwesomeIcons.ticketAlt,
-            size: 20,
-            color: Colors.white,
+          child: Center(
+            child: FaIcon(
+              FontAwesomeIcons.ticketAlt,
+              size: 20,
+              color: Colors.white,
+            ),
           ),
           backgroundColor: color,
-          onTap: () =>
-              AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(ReservationsPage.routeName),
+          onTap: () => AppScaffold.navigatorOfCurrentIndex(context)
+              .pushNamedX(ReservationsPage.routeName),
           label: S.of(context).tickets,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w500,
@@ -137,7 +118,7 @@ class LoggedIn extends StatelessWidget {
       fontSize: 13,
     );
     final detailInfoStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 17);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 17);
     final accentColor = Theme.of(context).accentColor;
 
     return Stack(
@@ -217,7 +198,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
-                user.phoneNumber,
+                user.phoneNumber!,
                 style: detailInfoStyle,
               ),
               dense: true,
@@ -235,7 +216,7 @@ class LoggedIn extends StatelessWidget {
               style: detailHeaderStyle,
             ),
             subtitle: Text(
-              user.gender.toString().split('.')[1],
+              describeEnum(user.gender),
               style: detailInfoStyle,
             ),
             dense: true,
@@ -260,7 +241,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
-                user.address,
+                user.address!,
                 style: detailInfoStyle,
               ),
               dense: true,
@@ -279,7 +260,7 @@ class LoggedIn extends StatelessWidget {
                 style: detailHeaderStyle,
               ),
               subtitle: Text(
-                (DateFormat()..add_yMMMd()).format(user.birthday),
+                (DateFormat()..add_yMMMd()).format(user.birthday!),
                 style: detailInfoStyle,
               ),
               dense: true,
@@ -309,7 +290,8 @@ class LoggedIn extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () => AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
+            onTap: () =>
+                AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               UpdateProfilePage.routeName,
               arguments: user,
             ),
@@ -359,7 +341,7 @@ class LoggedIn extends StatelessWidget {
                     ),
                   )
                 : CachedNetworkImage(
-                    imageUrl: user.avatar,
+                    imageUrl: user.avatar!,
                     fit: BoxFit.cover,
                     width: imageSize,
                     height: imageSize,
@@ -446,12 +428,12 @@ class LoggedIn extends StatelessWidget {
                     content: Text(S.of(context).areYouSureYouWantToLogout),
                     actions: <Widget>[
                       TextButton(
-                        child: Text(S.of(context).cancel),
                         onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(S.of(context).cancel),
                       ),
                       TextButton(
-                        child: Text('OK'),
                         onPressed: () => Navigator.of(context).pop(true),
+                        child: Text('OK'),
                       ),
                     ],
                   );

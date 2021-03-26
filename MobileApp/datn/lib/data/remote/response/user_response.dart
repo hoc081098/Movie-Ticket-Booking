@@ -9,13 +9,12 @@ part 'user_response.g.dart';
 
 abstract class LocationResponse
     implements Built<LocationResponse, LocationResponseBuilder> {
-  @nullable
   @BuiltValueField(wireName: 'coordinates')
-  BuiltList<double> get coordinates;
+  BuiltList<double>? get coordinates;
 
-  double get longitude => coordinates.isNullOrEmpty ? null : coordinates[0];
+  double? get longitude => coordinates.isNullOrEmpty ? null : coordinates![0];
 
-  double get latitude => coordinates.isNullOrEmpty ? null : coordinates[1];
+  double? get latitude => coordinates.isNullOrEmpty ? null : coordinates![1];
 
   LocationResponse._();
 
@@ -25,10 +24,11 @@ abstract class LocationResponse
   static Serializer<LocationResponse> get serializer =>
       _$locationResponseSerializer;
 
-  factory LocationResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<LocationResponse>(serializer, json);
+  factory LocationResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<LocationResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class UserResponse
@@ -40,8 +40,7 @@ abstract class UserResponse
   String get email;
 
   @BuiltValueField(wireName: 'phone_number')
-  @nullable
-  String get phoneNumber;
+  String? get phoneNumber;
 
   @BuiltValueField(wireName: 'full_name')
   String get fullName;
@@ -50,27 +49,22 @@ abstract class UserResponse
   String get gender;
 
   @BuiltValueField(wireName: 'avatar')
-  @nullable
-  String get avatar;
+  String? get avatar;
 
   @BuiltValueField(wireName: 'address')
-  @nullable
-  String get address;
+  String? get address;
 
   @BuiltValueField(wireName: 'birthday')
-  @nullable
-  DateTime get birthday;
+  DateTime? get birthday;
 
   @BuiltValueField(wireName: 'location')
-  @nullable
-  LocationResponse get location;
+  LocationResponse? get location;
 
   @BuiltValueField(wireName: 'is_completed')
   bool get isCompleted;
 
   @BuiltValueField(wireName: 'is_active')
-  @nullable
-  bool get isActive;
+  bool? get isActive;
 
   String get role;
 
@@ -81,8 +75,9 @@ abstract class UserResponse
 
   static Serializer<UserResponse> get serializer => _$userResponseSerializer;
 
-  factory UserResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<UserResponse>(serializer, json);
+  factory UserResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<UserResponse>(serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

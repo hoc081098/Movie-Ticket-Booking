@@ -9,26 +9,29 @@ part 'error_response.g.dart';
 abstract class ErrorResponse {
   int get statusCode;
 
-  String get error;
+  String? get error;
 }
 
 class ParseErrorResponseException implements Exception {
   final List<Object> errors;
+  final List<StackTrace> stackTraces;
 
-  ParseErrorResponseException(this.errors);
+  ParseErrorResponseException(this.errors, this.stackTraces);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ParseErrorResponseException &&
           runtimeType == other.runtimeType &&
-          errors == other.errors;
+          errors == other.errors &&
+          stackTraces == other.stackTraces;
 
   @override
-  int get hashCode => errors.hashCode;
+  int get hashCode => errors.hashCode ^ stackTraces.hashCode;
 
   @override
-  String toString() => 'ParseErrorResponseException{errors: $errors}';
+  String toString() =>
+      'ParseErrorResponseException{errors: $errors, stackTraces: $stackTraces}';
 }
 
 abstract class SingleMessageErrorResponse
@@ -38,12 +41,10 @@ abstract class SingleMessageErrorResponse
   @override
   int get statusCode;
 
-  @nullable
   @override
-  String get error;
+  String? get error;
 
-  @nullable
-  String get message;
+  String? get message;
 
   SingleMessageErrorResponse._();
 
@@ -54,10 +55,12 @@ abstract class SingleMessageErrorResponse
   static Serializer<SingleMessageErrorResponse> get serializer =>
       _$singleMessageErrorResponseSerializer;
 
-  factory SingleMessageErrorResponse.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<SingleMessageErrorResponse>(serializer, json);
+  factory SingleMessageErrorResponse.fromJson(Map<String, Object?> json) =>
+      serializers.deserializeWith<SingleMessageErrorResponse>(
+          serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }
 
 abstract class MultipleMessagesErrorResponse
@@ -68,13 +71,11 @@ abstract class MultipleMessagesErrorResponse
   @override
   int get statusCode;
 
-  @nullable
   @override
-  String get error;
+  String? get error;
 
-  @nullable
   @BuiltValueField(wireName: 'message')
-  BuiltList<String> get messages;
+  BuiltList<String>? get messages;
 
   MultipleMessagesErrorResponse._();
 
@@ -85,9 +86,10 @@ abstract class MultipleMessagesErrorResponse
   static Serializer<MultipleMessagesErrorResponse> get serializer =>
       _$multipleMessagesErrorResponseSerializer;
 
-  factory MultipleMessagesErrorResponse.fromJson(Map<String, dynamic> json) =>
+  factory MultipleMessagesErrorResponse.fromJson(Map<String, Object?> json) =>
       serializers.deserializeWith<MultipleMessagesErrorResponse>(
-          serializer, json);
+          serializer, json)!;
 
-  Map<String, dynamic> toJson() => serializers.serializeWith(serializer, this);
+  Map<String, Object?> toJson() =>
+      serializers.serializeWith(serializer, this) as Map<String, Object?>;
 }

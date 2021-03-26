@@ -24,28 +24,28 @@ class NotificationItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reservation = item.reservation;
-    final showTime = reservation.showTime;
-    final movie = reservation.showTime.movie;
-    final theatre = reservation.showTime.theatre;
+    final showTime = reservation.showTime!;
+    final movie = showTime.movie!;
+    final theatre = showTime.theatre!;
 
     final textTheme = Theme.of(context).textTheme;
-    final titleStyle = textTheme.headline6.copyWith(
+    final titleStyle = textTheme.headline6!.copyWith(
       fontSize: 15,
       color: Colors.white,
       fontWeight: FontWeight.w600,
     );
-    final timeStyle = textTheme.subtitle1.copyWith(
+    final timeStyle = textTheme.subtitle1!.copyWith(
       color: Colors.white,
       fontSize: 10,
       fontStyle: FontStyle.italic,
     );
-    final textStyle = textTheme.subtitle1.copyWith(
+    final textStyle = textTheme.subtitle1!.copyWith(
       fontSize: 12,
       fontWeight: FontWeight.w300,
       color: Colors.white.withOpacity(0.9),
     );
 
-    final textStyle2 = textTheme.subtitle1.copyWith(
+    final textStyle2 = textTheme.subtitle1!.copyWith(
       fontSize: 14,
       color: Colors.white.withOpacity(0.9),
       fontWeight: FontWeight.w600,

@@ -38,15 +38,15 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
   // final Future<void> Function(Locale) resetLocale;
 
   /// Output
-  final DistinctValueStream<Locale> locale$;
+  final DistinctValueStream<Locale?> locale$;
   final Stream<ChangeLocaleMessage> message$;
 
   LocaleBloc._({
-    @required this.changeLocale,
-    // @required this.resetLocale,
-    @required this.locale$,
-    @required this.message$,
-    @required void Function() dispose,
+    required this.changeLocale,
+    // required this.resetLocale,
+    required this.locale$,
+    required this.message$,
+    required VoidAction dispose,
   }) : super(dispose);
 
   factory LocaleBloc(
@@ -59,7 +59,7 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
 
     final locale$ = rxSharedPrefs
         .getStringStream(_localeKey)
-        .map(
+        .map<Locale?>(
           (code) => S.delegate.supportedLocales.firstWhere(
             (element) => element.languageCode == code,
             orElse: () => S.delegate.supportedLocales[0],
@@ -100,7 +100,7 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
   }
 
   static Stream<ChangeLocaleMessage> _changeLocale(
-    Tuple2<Locale, Completer<void>> tuple,
+    Tuple2<Locale, Completer<void>?> tuple,
     RxSharedPreferences rxSharedPrefs,
   ) {
     final locale = tuple.item1;

@@ -11,24 +11,19 @@ abstract class User implements Built<User, UserBuilder> {
 
   String get email;
 
-  @nullable
-  String get phoneNumber;
+  String? get phoneNumber;
 
   String get fullName;
 
   Gender get gender;
 
-  @nullable
-  String get avatar;
+  String? get avatar;
 
-  @nullable
-  String get address;
+  String? get address;
 
-  @nullable
-  DateTime get birthday;
+  DateTime? get birthday;
 
-  @nullable
-  Location get location;
+  Location? get location;
 
   bool get isCompleted;
 

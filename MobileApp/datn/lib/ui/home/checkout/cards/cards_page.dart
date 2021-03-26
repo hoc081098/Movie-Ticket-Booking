@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class RemoveFailure implements Message {
 }
 
 class CardsBloc extends DisposeCallbackBaseBloc {
-  final ValueStream<Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card>>
+  final ValueStream<Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card?>>
       state$;
   final Stream<LoaderMessage<BuiltList<domain.Card>>> loaderMessage$;
   final Stream<Message> cardMessage$;
@@ -54,27 +55,27 @@ class CardsBloc extends DisposeCallbackBaseBloc {
   final void Function(domain.Card) selectedCard;
 
   CardsBloc._({
-    @required this.state$,
-    @required this.loaderMessage$,
-    @required this.fetch,
-    @required this.refresh,
-    @required Future<void> Function() dispose,
-    @required this.cardAdded,
-    @required this.removeCard,
-    @required this.selectedCard,
-    @required this.cardMessage$,
+    required this.state$,
+    required this.loaderMessage$,
+    required this.fetch,
+    required this.refresh,
+    required Future<void> Function() dispose,
+    required this.cardAdded,
+    required this.removeCard,
+    required this.selectedCard,
+    required this.cardMessage$,
   }) : super(dispose);
 
   factory CardsBloc(
     CardRepository cardRepository,
     domain.Card initialSelected,
   ) {
-    DistinctValueConnectableStream<
-        Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card>> state$;
+    late DistinctValueConnectableStream<
+        Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card?>> state$;
 
     final cardMessageS = PublishSubject<Message>();
     final removeCardS = PublishSubject<domain.Card>();
-    final selectedCardS = BehaviorSubject<domain.Card>.seeded(initialSelected);
+    final selectedCardS = BehaviorSubject<domain.Card?>.seeded(initialSelected);
 
     final cardAddedS = PublishSubject<domain.Card>();
     final removedCard$ = removeCardS.flatMap(
@@ -82,7 +83,7 @@ class CardsBloc extends DisposeCallbackBaseBloc {
         final state = state$.value;
         if (state.item2?.id == removed.id) {
           selectedCardS.add(
-              state.item1.content.where((i) => i.id != removed.id).firstOrNull);
+              state.item1.content!.firstWhereOrNull((i) => i.id != removed.id));
         }
         cardMessageS.add(RemovedSuccess(removed));
       }).doOnError((e, s) {
@@ -98,8 +99,8 @@ class CardsBloc extends DisposeCallbackBaseBloc {
           ])
               .scan<BuiltList<domain.Card>>(
                 (acc, change, _) => change.item2
-                    ? acc.rebuild((b) => b.add(change.item1))
-                    : acc.rebuild(
+                    ? acc!.rebuild((b) => b.add(change.item1))
+                    : acc!.rebuild(
                         (b) => b.removeWhere((i) => i.id == change.item1.id)),
                 initial,
               )
@@ -116,7 +117,7 @@ class CardsBloc extends DisposeCallbackBaseBloc {
       selectedCardS,
       (
         LoaderState<BuiltList<domain.Card>> state,
-        domain.Card card,
+        domain.Card? card,
       ) =>
           Tuple2(state, card),
     ).publishValueDistinct(Tuple2(loader.state$.value, selectedCardS.value));
@@ -149,16 +150,16 @@ class CardsPage extends StatefulWidget {
 
   final CardPageMode mode;
 
-  const CardsPage({Key key, @required this.mode}) : super(key: key);
+  const CardsPage({Key? key, required this.mode}) : super(key: key);
 
   @override
   _CardsPageState createState() => _CardsPageState();
 }
 
 class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
-  Object token;
+  Object? token;
 
-  ValueStream<bool> fabVisible$;
+  late final ValueStream<bool> fabVisible$;
   final listController = ScrollController();
 
   @override
@@ -166,8 +167,8 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
     super.initState();
 
     fabVisible$ = () {
-      void Function() listener;
-      PublishSubject<bool> controller;
+      late final  void Function() listener;
+      late final PublishSubject<bool> controller;
 
       controller = PublishSubject<bool>(
         sync: true,
@@ -214,12 +215,12 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
     final bloc = BlocProvider.of<CardsBloc>(context);
     final countDownStyle = Theme.of(context)
         .textTheme
-        .subtitle2
+        .subtitle2!
         .copyWith(color: Colors.white, fontSize: 16);
 
     return WillPopScope(
       onWillPop: () async {
-        final selected = bloc.state$.value.item2;
+        final selected = bloc.state$.requireValue.item2;
         print('[DEBUG] pop selected=$selected');
 
         AppScaffold.navigatorOfCurrentIndex(context).pop(selected);
@@ -232,7 +233,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
           actions: widget.mode == CardPageMode.select
               ? [
                   Center(
-                    child: RxStreamBuilder<String>(
+                    child: RxStreamBuilder<String?>(
                       stream: TicketsCountDownTimerBlocProvider.shared()
                           .bloc
                           .countDown$,
@@ -251,11 +252,13 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
           stream: fabVisible$,
           builder: (context, data) {
             return AnimatedOpacity(
-              opacity: data ? 1 : 0,
+              opacity: data! ? 1 : 0,
               duration: const Duration(milliseconds: 200),
               child: FloatingActionButton.extended(
                 onPressed: () async {
-                  final added = await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
+                  final added =
+                      await AppScaffold.navigatorOfCurrentIndex(context)
+                          .pushNamedX(
                     AddCardPage.routeName,
                     arguments: widget.mode,
                   );
@@ -270,10 +273,10 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: RxStreamBuilder<
-            Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card>>(
+            Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card?>>(
           stream: bloc.state$,
           builder: (context, data) {
-            final state = data.item1;
+            final state = data!.item1;
 
             if (state.isLoading) {
               return Center(
@@ -293,13 +296,13 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                 child: MyErrorWidget(
                   errorText: S
                       .of(context)
-                      .error_with_message(getErrorMessage(state.error)),
+                      .error_with_message(getErrorMessage(state.error!)),
                   onPressed: bloc.fetch,
                 ),
               );
             }
 
-            final cards = state.content;
+            final cards = state.content!;
             if (cards.isEmpty) {
               return Center(
                 child: EmptyWidget(
@@ -344,7 +347,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle1
+                                      .subtitle1!
                                       .copyWith(fontSize: 17),
                                 ),
                                 const SizedBox(height: 8),
@@ -353,7 +356,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
                                   maxLines: 1,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
+                                      .subtitle2!
                                       .copyWith(fontSize: 14),
                                 ),
                               ],
@@ -409,12 +412,12 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
           content: Text(S.of(context).areYouSureYouWantToRemoveCard),
           actions: <Widget>[
             TextButton(
-              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(context).cancel),
             ),
             TextButton(
-              child: Text('OK'),
               onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text('OK'),
             ),
           ],
         );

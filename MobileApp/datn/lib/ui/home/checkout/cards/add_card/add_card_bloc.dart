@@ -1,8 +1,8 @@
 import 'package:disposebag/disposebag.dart';
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
-import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../../../domain/model/card.dart';
@@ -32,11 +32,11 @@ class _Form {
   final int expMonth;
 
   _Form({
-    this.cardHolderName,
-    this.number,
-    this.cvc,
-    this.expYear,
-    this.expMonth,
+    required this.cardHolderName,
+    required this.number,
+    required this.cvc,
+    required this.expYear,
+    required this.expMonth,
   });
 }
 
@@ -51,26 +51,26 @@ class AddCardBloc extends DisposeCallbackBaseBloc {
   final Function1<String, void> cvcChanged;
   final Function0<void> submit;
 
-  final ValueStream<String> cardHolderNameError$;
-  final ValueStream<String> numberError$;
-  final ValueStream<String> expError$;
-  final ValueStream<String> cvcError$;
+  final ValueStream<String?> cardHolderNameError$;
+  final ValueStream<String?> numberError$;
+  final ValueStream<String?> expError$;
+  final ValueStream<String?> cvcError$;
   final ValueStream<bool> isLoading$;
   final Stream<Message> message$;
 
   AddCardBloc._({
-    @required this.cardHolderNameChanged,
-    @required this.numberChanged,
-    @required this.expChanged,
-    @required this.cvcChanged,
-    @required this.submit,
-    @required this.cardHolderNameError$,
-    @required this.numberError$,
-    @required this.expError$,
-    @required this.cvcError$,
-    @required this.isLoading$,
-    @required this.message$,
-    @required void Function() dispose,
+    required this.cardHolderNameChanged,
+    required this.numberChanged,
+    required this.expChanged,
+    required this.cvcChanged,
+    required this.submit,
+    required this.cardHolderNameError$,
+    required this.numberError$,
+    required this.expError$,
+    required this.cvcError$,
+    required this.isLoading$,
+    required this.message$,
+    required void Function() dispose,
   }) : super(dispose);
 
   factory AddCardBloc(CardRepository cardRepository) {
@@ -113,10 +113,10 @@ class AddCardBloc extends DisposeCallbackBaseBloc {
           exp$,
           (
             void _,
-            Tuple2<String, String> holderName,
-            Tuple2<String, String> number,
-            Tuple2<String, int> cvc,
-            Tuple3<String, int, int> exp,
+            Tuple2<String?, String> holderName,
+            Tuple2<String?, String> number,
+            Tuple2<String?, int?> cvc,
+            Tuple3<String?, int?, int?> exp,
           ) =>
               holderName.item1 == null &&
                       number.item1 == null &&
@@ -125,13 +125,13 @@ class AddCardBloc extends DisposeCallbackBaseBloc {
                   ? _Form(
                       cardHolderName: holderName.item2,
                       number: number.item2,
-                      cvc: cvc.item2,
-                      expMonth: exp.item2,
-                      expYear: exp.item3,
+                      cvc: cvc.item2!,
+                      expMonth: exp.item2!,
+                      expYear: exp.item3!,
                     )
                   : null,
         )
-        .where((form) => form != null)
+        .whereNotNull()
         .exhaustMap(
           (form) => cardRepository
               .addCard(
@@ -190,7 +190,7 @@ class AddCardBloc extends DisposeCallbackBaseBloc {
     );
   }
 
-  static Tuple2<String, int> _parseCvc(String s) {
+  static Tuple2<String?, int?> _parseCvc(String s) {
     if (!_cvcRegex.hasMatch(s)) {
       return const Tuple2('Invalid cvc', null);
     }
@@ -198,14 +198,14 @@ class AddCardBloc extends DisposeCallbackBaseBloc {
     return cvc == null ? const Tuple2('Invalid cvc', null) : Tuple2(null, cvc);
   }
 
-  static Tuple3<String, int, int> _parseExp(String s) {
+  static Tuple3<String?, int?, int?> _parseExp(String s) {
     final match = _expRegex.firstMatch(s);
     if (match == null || match.groupCount != 2) {
       return const Tuple3('Invalid expired date', null, null);
     }
 
-    final month = int.tryParse(match.group(1));
-    final year = int.tryParse(match.group(2));
+    final month = int.tryParse(match.group(1)!);
+    final year = int.tryParse(match.group(2)!);
     if (month == null || year == null) {
       return const Tuple3('Invalid expired date', null, null);
     }

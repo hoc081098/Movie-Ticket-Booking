@@ -11,14 +11,14 @@ class CardResponse {
   final String last4;
 
   CardResponse({
-    this.brand,
-    this.card_holder_name,
-    this.country,
-    this.exp_month,
-    this.exp_year,
-    this.funding,
-    this.id,
-    this.last4,
+    required this.brand,
+    required this.card_holder_name,
+    required this.country,
+    required this.exp_month,
+    required this.exp_year,
+    required this.funding,
+    required this.id,
+    required this.last4,
   });
 
   factory CardResponse.fromJson(Map<String, dynamic> json) {
@@ -34,8 +34,8 @@ class CardResponse {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<String, Object?> toJson() {
+    final Map<String, Object?> data = new Map<String, Object?>();
     data['brand'] = this.brand;
     data['card_holder_name'] = this.card_holder_name;
     data['country'] = this.country;

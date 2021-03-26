@@ -16,8 +16,7 @@ abstract class ReservationsState
 
   bool get isLoading;
 
-  @nullable
-  Object get error;
+  Object? get error;
 
   bool get loadedAll;
 

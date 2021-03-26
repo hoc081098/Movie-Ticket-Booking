@@ -2,7 +2,6 @@
 
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
-import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
@@ -19,22 +18,20 @@ class ResetPasswordBloc extends DisposeCallbackBaseBloc {
   final Function0<void> submit;
 
   /// Streams
-  final Stream<String> emailError$;
+  final Stream<String?> emailError$;
   final Stream<Message> message$;
   final Stream<bool> isLoading$;
 
   ResetPasswordBloc._({
-    @required Function0<void> dispose,
-    @required this.emailChanged,
-    @required this.submit,
-    @required this.emailError$,
-    @required this.message$,
-    @required this.isLoading$,
+    required VoidAction dispose,
+    required this.emailChanged,
+    required this.submit,
+    required this.emailError$,
+    required this.message$,
+    required this.isLoading$,
   }) : super(dispose);
 
   factory ResetPasswordBloc(final UserRepository userRepository) {
-    assert(userRepository != null);
-
     /// Controllers
     final emailController = PublishSubject<String>();
     final submitController = PublishSubject<void>();

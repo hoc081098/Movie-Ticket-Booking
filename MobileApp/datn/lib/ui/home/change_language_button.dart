@@ -14,9 +14,10 @@ final supportedLocaleTitles = <Locale, String>{
 };
 
 class ChangeLanguageButton extends StatefulWidget {
-  final Color iconColor;
+  final Color? iconColor;
 
-  const ChangeLanguageButton({Key key, this.iconColor}) : super(key: key);
+  const ChangeLanguageButton({Key? key, required this.iconColor})
+      : super(key: key);
 
   @override
   _ChangeLanguageButtonState createState() => _ChangeLanguageButtonState();
@@ -24,7 +25,7 @@ class ChangeLanguageButton extends StatefulWidget {
 
 class _ChangeLanguageButtonState extends State<ChangeLanguageButton>
     with DisposeBagMixin {
-  Object token;
+  Object? token;
 
   @override
   void didChangeDependencies() {
@@ -85,7 +86,7 @@ class _ChangeLanguageButtonState extends State<ChangeLanguageButton>
               children: <Widget>[
                 for (final locale in S.delegate.supportedLocales)
                   ListTile(
-                    title: Text(supportedLocaleTitles[locale]),
+                    title: Text(supportedLocaleTitles[locale]!),
                     onTap: () => Navigator.pop<Locale>(dialogContext, locale),
                     trailing: selectedLocale == locale
                         ? Icon(Icons.check_circle)

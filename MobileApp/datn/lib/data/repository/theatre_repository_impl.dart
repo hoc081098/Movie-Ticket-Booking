@@ -17,7 +17,7 @@ class TheatreRepositoryImpl implements TheatreRepository {
   TheatreRepositoryImpl(this._authClient, this._theatreResponseToTheatre);
 
   @override
-  Stream<BuiltList<Theatre>> getNearbyTheatres(Location location) {
+  Stream<BuiltList<Theatre>> getNearbyTheatres(Location? location) {
     final toDomain = (dynamic json) {
       final response = serializers.deserialize(
         json,

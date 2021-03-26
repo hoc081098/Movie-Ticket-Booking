@@ -9,7 +9,6 @@ abstract class Result<T> {}
 
 abstract class Success<T>
     implements Built<Success<T>, SuccessBuilder<T>>, Result<T> {
-  @nullable
   T get result;
 
   Success._();
@@ -21,8 +20,7 @@ abstract class Failure<T>
     implements Built<Failure<T>, FailureBuilder<T>>, Result<T> {
   String get message;
 
-  @nullable
-  Object get error;
+  Object? get error;
 
   Failure._();
 

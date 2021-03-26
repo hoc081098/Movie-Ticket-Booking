@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -7,8 +6,8 @@ import 'action.dart';
 import 'state.dart';
 
 typedef GetComments = Stream<Comments> Function({
-  @required int page,
-  @required int perPage,
+  required int page,
+  required int perPage,
 });
 
 typedef RemoveCommentById = Stream<void> Function(String);

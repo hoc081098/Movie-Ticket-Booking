@@ -20,10 +20,10 @@ class _$ShowTimeAndTheatreResponseSerializer
   final String wireName = 'ShowTimeAndTheatreResponse';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, ShowTimeAndTheatreResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'show_time',
       serializers.serialize(object.show_time,
           specifiedType: const FullType(ShowTimeResponse)),
@@ -37,7 +37,7 @@ class _$ShowTimeAndTheatreResponseSerializer
 
   @override
   ShowTimeAndTheatreResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ShowTimeAndTheatreResponseBuilder();
 
@@ -45,16 +45,16 @@ class _$ShowTimeAndTheatreResponseSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'show_time':
           result.show_time.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(ShowTimeResponse))
+                  specifiedType: const FullType(ShowTimeResponse))!
               as ShowTimeResponse);
           break;
         case 'theatre':
           result.theatre.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(TheatreResponse))
+                  specifiedType: const FullType(TheatreResponse))!
               as TheatreResponse);
           break;
       }
@@ -71,10 +71,12 @@ class _$ShowTimeAndTheatreResponse extends ShowTimeAndTheatreResponse {
   final TheatreResponse theatre;
 
   factory _$ShowTimeAndTheatreResponse(
-          [void Function(ShowTimeAndTheatreResponseBuilder) updates]) =>
+          [void Function(ShowTimeAndTheatreResponseBuilder)? updates]) =>
       (new ShowTimeAndTheatreResponseBuilder()..update(updates)).build();
 
-  _$ShowTimeAndTheatreResponse._({this.show_time, this.theatre}) : super._() {
+  _$ShowTimeAndTheatreResponse._(
+      {required this.show_time, required this.theatre})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(
         show_time, 'ShowTimeAndTheatreResponse', 'show_time');
     BuiltValueNullFieldError.checkNotNull(
@@ -115,18 +117,18 @@ class _$ShowTimeAndTheatreResponse extends ShowTimeAndTheatreResponse {
 class ShowTimeAndTheatreResponseBuilder
     implements
         Builder<ShowTimeAndTheatreResponse, ShowTimeAndTheatreResponseBuilder> {
-  _$ShowTimeAndTheatreResponse _$v;
+  _$ShowTimeAndTheatreResponse? _$v;
 
-  ShowTimeResponseBuilder _show_time;
+  ShowTimeResponseBuilder? _show_time;
   ShowTimeResponseBuilder get show_time =>
       _$this._show_time ??= new ShowTimeResponseBuilder();
-  set show_time(ShowTimeResponseBuilder show_time) =>
+  set show_time(ShowTimeResponseBuilder? show_time) =>
       _$this._show_time = show_time;
 
-  TheatreResponseBuilder _theatre;
+  TheatreResponseBuilder? _theatre;
   TheatreResponseBuilder get theatre =>
       _$this._theatre ??= new TheatreResponseBuilder();
-  set theatre(TheatreResponseBuilder theatre) => _$this._theatre = theatre;
+  set theatre(TheatreResponseBuilder? theatre) => _$this._theatre = theatre;
 
   ShowTimeAndTheatreResponseBuilder();
 
@@ -147,7 +149,7 @@ class ShowTimeAndTheatreResponseBuilder
   }
 
   @override
-  void update(void Function(ShowTimeAndTheatreResponseBuilder) updates) {
+  void update(void Function(ShowTimeAndTheatreResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -159,7 +161,7 @@ class ShowTimeAndTheatreResponseBuilder
           new _$ShowTimeAndTheatreResponse._(
               show_time: show_time.build(), theatre: theatre.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'show_time';
         show_time.build();

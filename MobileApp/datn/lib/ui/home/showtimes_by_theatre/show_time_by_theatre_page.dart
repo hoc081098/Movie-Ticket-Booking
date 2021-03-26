@@ -11,7 +11,7 @@ class ShowTimesByTheatrePage extends StatefulWidget {
 
   final Theatre theatre;
 
-  const ShowTimesByTheatrePage({Key key, @required this.theatre})
+  const ShowTimesByTheatrePage({Key? key, required this.theatre})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class ShowTimesByTheatrePage extends StatefulWidget {
 }
 
 class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
-  List<Widget> pages;
+  late List<Widget> pages;
 
   @override
   void initState() {
@@ -59,11 +59,11 @@ class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
         borderSide: BorderSide(width: 2, color: primaryColor),
       ),
       labelColor: primaryColor,
-      unselectedLabelStyle: Theme.of(context).textTheme.caption.copyWith(
+      unselectedLabelStyle: Theme.of(context).textTheme.caption!.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 12,
           ),
-      labelStyle: Theme.of(context).textTheme.caption.copyWith(
+      labelStyle: Theme.of(context).textTheme.caption!.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 13,
           ),
@@ -78,7 +78,7 @@ class _ShowTimesByTheatrePageState extends State<ShowTimesByTheatrePage> {
           bottom: CustomTabBar(tabBar: tabBar),
           title: Text(
             widget.theatre.name,
-            style: Theme.of(context).textTheme.headline6.copyWith(
+            style: Theme.of(context).textTheme.headline6!.copyWith(
                   fontSize: 16,
                   color: Colors.white,
                 ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/model/movie.dart';
@@ -7,7 +8,7 @@ final _cached = <AgeType, String>{};
 class AgeTypeWidget extends StatelessWidget {
   final AgeType ageType;
 
-  const AgeTypeWidget({Key key, @required this.ageType}) : super(key: key);
+  const AgeTypeWidget({Key? key, required this.ageType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,9 @@ class AgeTypeWidget extends StatelessWidget {
       child: Text(
         _cached.putIfAbsent(
           ageType,
-          () => ageType.toString().split('.')[1],
+          () => describeEnum(ageType),
         ),
-        style: Theme.of(context).textTheme.button.copyWith(
+        style: Theme.of(context).textTheme.button!.copyWith(
               color: Colors.white,
               fontSize: 14,
             ),

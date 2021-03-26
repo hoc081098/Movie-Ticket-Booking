@@ -10,20 +10,20 @@ import '../detail/movie_detail_page.dart';
 class ViewAllListItem extends StatelessWidget {
   final Movie item;
 
-  const ViewAllListItem({Key key, this.item}) : super(key: key);
+  const ViewAllListItem({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     const imageHeight = 164.0;
     const imageWidth = imageHeight * 0.7;
 
-    final titleStyle = Theme.of(context).textTheme.headline6.copyWith(
+    final titleStyle = Theme.of(context).textTheme.headline6!.copyWith(
           fontSize: 17,
           color: const Color(0xff687189),
           fontWeight: FontWeight.w600,
         );
     final durationStyle =
-        Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 12);
+        Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 12);
 
     final rateStyle = titleStyle.copyWith(fontSize: 20);
 
@@ -86,7 +86,7 @@ class ViewAllListItem extends StatelessWidget {
                                   S.of(context).load_image_error,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
+                                      .subtitle2!
                                       .copyWith(fontSize: 12),
                                 ),
                               ],

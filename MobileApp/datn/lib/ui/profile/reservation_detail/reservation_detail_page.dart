@@ -20,7 +20,7 @@ class ReservationDetailPage extends StatelessWidget {
 
   final Reservation reservation;
 
-  ReservationDetailPage({Key key, @required this.reservation})
+  ReservationDetailPage({Key? key, required this.reservation})
       : super(key: key);
 
   final dateFormat = DateFormat('dd MMM, yyyy');
@@ -28,15 +28,15 @@ class ReservationDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showTime = reservation.showTime;
-    final movie = showTime.movie;
-    final theatre = showTime.theatre;
+    final showTime = reservation.showTime!;
+    final movie = showTime.movie!;
+    final theatre = showTime.theatre!;
     final tickets = reservation.tickets ?? BuiltList.of(<Ticket>[]);
 
     final size = MediaQuery.of(context).size.width - 16 * 2 - 8 * 2;
     final seatSize = (size - 7 * 4) / 8;
     final accentColor = Theme.of(context).accentColor;
-    final seatStyle = Theme.of(context).textTheme.caption.copyWith(
+    final seatStyle = Theme.of(context).textTheme.caption!.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: Colors.white,
@@ -75,7 +75,7 @@ class ReservationDetailPage extends StatelessWidget {
                     Spacer(),
                     Text(
                       S.of(context).tickets,
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             color: const Color(0xff687189),
                             fontWeight: FontWeight.w500,
                           ),
@@ -94,11 +94,12 @@ class ReservationDetailPage extends StatelessWidget {
                       child: Center(
                         child: Text(
                           (reservation.tickets?.length ?? 0).toString(),
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                color: const Color(0xff687189),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.subtitle1!.copyWith(
+                                    color: const Color(0xff687189),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                         ),
                       ),
                     ),
@@ -106,7 +107,7 @@ class ReservationDetailPage extends StatelessWidget {
                 ),
                 Text(
                   S.of(context).title,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
                         fontSize: 15,
                         color: const Color(0xff687189),
                         fontWeight: FontWeight.w500,
@@ -114,7 +115,7 @@ class ReservationDetailPage extends StatelessWidget {
                 ),
                 Text(
                   movie.title,
-                  style: Theme.of(context).textTheme.headline4.copyWith(
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                         color: const Color(0xff687189),
@@ -124,27 +125,27 @@ class ReservationDetailPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
+                      flex: 3,
                       child: InfoWidget(
                         title: S.of(context).date,
                         subtitle: dateFormat.format(showTime.start_time),
                       ),
-                      flex: 3,
                     ),
                     const SizedBox(width: 2),
                     Expanded(
+                      flex: 3,
                       child: InfoWidget(
                         title: S.of(context).time,
                         subtitle: timeFormat.format(showTime.start_time),
                       ),
-                      flex: 3,
                     ),
                     const SizedBox(width: 2),
                     Expanded(
+                      flex: 2,
                       child: InfoWidget(
                         title: S.of(context).myTicket_room,
                         subtitle: showTime.room,
                       ),
-                      flex: 2,
                     ),
                   ],
                 ),
@@ -152,19 +153,19 @@ class ReservationDetailPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
+                      flex: 3,
                       child: InfoWidget(
                         title: S.of(context).myTicket_theatre,
                         subtitle: theatre.name,
                       ),
-                      flex: 3,
                     ),
                     const SizedBox(width: 2),
                     Expanded(
+                      flex: 5,
                       child: InfoWidget(
                         title: S.of(context).address + ': ',
                         subtitle: theatre.address,
                       ),
-                      flex: 5,
                     ),
                   ],
                 ),
@@ -172,11 +173,11 @@ class ReservationDetailPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
+                      flex: 1,
                       child: InfoWidget(
                         title: S.of(context).orderId,
                         subtitle: '#${reservation.id}',
                       ),
-                      flex: 1,
                     ),
                   ],
                 ),
@@ -240,7 +241,7 @@ class ReservationDetailPage extends StatelessWidget {
                           child: Center(
                             child: MyErrorWidget(
                               errorText: S.of(context).error_with_message(
-                                  context.getErrorMessage(state.error)),
+                                  context.getErrorMessage(state.error!)),
                               onPressed: bloc.fetch,
                             ),
                           ),
@@ -251,7 +252,7 @@ class ReservationDetailPage extends StatelessWidget {
                     final qrCodeSize = size * 0.7;
                     return Center(
                       child: Image.memory(
-                        state.content,
+                        state.content!,
                         width: qrCodeSize,
                         height: qrCodeSize,
                         fit: BoxFit.cover,
@@ -300,63 +301,64 @@ class ReservationDetailPage extends StatelessWidget {
     final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
 
     final textTheme = Theme.of(context).textTheme;
-    final titleStyle = textTheme.subtitle2.copyWith(fontSize: 15);
+    final titleStyle = textTheme.subtitle2!.copyWith(fontSize: 15);
     final caption = textTheme.caption;
     final countStyle = titleStyle.copyWith(
       fontSize: 18,
       fontWeight: FontWeight.w600,
     );
-    final priceStyle = textTheme.subtitle1.copyWith(
+    final priceStyle = textTheme.subtitle1!.copyWith(
       color: Theme.of(context).primaryColor,
       fontWeight: FontWeight.w500,
     );
 
     return Column(
-      children: [
-        for (final item in productIdWithCounts)
-          Container(
-            color: Colors.white,
-            child: ExpansionTile(
-              title: Text(
-                item.product.name,
-                style: titleStyle,
-              ),
-              subtitle: Text(
-                '${currencyFormat.format(item.product.price)} VND',
-                style: priceStyle,
-              ),
-              leading: OctoImage(
-                image: NetworkImage(item.product.image),
-                width: 64,
-                height: 64,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (context, event) {
-                  return const Center(
-                    child: SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      ),
-                    ),
-                  );
-                },
-                errorBuilder: (_, __, ___) => const SizedBox(),
-              ),
-              childrenPadding: const EdgeInsets.all(8.0),
-              children: [
-                Text(
-                  item.product.description,
-                  style: caption,
-                ),
-              ],
-              trailing: Text(
-                item.quantity.toString(),
-                style: countStyle,
-              ),
+      children: productIdWithCounts.map((item) {
+        final product = item.product!;
+
+        return Container(
+          color: Colors.white,
+          child: ExpansionTile(
+            title: Text(
+              product.name,
+              style: titleStyle,
             ),
+            subtitle: Text(
+              '${currencyFormat.format(product.price)} VND',
+              style: priceStyle,
+            ),
+            leading: OctoImage(
+              image: NetworkImage(product.image),
+              width: 64,
+              height: 64,
+              fit: BoxFit.cover,
+              progressIndicatorBuilder: (context, event) {
+                return const Center(
+                  child: SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (_, __, ___) => const SizedBox(),
+            ),
+            childrenPadding: const EdgeInsets.all(8.0),
+            trailing: Text(
+              item.quantity.toString(),
+              style: countStyle,
+            ),
+            children: [
+              Text(
+                product.description,
+                style: caption,
+              ),
+            ],
           ),
-      ],
+        );
+      }).toList(growable: false),
     );
   }
 }
@@ -366,9 +368,9 @@ class InfoWidget extends StatelessWidget {
   final String subtitle;
 
   const InfoWidget({
-    Key key,
-    @required this.title,
-    @required this.subtitle,
+    Key? key,
+    required this.title,
+    required this.subtitle,
   }) : super(key: key);
 
   @override
@@ -378,7 +380,7 @@ class InfoWidget extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.subtitle1.copyWith(
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: const Color(0xff8690A0),
@@ -387,7 +389,7 @@ class InfoWidget extends StatelessWidget {
         ),
         Text(
           subtitle,
-          style: Theme.of(context).textTheme.subtitle1.copyWith(
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff687189),
@@ -415,6 +417,8 @@ class MySeparator extends StatelessWidget {
         final dashHeight = height;
         final dashCount = (boxWidth / (2 * dashWidth)).floor();
         return Flex(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          direction: Axis.horizontal,
           children: List.generate(dashCount, (_) {
             return SizedBox(
               width: dashWidth,
@@ -424,8 +428,6 @@ class MySeparator extends StatelessWidget {
               ),
             );
           }),
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          direction: Axis.horizontal,
         );
       },
     );

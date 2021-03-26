@@ -30,11 +30,11 @@ class CardRepositoryImpl implements CardRepository {
 
   @override
   Stream<Card> addCard({
-    String cardHolderName,
-    String number,
-    int cvc,
-    int expYear,
-    int expMonth,
+    required String cardHolderName,
+    required String number,
+    required int cvc,
+    required int expYear,
+    required int expMonth,
   }) async* {
     final body = {
       'card_holder_name': cardHolderName,

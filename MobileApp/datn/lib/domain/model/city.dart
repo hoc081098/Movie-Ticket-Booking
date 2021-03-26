@@ -8,8 +8,7 @@ abstract class City implements Built<City, CityBuilder> {
   @deprecated
   String get name;
 
-  @nullable
-  Location get location;
+  Location? get location;
 
   City._();
 

@@ -16,9 +16,9 @@ class _$SeatResponseSerializer implements StructuredSerializer<SeatResponse> {
   final String wireName = 'SeatResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, SeatResponse object,
+  Iterable<Object?> serialize(Serializers serializers, SeatResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       'coordinates',
       serializers.serialize(object.coordinates,
           specifiedType:
@@ -43,7 +43,7 @@ class _$SeatResponseSerializer implements StructuredSerializer<SeatResponse> {
       serializers.serialize(object.updatedAt,
           specifiedType: const FullType(DateTime)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -55,7 +55,8 @@ class _$SeatResponseSerializer implements StructuredSerializer<SeatResponse> {
   }
 
   @override
-  SeatResponse deserialize(Serializers serializers, Iterable<Object> serialized,
+  SeatResponse deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SeatResponseBuilder();
 
@@ -63,7 +64,7 @@ class _$SeatResponseSerializer implements StructuredSerializer<SeatResponse> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'is_active':
           result.is_active = serializers.deserialize(value,
@@ -72,7 +73,7 @@ class _$SeatResponseSerializer implements StructuredSerializer<SeatResponse> {
         case 'coordinates':
           result.coordinates.replace(serializers.deserialize(value,
                   specifiedType:
-                      const FullType(BuiltList, const [const FullType(int)]))
+                      const FullType(BuiltList, const [const FullType(int)]))!
               as BuiltList<Object>);
           break;
         case '_id':
@@ -116,7 +117,7 @@ class _$SeatResponseSerializer implements StructuredSerializer<SeatResponse> {
 
 class _$SeatResponse extends SeatResponse {
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final BuiltList<int> coordinates;
   @override
@@ -136,20 +137,20 @@ class _$SeatResponse extends SeatResponse {
   @override
   final DateTime updatedAt;
 
-  factory _$SeatResponse([void Function(SeatResponseBuilder) updates]) =>
+  factory _$SeatResponse([void Function(SeatResponseBuilder)? updates]) =>
       (new SeatResponseBuilder()..update(updates)).build();
 
   _$SeatResponse._(
       {this.is_active,
-      this.coordinates,
-      this.id,
-      this.room,
-      this.theatre,
-      this.column,
-      this.row,
-      this.count,
-      this.createdAt,
-      this.updatedAt})
+      required this.coordinates,
+      required this.id,
+      required this.room,
+      required this.theatre,
+      required this.column,
+      required this.row,
+      required this.count,
+      required this.createdAt,
+      required this.updatedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         coordinates, 'SeatResponse', 'coordinates');
@@ -229,49 +230,49 @@ class _$SeatResponse extends SeatResponse {
 
 class SeatResponseBuilder
     implements Builder<SeatResponse, SeatResponseBuilder> {
-  _$SeatResponse _$v;
+  _$SeatResponse? _$v;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  ListBuilder<int> _coordinates;
+  ListBuilder<int>? _coordinates;
   ListBuilder<int> get coordinates =>
       _$this._coordinates ??= new ListBuilder<int>();
-  set coordinates(ListBuilder<int> coordinates) =>
+  set coordinates(ListBuilder<int>? coordinates) =>
       _$this._coordinates = coordinates;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  String _room;
-  String get room => _$this._room;
-  set room(String room) => _$this._room = room;
+  String? _room;
+  String? get room => _$this._room;
+  set room(String? room) => _$this._room = room;
 
-  String _theatre;
-  String get theatre => _$this._theatre;
-  set theatre(String theatre) => _$this._theatre = theatre;
+  String? _theatre;
+  String? get theatre => _$this._theatre;
+  set theatre(String? theatre) => _$this._theatre = theatre;
 
-  int _column;
-  int get column => _$this._column;
-  set column(int column) => _$this._column = column;
+  int? _column;
+  int? get column => _$this._column;
+  set column(int? column) => _$this._column = column;
 
-  String _row;
-  String get row => _$this._row;
-  set row(String row) => _$this._row = row;
+  String? _row;
+  String? get row => _$this._row;
+  set row(String? row) => _$this._row = row;
 
-  int _count;
-  int get count => _$this._count;
-  set count(int count) => _$this._count = count;
+  int? _count;
+  int? get count => _$this._count;
+  set count(int? count) => _$this._count = count;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
   SeatResponseBuilder();
 
@@ -300,7 +301,7 @@ class SeatResponseBuilder
   }
 
   @override
-  void update(void Function(SeatResponseBuilder) updates) {
+  void update(void Function(SeatResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -329,7 +330,7 @@ class SeatResponseBuilder
               updatedAt: BuiltValueNullFieldError.checkNotNull(
                   updatedAt, 'SeatResponse', 'updatedAt'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'coordinates';
         coordinates.build();

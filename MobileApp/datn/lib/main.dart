@@ -1,12 +1,16 @@
+// @dart=2.9
+
 import 'package:built_value/built_value.dart' show newBuiltValueToStringHelper;
+import 'package:disposebag/disposebag.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Notification, Card;
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -47,13 +51,21 @@ import 'env_manager.dart';
 import 'fcm_notification.dart';
 import 'locale_bloc.dart';
 import 'utils/custom_indenting_built_value_to_string_helper.dart';
+import 'utils/streams.dart' show streamDebugPrint;
 import 'utils/type_defs.dart';
 
 void main() async {
-  newBuiltValueToStringHelper =
-      (className) => CustomIndentingBuiltValueToStringHelper(className, true);
-
   WidgetsFlutterBinding.ensureInitialized();
+
+  //
+  // Setup env mode.
+  //
+  EnvManager.mode = EnvMode.PROD;
+
+  //
+  // Setup logging.
+  //
+  _setupLogging();
 
   //
   // Init Firebase
@@ -83,14 +95,12 @@ void main() async {
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
   final firebaseMessaging = FirebaseMessaging.instance;
-
   final googleSignIn = GoogleSignIn();
-  final facebookLogin = FacebookLogin();
+  final facebookAuth = FacebookAuth.instance;
 
   //
   // Local and remote
   //
-  RxSharedPreferencesConfigs.logger = const RxSharedPreferencesDefaultLogger();
   final preferences = RxSharedPreferences.getInstance();
   final userLocalSource = UserLocalSourceImpl(preferences);
   final keywordSource = SearchKeywordSourceImpl(preferences);
@@ -126,7 +136,7 @@ void main() async {
     storage,
     mappers.userLocalToUserDomain,
     googleSignIn,
-    facebookLogin,
+    facebookAuth,
     firebaseMessaging,
     keywordSource,
   );
@@ -204,7 +214,7 @@ void main() async {
 Future<void> _envConfig() async {
   final fromRemote = <EnvKey, String>{};
 
-  final remoteConfig = await RemoteConfig.instance;
+  final remoteConfig = RemoteConfig.instance;
 
   // Using zero duration to force fetching from remote server.
   await remoteConfig.setConfigSettings(
@@ -216,16 +226,44 @@ Future<void> _envConfig() async {
   try {
     await remoteConfig.fetchAndActivate();
 
-    final baseUrl =
-        remoteConfig.getString(EnvKey.BASE_URL.toString().split('.')[1]);
+    final baseUrl = remoteConfig.getString(describeEnum(EnvKey.BASE_URL));
     if (baseUrl != null && baseUrl.isNotEmpty) {
       fromRemote[EnvKey.BASE_URL] = baseUrl;
     }
 
-    print('###### baseUrl=${baseUrl}');
+    print('###### baseUrl=$baseUrl');
   } catch (e) {
     print('###### error $e');
   }
 
-  await EnvManager.shared.config(EnvPath.PROD, fromRemote);
+  await EnvManager.shared.init(fromRemote);
+}
+
+void _setupLogging() {
+  final isDev = EnvManager.mode == EnvMode.DEV;
+  print('💡💡💡 isDev=$isDev');
+
+  // Prints a message to the console, which you can access using the "flutter"
+  // tool's "logs" command ("flutter logs").
+  debugPrint = isDev ? debugPrintSynchronously : (message, {wrapWidth}) {};
+
+  // Logger that logs disposed resources.
+  DisposeBagConfigs.logger = isDev ? disposeBagDefaultLogger : null;
+
+  // Log messages about operations (such as read, write, value change) and stream events.
+  RxSharedPreferencesConfigs.logger =
+      isDev ? const RxSharedPreferencesDefaultLogger() : null;
+
+  //Logging Http request and response.
+  AppClientLoggerDefaults.logger =
+      isDev ? const DevAppClientLogger() : const ProdAppClientLogger();
+
+  streamDebugPrint = isDev ? print : null;
+
+  // Function used by generated code to get a `BuiltValueToStringHelper`.
+  newBuiltValueToStringHelper = (className) => isDev
+      ? CustomIndentingBuiltValueToStringHelper(className, true)
+      : const EmptyBuiltValueToStringHelper();
+
+  debugPrint('💡💡💡 debugPrint prints this line');
 }

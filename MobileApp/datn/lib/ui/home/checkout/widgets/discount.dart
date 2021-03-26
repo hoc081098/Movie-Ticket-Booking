@@ -12,7 +12,7 @@ import '../discount/discounts_page.dart';
 class SelectDiscount extends StatelessWidget {
   final ShowTime showTime;
 
-  const SelectDiscount({Key key, @required this.showTime}) : super(key: key);
+  const SelectDiscount({Key? key, required this.showTime}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class SelectDiscount extends StatelessWidget {
             final promotion = (await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               DiscountsPage.routeName,
               arguments: showTime.id,
-            )) as Promotion;
+            )) as Promotion?;
 
             print('[DEBUG] receiver ${promotion?.id}');
             if (promotion != null) {
@@ -55,7 +55,7 @@ class SelectDiscount extends StatelessWidget {
             ),
             child: Row(
               children: [
-                RxStreamBuilder<Promotion>(
+                RxStreamBuilder<Promotion?>(
                   stream: bloc.selectedPromotion$,
                   builder: (context, pro) {
                     return Expanded(

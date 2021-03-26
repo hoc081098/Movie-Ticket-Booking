@@ -12,10 +12,10 @@ class _$ComboItem extends ComboItem {
   @override
   final int count;
 
-  factory _$ComboItem([void Function(ComboItemBuilder) updates]) =>
+  factory _$ComboItem([void Function(ComboItemBuilder)? updates]) =>
       (new ComboItemBuilder()..update(updates)).build();
 
-  _$ComboItem._({this.product, this.count}) : super._() {
+  _$ComboItem._({required this.product, required this.count}) : super._() {
     BuiltValueNullFieldError.checkNotNull(product, 'ComboItem', 'product');
     BuiltValueNullFieldError.checkNotNull(count, 'ComboItem', 'count');
   }
@@ -50,15 +50,15 @@ class _$ComboItem extends ComboItem {
 }
 
 class ComboItemBuilder implements Builder<ComboItem, ComboItemBuilder> {
-  _$ComboItem _$v;
+  _$ComboItem? _$v;
 
-  ProductBuilder _product;
+  ProductBuilder? _product;
   ProductBuilder get product => _$this._product ??= new ProductBuilder();
-  set product(ProductBuilder product) => _$this._product = product;
+  set product(ProductBuilder? product) => _$this._product = product;
 
-  int _count;
-  int get count => _$this._count;
-  set count(int count) => _$this._count = count;
+  int? _count;
+  int? get count => _$this._count;
+  set count(int? count) => _$this._count = count;
 
   ComboItemBuilder();
 
@@ -79,7 +79,7 @@ class ComboItemBuilder implements Builder<ComboItem, ComboItemBuilder> {
   }
 
   @override
-  void update(void Function(ComboItemBuilder) updates) {
+  void update(void Function(ComboItemBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -93,7 +93,7 @@ class ComboItemBuilder implements Builder<ComboItem, ComboItemBuilder> {
               count: BuiltValueNullFieldError.checkNotNull(
                   count, 'ComboItem', 'count'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'product';
         product.build();
@@ -110,7 +110,7 @@ class ComboItemBuilder implements Builder<ComboItem, ComboItemBuilder> {
 
 class _$ComboState extends ComboState {
   @override
-  final Object error;
+  final Object? error;
   @override
   final bool isLoading;
   @override
@@ -118,10 +118,14 @@ class _$ComboState extends ComboState {
   @override
   final int totalPrice;
 
-  factory _$ComboState([void Function(ComboStateBuilder) updates]) =>
+  factory _$ComboState([void Function(ComboStateBuilder)? updates]) =>
       (new ComboStateBuilder()..update(updates)).build();
 
-  _$ComboState._({this.error, this.isLoading, this.items, this.totalPrice})
+  _$ComboState._(
+      {this.error,
+      required this.isLoading,
+      required this.items,
+      required this.totalPrice})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(isLoading, 'ComboState', 'isLoading');
     BuiltValueNullFieldError.checkNotNull(items, 'ComboState', 'items');
@@ -165,24 +169,24 @@ class _$ComboState extends ComboState {
 }
 
 class ComboStateBuilder implements Builder<ComboState, ComboStateBuilder> {
-  _$ComboState _$v;
+  _$ComboState? _$v;
 
-  Object _error;
-  Object get error => _$this._error;
-  set error(Object error) => _$this._error = error;
+  Object? _error;
+  Object? get error => _$this._error;
+  set error(Object? error) => _$this._error = error;
 
-  bool _isLoading;
-  bool get isLoading => _$this._isLoading;
-  set isLoading(bool isLoading) => _$this._isLoading = isLoading;
+  bool? _isLoading;
+  bool? get isLoading => _$this._isLoading;
+  set isLoading(bool? isLoading) => _$this._isLoading = isLoading;
 
-  ListBuilder<ComboItem> _items;
+  ListBuilder<ComboItem>? _items;
   ListBuilder<ComboItem> get items =>
       _$this._items ??= new ListBuilder<ComboItem>();
-  set items(ListBuilder<ComboItem> items) => _$this._items = items;
+  set items(ListBuilder<ComboItem>? items) => _$this._items = items;
 
-  int _totalPrice;
-  int get totalPrice => _$this._totalPrice;
-  set totalPrice(int totalPrice) => _$this._totalPrice = totalPrice;
+  int? _totalPrice;
+  int? get totalPrice => _$this._totalPrice;
+  set totalPrice(int? totalPrice) => _$this._totalPrice = totalPrice;
 
   ComboStateBuilder();
 
@@ -205,7 +209,7 @@ class ComboStateBuilder implements Builder<ComboState, ComboStateBuilder> {
   }
 
   @override
-  void update(void Function(ComboStateBuilder) updates) {
+  void update(void Function(ComboStateBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -222,7 +226,7 @@ class ComboStateBuilder implements Builder<ComboState, ComboStateBuilder> {
               totalPrice: BuiltValueNullFieldError.checkNotNull(
                   totalPrice, 'ComboState', 'totalPrice'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'items';
         items.build();

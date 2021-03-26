@@ -18,14 +18,14 @@ import '../movie_detail_page.dart';
 class RelatedMovies extends StatelessWidget {
   final LoaderBloc<BuiltList<Movie>> bloc;
 
-  RelatedMovies({Key key, @required this.bloc}) : super(key: key);
+  RelatedMovies({Key? key, required this.bloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
       stream: bloc.state$,
       builder: (context, state) {
-        if (state.error != null) {
+        if (state!.error != null) {
           return SliverToBoxAdapter(
             child: Container(
               color: Color(0xFFFCFCFC),
@@ -33,7 +33,7 @@ class RelatedMovies extends StatelessWidget {
               child: MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(context.getErrorMessage(state.error)),
+                    .error_with_message(context.getErrorMessage(state.error!)),
                 onPressed: bloc.fetch,
               ),
             ),
@@ -58,7 +58,7 @@ class RelatedMovies extends StatelessWidget {
           );
         }
 
-        final movies = state.content;
+        final movies = state.content!;
 
         if (movies.isEmpty) {
           return SliverToBoxAdapter(
@@ -73,14 +73,14 @@ class RelatedMovies extends StatelessWidget {
         }
 
         final titleTextStyle =
-            Theme.of(context).textTheme.headline6.copyWith(fontSize: 13);
+            Theme.of(context).textTheme.headline6!.copyWith(fontSize: 13);
 
-        final reviewstextStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+        final reviewstextStyle = Theme.of(context).textTheme.subtitle2!.copyWith(
               fontSize: 10,
               color: Color(0xff5B64CF),
             );
 
-        final minStyle = Theme.of(context).textTheme.overline.copyWith(
+        final minStyle = Theme.of(context).textTheme.overline!.copyWith(
               fontSize: 10,
             );
 
@@ -129,7 +129,7 @@ class RelatedMovies extends StatelessWidget {
                                         S.of(context).load_image_error,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .subtitle2
+                                            .subtitle2!
                                             .copyWith(fontSize: 12),
                                       ),
                                     ],

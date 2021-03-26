@@ -14,9 +14,12 @@ class ReservationListItem extends StatelessWidget {
   final DateFormat dateFormat;
   final NumberFormat currencyFormat;
 
-  const ReservationListItem(
-      {Key key, this.item, this.dateFormat, this.currencyFormat})
-      : super(key: key);
+  const ReservationListItem({
+    Key? key,
+    required this.item,
+    required this.dateFormat,
+    required this.currencyFormat,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +27,13 @@ class ReservationListItem extends StatelessWidget {
     final promotion = item.promotion;
 
     final textTheme = Theme.of(context).textTheme;
-    final textStyle = textTheme.subtitle1.copyWith(
+    final textStyle = textTheme.subtitle1!.copyWith(
       fontSize: 14,
       fontWeight: FontWeight.w400,
       color: const Color(0xff98A8BA),
     );
 
-    final textStyle2 = textTheme.subtitle1.copyWith(
+    final textStyle2 = textTheme.subtitle1!.copyWith(
       fontSize: 14,
       color: const Color(0xff687189),
       fontWeight: FontWeight.w600,
@@ -42,9 +45,9 @@ class ReservationListItem extends StatelessWidget {
         arguments: item,
       ),
       child: HeaderWidget(
-        movie: showTime.movie,
+        movie: showTime!.movie!,
         showTime: showTime,
-        theatre: showTime.theatre,
+        theatre: showTime.theatre!,
         tickets: item.tickets ?? BuiltList.of(<Ticket>[]),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

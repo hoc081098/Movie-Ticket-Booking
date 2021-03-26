@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart' hide Notification, Action;
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:intl/intl.dart';
@@ -35,11 +36,11 @@ class _NotificationsPageState extends State<NotificationsPage>
     with DisposeBagMixin {
   final dateFormat = DateFormat('hh:mm a, dd/MM/yy');
 
-  RxReduxStore<Action, st.State> store;
+  RxReduxStore<Action, st.State>? store;
   final listController = ScrollController();
 
   final onTapItemS = StreamController<Reservation>(sync: true);
-  Object setupOnTapItem;
+  Object? setupOnTapItem;
 
   @override
   void initState() {
@@ -95,7 +96,7 @@ class _NotificationsPageState extends State<NotificationsPage>
       AppScaffold.currentIndexStream(context)
           .where((event) => event == AppScaffoldIndex.notifications)
           .take(1)
-          .debug(identifier: '>>> NOTIFICATIONS')
+          .debug(identifier: '>>> NOTIFICATIONS', log: streamDebugPrint)
           .doOnData((event) => s.dispatch(const LoadFirstPageAction()))
           .exhaustMap((_) => notificationManager.notification$)
           .map((event) => AddedNotificationAction(event))
@@ -114,7 +115,7 @@ class _NotificationsPageState extends State<NotificationsPage>
   @override
   void dispose() {
     super.dispose();
-    store.dispose();
+    store!.dispose();
     store = null;
     listController.dispose();
   }
@@ -144,13 +145,10 @@ class _NotificationsPageState extends State<NotificationsPage>
       appBar: AppBar(
         title: Text(S.of(context).notifications),
       ),
-      body: StreamBuilder<st.State>(
-        stream: store.stateStream,
-        initialData: store.state,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
-          if (state.isLoading && state.isFirstPage) {
+      body: RxStreamBuilder<st.State>(
+        stream: store!.stateStream,
+        builder: (context, state) {
+          if (state!.isLoading && state.isFirstPage) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -167,8 +165,8 @@ class _NotificationsPageState extends State<NotificationsPage>
             return Center(
               child: MyErrorWidget(
                 errorText:
-                    context.s.error_with_message(getErrorMessage(state.error)),
-                onPressed: () => store.dispatch(const RetryAction()),
+                    context.s.error_with_message(getErrorMessage(state.error!)),
+                onPressed: () => store!.dispatch(const RetryAction()),
               ),
             );
           }
@@ -186,7 +184,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           return RefreshIndicator(
             onRefresh: () {
               final action = RefreshAction();
-              store.dispatch(action);
+              store!.dispatch(action);
               return action.onDone;
             },
             child: ListView.builder(
@@ -207,8 +205,8 @@ class _NotificationsPageState extends State<NotificationsPage>
                     padding: const EdgeInsets.all(12),
                     child: MyErrorWidget(
                       errorText: context.s
-                          .error_with_message(getErrorMessage(state.error)),
-                      onPressed: () => store.dispatch(const RetryAction()),
+                          .error_with_message(getErrorMessage(state.error!)),
+                      onPressed: () => store!.dispatch(const RetryAction()),
                     ),
                   );
                 }
@@ -249,12 +247,12 @@ class _NotificationsPageState extends State<NotificationsPage>
               Text(S.of(context).areYouSureYouWantToDeleteThisNotification),
           actions: <Widget>[
             TextButton(
-              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.of(context).pop(false),
+              child: Text(S.of(context).cancel),
             ),
             TextButton(
-              child: Text('OK'),
               onPressed: () => Navigator.of(context).pop(true),
+              child: Text('OK'),
             ),
           ],
         );

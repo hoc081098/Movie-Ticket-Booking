@@ -22,8 +22,7 @@ abstract class Theatre implements Built<Theatre, TheatreBuilder> {
 
   String get description;
 
-  @nullable
-  String get email;
+  String? get email;
 
   String get opening_hours;
 
@@ -33,8 +32,7 @@ abstract class Theatre implements Built<Theatre, TheatreBuilder> {
 
   DateTime get updatedAt;
 
-  @nullable
-  double get distance;
+  double? get distance;
 
   String get thumbnail;
 

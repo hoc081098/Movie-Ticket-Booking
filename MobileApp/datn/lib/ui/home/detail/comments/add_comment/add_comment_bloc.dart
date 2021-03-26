@@ -32,15 +32,15 @@ class AddCommentBloc extends DisposeCallbackBaseBloc {
   final Function0<void> submit;
 
   final Stream<Message> message$;
-  final ValueStream<Tuple2<bool, String>> isLoadingContentError$;
+  final ValueStream<Tuple2<bool, String?>> isLoadingContentError$;
 
   AddCommentBloc._({
-    @required void Function() dispose,
-    @required this.rateChanged,
-    @required this.contentChanged,
-    @required this.isLoadingContentError$,
-    @required this.submit,
-    @required this.message$,
+    required void Function() dispose,
+    required this.rateChanged,
+    required this.contentChanged,
+    required this.isLoadingContentError$,
+    required this.submit,
+    required this.message$,
   }) : super(dispose);
 
   factory AddCommentBloc(
@@ -66,7 +66,7 @@ class AddCommentBloc extends DisposeCallbackBaseBloc {
     final message$ = submitS
         .withLatestFrom(
           contentError$,
-          (_, Tuple2<String, String> tuple) => tuple,
+          (_, Tuple2<String, String?> tuple) => tuple,
         )
         .where((tuple) => tuple.item2 == null)
         .map((tuple) => tuple.item1)
@@ -92,7 +92,7 @@ class AddCommentBloc extends DisposeCallbackBaseBloc {
     final isLoadingContentError$ = Rx.combineLatest2(
       isLoadingS,
       contentError$.map((tuple) => tuple.item2),
-      (bool b, String s) => Tuple2(b, s),
+      (bool b, String? s) => Tuple2(b, s),
     ).publishValueSeeded(Tuple2(false, null));
 
     final subscriptions = [

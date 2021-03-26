@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:tuple/tuple.dart';
 
@@ -38,13 +40,13 @@ class ReservationRepositoryImpl implements ReservationRepository {
 
   @override
   Stream<Reservation> createReservation({
-    String showTimeId,
-    String phoneNumber,
-    String email,
-    BuiltList<Tuple2<Product, int>> products,
-    String payCardId,
-    BuiltList<String> ticketIds,
-    Promotion promotion,
+    required String showTimeId,
+    required String phoneNumber,
+    required String email,
+    required BuiltList<Tuple2<Product, int>> products,
+    required String payCardId,
+    required BuiltList<String> ticketIds,
+    required Promotion? promotion,
   }) async* {
     final body = <String, dynamic>{
       'show_time_id': showTimeId,
@@ -63,12 +65,12 @@ class ReservationRepositoryImpl implements ReservationRepository {
       'promotion_id': promotion?.id,
     };
 
-    print('createReservation: $body');
+    debugPrint('createReservation: $body');
 
     final json =
         await _authClient.postBody(buildUrl('/reservations'), body: body);
     final response = ReservationResponse.fromJson(json);
-    print('createReservation: ${response}');
+    debugPrint('createReservation: $response');
 
     yield* getReservationById(response.id);
   }
@@ -78,33 +80,31 @@ class ReservationRepositoryImpl implements ReservationRepository {
           String showTimeId) =>
       _userLocalSource.token$
           .take(1)
+          .whereNotNull()
           .exhaustMap((token) => _connectSocket(token, showTimeId));
 
   Stream<BuiltMap<String, Reservation>> _connectSocket(
       String token, String showTimeId) {
-    final roomId = 'reservation:${showTimeId}';
+    final roomId = 'reservation:$showTimeId';
+    final tag = '[ReservationRepositoryImpl]';
 
-    io.Socket socket;
-    StreamController<BuiltMap<String, Reservation>> controller;
+    io.Socket? socketRef;
+    StreamController<BuiltMap<String, Reservation>>? controller;
 
     controller = StreamController(
       sync: true,
       onListen: () {
-        socket = io.io(
+        final socket = socketRef = io.io(
           EnvManager.shared.get(EnvKey.WS_URL),
-          {
-            'transports': ['websocket'],
-            'path': EnvManager.shared.get(EnvKey.WS_PATH),
-            'query': {
-              'token': 'Bearer $token',
-            }
-          },
+          io.OptionBuilder()
+              .setTransports(['websocket'])
+              .setPath(EnvManager.shared.get(EnvKey.WS_PATH))
+              .setQuery({'token': 'Bearer $token'})
+              .build(),
         );
 
-        print('[ReservationRepositoryImpl] start connect $socket');
-
-        socket.on('connect', (_) {
-          print('[ReservationRepositoryImpl] connected');
+        socket.onConnect((data) {
+          debugPrint('$tag connected $data');
 
           socket.emit('join', roomId);
 
@@ -116,46 +116,55 @@ class ReservationRepositoryImpl implements ReservationRepository {
             final map = response.map(
                 (k, v) => MapEntry(k, _reservationResponseToReservation(v)));
 
-            assert(controller != null);
-            print('[ReservationRepositoryImpl] reserved $map');
-            controller.add(map);
+            debugPrint(
+                '$tag reserved map=$map controller=$controller socketRef=$socketRef');
+            controller?.add(map);
           });
         });
 
-        socket.on('connecting',
-            (data) => print('[ReservationRepositoryImpl] connecting'));
-        socket.on('reconnect',
-            (data) => print('[ReservationRepositoryImpl] reconnect'));
-        socket.on('reconnect_attempt',
-            (data) => print('[ReservationRepositoryImpl] reconnect_attempt'));
-        socket.on('reconnect_failed',
-            (data) => print('[ReservationRepositoryImpl] reconnect_failed'));
-        socket.on('reconnect_error',
-            (data) => print('[ReservationRepositoryImpl] reconnect_error'));
-        socket.on('reconnecting',
-            (data) => print('[ReservationRepositoryImpl] reconnecting'));
+        // listens to events.
 
-        socket.on('disconnect', (_) {
-          controller?.close();
-          print('[ReservationRepositoryImpl] disconnected $controller');
-        });
+        socket.onConnecting((data) => debugPrint('$tag connecting... $data'));
+        socket.onConnectError((data) => debugPrint('$tag connect_error $data'));
+        socket.onConnectTimeout(
+            (data) => debugPrint('$tag connect_timeout $data'));
+        socket.onError((data) => debugPrint('$tag error $data'));
+
+        socket.onReconnect((data) => debugPrint('$tag reconnect $data'));
+        socket.onReconnectAttempt(
+            (data) => debugPrint('$tag reconnect_attempt $data'));
+        socket.onReconnectFailed(
+            (data) => debugPrint('$tag reconnect_failed $data'));
+        socket.onReconnectError(
+            (data) => debugPrint('$tag reconnect_error $data'));
+        socket
+            .onReconnecting((data) => debugPrint('$tag reconnecting... $data'));
+
+        socket.onPing((data) => debugPrint('$tag ping $data'));
+        socket.onPong((data) => debugPrint('$tag pong $data'));
+
+        socket.onDisconnect((data) => debugPrint('$tag disconnect data=$data'));
       },
       onPause: () {},
       onResume: () {},
       onCancel: () {
         controller = null;
-        socket.emit('leave', roomId);
-        socket.dispose();
-        print('[ReservationRepositoryImpl] disposed');
+
+        socketRef?.dispose();
+        socketRef = null;
+
+        debugPrint('$tag disposed');
       },
     );
 
-    assert(controller != null);
-    return controller.stream;
+    return controller!.stream;
   }
 
   @override
-  Stream<BuiltList<Reservation>> getReservation({int page, int perPage}) {
+  Stream<BuiltList<Reservation>> getReservation({
+    required int page,
+    required int perPage,
+  }) {
     final mapResult = (dynamic json) {
       final responses = serializers.deserialize(
         json,

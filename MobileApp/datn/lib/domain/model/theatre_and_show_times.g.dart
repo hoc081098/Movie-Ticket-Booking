@@ -13,10 +13,11 @@ class _$TheatreAndShowTimes extends TheatreAndShowTimes {
   final BuiltList<ShowTime> showTimes;
 
   factory _$TheatreAndShowTimes(
-          [void Function(TheatreAndShowTimesBuilder) updates]) =>
+          [void Function(TheatreAndShowTimesBuilder)? updates]) =>
       (new TheatreAndShowTimesBuilder()..update(updates)).build();
 
-  _$TheatreAndShowTimes._({this.theatre, this.showTimes}) : super._() {
+  _$TheatreAndShowTimes._({required this.theatre, required this.showTimes})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(
         theatre, 'TheatreAndShowTimes', 'theatre');
     BuiltValueNullFieldError.checkNotNull(
@@ -56,16 +57,16 @@ class _$TheatreAndShowTimes extends TheatreAndShowTimes {
 
 class TheatreAndShowTimesBuilder
     implements Builder<TheatreAndShowTimes, TheatreAndShowTimesBuilder> {
-  _$TheatreAndShowTimes _$v;
+  _$TheatreAndShowTimes? _$v;
 
-  TheatreBuilder _theatre;
+  TheatreBuilder? _theatre;
   TheatreBuilder get theatre => _$this._theatre ??= new TheatreBuilder();
-  set theatre(TheatreBuilder theatre) => _$this._theatre = theatre;
+  set theatre(TheatreBuilder? theatre) => _$this._theatre = theatre;
 
-  ListBuilder<ShowTime> _showTimes;
+  ListBuilder<ShowTime>? _showTimes;
   ListBuilder<ShowTime> get showTimes =>
       _$this._showTimes ??= new ListBuilder<ShowTime>();
-  set showTimes(ListBuilder<ShowTime> showTimes) =>
+  set showTimes(ListBuilder<ShowTime>? showTimes) =>
       _$this._showTimes = showTimes;
 
   TheatreAndShowTimesBuilder();
@@ -87,7 +88,7 @@ class TheatreAndShowTimesBuilder
   }
 
   @override
-  void update(void Function(TheatreAndShowTimesBuilder) updates) {
+  void update(void Function(TheatreAndShowTimesBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -99,7 +100,7 @@ class TheatreAndShowTimesBuilder
           new _$TheatreAndShowTimes._(
               theatre: theatre.build(), showTimes: showTimes.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'theatre';
         theatre.build();

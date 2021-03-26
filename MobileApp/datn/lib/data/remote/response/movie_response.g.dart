@@ -16,9 +16,9 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
   final String wireName = 'MovieResponse';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, MovieResponse object,
+  Iterable<Object?> serialize(Serializers serializers, MovieResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
+    final result = <Object?>[
       '_id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'actors',
@@ -60,7 +60,7 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
       serializers.serialize(object.total_rate,
           specifiedType: const FullType(int)),
     ];
-    Object value;
+    Object? value;
     value = object.is_active;
     if (value != null) {
       result
@@ -94,7 +94,7 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
 
   @override
   MovieResponse deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MovieResponseBuilder();
 
@@ -102,7 +102,7 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case '_id':
           result.id = serializers.deserialize(value,
@@ -114,14 +114,14 @@ class _$MovieResponseSerializer implements StructuredSerializer<MovieResponse> {
           break;
         case 'actors':
           result.actors.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
               as BuiltList<Object>);
           break;
         case 'directors':
           result.directors.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
               as BuiltList<Object>);
           break;
         case 'title':
@@ -187,7 +187,7 @@ class _$MovieResponse extends MovieResponse {
   @override
   final String id;
   @override
-  final bool is_active;
+  final bool? is_active;
   @override
   final BuiltList<String> actors;
   @override
@@ -195,11 +195,11 @@ class _$MovieResponse extends MovieResponse {
   @override
   final String title;
   @override
-  final String trailer_video_url;
+  final String? trailer_video_url;
   @override
-  final String poster_url;
+  final String? poster_url;
   @override
-  final String overview;
+  final String? overview;
   @override
   final DateTime released_date;
   @override
@@ -219,27 +219,27 @@ class _$MovieResponse extends MovieResponse {
   @override
   final int total_rate;
 
-  factory _$MovieResponse([void Function(MovieResponseBuilder) updates]) =>
+  factory _$MovieResponse([void Function(MovieResponseBuilder)? updates]) =>
       (new MovieResponseBuilder()..update(updates)).build();
 
   _$MovieResponse._(
-      {this.id,
+      {required this.id,
       this.is_active,
-      this.actors,
-      this.directors,
-      this.title,
+      required this.actors,
+      required this.directors,
+      required this.title,
       this.trailer_video_url,
       this.poster_url,
       this.overview,
-      this.released_date,
-      this.duration,
-      this.original_language,
-      this.createdAt,
-      this.updatedAt,
-      this.age_type,
-      this.rate_star,
-      this.total_favorite,
-      this.total_rate})
+      required this.released_date,
+      required this.duration,
+      required this.original_language,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.age_type,
+      required this.rate_star,
+      required this.total_favorite,
+      required this.total_rate})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, 'MovieResponse', 'id');
     BuiltValueNullFieldError.checkNotNull(actors, 'MovieResponse', 'actors');
@@ -364,81 +364,82 @@ class _$MovieResponse extends MovieResponse {
 
 class MovieResponseBuilder
     implements Builder<MovieResponse, MovieResponseBuilder> {
-  _$MovieResponse _$v;
+  _$MovieResponse? _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  bool _is_active;
-  bool get is_active => _$this._is_active;
-  set is_active(bool is_active) => _$this._is_active = is_active;
+  bool? _is_active;
+  bool? get is_active => _$this._is_active;
+  set is_active(bool? is_active) => _$this._is_active = is_active;
 
-  ListBuilder<String> _actors;
+  ListBuilder<String>? _actors;
   ListBuilder<String> get actors =>
       _$this._actors ??= new ListBuilder<String>();
-  set actors(ListBuilder<String> actors) => _$this._actors = actors;
+  set actors(ListBuilder<String>? actors) => _$this._actors = actors;
 
-  ListBuilder<String> _directors;
+  ListBuilder<String>? _directors;
   ListBuilder<String> get directors =>
       _$this._directors ??= new ListBuilder<String>();
-  set directors(ListBuilder<String> directors) => _$this._directors = directors;
+  set directors(ListBuilder<String>? directors) =>
+      _$this._directors = directors;
 
-  String _title;
-  String get title => _$this._title;
-  set title(String title) => _$this._title = title;
+  String? _title;
+  String? get title => _$this._title;
+  set title(String? title) => _$this._title = title;
 
-  String _trailer_video_url;
-  String get trailer_video_url => _$this._trailer_video_url;
-  set trailer_video_url(String trailer_video_url) =>
+  String? _trailer_video_url;
+  String? get trailer_video_url => _$this._trailer_video_url;
+  set trailer_video_url(String? trailer_video_url) =>
       _$this._trailer_video_url = trailer_video_url;
 
-  String _poster_url;
-  String get poster_url => _$this._poster_url;
-  set poster_url(String poster_url) => _$this._poster_url = poster_url;
+  String? _poster_url;
+  String? get poster_url => _$this._poster_url;
+  set poster_url(String? poster_url) => _$this._poster_url = poster_url;
 
-  String _overview;
-  String get overview => _$this._overview;
-  set overview(String overview) => _$this._overview = overview;
+  String? _overview;
+  String? get overview => _$this._overview;
+  set overview(String? overview) => _$this._overview = overview;
 
-  DateTime _released_date;
-  DateTime get released_date => _$this._released_date;
-  set released_date(DateTime released_date) =>
+  DateTime? _released_date;
+  DateTime? get released_date => _$this._released_date;
+  set released_date(DateTime? released_date) =>
       _$this._released_date = released_date;
 
-  int _duration;
-  int get duration => _$this._duration;
-  set duration(int duration) => _$this._duration = duration;
+  int? _duration;
+  int? get duration => _$this._duration;
+  set duration(int? duration) => _$this._duration = duration;
 
-  String _original_language;
-  String get original_language => _$this._original_language;
-  set original_language(String original_language) =>
+  String? _original_language;
+  String? get original_language => _$this._original_language;
+  set original_language(String? original_language) =>
       _$this._original_language = original_language;
 
-  DateTime _createdAt;
-  DateTime get createdAt => _$this._createdAt;
-  set createdAt(DateTime createdAt) => _$this._createdAt = createdAt;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
-  DateTime _updatedAt;
-  DateTime get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime updatedAt) => _$this._updatedAt = updatedAt;
+  DateTime? _updatedAt;
+  DateTime? get updatedAt => _$this._updatedAt;
+  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
-  String _age_type;
-  String get age_type => _$this._age_type;
-  set age_type(String age_type) => _$this._age_type = age_type;
+  String? _age_type;
+  String? get age_type => _$this._age_type;
+  set age_type(String? age_type) => _$this._age_type = age_type;
 
-  double _rate_star;
-  double get rate_star => _$this._rate_star;
-  set rate_star(double rate_star) => _$this._rate_star = rate_star;
+  double? _rate_star;
+  double? get rate_star => _$this._rate_star;
+  set rate_star(double? rate_star) => _$this._rate_star = rate_star;
 
-  int _total_favorite;
-  int get total_favorite => _$this._total_favorite;
-  set total_favorite(int total_favorite) =>
+  int? _total_favorite;
+  int? get total_favorite => _$this._total_favorite;
+  set total_favorite(int? total_favorite) =>
       _$this._total_favorite = total_favorite;
 
-  int _total_rate;
-  int get total_rate => _$this._total_rate;
-  set total_rate(int total_rate) => _$this._total_rate = total_rate;
+  int? _total_rate;
+  int? get total_rate => _$this._total_rate;
+  set total_rate(int? total_rate) => _$this._total_rate = total_rate;
 
   MovieResponseBuilder();
 
@@ -474,7 +475,7 @@ class MovieResponseBuilder
   }
 
   @override
-  void update(void Function(MovieResponseBuilder) updates) {
+  void update(void Function(MovieResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -511,7 +512,7 @@ class MovieResponseBuilder
               total_favorite: BuiltValueNullFieldError.checkNotNull(total_favorite, 'MovieResponse', 'total_favorite'),
               total_rate: BuiltValueNullFieldError.checkNotNull(total_rate, 'MovieResponse', 'total_rate'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'actors';
         actors.build();

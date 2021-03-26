@@ -19,7 +19,11 @@ class CommentRepositoryImpl implements CommentRepository {
   );
 
   @override
-  Stream<Comments> getComments({String movieId, int page, int perPage}) async* {
+  Stream<Comments> getComments({
+    required String movieId,
+    required int page,
+    required int perPage,
+  }) async* {
     ArgumentError.checkNotNull(movieId, 'movieId');
     ArgumentError.checkNotNull(page, 'page');
     ArgumentError.checkNotNull(perPage, 'perPage');
@@ -46,9 +50,9 @@ class CommentRepositoryImpl implements CommentRepository {
 
   @override
   Stream<Comment> addComment({
-    String content,
-    int rateStar,
-    String movieId,
+    required String content,
+    required int rateStar,
+    required String movieId,
   }) async* {
     ArgumentError.checkNotNull(content, 'content');
     ArgumentError.checkNotNull(rateStar, 'rateStar');

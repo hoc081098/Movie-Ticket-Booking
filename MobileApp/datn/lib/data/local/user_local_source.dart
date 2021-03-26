@@ -1,15 +1,15 @@
 import 'user_local.dart';
 
 abstract class UserLocalSource {
-  Stream<UserLocal> get user$;
+  Stream<UserLocal?> get user$;
 
-  Future<UserLocal> get user;
+  Future<UserLocal?> get user;
 
-  Stream<String> get token$;
+  Stream<String?> get token$;
 
-  Future<String> get token;
+  Future<String?> get token;
 
-  Future<void> saveToken(String token);
+  Future<void> saveToken(String? token);
 
-  Future<void> saveUser(UserLocal user);
+  Future<void> saveUser(UserLocal? user);
 }

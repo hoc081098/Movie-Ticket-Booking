@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:flutter_provider/flutter_provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -21,14 +22,14 @@ class ViewAllPage extends StatefulWidget {
 
   final MovieType movieType;
 
-  const ViewAllPage({Key key, @required this.movieType}) : super(key: key);
+  const ViewAllPage({Key? key, required this.movieType}) : super(key: key);
 
   @override
   _ViewAllPageState createState() => _ViewAllPageState();
 }
 
 class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
-  RxReduxStore<ViewAllAction, ViewAllState> store;
+  RxReduxStore<ViewAllAction, ViewAllState>? store;
   final scrollController = ScrollController();
 
   @override
@@ -61,7 +62,8 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   @override
   void dispose() {
     super.dispose();
-    store.dispose();
+    store!.dispose();
+    store = null;
     scrollController.dispose();
   }
 
@@ -98,13 +100,10 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
           ),
         ),
       ),
-      body: StreamBuilder<ViewAllState>(
-        stream: store.stateStream,
-        initialData: store.state,
-        builder: (context, snapshot) {
-          final state = snapshot.data;
-
-          if (state.isLoading && state.isFirstPage) {
+      body: RxStreamBuilder<ViewAllState>(
+        stream: store!.stateStream,
+        builder: (context, state) {
+          if (state!.isLoading && state.isFirstPage) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -122,8 +121,8 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
               child: MyErrorWidget(
                 errorText: S
                     .of(context)
-                    .error_with_message(getErrorMessage(state.error)),
-                onPressed: () => store.dispatch(const RetryAction()),
+                    .error_with_message(getErrorMessage(state.error!)),
+                onPressed: () => store!.dispatch(const RetryAction()),
               ),
             );
           }
@@ -141,7 +140,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
           return RefreshIndicator(
             onRefresh: () {
               final action = RefreshAction();
-              store.dispatch(action);
+              store!.dispatch(action);
               return action.completed;
             },
             child: ListView.builder(
@@ -160,8 +159,8 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
                     child: MyErrorWidget(
                       errorText: S
                           .of(context)
-                          .error_with_message(getErrorMessage(state.error)),
-                      onPressed: () => store.dispatch(const RetryAction()),
+                          .error_with_message(getErrorMessage(state.error!)),
+                      onPressed: () => store!.dispatch(const RetryAction()),
                     ),
                   );
                 }
@@ -198,8 +197,8 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   ) {
     switch (movieType) {
       case MovieType.nowPlaying:
-        final location = cityRepo.selectedCity$.value.location;
-        return ({@required int page, @required int perPage}) {
+        final location = cityRepo.selectedCity$.requireValue.location;
+        return ({required int page, required int perPage}) {
           return movieRepo.getNowPlayingMovies(
             page: page,
             perPage: perPage,
@@ -215,7 +214,6 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
       case MovieType.mostRate:
         return movieRepo.getMostRate;
     }
-    throw StateError('Missing $movieType');
   }
 }
 
@@ -232,7 +230,6 @@ String _getTitle(MovieType movieType, BuildContext context) {
     case MovieType.mostRate:
       return S.of(context).most_rate.capitalize();
   }
-  throw StateError('Missing $movieType');
 }
 
 extension StringExt on String {

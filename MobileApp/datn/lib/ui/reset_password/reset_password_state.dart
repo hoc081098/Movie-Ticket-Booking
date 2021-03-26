@@ -13,7 +13,7 @@ class ErrorMessage implements Message {
   final Object error;
   final String message;
 
-  const ErrorMessage(this.message, [this.error]);
+  const ErrorMessage(this.message, this.error);
 }
 
 class InvalidInformationMessage implements Message {

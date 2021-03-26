@@ -12,39 +12,39 @@ class _$User extends User {
   @override
   final String email;
   @override
-  final String phoneNumber;
+  final String? phoneNumber;
   @override
   final String fullName;
   @override
   final Gender gender;
   @override
-  final String avatar;
+  final String? avatar;
   @override
-  final String address;
+  final String? address;
   @override
-  final DateTime birthday;
+  final DateTime? birthday;
   @override
-  final Location location;
+  final Location? location;
   @override
   final bool isCompleted;
   @override
   final bool isActive;
 
-  factory _$User([void Function(UserBuilder) updates]) =>
+  factory _$User([void Function(UserBuilder)? updates]) =>
       (new UserBuilder()..update(updates)).build();
 
   _$User._(
-      {this.uid,
-      this.email,
+      {required this.uid,
+      required this.email,
       this.phoneNumber,
-      this.fullName,
-      this.gender,
+      required this.fullName,
+      required this.gender,
       this.avatar,
       this.address,
       this.birthday,
       this.location,
-      this.isCompleted,
-      this.isActive})
+      required this.isCompleted,
+      required this.isActive})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(uid, 'User', 'uid');
     BuiltValueNullFieldError.checkNotNull(email, 'User', 'email');
@@ -121,51 +121,51 @@ class _$User extends User {
 }
 
 class UserBuilder implements Builder<User, UserBuilder> {
-  _$User _$v;
+  _$User? _$v;
 
-  String _uid;
-  String get uid => _$this._uid;
-  set uid(String uid) => _$this._uid = uid;
+  String? _uid;
+  String? get uid => _$this._uid;
+  set uid(String? uid) => _$this._uid = uid;
 
-  String _email;
-  String get email => _$this._email;
-  set email(String email) => _$this._email = email;
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
 
-  String _phoneNumber;
-  String get phoneNumber => _$this._phoneNumber;
-  set phoneNumber(String phoneNumber) => _$this._phoneNumber = phoneNumber;
+  String? _phoneNumber;
+  String? get phoneNumber => _$this._phoneNumber;
+  set phoneNumber(String? phoneNumber) => _$this._phoneNumber = phoneNumber;
 
-  String _fullName;
-  String get fullName => _$this._fullName;
-  set fullName(String fullName) => _$this._fullName = fullName;
+  String? _fullName;
+  String? get fullName => _$this._fullName;
+  set fullName(String? fullName) => _$this._fullName = fullName;
 
-  Gender _gender;
-  Gender get gender => _$this._gender;
-  set gender(Gender gender) => _$this._gender = gender;
+  Gender? _gender;
+  Gender? get gender => _$this._gender;
+  set gender(Gender? gender) => _$this._gender = gender;
 
-  String _avatar;
-  String get avatar => _$this._avatar;
-  set avatar(String avatar) => _$this._avatar = avatar;
+  String? _avatar;
+  String? get avatar => _$this._avatar;
+  set avatar(String? avatar) => _$this._avatar = avatar;
 
-  String _address;
-  String get address => _$this._address;
-  set address(String address) => _$this._address = address;
+  String? _address;
+  String? get address => _$this._address;
+  set address(String? address) => _$this._address = address;
 
-  DateTime _birthday;
-  DateTime get birthday => _$this._birthday;
-  set birthday(DateTime birthday) => _$this._birthday = birthday;
+  DateTime? _birthday;
+  DateTime? get birthday => _$this._birthday;
+  set birthday(DateTime? birthday) => _$this._birthday = birthday;
 
-  LocationBuilder _location;
+  LocationBuilder? _location;
   LocationBuilder get location => _$this._location ??= new LocationBuilder();
-  set location(LocationBuilder location) => _$this._location = location;
+  set location(LocationBuilder? location) => _$this._location = location;
 
-  bool _isCompleted;
-  bool get isCompleted => _$this._isCompleted;
-  set isCompleted(bool isCompleted) => _$this._isCompleted = isCompleted;
+  bool? _isCompleted;
+  bool? get isCompleted => _$this._isCompleted;
+  set isCompleted(bool? isCompleted) => _$this._isCompleted = isCompleted;
 
-  bool _isActive;
-  bool get isActive => _$this._isActive;
-  set isActive(bool isActive) => _$this._isActive = isActive;
+  bool? _isActive;
+  bool? get isActive => _$this._isActive;
+  set isActive(bool? isActive) => _$this._isActive = isActive;
 
   UserBuilder();
 
@@ -195,7 +195,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
   }
 
   @override
-  void update(void Function(UserBuilder) updates) {
+  void update(void Function(UserBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -222,7 +222,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
               isActive: BuiltValueNullFieldError.checkNotNull(
                   isActive, 'User', 'isActive'));
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'location';
         _location?.build();
