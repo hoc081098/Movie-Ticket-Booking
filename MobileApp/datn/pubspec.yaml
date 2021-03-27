@@ -69,7 +69,7 @@ dependencies:
   flutter_bloc_pattern: ^2.0.0
   rxdart_ext: ^0.0.1
   listenable_stream: ^1.0.0-nullsafety.1
-  stream_loader: ^1.1.0-nullsafety.2
+  stream_loader: ^1.1.0
   flutter_google_places_hoc081098: ^1.0.0-nullsafety.0
 
   flutter:
