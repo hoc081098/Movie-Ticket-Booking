@@ -210,7 +210,7 @@ packages:
       name: distinct_value_connectable_stream
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0-nullsafety.5"
+    version: "1.2.0"
   expandable:
     dependency: "direct main"
     description:
@@ -462,11 +462,9 @@ packages:
   flutter_speed_dial:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "888381305f9431b859169f4fcd09168748c09408"
-      url: "https://github.com/darioielardi/flutter_speed_dial.git"
-    source: git
+      name: flutter_speed_dial
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "3.0.5"
   flutter_test:
     dependency: "direct dev"
@@ -614,11 +612,9 @@ packages:
   loading_indicator:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "14545b8bde925295f4319e8816a972242a8d396c"
-      url: "https://github.com/Mayb3Nots/loading_indicator.git"
-    source: git
+      name: loading_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.0.0"
   logging:
     dependency: transitive
