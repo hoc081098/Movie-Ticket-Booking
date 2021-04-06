@@ -28,7 +28,7 @@ class FcmNotificationManager {
   static final _minId = -pow(2, 31).toInt();
   static final _maxId = pow(2, 31).toInt() - 1;
 
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final FirebaseMessaging _firebaseMessaging;
   final RxSharedPreferences _prefs;
 
@@ -63,7 +63,7 @@ class FcmNotificationManager {
   }
 
   Future<Notification> _getNotificationById(String id) {
-    return _authClient.getBody(buildUrl('/notifications/$id')).then(
+    return _authClient.getJson(buildUrl('/notifications/$id')).then(
           (json) => notificationResponseToNotification(
               NotificationResponse.fromJson(json)),
         );

@@ -9,14 +9,14 @@ import '../remote/base_url.dart';
 import '../remote/response/card_response.dart';
 
 class CardRepositoryImpl implements CardRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final Function1<CardResponse, Card> _cardResponseToCard;
 
   CardRepositoryImpl(this._authClient, this._cardResponseToCard);
 
   @override
   Stream<BuiltList<Card>> getCards() async* {
-    final json = await _authClient.getBody(buildUrl('/cards')) as List;
+    final json = await _authClient.getJson(buildUrl('/cards')) as List;
     yield json
         .map((e) => CardResponse.fromJson(e))
         .map(_cardResponseToCard)
@@ -43,7 +43,7 @@ class CardRepositoryImpl implements CardRepository {
       'exp_month': expMonth,
       'exp_year': expYear,
     };
-    final json = await _authClient.postBody(
+    final json = await _authClient.postJson(
       buildUrl('/cards'),
       body: body,
     );

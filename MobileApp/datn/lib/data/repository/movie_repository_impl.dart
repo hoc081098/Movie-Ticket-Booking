@@ -23,7 +23,7 @@ import '../serializers.dart';
 // ignore_for_file: unnecessary_null_comparison
 
 class MovieRepositoryImpl implements MovieRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
 
   final Function1<MovieResponse, Movie> _movieResponseToMovie;
   final Function1<BuiltList<ShowTimeAndTheatreResponse>,
@@ -58,7 +58,7 @@ class MovieRepositoryImpl implements MovieRepository {
     ArgumentError.checkNotNull(page, 'page');
     ArgumentError.checkNotNull(perPage, 'perPage');
 
-    final json = await _authClient.getBody(
+    final json = await _authClient.getJson(
       buildUrl(
         '/movies/now-playing',
         {
@@ -88,7 +88,7 @@ class MovieRepositoryImpl implements MovieRepository {
     ArgumentError.checkNotNull(page, 'page');
     ArgumentError.checkNotNull(perPage, 'perPage');
 
-    final json = await _authClient.getBody(
+    final json = await _authClient.getJson(
       buildUrl(
         '/movies/coming-soon',
         {
@@ -113,7 +113,7 @@ class MovieRepositoryImpl implements MovieRepository {
   }) async* {
     ArgumentError.checkNotNull(movieId, 'movieId');
 
-    final json = await _authClient.getBody(
+    final json = await _authClient.getJson(
       buildUrl(
         '/show-times/movies/$movieId',
         location != null
@@ -137,14 +137,14 @@ class MovieRepositoryImpl implements MovieRepository {
   Stream<Movie> getMovieDetail(String movieId) async* {
     ArgumentError.checkNotNull(movieId, 'movieId');
 
-    final json = await _authClient.getBody(buildUrl('/movies/$movieId'));
+    final json = await _authClient.getJson(buildUrl('/movies/$movieId'));
     yield _movieDetailResponseToMovie(MovieDetailResponse.fromJson(json));
   }
 
   @override
   Stream<BuiltList<Movie>> getRecommendedMovies(Location? location) =>
       Rx.fromCallable(() => _authClient
-          .getBody(
+          .getJson(
             buildUrl(
               '/neo4j',
               location != null
@@ -166,7 +166,7 @@ class MovieRepositoryImpl implements MovieRepository {
     if (perPage == null) return Stream.error(ArgumentError.notNull('perPage'));
 
     return Rx.fromCallable(() => _authClient
-        .getBody(
+        .getJson(
           buildUrl(
             '/movies/most-favorite',
             {
@@ -187,7 +187,7 @@ class MovieRepositoryImpl implements MovieRepository {
     if (perPage == null) return Stream.error(ArgumentError.notNull('perPage'));
 
     return Rx.fromCallable(() => _authClient
-        .getBody(
+        .getJson(
           buildUrl(
             '/movies/most-rate',
             {
@@ -224,7 +224,7 @@ class MovieRepositoryImpl implements MovieRepository {
     };
 
     return Rx.fromCallable(() => _authClient
-        .getBody(buildUrl('/show-times/theatres/$theatreId'))
+        .getJson(buildUrl('/show-times/theatres/$theatreId'))
         .then(mapResult));
   }
 
@@ -270,7 +270,7 @@ class MovieRepositoryImpl implements MovieRepository {
     }
 
     return Rx.fromCallable(() => _authClient
-        .getBody(
+        .getJson(
           buildUrl(
             '/neo4j/search-movies',
             {
@@ -312,7 +312,7 @@ class MovieRepositoryImpl implements MovieRepository {
       return [for (final r in response) _categoryResponseToCategory(r)].build();
     };
     return Rx.fromCallable(
-        () => _authClient.getBody(buildUrl('/categories')).then(mapResult));
+        () => _authClient.getJson(buildUrl('/categories')).then(mapResult));
   }
 
   @override
@@ -322,7 +322,7 @@ class MovieRepositoryImpl implements MovieRepository {
     }
     return Rx.fromCallable(
       () => _authClient
-          .getBody(buildUrl('/neo4j/related-movies/$movieId'))
+          .getJson(buildUrl('/neo4j/related-movies/$movieId'))
           .then(mapResult),
     );
   }

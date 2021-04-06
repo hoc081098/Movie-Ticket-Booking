@@ -23,7 +23,7 @@ import '../remote/response/reservation_response.dart';
 import '../serializers.dart';
 
 class ReservationRepositoryImpl implements ReservationRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final UserLocalSource _userLocalSource;
 
   final Function1<ReservationResponse, Reservation>
@@ -68,7 +68,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
     debugPrint('createReservation: $body');
 
     final json =
-        await _authClient.postBody(buildUrl('/reservations'), body: body);
+        await _authClient.postJson(buildUrl('/reservations'), body: body);
     final response = ReservationResponse.fromJson(json);
     debugPrint('createReservation: $response');
 
@@ -177,7 +177,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
     };
 
     return Rx.fromCallable(
-      () => _authClient.getBody(
+      () => _authClient.getJson(
         buildUrl(
           '/reservations',
           {
@@ -192,7 +192,7 @@ class ReservationRepositoryImpl implements ReservationRepository {
   @override
   Stream<Reservation> getReservationById(String id) {
     return Rx.fromCallable(
-      () => _authClient.getBody(
+      () => _authClient.getJson(
         buildUrl('/reservations/${ArgumentError.checkNotNull(id, 'id')}'),
       ),
     ).map((json) => _fullReservationResponseToReservation(

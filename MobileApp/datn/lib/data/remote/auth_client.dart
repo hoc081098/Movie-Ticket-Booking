@@ -7,26 +7,26 @@ import 'package:http/http.dart';
 import '../../utils/utils.dart';
 import 'response/error_response.dart';
 
-AppClientLogger? get _logger => AppClientLoggerDefaults.logger;
+AppHttpClientLogger? get _logger => AppClientLoggerDefaults.logger;
 
 class AppClientLoggerDefaults {
-  static AppClientLogger? logger;
+  static AppHttpClientLogger? logger;
 
   AppClientLoggerDefaults._();
 }
 
-abstract class AppClientLogger {
-  /// Logging Http request.
-  /// Can be `null`.
+abstract class AppHttpClientLogger {
+  /// Logging HTTP request.
   void logRequest(String request);
 
-  /// Logging Http request body.
-  /// Can be `null`.
+  /// Logging HTTP request body.
   void logRequestBody(String body);
 
-  /// Logging Http response.
-  /// Can be `null`.
+  /// Logging HTTP response.
   void logResponse(String response);
+
+  /// Logging HTTP response body.
+  void logResponseBody(String body);
 }
 
 final _indent = ' ' * 4;
@@ -62,11 +62,11 @@ StreamedResponse _logResponse(StreamedResponse response) {
 Object? _toEncodable(Object? nonEncodable) =>
     nonEncodable is DateTime ? nonEncodable.toIso8601String() : nonEncodable;
 
-abstract class AppClient extends BaseClient {
+abstract class AppHttpClient extends BaseClient {
   /// Sends an HTTP GET request with the given headers to the given URL, which can be a Uri or a String.
   /// Returns the resulting Json object.
   /// Throws [ErrorResponse]
-  Future<dynamic> getBody(Uri url, {Map<String, String>? headers}) =>
+  Future<dynamic> getJson(Uri url, {Map<String, String>? headers}) =>
       this.get(url, headers: headers).then(_parseResult);
 
   Future<dynamic> postMultipart(
@@ -95,7 +95,7 @@ abstract class AppClient extends BaseClient {
         .then(_parseResult);
   }
 
-  Future<dynamic> postBody(
+  Future<dynamic> postJson(
     Uri url, {
     Map<String, String>? headers,
     Map<String, Object?>? body,
@@ -111,7 +111,7 @@ abstract class AppClient extends BaseClient {
           )
           .then(_parseResult);
 
-  Future<dynamic> putBody(
+  Future<dynamic> putJson(
     Uri url, {
     Map<String, String>? headers,
     Map<String, Object?>? body,
@@ -129,10 +129,14 @@ abstract class AppClient extends BaseClient {
           )
           .then(_parseResult);
 
-  Future<dynamic> deleteBody(Uri url, {Map<String, String>? headers}) =>
+  Future<dynamic> deleteJson(Uri url, {Map<String, String>? headers}) =>
       this.delete(url, headers: headers).then(_parseResult);
 
   static dynamic _parseResult(Response response) {
+    try {
+      _logger?.logResponseBody('${_indent}body: ' + response.body);
+    } catch (_) {}
+
     final statusCode = response.statusCode;
 
     if (HttpStatus.ok <= statusCode &&
@@ -162,11 +166,11 @@ abstract class AppClient extends BaseClient {
   }
 }
 
-class NormalClient extends AppClient {
+class NormalHttpClient extends AppHttpClient {
   final Client _client;
   final Duration _timeout;
 
-  NormalClient(this._client, this._timeout);
+  NormalHttpClient(this._client, this._timeout);
 
   @override
   Future<StreamedResponse> send(BaseRequest request) {
@@ -175,14 +179,14 @@ class NormalClient extends AppClient {
   }
 }
 
-class AuthClient extends AppClient {
+class AuthHttpClient extends AppHttpClient {
   final Client _client;
   final Duration _timeout;
 
   final Function0<Future<void>> _onSignOut;
   final Function0<Future<String?>> _getToken;
 
-  AuthClient(
+  AuthHttpClient(
     this._client,
     this._timeout,
     this._onSignOut,
@@ -214,8 +218,8 @@ class AuthClient extends AppClient {
   }
 }
 
-class DevAppClientLogger implements AppClientLogger {
-  static const _tag = '🚀 [HTTP] ';
+class DevAppClientLogger implements AppHttpClientLogger {
+  static const _tag = '🚀 [DEV-HTTP] ';
 
   const DevAppClientLogger();
 
@@ -227,10 +231,13 @@ class DevAppClientLogger implements AppClientLogger {
 
   @override
   void logResponse(String response) => print(_tag + response);
+
+  @override
+  void logResponseBody(String body) => print(_tag + body);
 }
 
-class ProdAppClientLogger implements AppClientLogger {
-  static const _tag = '🚀 [HTTP] ';
+class ProdAppClientLogger implements AppHttpClientLogger {
+  static const _tag = '🚀 [PROD-HTTP] ';
 
   const ProdAppClientLogger();
 
@@ -242,4 +249,7 @@ class ProdAppClientLogger implements AppClientLogger {
 
   @override
   void logResponse(String response) => print(_tag + response);
+
+  @override
+  void logResponseBody(String body) {}
 }

@@ -58,7 +58,7 @@ void main() async {
   //
   // Setup env mode.
   //
-  EnvManager.mode = EnvMode.PROD;
+  EnvManager.mode = EnvMode.DEV;
 
   //
   // Setup logging.
@@ -106,11 +106,11 @@ void main() async {
   final client = http.Client();
   const httpTimeout = Duration(seconds: 20);
 
-  final normalClient = NormalClient(client, httpTimeout);
+  final normalClient = NormalHttpClient(client, httpTimeout);
   print(normalClient);
 
   Function0<Future<void>> _onSignOut;
-  final authClient = AuthClient(
+  final authClient = AuthHttpClient(
     client,
     httpTimeout,
     () => _onSignOut(),
@@ -175,7 +175,7 @@ void main() async {
   runApp(
     Providers(
       providers: [
-        Provider<AuthClient>.value(authClient),
+        Provider<AuthHttpClient>.value(authClient),
         // Mappers
         Provider<Function1<CommentsResponse, Comments>>.value(
             mappers.commentsResponseToComments),

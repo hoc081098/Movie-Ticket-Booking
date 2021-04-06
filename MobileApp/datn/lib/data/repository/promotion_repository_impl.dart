@@ -10,7 +10,7 @@ import '../remote/response/promotion_response.dart';
 import '../serializers.dart';
 
 class PromotionRepositoryImpl implements PromotionRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final Function1<PromotionResponse, Promotion> _promotionResponseToPromotion;
 
   PromotionRepositoryImpl(this._authClient, this._promotionResponseToPromotion);
@@ -29,7 +29,7 @@ class PromotionRepositoryImpl implements PromotionRepository {
 
     return Rx.fromCallable(
       () => _authClient
-          .getBody(buildUrl('/promotions/show-times/$showTimeId'))
+          .getJson(buildUrl('/promotions/show-times/$showTimeId'))
           .then(jsonToResponses.pipe(toDomain)),
     );
   }
