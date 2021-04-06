@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart' hide Notification;
 
 import '../../domain/model/notification.dart';
 import '../../domain/repository/notification_repository.dart';
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/notification_response.dart';

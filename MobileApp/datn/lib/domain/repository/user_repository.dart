@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:rxdart/streams.dart';
 
-import '../../utils/optional.dart';
+import '../../utils/utils.dart';
 import '../model/location.dart';
 import '../model/user.dart';
 

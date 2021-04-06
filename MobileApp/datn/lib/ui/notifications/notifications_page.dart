@@ -57,7 +57,7 @@ class _NotificationsPageState extends State<NotificationsPage>
           (r) => context
               .get<ReservationRepository>()
               .getReservationById(r.id)
-              .doOnListen(context.showLoading)
+              .doOnListen(() => context.showLoading(s.loading))
               .doOnCancel(
                   () => Navigator.of(context, rootNavigator: true).pop())
               .doOnError((e, s) => context.showSnackBar(

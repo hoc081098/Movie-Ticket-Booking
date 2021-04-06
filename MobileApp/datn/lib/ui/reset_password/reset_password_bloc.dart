@@ -7,9 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../domain/repository/user_repository.dart';
 import '../../generated/l10n.dart';
 import '../../utils/error.dart';
-import '../../utils/streams.dart';
-import '../../utils/type_defs.dart';
-import '../../utils/validators.dart';
+import '../../utils/utils.dart';
 import 'reset_password_state.dart';
 
 class ResetPasswordBloc extends DisposeCallbackBaseBloc {

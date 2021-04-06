@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../../domain/model/reservation.dart';
-import '../../../utils/streams.dart';
+import '../../../utils/utils.dart';
 import 'reservations_state.dart';
 
 typedef GetReservations = Stream<BuiltList<Reservation>> Function({

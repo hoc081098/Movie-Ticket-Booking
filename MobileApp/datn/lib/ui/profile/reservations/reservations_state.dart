@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 
 import '../../../domain/model/reservation.dart';
-import '../../../utils/iterable.dart';
+import '../../../utils/utils.dart';
 
 part 'reservations_state.g.dart';
 

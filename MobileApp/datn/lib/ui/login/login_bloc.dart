@@ -6,10 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../domain/repository/user_repository.dart';
 import '../../generated/l10n.dart';
-import '../../utils/error.dart';
-import '../../utils/streams.dart';
-import '../../utils/type_defs.dart';
-import '../../utils/validators.dart';
+import '../../utils/utils.dart';
 import 'login_state.dart';
 
 /// BLoC that handles validating form and login

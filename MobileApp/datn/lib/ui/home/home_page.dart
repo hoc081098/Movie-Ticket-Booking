@@ -21,7 +21,7 @@ import '../../domain/repository/theatre_repository.dart';
 import '../../generated/l10n.dart';
 import '../../utils/error.dart';
 import '../../utils/intl.dart';
-import '../../utils/streams.dart';
+import '../../utils/utils.dart';
 import '../app_scaffold.dart';
 import '../widgets/age_type.dart';
 import '../widgets/empty_widget.dart';

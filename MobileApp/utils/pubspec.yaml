@@ -1,0 +1,32 @@
+name: utils
+description: Utils
+version: 0.0.1
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: '>=1.17.0'
+
+dependencies:
+  built_collection: ^5.0.0
+  built_value: ^8.0.4
+  http: ^0.13.1
+
+  flutter_bloc_pattern: ^2.0.0
+  rxdart_ext: ^0.0.1
+  listenable_stream: ^1.0.0
+
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+

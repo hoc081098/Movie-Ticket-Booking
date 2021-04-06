@@ -5,11 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:utils/utils.dart';
 
 import '../data/remote/response/error_response.dart';
 import '../domain/model/exception.dart';
 import '../generated/l10n.dart';
-import 'iterable.dart';
 
 @deprecated
 String getErrorMessageDeprecated(Object error) =>

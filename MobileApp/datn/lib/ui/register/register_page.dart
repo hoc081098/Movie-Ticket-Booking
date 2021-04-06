@@ -3,8 +3,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 
 import '../../generated/l10n.dart';
-import '../../utils/delay.dart';
-import '../../utils/snackbar.dart';
+import '../../utils/utils.dart';
 import '../widgets/password_text_field.dart';
 import 'register_bloc.dart';
 import 'register_state.dart';

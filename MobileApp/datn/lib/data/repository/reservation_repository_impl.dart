@@ -14,7 +14,7 @@ import '../../domain/model/promotion.dart';
 import '../../domain/model/reservation.dart';
 import '../../domain/repository/reservation_repository.dart';
 import '../../env_manager.dart';
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import '../local/user_local_source.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';

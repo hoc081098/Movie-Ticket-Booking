@@ -4,7 +4,7 @@ import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../domain/model/movie.dart';
 import '../../domain/repository/favorites_repository.dart';
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/favorite_response.dart';

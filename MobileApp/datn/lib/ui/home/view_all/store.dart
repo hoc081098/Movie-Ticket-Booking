@@ -3,7 +3,7 @@ import 'package:rx_redux/rx_redux.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../../domain/model/movie.dart';
-import '../../../utils/streams.dart';
+import '../../../utils/utils.dart';
 import 'view_all_state.dart';
 
 typedef GetMovies = Stream<BuiltList<Movie>> Function({

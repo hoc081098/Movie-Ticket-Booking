@@ -8,7 +8,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../domain/model/city.dart';
 import '../../domain/repository/city_repository.dart';
-import '../../utils/optional.dart';
+import '../../utils/utils.dart';
 import '../local/user_local.dart';
 import '../local/user_local_source.dart';
 

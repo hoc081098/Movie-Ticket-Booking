@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import '../../domain/model/notification.dart';
 import '../../domain/model/reservation.dart';
 import '../../generated/l10n.dart';
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import '../widgets/age_type.dart';
 
 class NotificationItemWidget extends StatelessWidget {

@@ -8,7 +8,6 @@ import '../../domain/model/movie.dart';
 import '../../domain/model/movie_and_showtimes.dart';
 import '../../domain/model/theatre_and_show_times.dart';
 import '../../domain/repository/movie_repository.dart';
-import '../../utils/type_defs.dart';
 import '../../utils/utils.dart';
 import '../local/search_keyword_source.dart';
 import '../remote/auth_client.dart';

@@ -24,7 +24,7 @@ import '../../domain/repository/user_repository.dart';
 import '../../env_manager.dart';
 import '../../generated/l10n.dart';
 import '../../utils/error.dart';
-import '../../utils/snackbar.dart';
+import '../../utils/utils.dart';
 import '../app_scaffold.dart';
 import '../main_page.dart';
 

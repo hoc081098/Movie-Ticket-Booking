@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import 'response/error_response.dart';
 
 AppClientLogger? get _logger => AppClientLoggerDefaults.logger;

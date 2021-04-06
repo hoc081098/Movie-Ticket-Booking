@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/model/notification.dart';
-import '../../utils/iterable.dart';
+import '../../utils/utils.dart';
 import 'state.dart';
 
 @sealed

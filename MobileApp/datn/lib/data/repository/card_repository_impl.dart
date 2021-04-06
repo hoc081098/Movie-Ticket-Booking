@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/card.dart';
 import '../../domain/repository/card_repository.dart';
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/card_response.dart';
