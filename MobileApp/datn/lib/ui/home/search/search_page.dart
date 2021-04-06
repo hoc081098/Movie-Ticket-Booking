@@ -19,7 +19,7 @@ import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
 import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
-import '../../../utils/snackbar.dart';
+import '../../../utils/utils.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
 import '../view_all/list_item.dart';

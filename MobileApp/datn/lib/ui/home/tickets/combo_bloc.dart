@@ -8,8 +8,7 @@ import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../domain/repository/product_repository.dart';
-import '../../../utils/iterable.dart';
-import '../../../utils/streams.dart';
+import '../../../utils/utils.dart';
 import 'combo_state.dart';
 
 class MaxComboCount {

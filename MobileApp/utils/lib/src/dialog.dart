@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../generated/l10n.dart';
-
 extension ShowLoadingDialogExtension on BuildContext {
-  void showLoading() {
+  void showLoading(String text) {
     showDialog<void>(
       context: this,
       barrierDismissible: false,
@@ -28,7 +26,7 @@ extension ShowLoadingDialogExtension on BuildContext {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    S.of(context).loading,
+                    text,
                     textAlign: TextAlign.center,
                   ),
                 ],

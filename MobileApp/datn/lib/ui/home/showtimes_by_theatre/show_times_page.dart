@@ -15,7 +15,7 @@ import '../../../domain/model/theatre.dart';
 import '../../../domain/repository/city_repository.dart';
 import '../../../domain/repository/movie_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../../utils/date_time.dart';
+import '../../../utils/utils.dart';
 import '../../../utils/error.dart';
 import '../../../utils/intl.dart';
 import '../../app_scaffold.dart';

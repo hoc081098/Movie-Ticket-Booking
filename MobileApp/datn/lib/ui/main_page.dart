@@ -26,7 +26,6 @@ import '../domain/repository/ticket_repository.dart';
 import '../domain/repository/user_repository.dart';
 import '../fcm_notification.dart';
 import '../generated/l10n.dart';
-import '../utils/optional.dart';
 import '../utils/utils.dart';
 import 'app_scaffold.dart';
 import 'favorites/favorites_page.dart';
@@ -250,7 +249,7 @@ class _MainPageState extends State<MainPage> with DisposeBagMixin {
           (id) => context
               .get<ReservationRepository>()
               .getReservationById(id)
-              .doOnListen(context.showLoading)
+              .doOnListen(() => context.showLoading(s.loading))
               .doOnCancel(
                   () => Navigator.of(context, rootNavigator: true).pop())
               .doOnError((e, s) => context.showSnackBar(

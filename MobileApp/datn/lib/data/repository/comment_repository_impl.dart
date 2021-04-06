@@ -1,7 +1,7 @@
 import '../../domain/model/comment.dart';
 import '../../domain/model/comments.dart';
 import '../../domain/repository/comment_repository.dart';
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/comment_response.dart';

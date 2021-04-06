@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
-import '../utils/custom_iso_8601_date_time_serializer.dart';
+import '../utils/utils.dart';
 import 'local/user_local.dart';
 import 'remote/response/category_response.dart';
 import 'remote/response/comment_response.dart';

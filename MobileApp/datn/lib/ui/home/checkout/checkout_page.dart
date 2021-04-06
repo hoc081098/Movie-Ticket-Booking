@@ -23,7 +23,6 @@ import '../../../domain/model/user.dart';
 import '../../../domain/repository/reservation_repository.dart';
 import '../../../domain/repository/user_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../../profile/reservation_detail/reservation_detail_page.dart';

@@ -23,7 +23,6 @@ import '../../../domain/repository/ticket_repository.dart';
 import '../../../domain/repository/user_repository.dart';
 import '../../../generated/l10n.dart';
 import '../../../utils/error.dart';
-import '../../../utils/type_defs.dart';
 import '../../../utils/utils.dart';
 import '../../app_scaffold.dart';
 import '../../widgets/age_type.dart';

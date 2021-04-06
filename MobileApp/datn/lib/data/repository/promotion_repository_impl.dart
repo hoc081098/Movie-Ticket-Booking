@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../domain/model/promotion.dart';
 import '../../domain/repository/promotion_repository.dart';
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/promotion_response.dart';

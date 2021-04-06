@@ -71,6 +71,8 @@ dependencies:
   listenable_stream: ^1.0.0
   stream_loader: ^1.1.0
   flutter_google_places_hoc081098: ^1.0.0-nullsafety.1
+  utils:
+    path: ../utils
 
   flutter:
     sdk: flutter

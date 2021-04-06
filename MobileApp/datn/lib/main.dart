@@ -50,9 +50,7 @@ import 'domain/repository/user_repository.dart';
 import 'env_manager.dart';
 import 'fcm_notification.dart';
 import 'locale_bloc.dart';
-import 'utils/custom_indenting_built_value_to_string_helper.dart';
-import 'utils/streams.dart' show streamDebugPrint;
-import 'utils/type_defs.dart';
+import 'utils/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

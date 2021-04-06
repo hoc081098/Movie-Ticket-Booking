@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 
 import '../../../domain/model/movie.dart';
-import '../../../utils/iterable.dart';
+import '../../../utils/utils.dart';
 
 part 'view_all_state.g.dart';
 

@@ -8,8 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:tuple/tuple.dart';
 
-import '../../utils/iterable.dart';
-import '../../utils/streams.dart';
+import '../../utils/utils.dart';
 import '../serializers.dart';
 import 'search_keyword_source.dart';
 

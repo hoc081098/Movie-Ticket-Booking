@@ -8,7 +8,7 @@ import 'package:tuple/tuple.dart';
 import '../../../../../domain/model/comment.dart';
 import '../../../../../domain/repository/comment_repository.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../../utils/type_defs.dart';
+import '../../../../../utils/utils.dart';
 
 @immutable
 @sealed

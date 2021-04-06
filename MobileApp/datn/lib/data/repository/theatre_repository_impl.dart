@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../domain/model/location.dart';
 import '../../domain/model/theatre.dart';
 import '../../domain/repository/theatre_repository.dart';
-import '../../utils/type_defs.dart';
+import '../../utils/utils.dart';
 import '../remote/auth_client.dart';
 import '../remote/base_url.dart';
 import '../remote/response/theatre_response.dart';

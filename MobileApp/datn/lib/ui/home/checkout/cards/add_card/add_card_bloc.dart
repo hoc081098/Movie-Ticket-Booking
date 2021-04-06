@@ -7,8 +7,7 @@ import 'package:tuple/tuple.dart';
 
 import '../../../../../domain/model/card.dart';
 import '../../../../../domain/repository/card_repository.dart';
-import '../../../../../utils/streams.dart';
-import '../../../../../utils/type_defs.dart';
+import '../../../../../utils/utils.dart';
 
 abstract class Message {}
 
