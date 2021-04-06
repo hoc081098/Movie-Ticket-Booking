@@ -10,7 +10,7 @@ import '../remote/response/notification_response.dart';
 import '../serializers.dart';
 
 class NotificationRepositoryImpl implements NotificationRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final Function1<NotificationResponse, Notification>
       _notificationResponseToNotification;
 
@@ -36,7 +36,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
     return Rx.fromCallable(
       () => _authClient
-          .getBody(
+          .getJson(
             buildUrl(
               '/notifications',
               {
@@ -51,5 +51,5 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
   @override
   Future<void> deleteNotificationById(String id) =>
-      _authClient.deleteBody(buildUrl('/notifications/$id'));
+      _authClient.deleteJson(buildUrl('/notifications/$id'));
 }

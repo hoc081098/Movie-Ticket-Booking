@@ -9,7 +9,7 @@ import '../remote/response/ticket_response.dart';
 import '../serializers.dart';
 
 class TicketRepositoryImpl implements TicketRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final Function1<TicketResponse, Ticket> _ticketResponseToTicket;
 
   TicketRepositoryImpl(
@@ -20,7 +20,7 @@ class TicketRepositoryImpl implements TicketRepository {
   @override
   Stream<BuiltList<Ticket>> getTicketsByShowTimeId(String id) async* {
     final json =
-        await _authClient.getBody(buildUrl('/seats/tickets/show-times/$id'));
+        await _authClient.getJson(buildUrl('/seats/tickets/show-times/$id'));
 
     final tickets = serializers.deserialize(
       json,

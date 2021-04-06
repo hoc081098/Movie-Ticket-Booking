@@ -27,7 +27,7 @@ class _Refreshed implements _Change {
 }
 
 class FavoritesRepositoryImpl implements FavoritesRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final Function1<MovieResponse, Movie> _movieResponseToMovie;
   final _changes = PublishSubject<_Change>(sync: true);
 
@@ -46,7 +46,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
     });
 
     return Rx.fromCallable(
-            () => _authClient.getBody(buildUrl('/favorites/$movieId')))
+            () => _authClient.getJson(buildUrl('/favorites/$movieId')))
         .map((json) => FavoriteResponse.fromJson(json))
         .map((res) => res.is_favorite)
         .concatWith([change$]);
@@ -55,7 +55,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
   @override
   Stream<void> toggleFavorite(String movieId) {
     return Rx.fromCallable(() => _authClient
-            .postBody(buildUrl('/favorites'), body: {'movie_id': movieId}))
+            .postJson(buildUrl('/favorites'), body: {'movie_id': movieId}))
         .map((json) => FavoriteResponse.fromJson(json))
         .map(
           (res) => _Toggled(
@@ -69,7 +69,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
 
   @override
   Stream<BuiltList<Movie>> favoritesMovie() {
-    return Rx.fromCallable(() => _authClient.getBody(buildUrl('/favorites')))
+    return Rx.fromCallable(() => _authClient.getJson(buildUrl('/favorites')))
         .map(_jsonToMovies)
         .exhaustMap(
           (initial) => _changes.scan<BuiltList<Movie>>(
@@ -94,7 +94,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
   @override
   Future<void> refresh() {
     return _authClient
-        .getBody(buildUrl('/favorites'))
+        .getJson(buildUrl('/favorites'))
         .then(_jsonToMovies)
         .then((value) => _Refreshed(value))
         .then(_changes.add)

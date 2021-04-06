@@ -11,7 +11,7 @@ import '../remote/response/theatre_response.dart';
 import '../serializers.dart';
 
 class TheatreRepositoryImpl implements TheatreRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final Function1<TheatreResponse, Theatre> _theatreResponseToTheatre;
 
   TheatreRepositoryImpl(this._authClient, this._theatreResponseToTheatre);
@@ -28,7 +28,7 @@ class TheatreRepositoryImpl implements TheatreRepository {
     };
 
     return Rx.fromCallable(() => _authClient
-        .getBody(
+        .getJson(
           buildUrl(
             '/theatres/nearby',
             location != null

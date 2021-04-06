@@ -8,7 +8,7 @@ import '../remote/response/comment_response.dart';
 import '../remote/response/comments_response.dart';
 
 class CommentRepositoryImpl implements CommentRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final Function1<CommentsResponse, Comments> _commentsResponseToComments;
   final Function1<CommentResponse, Comment> _commentResponseToComment;
 
@@ -28,7 +28,7 @@ class CommentRepositoryImpl implements CommentRepository {
     ArgumentError.checkNotNull(page, 'page');
     ArgumentError.checkNotNull(perPage, 'perPage');
 
-    final json = await _authClient.getBody(
+    final json = await _authClient.getJson(
       buildUrl(
         '/comments/movies/$movieId',
         {
@@ -44,7 +44,7 @@ class CommentRepositoryImpl implements CommentRepository {
   @override
   Stream<void> removeCommentById(String id) async* {
     ArgumentError.checkNotNull(id, 'id');
-    await _authClient.deleteBody(buildUrl('/comments/$id'));
+    await _authClient.deleteJson(buildUrl('/comments/$id'));
     yield null;
   }
 
@@ -78,7 +78,7 @@ class CommentRepositoryImpl implements CommentRepository {
       'rate_star': rateStar,
       'movie_id': movieId,
     };
-    final json = await _authClient.postBody(
+    final json = await _authClient.postJson(
       buildUrl('/comments'),
       body: body,
     );

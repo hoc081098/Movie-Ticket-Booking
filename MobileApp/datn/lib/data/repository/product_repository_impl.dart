@@ -8,14 +8,14 @@ import '../remote/response/product_response.dart';
 import '../serializers.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
   final Product Function(ProductResponse) _productResponseToProduct;
 
   ProductRepositoryImpl(this._authClient, this._productResponseToProduct);
 
   @override
   Stream<BuiltList<Product>> getProducts() async* {
-    final json = await _authClient.getBody(buildUrl('/products'));
+    final json = await _authClient.getJson(buildUrl('/products'));
 
     final productResponses = serializers.deserialize(
       json,

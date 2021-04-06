@@ -31,7 +31,7 @@ class UserRepositoryImpl implements UserRepository {
   final FirebaseMessaging _firebaseMessaging;
   final UserLocalSource _userLocalSource;
 
-  final AuthClient _authClient;
+  final AuthHttpClient _authClient;
 
   final Function1<UserResponse, UserLocal> _userResponseToUserLocal;
   final GoogleSignIn _googleSignIn;
@@ -98,7 +98,7 @@ class UserRepositoryImpl implements UserRepository {
     await _userLocalSource.saveToken(await currentUser.getIdToken(true));
 
     try {
-      final json = await _authClient.getBody(
+      final json = await _authClient.getJson(
         buildUrl('users/me'),
         headers: await _fcmTokenHeaders,
       );
@@ -156,7 +156,7 @@ class UserRepositoryImpl implements UserRepository {
 
     UserResponse userResponse;
     try {
-      final json = await _authClient.getBody(
+      final json = await _authClient.getJson(
         buildUrl('users/me'),
         headers: await _fcmTokenHeaders,
       );
@@ -265,7 +265,7 @@ class UserRepositoryImpl implements UserRepository {
     updateBody['gender'] = describeEnum(gender);
 
     final userResponse = UserResponse.fromJson(
-      await _authClient.putBody(
+      await _authClient.putJson(
         buildUrl('users/me'),
         body: updateBody,
       ),
