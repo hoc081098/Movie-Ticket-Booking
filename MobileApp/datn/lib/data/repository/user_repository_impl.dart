@@ -328,46 +328,41 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> facebookSignIn() async {
-    try {
-      final token = (await _facebookAuth.login())?.token;
-      if (token == null) {
+    final loginResult = await _facebookAuth.login();
+
+    switch (loginResult.status) {
+      case LoginStatus.cancelled:
         throw PlatformException(
-          code: 'error',
+          code: 'cancelled',
+          message: 'Facebook sign in canceled',
+          details: null,
+        );
+      case LoginStatus.failed:
+        throw PlatformException(
+          code: 'failed',
           message: 'Login failed',
           details: null,
         );
-      }
+      case LoginStatus.operationInProgress:
+        throw PlatformException(
+          code: 'operationInProgress',
+          message: 'You have a previous login operation in progress',
+          details: null,
+        );
+      case LoginStatus.success:
+        final token = loginResult.accessToken?.token;
 
-      await _auth.signInWithCredential(
-        FacebookAuthProvider.credential(token),
-      );
-      await _checkCompletedLoginAfterFirebaseLogin();
-    } on FacebookAuthException catch (e) {
-      final errorCode = e.errorCode;
-
-      debugPrint(e.errorCode);
-      debugPrint(e.message);
-
-      switch (errorCode) {
-        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+        if (token == null) {
           throw PlatformException(
-            code: errorCode,
-            message: 'You have a previous login operation in progress',
+            code: 'error',
+            message: 'Login failed. Token is null',
             details: null,
           );
-        case FacebookAuthErrorCode.CANCELLED:
-          throw PlatformException(
-            code: errorCode,
-            message: 'Facebook sign in canceled',
-            details: null,
-          );
-        case FacebookAuthErrorCode.FAILED:
-          throw PlatformException(
-            code: errorCode,
-            message: 'Login failed',
-            details: null,
-          );
-      }
+        }
+
+        await _auth
+            .signInWithCredential(FacebookAuthProvider.credential(token));
+        await _checkCompletedLoginAfterFirebaseLogin();
     }
   }
 }
