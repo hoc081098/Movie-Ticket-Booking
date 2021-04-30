@@ -3,10 +3,8 @@ import 'dart:convert';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
+import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:rx_shared_preferences/rx_shared_preferences.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:rxdart_ext/rxdart_ext.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../utils/utils.dart';
 import '../serializers.dart';
@@ -17,86 +15,47 @@ class SearchKeywordSourceImpl implements SearchKeywordSource {
   static const _maxLength = 16;
 
   final RxSharedPreferences _prefs;
-  final queryS = PublishSubject<Tuple2<String?, Completer<void>>>(sync: true);
 
-  SearchKeywordSourceImpl(this._prefs) {
-    queryS
-        .asyncExpand(_saveQuery)
-        .debug(identifier: toString(), log: streamDebugPrint)
-        .collect();
-  }
+  SearchKeywordSourceImpl(this._prefs);
 
-  Stream<Object> _saveQuery(Tuple2<String?, Completer<void>> tuple2) async* {
-    final query = tuple2.item1;
-    final completer = tuple2.item2;
-
-    try {
-      BuiltList<String> list;
-      if (query != null) {
-        final current = await _prefs.getStringsBuildList(_queriesKey);
-
-        final newList = [query, ...current].distinct().toList();
-        if (newList.length > _maxLength) {
-          newList.removeAt(0);
-        }
-
-        list = newList.build();
-      } else {
-        list = const <String>[].build();
-      }
-
-      await _prefs.setStringsBuildList(_queriesKey, list);
-      yield Tuple2(query, list);
-
-      completer.complete();
-    } catch (e, s) {
-      completer.completeError(e, s);
+  static BuiltList<String> _appendQueryWithMaxLength(
+    BuiltList<String>? current,
+    String query,
+  ) {
+    final newList = [query, ...?current].distinct().toList();
+    if (newList.length > _maxLength) {
+      newList.removeAt(0);
     }
+    return newList.build();
   }
 
   @override
-  Future<void> saveSearchQuery(String query) {
-    final completer = Completer<void>();
-    queryS.add(Tuple2(query, completer));
-    return completer.future;
-  }
+  Future<void> saveSearchQuery(String query) =>
+      _prefs.executeUpdate<BuiltList<String>>(
+        _queriesKey,
+        _decoder,
+        (current) => _appendQueryWithMaxLength(current, query),
+        _encoder,
+      );
 
   @override
-  Future<BuiltList<String>> getQueries() =>
-      _prefs.getStringsBuildList(_queriesKey);
+  Future<BuiltList<String>> getQueries() => _prefs
+      .read<BuiltList<String>>(_queriesKey, _decoder)
+      .then((v) => v ?? _empty);
 
   @override
-  Future<void> clear() {
-    final completer = Completer<void>();
-    queryS.add(Tuple2(null, completer));
-    return completer.future;
-  }
+  Future<void> clear() =>
+      _prefs.write<BuiltList<String>>(_queriesKey, _empty, _encoder);
 }
 
-extension on RxSharedPreferences {
-  static const _type = FullType(BuiltList, [FullType(String)]);
+final _empty = const <String>[].build();
+const _type = FullType(BuiltList, [FullType(String)]);
 
-  /// Returns empty list if does not exists.
-  Future<BuiltList<String>> getStringsBuildList(String key) =>
-      read<BuiltList<String>>(
-        key,
-        (s) => serializers.deserialize(
-          jsonDecode((s as String?) ?? '[]'),
-          specifiedType: _type,
-        ) as BuiltList<String>,
-      ).then((v) => v!);
+final Func1<Object?, BuiltList<String>?> _decoder = (s) => s is String
+    ? serializers.deserialize(jsonDecode(s), specifiedType: _type)
+        as BuiltList<String>
+    : null;
 
-  /// [strings] is not null.
-  Future<void> setStringsBuildList(String key, BuiltList<String> strings) {
-    return write<BuiltList<String>>(
-      key,
-      strings,
-      (l) => jsonEncode(
-        serializers.serialize(
-          l,
-          specifiedType: _type,
-        ),
-      ),
-    );
-  }
-}
+final Func1<BuiltList<String>?, Object?> _encoder = (list) => list == null
+    ? null
+    : jsonEncode(serializers.serialize(list, specifiedType: _type));

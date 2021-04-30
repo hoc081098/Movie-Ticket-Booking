@@ -64,7 +64,7 @@ dependencies:
   rx_redux: ^2.2.0-nullsafety.2
   distinct_value_connectable_stream: ^1.2.0
   flutter_provider: ^2.0.0
-  rx_shared_preferences: ^2.0.0-nullsafety.0
+  rx_shared_preferences: ^2.0.0
   disposebag: ^1.5.0
   flutter_disposebag: ^1.1.0
   flutter_bloc_pattern: ^2.0.0
@@ -91,16 +91,6 @@ dev_dependencies:
 
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  rx_shared_preferences:
-    git:
-      url: https://github.com/hoc081098/rx_shared_preferences.git
-      ref: ff9740f83a45819c0c5acaa5afa12fbe8b75f1a1
-  rx_storage:
-    git:
-      url: https://github.com/Flutter-Dart-Open-Source/rx_storage.git
-      ref: 9f3332334fff4aebcdf4fd4526eba391f6d4d8be
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
