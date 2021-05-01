@@ -52,7 +52,7 @@ dependencies:
   intl: ^0.17.0
   tuple: ^2.0.0
   rxdart: ^0.26.0
-  http: ^0.13.1
+  http: ^0.13.2
   firebase_auth: ^1.1.2
   built_value: ^8.0.5
   shared_preferences: ^2.0.5
@@ -61,7 +61,7 @@ dependencies:
   async: ^2.5.0
   google_api_headers: ^1.0.0
 
-  rx_redux: ^2.2.0-nullsafety.2
+  rx_redux: ^2.2.0
   distinct_value_connectable_stream: ^1.2.0
   flutter_provider: ^2.0.0
   rx_shared_preferences: ^2.0.0
