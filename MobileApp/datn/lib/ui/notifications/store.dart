@@ -78,12 +78,12 @@ class SideEffects {
     return getNotifications(page: nextPage, perPage: perPage)
         .map<Action>((items) => SuccessAction(items))
         .startWith(loadingAction)
-        .onErrorReturnWith((error) => FailureAction(error));
+        .onErrorReturnWith((error, s) => FailureAction(error));
   }
 
   Stream<Action> _refresh(RefreshAction action) =>
       getNotifications(page: 1, perPage: perPage)
           .map<Action>((items) => RefreshSuccessAction(items))
-          .onErrorReturnWith((error) => RefreshFailureAction(error))
+          .onErrorReturnWith((error, s) => RefreshFailureAction(error))
           .doOnCancel(action.complete);
 }

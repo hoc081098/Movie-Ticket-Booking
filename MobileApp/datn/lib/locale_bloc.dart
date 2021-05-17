@@ -109,7 +109,7 @@ class LocaleBloc extends DisposeCallbackBaseBloc {
     return Rx.fromCallable(
             () => rxSharedPrefs.setString(_localeKey, locale.languageCode))
         .mapTo<ChangeLocaleMessage>(ChangeLocaleSuccess(locale))
-        .onErrorReturnWith((e) => ChangeLocaleFailure(e))
+        .onErrorReturnWith((e, s) => ChangeLocaleFailure(e))
         .doOnCancel(() => completer?.complete());
   }
 }

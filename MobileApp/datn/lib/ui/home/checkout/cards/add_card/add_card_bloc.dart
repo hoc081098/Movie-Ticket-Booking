@@ -143,7 +143,7 @@ class AddCardBloc extends DisposeCallbackBaseBloc {
               .doOnListen(() => isLoadingS.add(true))
               .doOnCancel(() => isLoadingS.add(false))
               .map<Message>((card) => AddCardSuccess(card))
-              .onErrorReturnWith((error) => AddCardFailure(error)),
+              .onErrorReturnWith((error, s) => AddCardFailure(error)),
         )
         .publish();
 

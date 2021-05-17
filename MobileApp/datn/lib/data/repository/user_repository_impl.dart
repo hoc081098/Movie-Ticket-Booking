@@ -39,7 +39,7 @@ class UserRepositoryImpl implements UserRepository {
 
   final SearchKeywordSource _searchKeywordSource;
 
-  final ValueStream<Optional<User>> _user$;
+  final ValueStream<Optional<User>?> _user$;
 
   UserRepositoryImpl(
     this._auth,
@@ -62,20 +62,21 @@ class UserRepositoryImpl implements UserRepository {
       .getToken()
       .then((token) => token != null ? {'fcm_token': token} : null);
 
-  static ValueStream<Optional<User>> _buildUserStream(
+  static ValueStream<Optional<User>?> _buildUserStream(
     FirebaseAuth _auth,
     UserLocalSource _userLocalSource,
     Function1<UserLocal, User> userLocalToUserDomain,
   ) =>
-      Rx.combineLatest3<Object?, UserLocal?, String?, Optional<User>>(
-          _auth.userChanges(),
-          _userLocalSource.user$,
-          _userLocalSource.token$,
-          (Object? user, UserLocal? local, String? token) =>
-              user == null || local == null || token == null
-                  ? Optional.none()
-                  : Optional.some(userLocalToUserDomain(local))).publishValue()
-        ..connect();
+      Rx.combineLatest3<Object?, UserLocal?, String?, Optional<User>?>(
+              _auth.userChanges(),
+              _userLocalSource.user$,
+              _userLocalSource.token$,
+              (Object? user, UserLocal? local, String? token) =>
+                  user == null || local == null || token == null
+                      ? Optional.none()
+                      : Optional.some(userLocalToUserDomain(local)))
+          .publishValueSeeded(null)
+            ..connect();
 
   Future<AuthState> _isUserLocalCompletedLogin([UserLocal? local]) async {
     local ??= await _userLocalSource.user;
@@ -298,7 +299,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  ValueStream<Optional<User>> get user$ => _user$;
+  ValueStream<Optional<User>?> get user$ => _user$;
 
   @override
   Future<void> resetPassword(String email) =>

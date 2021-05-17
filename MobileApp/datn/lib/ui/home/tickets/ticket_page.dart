@@ -179,7 +179,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
             (tickets) => reservationRepository
                 .watchReservedTicket(widget.showTime.id)
                 .scan<BuiltList<Ticket>>(
-                  (acc, value, _) => acc!.rebuild(
+                  (acc, value, _) => acc.rebuild(
                     (lb) => lb.map(
                       (ticket) {
                         final reservation = value[ticket.id];
@@ -209,7 +209,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
           .distinct()
           .map((state) => conflict(
                 state,
-                selectedTicketIdsS.requireValue,
+                selectedTicketIdsS.value,
                 userRepo.user$.value,
               ))
           .where((tickets) => tickets.isNotEmpty)
@@ -271,7 +271,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
       body: RxStreamBuilder<LoaderState<BuiltList<Ticket>>>(
         stream: bloc!.state$,
         builder: (context, state) {
-          if (state!.isLoading) {
+          if (state.isLoading) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -332,7 +332,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
                           throw Exception('Something was wrong');
                         }
 
-                        final ids = selectedTicketIdsS.requireValue;
+                        final ids = selectedTicketIdsS.value;
                         final newIds = ids.rebuild((b) {
                           if (ids.contains(ticket.id)) {
                             b.remove(ticket.id);
@@ -457,7 +457,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   }
 
   void tapContinue(BuiltMap<String, Ticket> ticketsMap) {
-    final ids = selectedTicketIdsS.requireValue;
+    final ids = selectedTicketIdsS.value;
     if (ids.isEmpty) {
       return context.showSnackBar(S.of(context).mustSelectAtLeastOneSeat);
     }
@@ -475,7 +475,7 @@ class _TicketsPageState extends State<TicketsPage> with DisposeBagMixin {
   }
 
   void handleConflictSelection(BuiltSet<Ticket> conflictTickets) {
-    final value = selectedTicketIdsS.requireValue;
+    final value = selectedTicketIdsS.value;
     final conflictIds = conflictTickets.map((e) => e.id).toSet();
     final newSelected = Set.of(value).difference(conflictIds).toBuiltList();
 
@@ -688,7 +688,7 @@ class _SeatsGridWidgetState extends State<SeatsGridWidget> {
                                 context,
                                 row,
                                 col,
-                                snapshotData!,
+                                snapshotData,
                                 widthPerSeat,
                               );
                             },
@@ -1086,7 +1086,7 @@ class BottomWidget extends StatelessWidget {
                         style: selectTextStyle,
                         children: [
                           TextSpan(
-                            text: ' ${data!.length} ',
+                            text: ' ${data.length} ',
                             style: seatsCountStyle,
                           ),
                           TextSpan(
@@ -1138,8 +1138,6 @@ class SelectedSeatsGridWidget extends StatelessWidget {
       sliver: RxStreamBuilder<BuiltList<String>>(
         stream: ids$,
         builder: (context, ids) {
-          ids!;
-
           return SliverGrid(
             delegate: SliverChildBuilderDelegate(
               (context, index) {

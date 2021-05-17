@@ -20,7 +20,8 @@ class MovieSearchDelegate extends SearchDelegate<String> {
   late DistinctValueStream<BuiltList<String>?> suggestions$;
 
   MovieSearchDelegate(this.movieRepo) {
-    suggestions$ = Rx.fromCallable(movieRepo.getQueries).exhaustMap<BuiltList<String>?>((queries) {
+    suggestions$ = Rx.fromCallable(movieRepo.getQueries)
+        .exhaustMap<BuiltList<String>?>((queries) {
       final filter = (String queryLowered) => queries
           .where((value) => value.toLowerCase().contains(queryLowered))
           .toBuiltList();
@@ -31,7 +32,7 @@ class MovieSearchDelegate extends SearchDelegate<String> {
           .map(filter)
           .startWith(queries);
     }).shareValueDistinct(null, sync: true)
-      ..collect().disposedBy(bag);
+          ..collect().disposedBy(bag);
 
     queryS.disposedBy(bag);
   }

@@ -80,13 +80,13 @@ class SideEffects {
         .map<ReservationsAction>((items) => SuccessAction(items))
         .startWith(loadingAction)
         .debug(identifier: toString(), log: streamDebugPrint)
-        .onErrorReturnWith((error) => FailureAction(error));
+        .onErrorReturnWith((error, s) => FailureAction(error));
   }
 
   Stream<ReservationsAction> _refresh(RefreshAction action) =>
       getReservations(page: 1, perPage: perPage)
           .map<ReservationsAction>((items) => RefreshSuccessAction(items))
-          .onErrorReturnWith((error) => RefreshFailureAction(error))
+          .onErrorReturnWith((error, s) => RefreshFailureAction(error))
           .debug(identifier: toString(), log: streamDebugPrint)
           .doOnCancel(() => action.completer.complete());
 }

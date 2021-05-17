@@ -158,7 +158,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         await repository.checkAuth();
         await Future.delayed(const Duration(milliseconds: 500));
 
-        yield (await repository.user$.first).fold(() => null, (r) => r);
+        yield (await repository.user$.first)?.fold(() => null, (r) => r);
       }()
           .whereNotNull()
           .doOnData((_) => isFetching$.add(false))
@@ -275,7 +275,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
               child: RxStreamBuilder<bool>(
                 stream: isFetching$,
                 builder: (context, data) {
-                  if (data!) {
+                  if (data) {
                     return SizedBox(
                       width: 64,
                       height: 64,
@@ -359,7 +359,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
           child: RxStreamBuilder<Tuple2<File?, String?>>(
             stream: avatarTuple$,
             builder: (context, data) {
-              final avatarFile = data!.item1;
+              final avatarFile = data.item1;
               final avatar = data.item2;
 
               if (avatarFile != null) {
@@ -659,7 +659,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         fullName: fullName!,
         phoneNumber: phoneNumber!,
         address: address!,
-        gender: gender$.requireValue,
+        gender: gender$.value,
         location: location,
         birthday: birthday,
         avatarFile: avatarFile$.value,

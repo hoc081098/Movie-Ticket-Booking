@@ -49,7 +49,7 @@ class HomeSideEffects {
           (comment) => removeCommentById(comment.id)
               .map<Action>((_) => RemoveCommentSuccess(comment))
               .onErrorReturnWith(
-                  (error) => RemoveCommentFailure(error, comment)),
+                  (error, s) => RemoveCommentFailure(error, comment)),
         );
   }
 
@@ -90,6 +90,6 @@ class HomeSideEffects {
     return getComments(page: nextPage, perPage: perPage)
         .map<Action>((comments) => SuccessAction(comments))
         .startWith(loadingAction)
-        .onErrorReturnWith((error) => FailureAction(error));
+        .onErrorReturnWith((error, s) => FailureAction(error));
   }
 }

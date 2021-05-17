@@ -79,13 +79,13 @@ class SideEffects {
         .map<ViewAllAction>((items) => SuccessAction(items))
         .startWith(loadingAction)
         .debug(identifier: toString(), log: streamDebugPrint)
-        .onErrorReturnWith((error) => FailureAction(error));
+        .onErrorReturnWith((error, s) => FailureAction(error));
   }
 
   Stream<ViewAllAction> _refresh(RefreshAction action) =>
       getMovies(page: 1, perPage: perPage)
           .map<ViewAllAction>((items) => RefreshSuccessAction(items))
-          .onErrorReturnWith((error) => RefreshFailureAction(error))
+          .onErrorReturnWith((error, s) => RefreshFailureAction(error))
           .debug(identifier: toString(), log: streamDebugPrint)
           .doOnCancel(action.complete);
 }

@@ -127,7 +127,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
                 minDuration: minDuration$.value,
                 maxDuration: maxDuration$.value,
                 ageType: ageType$.value,
-                location: cityRepo.selectedCity$.requireValue.location,
+                location: cityRepo.selectedCity$.value.location,
                 selectedCategoryIds: selectedCatIds,
               );
             },
@@ -162,7 +162,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
           RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
             stream: bloc.state$,
             builder: (context, state) {
-              if (state!.isLoading) {
+              if (state.isLoading) {
                 return const SizedBox();
               }
 
@@ -177,7 +177,7 @@ class _SearchPageState extends State<SearchPage> with DisposeBagMixin {
       body: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
         stream: bloc.state$,
         builder: (context, state) {
-          if (state!.isLoading) {
+          if (state.isLoading) {
             return Center(
               child: SizedBox(
                 width: 56,

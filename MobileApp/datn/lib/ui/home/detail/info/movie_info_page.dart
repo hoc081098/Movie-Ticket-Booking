@@ -125,7 +125,7 @@ class _MovieInfoPageState extends State<MovieInfoPage>
       body: RxStreamBuilder<LoaderState<Movie>>(
         stream: bloc.state$,
         builder: (context, state) {
-          final error = state!.error;
+          final error = state.error;
           if (error != null) {
             return Center(
               child: MyErrorWidget(
@@ -418,7 +418,7 @@ class DetailAppBar extends StatelessWidget {
                       RxStreamBuilder<LoaderState<bool>>(
                         stream: favBloc.state$,
                         builder: (context, state) {
-                          if (state!.isLoading) {
+                          if (state.isLoading) {
                             return SizedBox(
                               width: 32,
                               height: 32,

@@ -82,7 +82,7 @@ class LoginBloc extends DisposeCallbackBaseBloc {
                 .doOnError((e, s) => isLoadingController.add(false))
                 .map<LoginMessage>((_) => const LoginSuccessMessage())
                 .onErrorReturnWith(
-                  (error) => LoginErrorMessage(
+                  (error, s) => LoginErrorMessage(
                     S.current.loginErrorGeterrormessagedeprecatederror(
                       getErrorMessageDeprecated(error),
                     ),

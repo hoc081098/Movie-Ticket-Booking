@@ -85,7 +85,7 @@ class AddCommentBloc extends DisposeCallbackBaseBloc {
               .doOnListen(() => isLoadingS.add(true))
               .doOnEach((_) => isLoadingS.add(false))
               .map<Message>((added) => AddCommentSuccessMessage(added))
-              .onErrorReturnWith((error) => AddCommentFailureMessage(error)),
+              .onErrorReturnWith((error, s) => AddCommentFailureMessage(error)),
         )
         .publish();
 

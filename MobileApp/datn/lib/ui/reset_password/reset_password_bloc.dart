@@ -65,7 +65,7 @@ class ResetPasswordBloc extends DisposeCallbackBaseBloc {
                 .doOnError((e, s) => isLoadingController.add(false))
                 .map<Message>((email) => SuccessMessage(email))
                 .onErrorReturnWith(
-                  (error) => ErrorMessage(
+                  (error, s) => ErrorMessage(
                     S.current.resetPasswordErrorMsg(
                         getErrorMessageDeprecated(error)),
                     error,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:rxdart_ext/rxdart_ext.dart';
 
 typedef AppScaffoldWidgetBuilder = Widget Function(BuildContext, RouteSettings);
@@ -102,7 +101,7 @@ class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:tryInline')
-  int get currentIndex => indexS.requireValue.rawValue;
+  int get currentIndex => indexS.value.rawValue;
 
   @override
   void initState() {
@@ -136,7 +135,7 @@ class _AppScaffoldState extends State<AppScaffold> with DisposeBagMixin {
       child: RxStreamBuilder<AppScaffoldIndex>(
         stream: indexS,
         builder: (context, snapshot) {
-          final index = snapshot!.rawValue;
+          final index = snapshot.rawValue;
 
           return Scaffold(
             body: buildBody(index),

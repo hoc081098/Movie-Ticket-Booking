@@ -172,7 +172,7 @@ class CheckoutBloc implements BaseBloc {
                 .doOnListen(() => _isLoadingS.add(true))
                 .doOnCancel(() => _isLoadingS.add(false))
                 .map<Message>((r) => CheckoutSuccess(r))
-                .onErrorReturnWith((error) => CheckoutFailure(error)),
+                .onErrorReturnWith((error, s) => CheckoutFailure(error)),
           ),
       form$.where((v) => v == null).mapTo(const MissingRequiredInfo())
     ]).publish();

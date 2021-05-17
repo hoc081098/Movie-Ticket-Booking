@@ -89,7 +89,7 @@ class CardsBloc extends DisposeCallbackBaseBloc {
       }).doOnError((e, s) {
         print(s);
         cardMessageS.add(RemoveFailure(card, e));
-      }).onErrorResume((error) => Stream.empty()),
+      }).onErrorResume((error, s) => Stream.empty()),
     );
 
     final cardStreamFunc = () => cardRepository.getCards().exhaustMap(
@@ -99,8 +99,8 @@ class CardsBloc extends DisposeCallbackBaseBloc {
           ])
               .scan<BuiltList<domain.Card>>(
                 (acc, change, _) => change.item2
-                    ? acc!.rebuild((b) => b.add(change.item1))
-                    : acc!.rebuild(
+                    ? acc.rebuild((b) => b.add(change.item1))
+                    : acc.rebuild(
                         (b) => b.removeWhere((i) => i.id == change.item1.id)),
                 initial,
               )
@@ -167,7 +167,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
     super.initState();
 
     fabVisible$ = () {
-      late final  void Function() listener;
+      late final void Function() listener;
       late final PublishSubject<bool> controller;
 
       controller = PublishSubject<bool>(
@@ -220,7 +220,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
 
     return WillPopScope(
       onWillPop: () async {
-        final selected = bloc.state$.requireValue.item2;
+        final selected = bloc.state$.value.item2;
         print('[DEBUG] pop selected=$selected');
 
         AppScaffold.navigatorOfCurrentIndex(context).pop(selected);
@@ -252,7 +252,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
           stream: fabVisible$,
           builder: (context, data) {
             return AnimatedOpacity(
-              opacity: data! ? 1 : 0,
+              opacity: data ? 1 : 0,
               duration: const Duration(milliseconds: 200),
               child: FloatingActionButton.extended(
                 onPressed: () async {
@@ -276,7 +276,7 @@ class _CardsPageState extends State<CardsPage> with DisposeBagMixin {
             Tuple2<LoaderState<BuiltList<domain.Card>>, domain.Card?>>(
           stream: bloc.state$,
           builder: (context, data) {
-            final state = data!.item1;
+            final state = data.item1;
 
             if (state.isLoading) {
               return Center(

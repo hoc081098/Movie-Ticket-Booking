@@ -47,11 +47,10 @@ class CityRepositoryImpl implements CityRepository {
   };
 
   final RxSharedPreferences _preferences;
-  final ValueConnectableStream<City> _selectedCity$;
+  final ValueStream<City> _selectedCity$;
 
   CityRepositoryImpl(this._preferences, UserLocalSource userLocalSource)
-      : _selectedCity$ = _buildSelectedCity(_preferences, userLocalSource)
-          ..connect();
+      : _selectedCity$ = _buildSelectedCity(_preferences, userLocalSource);
 
   @override
   BuiltList<City> get allCities => _allCities;
@@ -63,7 +62,7 @@ class CityRepositoryImpl implements CityRepository {
   @override
   ValueStream<City> get selectedCity$ => _selectedCity$;
 
-  static ValueConnectableStream<City> _buildSelectedCity(
+  static ValueStream<City> _buildSelectedCity(
     RxSharedPreferences prefs,
     UserLocalSource userLocalSource,
   ) {
@@ -77,7 +76,8 @@ class CityRepositoryImpl implements CityRepository {
     return prefs
         .getStringStream(_city_key)
         .map((name) => _allCitiesByName[name] ?? _allCities.first)
-        .publishValueSeeded(_allCities.first);
+        .publishValueSeeded(_allCities.first)
+          ..connect();
   }
 
   static City _findNearestCityFrom(LocationLocal location) {

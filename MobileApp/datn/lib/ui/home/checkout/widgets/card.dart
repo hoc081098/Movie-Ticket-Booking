@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../../../domain/model/card.dart' as domain;
 import '../../../../generated/l10n.dart';
@@ -35,10 +34,11 @@ class SelectedCard extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () async {
-            final card = (await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
+            final card =
+                (await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               CardsPage.routeName,
               arguments: {
-                'card': bloc.selectedCard$.requireValue,
+                'card': bloc.selectedCard$.value,
                 'mode': CardPageMode.select,
               },
             )) as domain.Card?;

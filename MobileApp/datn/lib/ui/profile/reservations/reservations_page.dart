@@ -90,7 +90,7 @@ class _ReservationsPageState extends State<ReservationsPage>
       body: RxStreamBuilder<ReservationsState>(
         stream: store.stateStream,
         builder: (context, state) {
-          if (state!.isLoading && state.isFirstPage) {
+          if (state.isLoading && state.isFirstPage) {
             return Center(
               child: SizedBox(
                 width: 56,

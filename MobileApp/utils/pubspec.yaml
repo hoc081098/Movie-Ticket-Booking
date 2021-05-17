@@ -12,12 +12,12 @@ environment:
 
 dependencies:
   built_collection: ^5.0.0
-  built_value: ^8.0.5
-  http: ^0.13.1
+  built_value: ^8.0.6
+  http: ^0.13.3
 
-  flutter_bloc_pattern: ^2.0.0
-  rxdart_ext: ^0.0.1
-  listenable_stream: ^1.0.0
+  flutter_bloc_pattern: ^2.1.0
+  rxdart_ext: ^0.1.0
+  listenable_stream: ^1.1.0
 
   flutter:
     sdk: flutter

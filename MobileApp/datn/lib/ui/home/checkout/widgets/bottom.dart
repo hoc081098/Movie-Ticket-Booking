@@ -111,7 +111,7 @@ class BottomRow extends StatelessWidget {
               child: RxStreamBuilder<bool>(
                 stream: bloc.isLoading$,
                 builder: (context, data) {
-                  if (data!) {
+                  if (data) {
                     return Center(
                       child: CircularProgressIndicator(
                         strokeWidth: 3,

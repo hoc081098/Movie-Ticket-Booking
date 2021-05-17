@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
 import 'package:intl/intl.dart';
-import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../generated/l10n.dart';
 import '../../locale_bloc.dart';

@@ -117,7 +117,7 @@ class _CommentsPageState extends State<CommentsPage>
     return RxStreamBuilder<st.State>(
       stream: store!.stateStream,
       builder: (context, state) {
-        if (state!.isLoading && state.isFirstPage) {
+        if (state.isLoading && state.isFirstPage) {
           return Center(
             child: SizedBox(
               width: 56,
@@ -523,7 +523,8 @@ class Header extends StatelessWidget {
         ),
         InkWell(
           onTap: () async {
-            final comment = await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
+            final comment =
+                await AppScaffold.navigatorOfCurrentIndex(context).pushNamedX(
               AddCommentPage.routeName,
               arguments: movieId,
             );

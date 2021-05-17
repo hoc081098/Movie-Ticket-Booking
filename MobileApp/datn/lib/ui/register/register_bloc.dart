@@ -85,7 +85,7 @@ class RegisterBloc extends DisposeCallbackBaseBloc {
                 .doOnError((e, s) => isLoadingController.add(false))
                 .map<RegisterMessage>((email) => RegisterSuccessMessage(email))
                 .onErrorReturnWith(
-                  (error) => RegisterErrorMessage(
+                  (error, s) => RegisterErrorMessage(
                     S.current.registerError(
                       getErrorMessageDeprecated(error),
                     ),

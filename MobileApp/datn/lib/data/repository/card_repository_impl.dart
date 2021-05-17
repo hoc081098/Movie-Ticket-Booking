@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../../domain/model/card.dart';
 import '../../domain/repository/card_repository.dart';

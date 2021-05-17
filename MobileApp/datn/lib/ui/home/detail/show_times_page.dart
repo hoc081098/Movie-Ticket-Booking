@@ -65,7 +65,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
         loaderFunction: () {
           final showTimesByDay$ = movieRepo.getShowTimes(
             movieId: widget.movie.id,
-            location: cityRepo.selectedCity$.requireValue.location,
+            location: cityRepo.selectedCity$.value.location,
           );
 
           return Rx.combineLatest2(
@@ -189,7 +189,7 @@ class _ShowTimesPageState extends State<ShowTimesPage>
                 builder: (context, data) {
                   return AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    child: _buildBottom(data!),
+                    child: _buildBottom(data),
                   );
                 },
               ),
@@ -269,7 +269,7 @@ class SelectCityWidget extends StatelessWidget {
             stream: cityRepo.selectedCity$,
             builder: (context, selected) {
               return PopupMenuButton<City>(
-                initialValue: selected!,
+                initialValue: selected,
                 onSelected: cityRepo.change,
                 offset: Offset(0, 56),
                 itemBuilder: (BuildContext context) {

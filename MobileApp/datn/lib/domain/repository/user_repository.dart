@@ -17,7 +17,7 @@ abstract class UserRepository {
   /// - [ValueStream.value] is null when no actual value is emitted.
   /// - [ValueStream.value] is [Some] when user logged in.
   /// - [ValueStream.value] is [None] when user not logged in.
-  ValueStream<Optional<User>> get user$;
+  ValueStream<Optional<User>?> get user$;
 
   Future<AuthState> checkAuth();
 

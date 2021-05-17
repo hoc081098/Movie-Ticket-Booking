@@ -195,7 +195,7 @@ class _LoginPageState extends State<LoginPage>
                               child: RxStreamBuilder<bool>(
                                 stream: googleSignInBloc.isLoading$,
                                 builder: (context, isLoading) {
-                                  if (isLoading!) {
+                                  if (isLoading) {
                                     return CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation(
@@ -241,7 +241,7 @@ class _LoginPageState extends State<LoginPage>
                               child: RxStreamBuilder<bool>(
                                 stream: facebookLoginBloc.isLoading$,
                                 builder: (context, isLoading) {
-                                  if (isLoading!) {
+                                  if (isLoading) {
                                     return CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation(

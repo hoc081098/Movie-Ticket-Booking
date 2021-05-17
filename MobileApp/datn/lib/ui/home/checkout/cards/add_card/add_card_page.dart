@@ -179,7 +179,7 @@ class _AddCardPageState extends State<AddCardPage> with DisposeBagMixin {
                 RxStreamBuilder<bool>(
                   stream: bloc.isLoading$,
                   builder: (context, data) {
-                    if (data!) {
+                    if (data) {
                       return Center(
                         child: SizedBox(
                           width: 56,

@@ -100,7 +100,7 @@ class _ComboPageState extends State<ComboPage> with DisposeBagMixin {
       body: RxStreamBuilder<ComboState>(
         stream: bloc.state$,
         builder: (context, state) {
-          if (state!.isLoading) {
+          if (state.isLoading) {
             return Center(
               child: SizedBox(
                 width: 56,

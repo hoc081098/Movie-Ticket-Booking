@@ -75,7 +75,7 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
           (initial) => _changes.scan<BuiltList<Movie>>(
             (acc, change, _) {
               if (change is _Toggled) {
-                return acc!.rebuild((b) {
+                return acc.rebuild((b) {
                   change.favorite
                       ? b.insert(0, change.movie)
                       : b.removeWhere((item) => item.id == change.movie.id);

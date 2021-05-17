@@ -103,7 +103,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
       body: RxStreamBuilder<ViewAllState>(
         stream: store!.stateStream,
         builder: (context, state) {
-          if (state!.isLoading && state.isFirstPage) {
+          if (state.isLoading && state.isFirstPage) {
             return Center(
               child: SizedBox(
                 width: 56,
@@ -197,7 +197,7 @@ class _ViewAllPageState extends State<ViewAllPage> with DisposeBagMixin {
   ) {
     switch (movieType) {
       case MovieType.nowPlaying:
-        final location = cityRepo.selectedCity$.requireValue.location;
+        final location = cityRepo.selectedCity$.value.location;
         return ({required int page, required int perPage}) {
           return movieRepo.getNowPlayingMovies(
             page: page,

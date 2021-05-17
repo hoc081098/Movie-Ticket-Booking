@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
       nowPlayingBloc = () {
         final loaderFunction = () {
-          final location = cityRepo.selectedCity$.requireValue.location;
+          final location = cityRepo.selectedCity$.value.location;
           print('[DEBUG] fetch 1 location=$location');
           return repo.getNowPlayingMovies(
             location: location,
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
       recommendedBloc = () {
         final loaderFunction = () {
-          final location = cityRepo.selectedCity$.value?.location;
+          final location = cityRepo.selectedCity$.value.location;
           print('[DEBUG] fetch 2 location=$location');
           return repo.getRecommendedMovies(location);
         };
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> with DisposeBagMixin {
 
       theatresBloc = () {
         final loaderFunction = () => theatreRepo
-            .getNearbyTheatres(cityRepo.selectedCity$.requireValue.location);
+            .getNearbyTheatres(cityRepo.selectedCity$.value.location);
 
         return LoaderBloc<BuiltList<Theatre>>(
           loaderFunction: loaderFunction,
@@ -341,7 +341,7 @@ class HomeLocationHeader extends StatelessWidget {
                           stream: cityRepo.selectedCity$,
                           builder: (context, data) {
                             return Text(
-                              data!.localizedName(context),
+                              data.localizedName(context),
                               maxLines: 1,
                               style:
                                   textTheme.headline6!.copyWith(fontSize: 13),
@@ -448,7 +448,7 @@ class HomeHorizontalMoviesList extends StatelessWidget {
         child: RxStreamBuilder<LoaderState<BuiltList<Movie>>>(
           stream: bloc.state$,
           builder: (context, state) {
-            if (state!.error != null) {
+            if (state.error != null) {
               return MyErrorWidget(
                 errorText: S
                     .of(context)
@@ -978,7 +978,7 @@ class NearbyTheatresList extends StatelessWidget {
         final height = 200.0;
         const padding = EdgeInsets.symmetric(vertical: 10);
 
-        if (state!.error != null) {
+        if (state.error != null) {
           return SliverToBoxAdapter(
             child: Container(
               height: height,

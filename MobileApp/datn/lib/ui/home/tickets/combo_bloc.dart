@@ -56,7 +56,7 @@ class ComboBloc extends BaseBloc {
               )
               .startWith(loadingState)
               .onErrorReturnWith(
-                (error) => ComboState.from(
+                (error, s) => ComboState.from(
                   error: error,
                   isLoading: false,
                   items: BuiltList.of(<ComboItem>[]),
