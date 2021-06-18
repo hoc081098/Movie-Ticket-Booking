@@ -67,10 +67,10 @@ dependencies:
   rx_shared_preferences: ^2.1.0
   disposebag: ^1.5.0
   flutter_disposebag: ^1.1.0
-  flutter_bloc_pattern: ^2.1.0
-  rxdart_ext: ^0.1.1-dev.0
+  flutter_bloc_pattern: ^2.1.1
+  rxdart_ext: ^0.1.1-dev.1
   listenable_stream: ^1.1.0
-  stream_loader: ^1.2.0
+  stream_loader: ^1.2.1
   flutter_google_places_hoc081098: ^1.0.0-nullsafety.2
   utils:
     path: ../utils

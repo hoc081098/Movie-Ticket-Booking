@@ -16,38 +16,39 @@ class CardRepositoryImpl implements CardRepository {
   CardRepositoryImpl(this._authClient, this._cardResponseToCard);
 
   @override
-  Stream<BuiltList<Card>> getCards() async* {
-    final json = await _authClient.getJson(buildUrl('/cards')) as List;
-    yield json
-        .map((e) => CardResponse.fromJson(e))
-        .map(_cardResponseToCard)
-        .toBuiltList();
-  }
+  Single<BuiltList<Card>> getCards() =>
+      Single.fromCallable(() => _authClient.getJson(buildUrl('/cards')))
+          .cast<List>()
+          .map((json) => json
+              .map((e) => CardResponse.fromJson(e))
+              .map(_cardResponseToCard)
+              .toBuiltList());
 
   @override
-  Stream<Card> removeCard(Card card) =>
-      Rx.fromCallable(() => _authClient.delete(buildUrl('/cards/${card.id}')))
-          .mapTo(card);
+  Single<Card> removeCard(Card card) => Single.fromCallable(
+          () => _authClient.delete(buildUrl('/cards/${card.id}')))
+      .mapTo(card)
+      .singleOrError();
 
   @override
-  Stream<Card> addCard({
+  Single<Card> addCard({
     required String cardHolderName,
     required String number,
     required int cvc,
     required int expYear,
     required int expMonth,
-  }) async* {
-    final body = {
-      'card_holder_name': cardHolderName,
-      'number': number,
-      'cvc': cvc.toString(),
-      'exp_month': expMonth,
-      'exp_year': expYear,
-    };
-    final json = await _authClient.postJson(
-      buildUrl('/cards'),
-      body: body,
-    );
-    yield _cardResponseToCard(CardResponse.fromJson(json));
-  }
+  }) =>
+      Single.fromCallable(() {
+        final body = {
+          'card_holder_name': cardHolderName,
+          'number': number,
+          'cvc': cvc.toString(),
+          'exp_month': expMonth,
+          'exp_year': expYear,
+        };
+        return _authClient.postJson(
+          buildUrl('/cards'),
+          body: body,
+        );
+      }).map((json) => CardResponse.fromJson(json)).map(_cardResponseToCard);
 }

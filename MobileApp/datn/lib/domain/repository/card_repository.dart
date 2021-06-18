@@ -1,13 +1,14 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import '../model/card.dart';
 
 abstract class CardRepository {
-  Stream<BuiltList<Card>> getCards();
+  Single<BuiltList<Card>> getCards();
 
-  Stream<Card> removeCard(Card card);
+  Single<Card> removeCard(Card card);
 
-  Stream<Card> addCard({
+  Single<Card> addCard({
     required String cardHolderName,
     required String number,
     required int cvc,
