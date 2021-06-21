@@ -44,7 +44,7 @@
     "qrcode": "^1.4.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
-    "rxjs": "^6.5.4",
+    "rxjs": "6.6.7",
     "slugify": "^1.4.5",
     "stripe": "^8.106.0",
     "swagger-ui-express": "^4.1.4"
