@@ -37,7 +37,7 @@
     "dotenv": "^8.2.0",
     "faker": "^5.1.0",
     "handlebars": "^4.7.6",
-    "mongoose": "5.12.9",
+    "mongoose": "5.13.20",
     "morgan": "^1.10.0",
     "neo4j-driver": "^4.1.2",
     "nodemailer": "^6.4.14",
